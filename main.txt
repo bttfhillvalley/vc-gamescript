@@ -217,6 +217,7 @@ fade 0 0
 01F0: set_max_wanted_level_to 6 
 set_wb_check_to 0 
 00C0: set_current_time 22 0 
+0572: set_taxi_boost_jump 1 
 04E4: request_collision_at -304.5 -561.1 
 Camera.SetAtPos(-304.5, -561.1, 14.0)
 $PLAYER_CHAR = Player.Create(#NULL, -304.5, -561.1, 14.0)
@@ -531,6 +532,7 @@ $253 = 1 // $ = int
 $254 = 1 // $ = int 
 create_thread @PSAVE1 
 create_thread @ARMYBAS 
+create_thread_wb @HJ 
 create_thread_wb @AMMU 
 create_thread_wb @SECURE 
 create_thread_wb @INTERIO 
@@ -571,75 +573,75 @@ create_thread @GET
 wait 0 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_4660 
+else_jump @MAIN_4671 
 set_weather 0 
 if 
    not Actor.Dead($PLAYER_ACTOR)
-else_jump @MAIN_4617 
+else_jump @MAIN_4628 
 0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER' 
 038B: load_requested_models 
 if 
    not Actor.Dead($PLAYER_ACTOR)
-else_jump @MAIN_4617 
+else_jump @MAIN_4628 
 0353: refresh_actor $PLAYER_ACTOR 
 
-:MAIN_4617
+:MAIN_4628
 fade 1 1000 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_4651 
+else_jump @MAIN_4662 
 select_interior 0 
 Player.CanMove($PLAYER_CHAR) = True
 
-:MAIN_4651
+:MAIN_4662
 01B7: release_weather 
-jump @MAIN_4660 
+jump @MAIN_4671 
 
-:MAIN_4660
+:MAIN_4671
 wait 1000 
-jump @MAIN_4660 
+jump @MAIN_4671 
 
-:MAIN_4672
+:MAIN_4683
 $ONMISSION = 1 // $ = int 
 Player.CanMove($PLAYER_CHAR) = False
 03D8: show_save_screen 
 wait 0 
 
-:MAIN_4692
+:MAIN_4703
 if 
 83D9:   not save_done 
-else_jump @MAIN_4716 
+else_jump @MAIN_4727 
 wait 0 
-jump @MAIN_4692 
+jump @MAIN_4703 
 
-:MAIN_4716
+:MAIN_4727
 0169: set_fade_color 0 0 0 
 fade 0 1000 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_4762 
+else_jump @MAIN_4773 
 0222: set_player $PLAYER_CHAR health_to 200 
 Player.CanMove($PLAYER_CHAR) = False
 
-:MAIN_4762
+:MAIN_4773
 return 
 
-:MAIN_4764
+:MAIN_4775
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_4784 
+else_jump @MAIN_4795 
 Camera.Restore_WithJumpCut
 Camera.SetBehindPlayer
 
-:MAIN_4784
+:MAIN_4795
 wait 500 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_4819 
+else_jump @MAIN_4830 
 Player.CanMove($PLAYER_CHAR) = True
 $ONMISSION = 0 // $ = int 
 
-:MAIN_4819
+:MAIN_4830
 return 
 
 :AMBBANK
@@ -991,7 +993,7 @@ $260 = 1 // $ = int
 if 
    Pickup.Picked_up($265)
 else_jump @PSAVE1_526 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE1_491 
@@ -1085,7 +1087,7 @@ $267 = 1 // $ = int
 if 
    Pickup.Picked_up($268)
 else_jump @PSAVE2_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE2_267 
@@ -1097,7 +1099,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 0.0 
 
 :PSAVE2_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE2_274
 jump @PSAVE2_311 
@@ -1139,7 +1141,7 @@ $7 = 1 // $ = int
 if 
    Pickup.Picked_up($269)
 else_jump @PSAVE3_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE3_267 
@@ -1151,7 +1153,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 226.0 
 
 :PSAVE3_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE3_274
 jump @PSAVE3_311 
@@ -1193,7 +1195,7 @@ $270 = 1 // $ = int
 if 
    Pickup.Picked_up($271)
 else_jump @PSAVE4_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE4_267 
@@ -1205,7 +1207,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 80.0 
 
 :PSAVE4_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE4_274
 jump @PSAVE4_311 
@@ -1247,7 +1249,7 @@ $272 = 1 // $ = int
 if 
    Pickup.Picked_up($273)
 else_jump @PSAVE5_262 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE5_255 
@@ -1259,7 +1261,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 218.0275 
 
 :PSAVE5_255
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE5_262
 jump @PSAVE5_299 
@@ -1301,7 +1303,7 @@ $274 = 1 // $ = int
 if 
    Pickup.Picked_up($275)
 else_jump @PSAVE6_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE6_267 
@@ -1313,7 +1315,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 248.0 
 
 :PSAVE6_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE6_274
 jump @PSAVE6_311 
@@ -1355,7 +1357,7 @@ $276 = 1 // $ = int
 if 
    Pickup.Picked_up($ICE_CREAM_FACTORY_ASSET)
 else_jump @PSAVE7_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE7_267 
@@ -1367,7 +1369,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 277.0 
 
 :PSAVE7_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE7_274
 jump @PSAVE7_311 
@@ -1409,7 +1411,7 @@ $277 = 1 // $ = int
 if 
    Pickup.Picked_up($278)
 else_jump @PSAVE8_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE8_267 
@@ -1421,7 +1423,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 273.0 
 
 :PSAVE8_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE8_274
 jump @PSAVE8_311 
@@ -1463,7 +1465,7 @@ $279 = 1 // $ = int
 if 
    Pickup.Picked_up($280)
 else_jump @PSAVE9_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE9_267 
@@ -1475,7 +1477,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 274.3 
 
 :PSAVE9_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE9_274
 jump @PSAVE9_311 
@@ -1517,7 +1519,7 @@ $281 = 1 // $ = int
 if 
    Pickup.Picked_up($282)
 else_jump @PSAVE10_274 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE10_267 
@@ -1529,7 +1531,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 224.5 
 
 :PSAVE10_267
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :PSAVE10_274
 jump @PSAVE10_311 
@@ -1571,7 +1573,7 @@ $283 = 1 // $ = int
 if 
    Pickup.Picked_up($287)
 else_jump @SAVE1_262 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE1_255 
@@ -1583,7 +1585,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 0.0 
 
 :SAVE1_255
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :SAVE1_262
 jump @SAVE1_299 
@@ -1625,7 +1627,7 @@ $291 = 1 // $ = int
 if 
    Pickup.Picked_up($292)
 else_jump @SAVE2_262 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE2_255 
@@ -1637,7 +1639,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 276.3156 
 
 :SAVE2_255
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :SAVE2_262
 jump @SAVE2_299 
@@ -1679,7 +1681,7 @@ $293 = 1 // $ = int
 if 
    Pickup.Picked_up($294)
 else_jump @SAVE3_262 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE3_255 
@@ -1691,7 +1693,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 200.4458 
 
 :SAVE3_255
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :SAVE3_262
 jump @SAVE3_299 
@@ -1733,7 +1735,7 @@ $295 = 1 // $ = int
 if 
    Pickup.Picked_up($296)
 else_jump @SAVE4_262 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE4_255 
@@ -1745,7 +1747,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 238.8605 
 
 :SAVE4_255
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :SAVE4_262
 jump @SAVE4_299 
@@ -1787,7 +1789,7 @@ $297 = 1 // $ = int
 if 
    Pickup.Picked_up($298)
 else_jump @SAVE5_262 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE5_255 
@@ -1799,7 +1801,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 353.8286 
 
 :SAVE5_255
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :SAVE5_262
 jump @SAVE5_299 
@@ -1841,7 +1843,7 @@ $299 = 1 // $ = int
 if 
    Pickup.Picked_up($300)
 else_jump @SAVE6_262 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE6_255 
@@ -1853,7 +1855,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 131.5277 
 
 :SAVE6_255
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :SAVE6_262
 jump @SAVE6_299 
@@ -1898,7 +1900,7 @@ $301 = 1 // $ = int
 if 
    Pickup.Picked_up($302)
 else_jump @SAVE7_290 
-gosub @MAIN_4672 
+gosub @MAIN_4683 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE7_283 
@@ -1910,7 +1912,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 243.0 
 
 :SAVE7_283
-gosub @MAIN_4764 
+gosub @MAIN_4775 
 
 :SAVE7_290
 jump @SAVE7_327 
@@ -17273,7 +17275,7 @@ else_jump @T_TRAV_240
 if 
 00E1:   player 0 pressed_button 2 
 else_jump @T_TRAV_10 
-gosub @T_TRAV_10936 
+gosub @STEAM_296 
 jump @T_TRAV_10 
 
 :T_TRAV_240
@@ -17291,85 +17293,84 @@ wait 1000
 
 :T_TRAV_299
 wait 10 
-wait 100 
 if 
    not $875 == 0 // $ == int 
-else_jump @T_TRAV_753 
+else_jump @T_TRAV_749 
 if 
    not $875 == 1 // $ == int 
-else_jump @T_TRAV_882 
+else_jump @T_TRAV_878 
 if 
    not $875 == 2 // $ == int 
-else_jump @T_TRAV_1011 
+else_jump @T_TRAV_1007 
 if 
    not $875 == 3 // $ == int 
-else_jump @T_TRAV_1140 
+else_jump @T_TRAV_1136 
 if 
    not $875 == 4 // $ == int 
-else_jump @T_TRAV_1269 
+else_jump @T_TRAV_1265 
 if 
    not $875 == 5 // $ == int 
-else_jump @T_TRAV_1398 
+else_jump @T_TRAV_1394 
 if 
    not $875 == 6 // $ == int 
-else_jump @T_TRAV_1527 
+else_jump @T_TRAV_1523 
 if 
    not $875 == 7 // $ == int 
-else_jump @T_TRAV_1656 
+else_jump @T_TRAV_1652 
 if 
    not $875 == 8 // $ == int 
-else_jump @T_TRAV_1785 
+else_jump @T_TRAV_1781 
 if 
    not $875 == 9 // $ == int 
-else_jump @T_TRAV_1914 
+else_jump @T_TRAV_1910 
 if 
    not $875 == 10 // $ == int 
-else_jump @T_TRAV_2043 
+else_jump @T_TRAV_2039 
 if 
    not $875 == 11 // $ == int 
-else_jump @T_TRAV_2172 
+else_jump @T_TRAV_2168 
 if 
    not $875 == 12 // $ == int 
-else_jump @T_TRAV_2301 
+else_jump @T_TRAV_2297 
 if 
    not $875 == 13 // $ == int 
-else_jump @T_TRAV_2430 
+else_jump @T_TRAV_2426 
 if 
    not $875 == 14 // $ == int 
-else_jump @T_TRAV_2559 
+else_jump @T_TRAV_2555 
 if 
    not $875 == 15 // $ == int 
-else_jump @T_TRAV_2688 
+else_jump @T_TRAV_2684 
 if 
    not $875 == 16 // $ == int 
-else_jump @T_TRAV_2817 
+else_jump @T_TRAV_2813 
 if 
    not $875 == 17 // $ == int 
-else_jump @T_TRAV_2946 
+else_jump @T_TRAV_2942 
 if 
    not $875 == 18 // $ == int 
-else_jump @T_TRAV_3075 
+else_jump @T_TRAV_3071 
 if 
    not $875 == 19 // $ == int 
-else_jump @T_TRAV_3204 
+else_jump @T_TRAV_3200 
 if 
    not $875 == 20 // $ == int 
-else_jump @T_TRAV_3333 
+else_jump @T_TRAV_3329 
 if 
    not $875 == 21 // $ == int 
-else_jump @T_TRAV_3462 
+else_jump @T_TRAV_3458 
 if 
    not $875 == 22 // $ == int 
-else_jump @T_TRAV_3591 
+else_jump @T_TRAV_3587 
 if 
    not $875 == 23 // $ == int 
-else_jump @T_TRAV_3720 
+else_jump @T_TRAV_3716 
 jump @T_TRAV_299 
 
-:T_TRAV_746
-gosub @T_TRAV_3842 
+:T_TRAV_742
+gosub @T_TRAV_3838 
 
-:T_TRAV_753
+:T_TRAV_749
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17381,20 +17382,20 @@ else_jump @T_TRAV_10
 $875 = 0 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_875 
+else_jump @T_TRAV_871 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_753 
-gosub @T_TRAV_10936 
-jump @T_TRAV_753 
+else_jump @T_TRAV_749 
+gosub @STEAM_296 
+jump @T_TRAV_749 
 
-:T_TRAV_875
-gosub @T_TRAV_3842 
+:T_TRAV_871
+gosub @T_TRAV_3838 
 
-:T_TRAV_882
+:T_TRAV_878
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17406,20 +17407,20 @@ else_jump @T_TRAV_10
 $875 = 1 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1004 
+else_jump @T_TRAV_1000 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_882 
-gosub @T_TRAV_10936 
-jump @T_TRAV_882 
+else_jump @T_TRAV_878 
+gosub @STEAM_296 
+jump @T_TRAV_878 
 
-:T_TRAV_1004
-gosub @T_TRAV_3842 
+:T_TRAV_1000
+gosub @T_TRAV_3838 
 
-:T_TRAV_1011
+:T_TRAV_1007
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17431,20 +17432,20 @@ else_jump @T_TRAV_10
 $875 = 2 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1133 
+else_jump @T_TRAV_1129 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1011 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1011 
+else_jump @T_TRAV_1007 
+gosub @STEAM_296 
+jump @T_TRAV_1007 
 
-:T_TRAV_1133
-gosub @T_TRAV_3842 
+:T_TRAV_1129
+gosub @T_TRAV_3838 
 
-:T_TRAV_1140
+:T_TRAV_1136
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17456,20 +17457,20 @@ else_jump @T_TRAV_10
 $875 = 3 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1262 
+else_jump @T_TRAV_1258 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1140 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1140 
+else_jump @T_TRAV_1136 
+gosub @STEAM_296 
+jump @T_TRAV_1136 
 
-:T_TRAV_1262
-gosub @T_TRAV_3842 
+:T_TRAV_1258
+gosub @T_TRAV_3838 
 
-:T_TRAV_1269
+:T_TRAV_1265
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17481,20 +17482,20 @@ else_jump @T_TRAV_10
 $875 = 4 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1391 
+else_jump @T_TRAV_1387 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1269 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1269 
+else_jump @T_TRAV_1265 
+gosub @STEAM_296 
+jump @T_TRAV_1265 
 
-:T_TRAV_1391
-gosub @T_TRAV_3842 
+:T_TRAV_1387
+gosub @T_TRAV_3838 
 
-:T_TRAV_1398
+:T_TRAV_1394
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17506,20 +17507,20 @@ else_jump @T_TRAV_10
 $875 = 5 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1520 
+else_jump @T_TRAV_1516 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1398 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1398 
+else_jump @T_TRAV_1394 
+gosub @STEAM_296 
+jump @T_TRAV_1394 
 
-:T_TRAV_1520
-gosub @T_TRAV_3842 
+:T_TRAV_1516
+gosub @T_TRAV_3838 
 
-:T_TRAV_1527
+:T_TRAV_1523
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17531,20 +17532,20 @@ else_jump @T_TRAV_10
 $875 = 6 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1649 
+else_jump @T_TRAV_1645 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1527 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1527 
+else_jump @T_TRAV_1523 
+gosub @STEAM_296 
+jump @T_TRAV_1523 
 
-:T_TRAV_1649
-gosub @T_TRAV_3842 
+:T_TRAV_1645
+gosub @T_TRAV_3838 
 
-:T_TRAV_1656
+:T_TRAV_1652
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17556,20 +17557,20 @@ else_jump @T_TRAV_10
 $875 = 7 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1778 
+else_jump @T_TRAV_1774 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1656 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1656 
+else_jump @T_TRAV_1652 
+gosub @STEAM_296 
+jump @T_TRAV_1652 
 
-:T_TRAV_1778
-gosub @T_TRAV_3842 
+:T_TRAV_1774
+gosub @T_TRAV_3838 
 
-:T_TRAV_1785
+:T_TRAV_1781
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17581,20 +17582,20 @@ else_jump @T_TRAV_10
 $875 = 8 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_1907 
+else_jump @T_TRAV_1903 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1785 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1785 
+else_jump @T_TRAV_1781 
+gosub @STEAM_296 
+jump @T_TRAV_1781 
 
-:T_TRAV_1907
-gosub @T_TRAV_3842 
+:T_TRAV_1903
+gosub @T_TRAV_3838 
 
-:T_TRAV_1914
+:T_TRAV_1910
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17606,20 +17607,20 @@ else_jump @T_TRAV_10
 $875 = 9 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2036 
+else_jump @T_TRAV_2032 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_1914 
-gosub @T_TRAV_10936 
-jump @T_TRAV_1914 
+else_jump @T_TRAV_1910 
+gosub @STEAM_296 
+jump @T_TRAV_1910 
 
-:T_TRAV_2036
-gosub @T_TRAV_3842 
+:T_TRAV_2032
+gosub @T_TRAV_3838 
 
-:T_TRAV_2043
+:T_TRAV_2039
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17631,20 +17632,20 @@ else_jump @T_TRAV_10
 $875 = 10 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2165 
+else_jump @T_TRAV_2161 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2043 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2043 
+else_jump @T_TRAV_2039 
+gosub @STEAM_296 
+jump @T_TRAV_2039 
 
-:T_TRAV_2165
-gosub @T_TRAV_3842 
+:T_TRAV_2161
+gosub @T_TRAV_3838 
 
-:T_TRAV_2172
+:T_TRAV_2168
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17656,20 +17657,20 @@ else_jump @T_TRAV_10
 $875 = 11 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2294 
+else_jump @T_TRAV_2290 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2172 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2172 
+else_jump @T_TRAV_2168 
+gosub @STEAM_296 
+jump @T_TRAV_2168 
 
-:T_TRAV_2294
-gosub @T_TRAV_3842 
+:T_TRAV_2290
+gosub @T_TRAV_3838 
 
-:T_TRAV_2301
+:T_TRAV_2297
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17681,20 +17682,20 @@ else_jump @T_TRAV_10
 $875 = 12 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2423 
+else_jump @T_TRAV_2419 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2301 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2301 
+else_jump @T_TRAV_2297 
+gosub @STEAM_296 
+jump @T_TRAV_2297 
 
-:T_TRAV_2423
-gosub @T_TRAV_3842 
+:T_TRAV_2419
+gosub @T_TRAV_3838 
 
-:T_TRAV_2430
+:T_TRAV_2426
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17706,20 +17707,20 @@ else_jump @T_TRAV_10
 $875 = 13 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2552 
+else_jump @T_TRAV_2548 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2430 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2430 
+else_jump @T_TRAV_2426 
+gosub @STEAM_296 
+jump @T_TRAV_2426 
 
-:T_TRAV_2552
-gosub @T_TRAV_3842 
+:T_TRAV_2548
+gosub @T_TRAV_3838 
 
-:T_TRAV_2559
+:T_TRAV_2555
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17731,20 +17732,20 @@ else_jump @T_TRAV_10
 $875 = 14 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2681 
+else_jump @T_TRAV_2677 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2559 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2559 
+else_jump @T_TRAV_2555 
+gosub @STEAM_296 
+jump @T_TRAV_2555 
 
-:T_TRAV_2681
-gosub @T_TRAV_3842 
+:T_TRAV_2677
+gosub @T_TRAV_3838 
 
-:T_TRAV_2688
+:T_TRAV_2684
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17756,20 +17757,20 @@ else_jump @T_TRAV_10
 $875 = 15 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2810 
+else_jump @T_TRAV_2806 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2688 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2688 
+else_jump @T_TRAV_2684 
+gosub @STEAM_296 
+jump @T_TRAV_2684 
 
-:T_TRAV_2810
-gosub @T_TRAV_3842 
+:T_TRAV_2806
+gosub @T_TRAV_3838 
 
-:T_TRAV_2817
+:T_TRAV_2813
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17781,20 +17782,20 @@ else_jump @T_TRAV_10
 $875 = 16 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_2939 
+else_jump @T_TRAV_2935 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2817 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2817 
+else_jump @T_TRAV_2813 
+gosub @STEAM_296 
+jump @T_TRAV_2813 
 
-:T_TRAV_2939
-gosub @T_TRAV_3842 
+:T_TRAV_2935
+gosub @T_TRAV_3838 
 
-:T_TRAV_2946
+:T_TRAV_2942
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17806,20 +17807,20 @@ else_jump @T_TRAV_10
 $875 = 17 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_3068 
+else_jump @T_TRAV_3064 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_2946 
-gosub @T_TRAV_10936 
-jump @T_TRAV_2946 
+else_jump @T_TRAV_2942 
+gosub @STEAM_296 
+jump @T_TRAV_2942 
 
-:T_TRAV_3068
-gosub @T_TRAV_3842 
+:T_TRAV_3064
+gosub @T_TRAV_3838 
 
-:T_TRAV_3075
+:T_TRAV_3071
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17831,20 +17832,20 @@ else_jump @T_TRAV_10
 $875 = 18 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_3197 
+else_jump @T_TRAV_3193 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_3075 
-gosub @T_TRAV_10936 
-jump @T_TRAV_3075 
+else_jump @T_TRAV_3071 
+gosub @STEAM_296 
+jump @T_TRAV_3071 
 
-:T_TRAV_3197
-gosub @T_TRAV_3842 
+:T_TRAV_3193
+gosub @T_TRAV_3838 
 
-:T_TRAV_3204
+:T_TRAV_3200
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17856,20 +17857,20 @@ else_jump @T_TRAV_10
 $875 = 19 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_3326 
+else_jump @T_TRAV_3322 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_3204 
-gosub @T_TRAV_10936 
-jump @T_TRAV_3204 
+else_jump @T_TRAV_3200 
+gosub @STEAM_296 
+jump @T_TRAV_3200 
 
-:T_TRAV_3326
-gosub @T_TRAV_3842 
+:T_TRAV_3322
+gosub @T_TRAV_3838 
 
-:T_TRAV_3333
+:T_TRAV_3329
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17881,20 +17882,20 @@ else_jump @T_TRAV_10
 $875 = 20 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_3455 
+else_jump @T_TRAV_3451 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_3333 
-gosub @T_TRAV_10936 
-jump @T_TRAV_3333 
+else_jump @T_TRAV_3329 
+gosub @STEAM_296 
+jump @T_TRAV_3329 
 
-:T_TRAV_3455
-gosub @T_TRAV_3842 
+:T_TRAV_3451
+gosub @T_TRAV_3838 
 
-:T_TRAV_3462
+:T_TRAV_3458
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17906,20 +17907,20 @@ else_jump @T_TRAV_10
 $875 = 21 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_3584 
+else_jump @T_TRAV_3580 
 if 
 00E1:   player 0 pressed_button 2 
 else_jump @T_TRAV_10 
-gosub @T_TRAV_10936 
-jump @T_TRAV_3462 
+gosub @STEAM_296 
+jump @T_TRAV_3458 
 
-:T_TRAV_3584
-gosub @T_TRAV_3842 
+:T_TRAV_3580
+gosub @T_TRAV_3838 
 
-:T_TRAV_3591
+:T_TRAV_3587
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17931,20 +17932,20 @@ else_jump @T_TRAV_10
 $875 = 22 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_3713 
+else_jump @T_TRAV_3709 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_3591 
-gosub @T_TRAV_10936 
-jump @T_TRAV_3591 
+else_jump @T_TRAV_3587 
+gosub @STEAM_296 
+jump @T_TRAV_3587 
 
-:T_TRAV_3713
-gosub @T_TRAV_3842 
+:T_TRAV_3709
+gosub @T_TRAV_3838 
 
-:T_TRAV_3720
+:T_TRAV_3716
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -17956,59 +17957,59 @@ else_jump @T_TRAV_10
 $875 = 23 // $ = int 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_3953 
+else_jump @T_TRAV_3949 
 if 
 80E1:   not player 0 pressed_button 17 
-else_jump @T_TRAV_746 
+else_jump @T_TRAV_742 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @T_TRAV_3720 
-gosub @T_TRAV_10936 
-jump @T_TRAV_3720 
+else_jump @T_TRAV_3716 
+gosub @STEAM_296 
+jump @T_TRAV_3716 
 
-:T_TRAV_3842
+:T_TRAV_3838
 03CF: load_wav 'BAND_05' as 2 
 
-:T_TRAV_3854
+:T_TRAV_3850
 wait 0 
 if 
 03D0:   wav 2 loaded 
-else_jump @T_TRAV_3854 
+else_jump @T_TRAV_3850 
 03D1: play_wav 2 
 wait 100 
 040D: unload_wav 2 
 return 
 
-:T_TRAV_3887
+:T_TRAV_3883
 00BC: text_highpriority 'ERRTIME' time 1500 1 
 03CF: load_wav 'BAND_04' as 2 
 
-:T_TRAV_3914
+:T_TRAV_3910
 wait 0 
 if 
 03D0:   wav 2 loaded 
-else_jump @T_TRAV_3914 
+else_jump @T_TRAV_3910 
 03D1: play_wav 2 
 wait 500 
 040D: unload_wav 2 
 jump @T_TRAV_299 
 
-:T_TRAV_3953
+:T_TRAV_3949
 02E3: $876 = car $872 speed 
 if 
    not $876 > 38.5 // $ > float 
-else_jump @T_TRAV_3887 
+else_jump @T_TRAV_3883 
 03CF: load_wav 'BAND_03' as 2 
 
-:T_TRAV_3994
+:T_TRAV_3990
 if 
 83D0:   not wav 2 loaded 
-else_jump @T_TRAV_4024 
+else_jump @T_TRAV_4020 
 wait 0 
 03D1: play_wav 2 
-jump @T_TRAV_3994 
+jump @T_TRAV_3990 
 
-:T_TRAV_4024
+:T_TRAV_4020
 00BC: text_highpriority 'TCACT' time 1500 1 
 03D1: play_wav 2 
 wait 1000 
@@ -18018,7 +18019,7 @@ wait 1000
 if or
 00DE:   player $PLAYER_CHAR driving_vehicle_type #SKIMMER 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS 
-else_jump @T_TRAV_4200 
+else_jump @T_TRAV_4196 
 $877 = 13.0 // $ = float 
 $878 = -2.2 // $ = float 
 $879 = 2.2 // $ = float 
@@ -18028,9 +18029,9 @@ $882 = 6.0 // $ = float
 $883 = 0.5 // $ = float 
 $884 = 0.3 // $ = float 
 $885 = 10.0 // $ = float 
-jump @T_TRAV_4290 
+jump @T_TRAV_4286 
 
-:T_TRAV_4200
+:T_TRAV_4196
 $877 = 5.0 // $ = float 
 $878 = -1.2 // $ = float 
 $879 = 1.2 // $ = float 
@@ -18041,13 +18042,13 @@ $884 = 0.15 // $ = float
 $883 = 0.0 // $ = float 
 $885 = 5.0 // $ = float 
 
-:T_TRAV_4290
+:T_TRAV_4286
 $886 = 0.1 // $ = float 
 
-:T_TRAV_4300
+:T_TRAV_4296
 0229: set_car $872 color_to $873 $874 
 
-:T_TRAV_4311
+:T_TRAV_4307
 wait 10 
 02E3: $876 = car $872 speed 
 if 
@@ -18058,81 +18059,88 @@ if
 else_jump @T_TRAV_10 
 if 
 80E1:   not player 0 pressed_button 2 
-else_jump @T_TRAV_4489 
+else_jump @T_TRAV_4485 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_9926 
+else_jump @T_TRAV_9953 
 if 
   $876 > 43.5 // $ > float 
-else_jump @T_TRAV_4300 
+else_jump @T_TRAV_4296 
 0229: set_car $872 color_to 95 95 
 if 
   $876 > 44.5 // $ > float 
-else_jump @T_TRAV_4311 
+else_jump @T_TRAV_4307 
 if 
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #SKIMMER 
-else_jump @T_TRAV_5451 
+else_jump @T_TRAV_5478 
 if 
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #BUS 
-else_jump @T_TRAV_5451 
+else_jump @T_TRAV_5478 
 03D1: play_wav 1 
-jump @T_TRAV_5451 
+jump @T_TRAV_5478 
 
-:T_TRAV_4489
-gosub @T_TRAV_10936 
-jump @T_TRAV_4311 
+:T_TRAV_4485
+gosub @STEAM_296 
+jump @T_TRAV_4307 
 
-:T_TRAV_4503
+:T_TRAV_4499
 if 
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #SKIMMER 
-else_jump @T_TRAV_4973 
+else_jump @T_TRAV_4969 
 if 
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #BUS 
-else_jump @T_TRAV_4973 
+else_jump @T_TRAV_4969 
 0407: create_coordinate $887 $888 $889 from_car $872 offset -0.98 -0.4 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset 0.98 -0.4 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset -0.98 -0.6 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset 0.98 -0.6 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset -0.98 -0.8 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset 0.98 -0.8 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset -0.98 2.6 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset 0.98 2.6 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset -0.98 2.4 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset 0.98 2.4 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset -0.98 2.2 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 0407: create_coordinate $887 $888 $889 from_car $872 offset 0.98 2.2 -0.75 
-gosub @T_TRAV_5046 
+gosub @T_TRAV_5073 
 
-:T_TRAV_4973
+:T_TRAV_4969
 03D1: play_wav 1 
+if 
+03D2:   wav 1 ended 
+else_jump @T_TRAV_5004 
+040D: unload_wav 1 
+03CF: load_wav 'BAND_07' as 1 
+
+:T_TRAV_5004
 if 
   $890 > 45.0 // $ > float 
-else_jump @T_TRAV_5368 
-gosub @T_TRAV_5096 
-gosub @T_TRAV_5096 
+else_jump @T_TRAV_5395 
+gosub @T_TRAV_5123 
+gosub @T_TRAV_5123 
 if 
 8034:   not  $886 >= $882 // $ >= $ float 
-else_jump @T_TRAV_5180 
+else_jump @T_TRAV_5207 
 0059: $886 += $884 // $ += $ float 
-jump @T_TRAV_5180 
+jump @T_TRAV_5207 
 
-:T_TRAV_5046
+:T_TRAV_5073
 0437: scatter_particle 13 0.4 at $887 $888 $889 0 0 0 
 0437: scatter_particle 13 0.4 at $887 $888 $889 0 0 0 
 return 
 
-:T_TRAV_5096
+:T_TRAV_5123
 0208: $891 = random_float $878 $879 
 0208: $892 = random_float 0.0 $877 
 0208: $893 = random_float $880 $881 
@@ -18140,7 +18148,7 @@ return
 0437: scatter_particle 0 0.01 at $887 $888 $889 0 0 0 
 return 
 
-:T_TRAV_5180
+:T_TRAV_5207
 0407: create_coordinate $894 $895 $896 from_car $872 offset 0.0 $877 $883 
 0437: scatter_particle 50 $886 at $894 $895 $896 0 0 0 
 0407: create_coordinate $894 $895 $896 from_car $872 offset 0.0 $877 $883 
@@ -18150,7 +18158,7 @@ return
 0407: create_coordinate $894 $895 $896 from_car $872 offset 0.0 $877 $883 
 0437: scatter_particle 50 $886 at $894 $895 $896 0 0 0 
 
-:T_TRAV_5368
+:T_TRAV_5395
 return 
 02A3: enable_widescreen 0 
 Camera.Restore
@@ -18158,21 +18166,21 @@ Camera.SetBehindPlayer
 040D: unload_wav 1 
 wait 10 
 03CF: load_wav 'BAND_07' as 1 
-jump @T_TRAV_4290 
+jump @T_TRAV_4286 
 
-:T_TRAV_5405
+:T_TRAV_5432
 040D: unload_wav 1 
 wait 10 
 03CF: load_wav 'BAND_07' as 1 
-jump @T_TRAV_4290 
+jump @T_TRAV_4286 
 
-:T_TRAV_5432
+:T_TRAV_5459
 Camera.Restore
 Camera.SetBehindPlayer
 create_thread @CAM 
-jump @T_TRAV_5486 
+jump @T_TRAV_5513 
 
-:T_TRAV_5451
+:T_TRAV_5478
 if and
 00E0:   player $PLAYER_CHAR in_any_car 
 82BF:   not car $872 sunk 
@@ -18181,7 +18189,7 @@ if and
 else_jump @T_TRAV_10 
 $897 = 0 // $ = int 
 
-:T_TRAV_5486
+:T_TRAV_5513
 wait 10 
 if and
 00E0:   player $PLAYER_CHAR in_any_car 
@@ -18189,20 +18197,20 @@ if and
    not Car.Wrecked($872)
    not wasted_or_busted 
 else_jump @T_TRAV_10 
-gosub @T_TRAV_4503 
+gosub @T_TRAV_4499 
 02E3: $890 = car $872 speed 
 if 
 80E1:   not player 0 pressed_button 19 
-else_jump @T_TRAV_9926 
+else_jump @T_TRAV_9953 
 if 
 80E1:   not player 0 pressed_button 2 
-else_jump @T_TRAV_4489 
+else_jump @T_TRAV_4485 
 if 
   $890 > 44.5 // $ > float 
-else_jump @T_TRAV_5405 
+else_jump @T_TRAV_5432 
 if 
   $890 > 47.6 // $ > float 
-else_jump @T_TRAV_5486 
+else_jump @T_TRAV_5513 
 end_thread_named 'CAM' 
 0407: create_coordinate $898 $899 $900 from_car $872 offset 0.0 0.0 20.0 
 $898 += 10.0 // $ += float 
@@ -18210,7 +18218,7 @@ $899 += 10.0 // $ += float
 Camera.SetPosition($898, $899, $900, 0.0, 0.0, 0.0)
 Camera.OnVehicle($872, 15, 1)
 
-:T_TRAV_5703
+:T_TRAV_5730
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -18218,14 +18226,14 @@ else_jump @T_TRAV_10
 if 
 00E0:   player $PLAYER_CHAR in_any_car 
 else_jump @T_TRAV_10 
-gosub @T_TRAV_4503 
+gosub @T_TRAV_4499 
 02E3: $890 = car $872 speed 
 if 
   $890 > 47.0 // $ > float 
-else_jump @T_TRAV_5432 
+else_jump @T_TRAV_5459 
 if 
   $890 > 48.1 // $ > float 
-else_jump @T_TRAV_5703 
+else_jump @T_TRAV_5730 
 02A3: enable_widescreen 1 
 end_thread_named 'HOVER' 
 0407: create_coordinate $901 $902 $903 from_car $872 offset 0.0 2.0 0.0 
@@ -18287,389 +18295,389 @@ $904 = Car.Angle($872)
 Car.PutAt($872, $901, $902, 5000.0)
 04BA: set_car $872 speed_instantly 0.0 
 wait 10 
-gosub @T_TRAV_8878 
+gosub @T_TRAV_8905 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
-gosub @T_TRAV_9626 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
+gosub @T_TRAV_9653 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
-gosub @T_TRAV_9626 
-gosub @T_TRAV_9676 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
+gosub @T_TRAV_9653 
+gosub @T_TRAV_9703 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
-gosub @T_TRAV_9626 
-gosub @T_TRAV_9676 
-gosub @T_TRAV_9726 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
+gosub @T_TRAV_9653 
+gosub @T_TRAV_9703 
+gosub @T_TRAV_9753 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
-gosub @T_TRAV_9626 
-gosub @T_TRAV_9676 
-gosub @T_TRAV_9726 
-gosub @T_TRAV_9776 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
+gosub @T_TRAV_9653 
+gosub @T_TRAV_9703 
+gosub @T_TRAV_9753 
+gosub @T_TRAV_9803 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
-gosub @T_TRAV_9626 
-gosub @T_TRAV_9676 
-gosub @T_TRAV_9726 
-gosub @T_TRAV_9776 
-gosub @T_TRAV_9826 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
+gosub @T_TRAV_9653 
+gosub @T_TRAV_9703 
+gosub @T_TRAV_9753 
+gosub @T_TRAV_9803 
+gosub @T_TRAV_9853 
 wait 10 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
-gosub @T_TRAV_9626 
-gosub @T_TRAV_9676 
-gosub @T_TRAV_9726 
-gosub @T_TRAV_9776 
-gosub @T_TRAV_9826 
-gosub @T_TRAV_9876 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
+gosub @T_TRAV_9653 
+gosub @T_TRAV_9703 
+gosub @T_TRAV_9753 
+gosub @T_TRAV_9803 
+gosub @T_TRAV_9853 
+gosub @T_TRAV_9903 
 wait 10 
-jump @T_TRAV_10011 
+jump @T_TRAV_10038 
 
-:T_TRAV_8878
+:T_TRAV_8905
 0437: scatter_particle 27 0.4 at $908 $909 $910 0 0 0 
 0437: scatter_particle 27 0.4 at $911 $912 $913 0 0 0 
 0437: scatter_particle 27 0.4 at $914 $915 $916 0 0 0 
 0437: scatter_particle 27 0.4 at $917 $918 $919 0 0 0 
 return 
 
-:T_TRAV_8976
+:T_TRAV_9003
 0437: scatter_particle 27 0.4 at $920 $921 $922 0 0 0 
 0437: scatter_particle 27 0.4 at $923 $924 $925 0 0 0 
 return 
 
-:T_TRAV_9026
+:T_TRAV_9053
 0437: scatter_particle 27 0.4 at $926 $927 $928 0 0 0 
 0437: scatter_particle 27 0.4 at $929 $930 $931 0 0 0 
 return 
 
-:T_TRAV_9076
+:T_TRAV_9103
 0437: scatter_particle 27 0.4 at $932 $933 $934 0 0 0 
 0437: scatter_particle 27 0.4 at $935 $936 $937 0 0 0 
 return 
 
-:T_TRAV_9126
+:T_TRAV_9153
 0437: scatter_particle 27 0.4 at $938 $939 $940 0 0 0 
 0437: scatter_particle 27 0.4 at $941 $942 $943 0 0 0 
 return 
 
-:T_TRAV_9176
+:T_TRAV_9203
 0437: scatter_particle 27 0.4 at $944 $945 $946 0 0 0 
 0437: scatter_particle 27 0.4 at $947 $948 $949 0 0 0 
 return 
 
-:T_TRAV_9226
+:T_TRAV_9253
 0437: scatter_particle 27 0.4 at $950 $951 $952 0 0 0 
 0437: scatter_particle 27 0.4 at $953 $954 $955 0 0 0 
 return 
 
-:T_TRAV_9276
+:T_TRAV_9303
 0437: scatter_particle 27 0.4 at $956 $957 $958 0 0 0 
 0437: scatter_particle 27 0.4 at $959 $960 $961 0 0 0 
 return 
 
-:T_TRAV_9326
+:T_TRAV_9353
 0437: scatter_particle 27 0.4 at $962 $963 $964 0 0 0 
 0437: scatter_particle 27 0.4 at $965 $966 $967 0 0 0 
 return 
 
-:T_TRAV_9376
+:T_TRAV_9403
 0437: scatter_particle 27 0.4 at $968 $969 $970 0 0 0 
 0437: scatter_particle 27 0.4 at $971 $972 $973 0 0 0 
 return 
 
-:T_TRAV_9426
+:T_TRAV_9453
 0437: scatter_particle 27 0.4 at $974 $975 $976 0 0 0 
 0437: scatter_particle 27 0.4 at $977 $978 $979 0 0 0 
 return 
 
-:T_TRAV_9476
+:T_TRAV_9503
 0437: scatter_particle 27 0.4 at $980 $981 $982 0 0 0 
 0437: scatter_particle 27 0.4 at $983 $984 $985 0 0 0 
 return 
 
-:T_TRAV_9526
+:T_TRAV_9553
 0437: scatter_particle 27 0.4 at $986 $987 $988 0 0 0 
 0437: scatter_particle 27 0.4 at $989 $990 $991 0 0 0 
 return 
 
-:T_TRAV_9576
+:T_TRAV_9603
 0437: scatter_particle 27 0.4 at $992 $993 $994 0 0 0 
 0437: scatter_particle 27 0.4 at $995 $996 $997 0 0 0 
 return 
 
-:T_TRAV_9626
+:T_TRAV_9653
 0437: scatter_particle 27 0.4 at $998 $999 $1000 0 0 0 
 0437: scatter_particle 27 0.4 at $1001 $1002 $1003 0 0 0 
 return 
 
-:T_TRAV_9676
+:T_TRAV_9703
 0437: scatter_particle 27 0.4 at $1004 $1005 $1006 0 0 0 
 0437: scatter_particle 27 0.4 at $1007 $1008 $1009 0 0 0 
 return 
 
-:T_TRAV_9726
+:T_TRAV_9753
 0437: scatter_particle 27 0.4 at $1010 $1011 $1012 0 0 0 
 0437: scatter_particle 27 0.4 at $1013 $1014 $1015 0 0 0 
 return 
 
-:T_TRAV_9776
+:T_TRAV_9803
 0437: scatter_particle 27 0.4 at $1016 $1017 $1018 0 0 0 
 0437: scatter_particle 27 0.4 at $1019 $1020 $1021 0 0 0 
 return 
 
-:T_TRAV_9826
+:T_TRAV_9853
 0437: scatter_particle 27 0.4 at $1022 $1023 $1024 0 0 0 
 0437: scatter_particle 27 0.4 at $1025 $1026 $1027 0 0 0 
 return 
 
-:T_TRAV_9876
+:T_TRAV_9903
 0437: scatter_particle 27 0.4 at $1028 $1029 $1030 0 0 0 
 0437: scatter_particle 27 0.4 at $1031 $1032 $1033 0 0 0 
 return 
 
-:T_TRAV_9926
+:T_TRAV_9953
 040D: unload_wav 2 
 040D: unload_wav 1 
 wait 10 
 03CF: load_wav 'BAND_04' as 2 
 
-:T_TRAV_9950
+:T_TRAV_9977
 if 
 83D0:   not wav 2 loaded 
-else_jump @T_TRAV_9976 
+else_jump @T_TRAV_10003 
 wait 0 
-jump @T_TRAV_9950 
+jump @T_TRAV_9977 
 
-:T_TRAV_9976
+:T_TRAV_10003
 00BC: text_highpriority 'TCOFF' time 1500 1 
 03D1: play_wav 2 
 wait 1000 
 040D: unload_wav 2 
 jump @T_TRAV_10 
 
-:T_TRAV_10011
+:T_TRAV_10038
 wait 100 
 $897 += 1 // $ += int 
 if 
   50 >= $897 // int >= $ 
-else_jump @T_TRAV_10187 
-gosub @T_TRAV_8878 
-gosub @T_TRAV_8976 
-gosub @T_TRAV_9026 
-gosub @T_TRAV_9076 
-gosub @T_TRAV_9126 
-gosub @T_TRAV_9176 
-gosub @T_TRAV_9226 
-gosub @T_TRAV_9276 
-gosub @T_TRAV_9326 
-gosub @T_TRAV_9376 
-gosub @T_TRAV_9426 
-gosub @T_TRAV_9476 
-gosub @T_TRAV_9526 
-gosub @T_TRAV_9576 
-gosub @T_TRAV_9626 
-gosub @T_TRAV_9676 
-gosub @T_TRAV_9726 
-gosub @T_TRAV_9776 
-gosub @T_TRAV_9826 
-gosub @T_TRAV_9876 
-jump @T_TRAV_10011 
+else_jump @T_TRAV_10214 
+gosub @T_TRAV_8905 
+gosub @T_TRAV_9003 
+gosub @T_TRAV_9053 
+gosub @T_TRAV_9103 
+gosub @T_TRAV_9153 
+gosub @T_TRAV_9203 
+gosub @T_TRAV_9253 
+gosub @T_TRAV_9303 
+gosub @T_TRAV_9353 
+gosub @T_TRAV_9403 
+gosub @T_TRAV_9453 
+gosub @T_TRAV_9503 
+gosub @T_TRAV_9553 
+gosub @T_TRAV_9603 
+gosub @T_TRAV_9653 
+gosub @T_TRAV_9703 
+gosub @T_TRAV_9753 
+gosub @T_TRAV_9803 
+gosub @T_TRAV_9853 
+gosub @T_TRAV_9903 
+jump @T_TRAV_10038 
 
-:T_TRAV_10187
+:T_TRAV_10214
 040D: unload_wav 2 
 wait 1000 
 0169: set_fade_color 0 0 0 
@@ -18717,73 +18725,117 @@ Car.Angle($872) = $904
 wait 1000 
 0229: set_car $872 color_to $873 $874 
 wait 500 
-$1034 = 0 // $ = int 
 Camera.Restore
 Camera.SetBehindPlayer
 02A3: enable_widescreen 0 
 040D: unload_wav 2 
 create_thread @CAM 
 create_thread @HOVER 
+if 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #HOTRING 
+else_jump @T_TRAV_10976 
+create_thread @STEAM 
+
+:T_TRAV_10976
+$1034 = 0 // $ = int 
 jump @T_TRAV_10 
 
-:T_TRAV_10936
+:STEAM
+thread 'STEAM' 
+0@ = 0 // $ = int 
+wait 10000 
+03CF: load_wav 'LIFTBEL' as 2 
+
+:STEAM_34
+wait 0 
+if 
+03D0:   wav 2 loaded 
+else_jump @STEAM_34 
+Car.StorePos($872, 11@, 12@, 13@)
+03D7: set_wav 1 location 11@ 12@ 13@ 
+03D1: play_wav 2 
+
+:STEAM_84
+wait 10 
+0@ += 1 // $ += int 
+if 
+  85 >= 0@ // int >= $ 
+else_jump @STEAM_290 
+02E3: 2@ = car $872 speed 
+2@ /= 40.0 // $ /= float 
+2@ -= 0.4 // $ -= float 
+02F8: get_vehicle $872 Z_angle_sine_to 3@ 
+02F9: get_vehicle $872 Z_angle_cosine_to 4@ 
+0011: 3@ *= 2@ // $ *= float  // Note: the incorrect math opcode was used here
+0011: 4@ *= 2@ // $ *= float  // Note: the incorrect math opcode was used here
+0407: create_coordinate 5@ 6@ 7@ from_car $872 offset 0.4 -2.0 0.5 
+0407: create_coordinate 8@ 9@ 10@ from_car $872 offset -0.4 -2.0 0.5 
+0437: scatter_particle 28 0.5 at 5@ 6@ 7@ 3@ 4@ 0 
+0437: scatter_particle 28 0.5 at 8@ 9@ 10@ 3@ 4@ 0 
+jump @STEAM_84 
+
+:STEAM_290
+040D: unload_wav 2 
+end_thread 
+
+:STEAM_296
 wait 10 
 end_thread_named 'HOVER' 
 03C1: $872 = player $PLAYER_CHAR car_no_save 
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #DELUXO 
-else_jump @T_TRAV_10984 
-jump @T_TRAV_11062 
+else_jump @STEAM_344 
+jump @STEAM_422 
 
-:T_TRAV_10984
+:STEAM_344
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #RCBARON 
-else_jump @T_TRAV_11010 
-jump @T_TRAV_11095 
+else_jump @STEAM_370 
+jump @STEAM_455 
 
-:T_TRAV_11010
+:STEAM_370
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS 
-else_jump @T_TRAV_11036 
-jump @T_TRAV_11110 
+else_jump @STEAM_396 
+jump @STEAM_470 
 
-:T_TRAV_11036
+:STEAM_396
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #SKIMMER 
 else_jump @T_TRAV_10 
-jump @T_TRAV_11143 
+jump @STEAM_503 
 
-:T_TRAV_11062
+:STEAM_422
 if 
 0431:   car $872 car_passenger_seat_free 0 
 else_jump @T_TRAV_10 
 $1035 = 194 // $ = int 
-jump @T_TRAV_11158 
+jump @STEAM_518 
 
-:T_TRAV_11095
+:STEAM_455
 $1035 = 211 // $ = int 
-jump @T_TRAV_11158 
+jump @STEAM_518 
 
-:T_TRAV_11110
+:STEAM_470
 if 
 0431:   car $872 car_passenger_seat_free 0 
 else_jump @T_TRAV_10 
 $1035 = 190 // $ = int 
-jump @T_TRAV_11158 
+jump @STEAM_518 
 
-:T_TRAV_11143
+:STEAM_503
 $1035 = 161 // $ = int 
-jump @T_TRAV_11158 
+jump @STEAM_518 
 
-:T_TRAV_11158
+:STEAM_518
 Model.Load($1035)
 038B: load_requested_models 
 
-:T_TRAV_11165
+:STEAM_525
 wait 0 
 if 
    Model.Available($1035)
-else_jump @T_TRAV_11165 
+else_jump @STEAM_525 
 0407: create_coordinate $901 $902 $903 from_car $872 offset 0.0 0.0 0.0 
 0407: create_coordinate $1036 $1037 $1038 from_car $872 offset 0.0 -20.0 0.0 
 $904 = Car.Angle($872)
@@ -18881,236 +18933,285 @@ else_jump @CAM_10
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #RCBARON 
 else_jump @CAM_10 
-03C1: $1042 = player $PLAYER_CHAR car_no_save 
-02E3: $1043 = car $1042 speed 
-0407: create_coordinate $1044 $1045 $1046 from_car $1042 offset 0.0 -8.0 0.0 
-$1043 /= 30.0 // $ /= float 
-0059: $1043 += $1045 // $ += $ float 
-Car.StorePos($1042, $1047, $1048, $1049)
-$1049 += 2.5 // $ += float 
-Camera.SetPosition($1044, $1045, $1049, 0.0, 0.0, 0.0)
-Camera.OnVehicle($1042, 15, 2)
+03C1: $872 = player $PLAYER_CHAR car_no_save 
+0407: create_coordinate $1042 $1043 $1044 from_car $872 offset 0.0 -8.0 0.0 
+Car.StorePos($872, $1045, $1046, $1047)
+$1047 += 2.5 // $ += float 
+Camera.SetPosition($1042, $1043, $1047, 0.0, 0.0, 0.0)
+Camera.OnVehicle($872, 15, 2)
 
-:CAM_171
+:CAM_145
 wait 0 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @CAM_10 
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #RCBARON 
-else_jump @CAM_805 
-$1050 = 0.0 // $ = float 
-$1051 = -8.0 // $ = float 
+else_jump @CAM_675 
+$1048 = 0.0 // $ = float 
+$1049 = -8.0 // $ = float 
 if and
 00E1:   player 0 pressed_button 5 
 00E1:   player 0 pressed_button 7 
-else_jump @CAM_384 
-$1050 = 0.0 // $ = float 
-$1051 = 8.0 // $ = float 
-0407: create_coordinate $1044 $1045 $1049 from_car $1042 offset $1050 $1051 0.0 
-03C1: $1042 = player $PLAYER_CHAR car_no_save 
-02E3: $1043 = car $1042 speed 
-$1043 /= 30.0 // $ /= float 
-0059: $1043 += $1045 // $ += $ float 
-$1049 += 2.5 // $ += float 
-Camera.SetPosition($1044, $1045, $1049, 0.0, 0.0, 0.0)
-Camera.OnVehicle($1042, 15, 2)
-jump @CAM_171 
+else_jump @CAM_332 
+$1048 = 0.0 // $ = float 
+$1049 = 8.0 // $ = float 
+0407: create_coordinate $1042 $1043 $1047 from_car $872 offset $1048 $1049 0.0 
+03C1: $872 = player $PLAYER_CHAR car_no_save 
+$1047 += 2.5 // $ += float 
+Camera.SetPosition($1042, $1043, $1047, 0.0, 0.0, 0.0)
+Camera.OnVehicle($872, 15, 2)
+jump @CAM_145 
 
-:CAM_384
+:CAM_332
 if 
 00E1:   player 0 pressed_button 5 
-else_jump @CAM_532 
-$1050 = 8.0 // $ = float 
-$1051 = 0.0 // $ = float 
-0407: create_coordinate $1044 $1045 $1049 from_car $1042 offset $1050 $1051 0.0 
-03C1: $1042 = player $PLAYER_CHAR car_no_save 
-02E3: $1043 = car $1042 speed 
-$1043 /= 30.0 // $ /= float 
-0059: $1043 += $1045 // $ += $ float 
-$1049 += 2.5 // $ += float 
-Camera.SetPosition($1044, $1045, $1049, 0.0, 0.0, 0.0)
-Camera.OnVehicle($1042, 15, 2)
-jump @CAM_171 
+else_jump @CAM_454 
+$1048 = 8.0 // $ = float 
+$1049 = 0.0 // $ = float 
+0407: create_coordinate $1042 $1043 $1047 from_car $872 offset $1048 $1049 0.0 
+03C1: $872 = player $PLAYER_CHAR car_no_save 
+$1047 += 2.5 // $ += float 
+Camera.SetPosition($1042, $1043, $1047, 0.0, 0.0, 0.0)
+Camera.OnVehicle($872, 15, 2)
+jump @CAM_145 
 
-:CAM_532
+:CAM_454
 if 
 00E1:   player 0 pressed_button 7 
-else_jump @CAM_680 
-$1050 = -8.0 // $ = float 
-$1051 = 0.0 // $ = float 
-0407: create_coordinate $1044 $1045 $1049 from_car $1042 offset $1050 $1051 0.0 
-03C1: $1042 = player $PLAYER_CHAR car_no_save 
-02E3: $1043 = car $1042 speed 
-$1043 /= 30.0 // $ /= float 
-0059: $1043 += $1045 // $ += $ float 
-$1049 += 2.5 // $ += float 
-Camera.SetPosition($1044, $1045, $1049, 0.0, 0.0, 0.0)
-Camera.OnVehicle($1042, 15, 2)
-jump @CAM_171 
+else_jump @CAM_576 
+$1048 = -8.0 // $ = float 
+$1049 = 0.0 // $ = float 
+0407: create_coordinate $1042 $1043 $1047 from_car $872 offset $1048 $1049 0.0 
+03C1: $872 = player $PLAYER_CHAR car_no_save 
+$1047 += 2.5 // $ += float 
+Camera.SetPosition($1042, $1043, $1047, 0.0, 0.0, 0.0)
+Camera.OnVehicle($872, 15, 2)
+jump @CAM_145 
 
-:CAM_680
-03C1: $1042 = player $PLAYER_CHAR car_no_save 
-02E3: $1043 = car $1042 speed 
-0407: create_coordinate $1044 $1045 $1046 from_car $1042 offset $1050 $1051 0.0 
-$1043 /= 30.0 // $ /= float 
-0059: $1043 += $1045 // $ += $ float 
-Car.StorePos($1042, $1047, $1048, $1049)
-$1049 += 2.5 // $ += float 
-Camera.SetPosition($1044, $1045, $1049, 0.0, 0.0, 0.0)
-Camera.OnVehicle($1042, 15, 2)
-jump @CAM_171 
+:CAM_576
+03C1: $872 = player $PLAYER_CHAR car_no_save 
+0407: create_coordinate $1042 $1043 $1044 from_car $872 offset $1048 $1049 0.0 
+Car.StorePos($872, $1045, $1046, $1047)
+$1047 += 2.5 // $ += float 
+Camera.SetPosition($1042, $1043, $1047, 0.0, 0.0, 0.0)
+Camera.OnVehicle($872, 15, 2)
+jump @CAM_145 
 
-:CAM_805
+:CAM_675
 Camera.Restore
 Camera.SetBehindPlayer
 jump @CAM_10 
 
 :FUEL
 thread 'FUEL' 
-$1052 = 6 // $ = int 
-$1053 = 0 // $ = int 
+$1050 = 6 // $ = int 
+$1051 = 0 // $ = int 
+$1034 = 1 // $ = int 
 
-:FUEL_24
+:FUEL_31
 wait 0 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @FUEL_24 
+else_jump @FUEL_31 
+if 
+  $1034 == 0 // $ == int 
+else_jump @FUEL_31 
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #HOTRING 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #DELUXO 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #RCBARON 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #SABRETUR 
+else_jump @FUEL_31 
+03C1: $872 = player $PLAYER_CHAR car_no_save 
+Car.SetImmunities($872, 1, 1, 1, 1, 1)
+053F: set_car $872 tires_vulnerable 0 
+end_thread_named 'T_TRAV' 
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #HOTRING 
-else_jump @FUEL_24 
-03C1: $1054 = player $PLAYER_CHAR car_no_save 
+else_jump @FUEL_193 
+00BC: text_highpriority 'NOPLUT' time 3000 1 
+jump @FUEL_208 
 
-:FUEL_71
-wait 0 
-if 
-   not $1034 == 0 // $ == int 
-else_jump @FUEL_100 
-jump @FUEL_71 
-
-:FUEL_100
-03CF: load_wav 'BAND_08' as 2 
-end_thread_named 'T_TRAV' 
+:FUEL_193
 00BC: text_highpriority 'NOFUEL' time 3000 1 
-040D: unload_wav 1 
+
+:FUEL_208
 03CF: load_wav 'INLIFT' as 1 
 
-:FUEL_153
+:FUEL_220
 wait 0 
 if 
 03D0:   wav 1 loaded 
-else_jump @FUEL_153 
+else_jump @FUEL_220 
 03D1: play_wav 1 
 wait 3000 
+040D: unload_wav 1 
 if 
-  $1052 == 0 // $ == int 
-else_jump @FUEL_406 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #HOTRING 
+else_jump @FUEL_493 
 if 
-  $1053 == 0 // $ == int 
-else_jump @FUEL_356 
-$1053 = 1 // $ = int 
-02A8: $1055 = create_marker 31 at -373.75 -596.15 25.83 
-02A8: $1056 = create_marker 31 at 230.92 -1262.59 20.11 
-02A8: $1057 = create_marker 31 at 372.09 -490.44 13.82 
-02A8: $1058 = create_marker 31 at -1106.5 352.32 11.64 
-02A8: $1059 = create_marker 31 at -1033.51 -842.4 13.09 
-02A8: $1060 = create_marker 31 at -1670.52 -196.77 14.87 
+  0 >= $1050 // int >= $ 
+else_jump @FUEL_493 
+if 
+  $1051 == 0 // $ == int 
+else_jump @FUEL_314 
+$1051 = 1 // $ = int 
 
-:FUEL_356
+:FUEL_314
+02A8: $1052 = create_marker 31 at -373.75 -596.15 25.83 
+02A8: $1053 = create_marker 31 at 230.92 -1262.59 20.11 
+02A8: $1054 = create_marker 31 at 372.09 -490.44 13.82 
+02A8: $1055 = create_marker 31 at -1106.5 352.32 11.64 
+02A8: $1056 = create_marker 31 at -1033.51 -842.4 13.09 
+02A8: $1057 = create_marker 31 at -1670.52 -196.77 14.87 
 03E7: flash_hud 8 
-00BC: text_highpriority 'GETMORE' time 3000 1 
-04F7: status_text $1052 0 line 2 'PLUTO' 
+00BB: text_lowpriority 'GETMORE' time 3000 1 
+00BC: text_highpriority 0 time 2 'PLUTO' 
 wait 3000 
 03E7: flash_hud -1 
-0151: remove_status_text $1052 
+0151: remove_status_text $1050 
 
-:FUEL_406
+:FUEL_493
 wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @FUEL_31 
+if 
+   not Car.Wrecked($872)
+else_jump @FUEL_31 
 if 
 00E0:   player $PLAYER_CHAR in_any_car 
-else_jump @FUEL_512 
-03C1: $1054 = player $PLAYER_CHAR car_no_save 
+else_jump @FUEL_708 
+03C1: $872 = player $PLAYER_CHAR car_no_save 
 if 
-00E1:   player 0 pressed_button 19 
-else_jump @FUEL_406 
-00BC: text_highpriority 'NOFUEL' time 3000 1 
-040D: unload_wav 1 
-03CF: load_wav 'INLIFT' as 1 
+80E1:   not player 0 pressed_button 19 
+else_jump @FUEL_601 
+if 
+00E1:   player 0 pressed_button 2 
+else_jump @FUEL_493 
+gosub @STEAM_296 
+jump @FUEL_493 
 
-:FUEL_482
-wait 0 
-if 
-03D0:   wav 1 loaded 
-else_jump @FUEL_482 
-03D1: play_wav 1 
-jump @FUEL_406 
-
-:FUEL_512
-$1061 = Marker.CreateAboveCar($1054)
-
-:FUEL_520
-wait 0 
-0407: create_coordinate $1062 $1063 $1064 from_car $1054 offset 0.0 -3.5 0.0 
-if 
-80F5:   not player $PLAYER_CHAR 0 $1062 $1063 $1064 radius 0.5 0.5 2.0 
-else_jump @FUEL_642 
-if 
-00E0:   player $PLAYER_CHAR in_any_car 
-else_jump @FUEL_520 
-Marker.Disable($1061)
+:FUEL_601
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #HOTRING 
-else_jump @FUEL_777 
-jump @FUEL_24 
+else_jump @FUEL_642 
+00BC: text_highpriority 'NOPLUT' time 3000 1 
+jump @FUEL_657 
 
 :FUEL_642
+00BC: text_highpriority 'NOFUEL' time 3000 1 
+
+:FUEL_657
+03CF: load_wav 'INLIFT' as 1 
+
+:FUEL_669
+wait 0 
 if 
-   not $1052 == 0 // $ == int 
-else_jump @FUEL_796 
-$1065 = Car.Angle($1054)
+03D0:   wav 1 loaded 
+else_jump @FUEL_669 
+03D1: play_wav 1 
+wait 3000 
+040D: unload_wav 1 
+jump @FUEL_493 
+
+:FUEL_708
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @FUEL_31 
+if 
+   not Car.Wrecked($872)
+else_jump @FUEL_31 
+0407: create_coordinate $1058 $1059 $1060 from_car $872 offset 0.0 -3.5 0.0 
+if 
+80F5:   not player $PLAYER_CHAR 0 $1058 $1059 $1060 radius 0.5 0.5 2.0 
+else_jump @FUEL_857 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @FUEL_708 
+if 
+00DC:   player $PLAYER_CHAR in_car $872 
+else_jump @FUEL_1121 
+jump @FUEL_493 
+
+:FUEL_857
+if 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #HOTRING 
+else_jump @FUEL_894 
+if 
+   not 0 >= $1050 // int >= $ 
+else_jump @FUEL_1136 
+
+:FUEL_894
+$1061 = Car.Angle($872)
 wait 0 
 Player.CanMove($PLAYER_CHAR) = False
-0171: set_player $PLAYER_CHAR z_angle_to $1065 
+0171: set_player $PLAYER_CHAR z_angle_to $1061 
+if 
+   Car.Model($872) == #HOTRING
+else_jump @FUEL_959 
+03CF: load_wav 'BAND_08' as 2 
+jump @FUEL_971 
+
+:FUEL_959
+03CF: load_wav 'LIFTRUN' as 2 
+
+:FUEL_971
+wait 0 
+if 
+03D0:   wav 2 loaded 
+else_jump @FUEL_971 
 03D1: play_wav 2 
-Marker.Disable($1061)
-04F7: status_text $1052 0 line 2 'PLUTO' 
+if 
+   Car.Model($872) == #HOTRING
+else_jump @FUEL_1049 
+04F7: status_text $1050 0 line 2 'PLUTO' 
 wait 2000 
-$1052 -= 1 // $ -= int 
-$1034 = 1 // $ = int 
+$1050 -= 1 // $ -= int 
+jump @FUEL_1054 
+
+:FUEL_1049
+wait 2000 
+
+:FUEL_1054
 wait 1000 
+$1034 = 1 // $ = int 
 Player.CanMove($PLAYER_CHAR) = True
 wait 500 
-040D: unload_wav 1 
 040D: unload_wav 2 
 create_thread @T_TRAV 
-0151: remove_status_text $1052 
-jump @FUEL_24 
-
-:FUEL_777
-040D: unload_wav 2 
-create_thread @T_TRAV 
-jump @FUEL_24 
-
-:FUEL_796
 if 
-  $1053 == 0 // $ == int 
-else_jump @FUEL_953 
-$1053 = 1 // $ = int 
-02A8: $1055 = create_marker 31 at -373.75 -596.15 25.83 
-02A8: $1056 = create_marker 31 at 230.92 -1262.59 20.11 
-02A8: $1057 = create_marker 31 at 372.09 -490.44 13.82 
-02A8: $1058 = create_marker 31 at -1106.5 352.32 11.64 
-02A8: $1059 = create_marker 31 at -1033.51 -842.4 13.09 
-02A8: $1060 = create_marker 31 at -1670.52 -196.77 14.87 
+   Car.Model($872) == #HOTRING
+else_jump @FUEL_31 
+0151: remove_status_text $1050 
+jump @FUEL_31 
 
-:FUEL_953
+:FUEL_1121
+create_thread @T_TRAV 
+jump @FUEL_31 
+
+:FUEL_1136
+if 
+  $1051 == 0 // $ == int 
+else_jump @FUEL_1293 
+$1051 = 1 // $ = int 
+02A8: $1052 = create_marker 31 at -373.75 -596.15 25.83 
+02A8: $1053 = create_marker 31 at 230.92 -1262.59 20.11 
+02A8: $1054 = create_marker 31 at 372.09 -490.44 13.82 
+02A8: $1055 = create_marker 31 at -1106.5 352.32 11.64 
+02A8: $1056 = create_marker 31 at -1033.51 -842.4 13.09 
+02A8: $1057 = create_marker 31 at -1670.52 -196.77 14.87 
+
+:FUEL_1293
 03E7: flash_hud 8 
 00BC: text_highpriority 'GETMORE' time 3000 1 
-04F7: status_text $1052 0 line 2 'PLUTO' 
+04F7: status_text $1050 0 line 2 'PLUTO' 
 wait 3000 
 03E7: flash_hud -1 
-0151: remove_status_text $1052 
-jump @FUEL_520 
+0151: remove_status_text $1050 
+jump @FUEL_708 
 
 :GET
 thread 'GET' 
@@ -19128,19 +19229,1451 @@ if or
 00F5:   player $PLAYER_CHAR 1 -1033.51 -842.4 13.09 radius 1.0 1.0 2.0 
 00F5:   player $PLAYER_CHAR 1 -1670.52 -196.77 14.87 radius 1.0 1.0 2.0 
 else_jump @GET_10 
+Marker.Disable($1052)
+Marker.Disable($1053)
+Marker.Disable($1054)
 Marker.Disable($1055)
 Marker.Disable($1056)
 Marker.Disable($1057)
-Marker.Disable($1058)
-Marker.Disable($1059)
-Marker.Disable($1060)
 018C: play_sound 1 at 0.0 0.0 0.0 
-04F7: status_text $1052 0 line 2 'PLUTO' 
-$1052 = 6 // $ = int 
+04F7: status_text $1050 0 line 2 'PLUTO' 
+$1050 = 6 // $ = int 
 wait 3000 
-0151: remove_status_text $1052 
+0151: remove_status_text $1050 
 wait 5000 
 jump @GET_10 
+thread 'SCAN' 
+
+:SCAN_10
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @SCAN_10 
+if 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #ZEBRA 
+else_jump @SCAN_10 
+if 
+80E1:   not player 0 pressed_button 19 
+else_jump @SCAN_73 
+jump @SCAN_10 
+
+:SCAN_73
+wait 0 
+if 
+00E1:   player 0 pressed_button 19 
+else_jump @SCAN_101 
+jump @SCAN_73 
+
+:SCAN_101
+040D: unload_wav 1 
+03CF: load_wav 'BIKEREV' as 1 
+
+:SCAN_117
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @SCAN_10 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @SCAN_264 
+if 
+80E1:   not player 0 pressed_button 19 
+else_jump @SCAN_264 
+if 
+03D0:   wav 1 loaded 
+else_jump @SCAN_117 
+03D1: play_wav 1 
+
+:SCAN_189
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @SCAN_10 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @SCAN_264 
+if 
+80E1:   not player 0 pressed_button 19 
+else_jump @SCAN_264 
+if 
+03D2:   wav 1 ended 
+else_jump @SCAN_189 
+jump @SCAN_101 
+
+:SCAN_264
+wait 0 
+040D: unload_wav 1 
+if 
+00E1:   player 0 pressed_button 19 
+else_jump @SCAN_10 
+jump @SCAN_264 
+thread 'KNIGHT' 
+4@ = -273.252 // @ = float 
+5@ = -504.0593 // @ = float 
+6@ = 12.38627 // @ = float 
+
+:KNIGHT_40
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #ZEBRA 
+else_jump @KNIGHT_40 
+03C1: 1@ = player $PLAYER_CHAR car_no_save 
+Car.SetImmunities(1@, 1, 1, 1, 1, 1)
+053F: set_car 1@ tires_vulnerable 0 
+
+:KNIGHT_109
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_241 
+if or
+80E1:   not player 0 pressed_button 17 
+00E1:   player 0 pressed_button 5 
+00E1:   player 0 pressed_button 7 
+else_jump @KNIGHT_860 
+if 
+80E1:   not player 0 pressed_button 2 
+else_jump @KNIGHT_916 
+jump @KNIGHT_109 
+
+:KNIGHT_198
+wait 0 
+0477: set_car 1@ action 5 time 10 
+if or
+00E1:   player 0 pressed_button 4 
+00E1:   player 0 pressed_button 17 
+else_jump @KNIGHT_241 
+jump @KNIGHT_198 
+
+:KNIGHT_241
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+   not Car.Wrecked(1@)
+else_jump @KNIGHT_40 
+0054: store_player $PLAYER_CHAR position_to 4@ 5@ 6@ 
+Car.StorePos(1@, 7@, 8@, 9@)
+0509: 10@ = distance_between_point 4@ 5@ and_point 7@ 8@ 
+if and
+80E0:   not player $PLAYER_CHAR in_any_car 
+00E1:   player 0 pressed_button 4 
+else_jump @KNIGHT_351 
+jump @KNIGHT_451 
+
+:KNIGHT_351
+if and
+00E0:   player $PLAYER_CHAR in_any_car 
+00E1:   player 0 pressed_button 17 
+80E1:   not player 0 pressed_button 5 
+80E1:   not player 0 pressed_button 7 
+else_jump @KNIGHT_392 
+jump @KNIGHT_451 
+
+:KNIGHT_392
+if 
+  10@ > 250.0 // @ > float 
+else_jump @KNIGHT_420 
+jump @KNIGHT_451 
+
+:KNIGHT_420
+if and
+00E0:   player $PLAYER_CHAR in_any_car 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #ZEBRA 
+else_jump @KNIGHT_241 
+jump @KNIGHT_40 
+
+:KNIGHT_451
+wait 0 
+if or
+00E1:   player 0 pressed_button 4 
+00E1:   player 0 pressed_button 17 
+else_jump @KNIGHT_485 
+jump @KNIGHT_451 
+
+:KNIGHT_485
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+   not Car.Wrecked(1@)
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'AUTOC' time 10 1 
+if and
+80E0:   not player $PLAYER_CHAR in_any_car 
+00E1:   player 0 pressed_button 4 
+else_jump @KNIGHT_569 
+02D4: car 1@ turn_off_engine 
+jump @KNIGHT_198 
+
+:KNIGHT_569
+if and
+00E0:   player $PLAYER_CHAR in_any_car 
+00E1:   player 0 pressed_button 17 
+80E1:   not player 0 pressed_button 5 
+80E1:   not player 0 pressed_button 7 
+else_jump @KNIGHT_615 
+02D4: car 1@ turn_off_engine 
+jump @KNIGHT_198 
+
+:KNIGHT_615
+0054: store_player $PLAYER_CHAR position_to 4@ 5@ 6@ 
+Car.StorePos(1@, 7@, 8@, 9@)
+0509: 10@ = distance_between_point 4@ 5@ and_point 7@ 8@ 
+if 
+  10@ > 25.0 // @ > float 
+else_jump @KNIGHT_698 
+11@ = 50.0 // @ = float 
+jump @KNIGHT_715 
+
+:KNIGHT_698
+11@ = 15.0 // @ = float 
+jump @KNIGHT_715 
+
+:KNIGHT_715
+if 
+81FC:   not player $PLAYER_CHAR near_car 1@ radius 10.0 10.0 0 
+else_jump @KNIGHT_804 
+Car.SetToPsychoDriver(1@)
+Car.SetMaxSpeed(1@, 11@)
+02C2: car 1@ drive_to_point 4@ 5@ 6@ 
+if and
+00E0:   player $PLAYER_CHAR in_any_car 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #ZEBRA 
+else_jump @KNIGHT_485 
+jump @KNIGHT_40 
+
+:KNIGHT_804
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+0477: set_car 1@ action 5 time 10 
+if and
+00E0:   player $PLAYER_CHAR in_any_car 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #ZEBRA 
+else_jump @KNIGHT_485 
+jump @KNIGHT_40 
+
+:KNIGHT_860
+gosub @KNIGHT_874 
+jump @KNIGHT_109 
+
+:KNIGHT_874
+00BC: text_highpriority 'PURSUIT' time 10 1 
+02E3: 3@ = car 1@ speed 
+3@ *= 1.25 // $ *= float 
+04BA: set_car 1@ speed_instantly 3@ 
+return 
+
+:KNIGHT_916
+wait 100 
+
+:KNIGHT_920
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+if 
+00E1:   player 0 pressed_button 17 
+else_jump @KNIGHT_980 
+gosub @KNIGHT_874 
+
+:KNIGHT_980
+if 
+80E1:   not player 0 pressed_button 2 
+else_jump @KNIGHT_5786 
+Car.SetMaxSpeed(1@, 100.0)
+Car.SetToPsychoDriver(1@)
+00AE: set_vehicle 1@ traffic_behavior_to 2 
+02C2: car 1@ drive_to_point 4@ 5@ 6@ 
+if 
+81AF:   not car 1@ 0 4@ 5@ 6@ radius 5.0 5.0 5.0 
+else_jump @KNIGHT_5786 
+if 
+   not 2@ == 0 // $ == int 
+else_jump @KNIGHT_1712 
+if 
+   not 2@ == 1 // $ == int 
+else_jump @KNIGHT_1825 
+if 
+   not 2@ == 2 // $ == int 
+else_jump @KNIGHT_1938 
+if 
+   not 2@ == 3 // $ == int 
+else_jump @KNIGHT_2051 
+if 
+   not 2@ == 4 // $ == int 
+else_jump @KNIGHT_2164 
+if 
+   not 2@ == 5 // $ == int 
+else_jump @KNIGHT_2277 
+if 
+   not 2@ == 6 // $ == int 
+else_jump @KNIGHT_2390 
+if 
+   not 2@ == 7 // $ == int 
+else_jump @KNIGHT_2503 
+if 
+   not 2@ == 8 // $ == int 
+else_jump @KNIGHT_2616 
+if 
+   not 2@ == 9 // $ == int 
+else_jump @KNIGHT_2729 
+if 
+   not 2@ == 10 // $ == int 
+else_jump @KNIGHT_2842 
+if 
+   not 2@ == 11 // $ == int 
+else_jump @KNIGHT_2955 
+if 
+   not 2@ == 12 // $ == int 
+else_jump @KNIGHT_3068 
+if 
+   not 2@ == 13 // $ == int 
+else_jump @KNIGHT_3181 
+if 
+   not 2@ == 14 // $ == int 
+else_jump @KNIGHT_3294 
+if 
+   not 2@ == 15 // $ == int 
+else_jump @KNIGHT_3407 
+if 
+   not 2@ == 16 // $ == int 
+else_jump @KNIGHT_3520 
+if 
+   not 2@ == 17 // $ == int 
+else_jump @KNIGHT_3633 
+if 
+   not 2@ == 18 // $ == int 
+else_jump @KNIGHT_3746 
+if 
+   not 2@ == 19 // $ == int 
+else_jump @KNIGHT_3859 
+if 
+   not 2@ == 20 // $ == int 
+else_jump @KNIGHT_3972 
+if 
+   not 2@ == 21 // $ == int 
+else_jump @KNIGHT_4085 
+if 
+   not 2@ == 22 // $ == int 
+else_jump @KNIGHT_4198 
+if 
+   not 2@ == 23 // $ == int 
+else_jump @KNIGHT_4311 
+if 
+   not 2@ == 24 // $ == int 
+else_jump @KNIGHT_4424 
+if 
+   not 2@ == 25 // $ == int 
+else_jump @KNIGHT_4537 
+if 
+   not 2@ == 26 // $ == int 
+else_jump @KNIGHT_4650 
+if 
+   not 2@ == 27 // $ == int 
+else_jump @KNIGHT_4763 
+if 
+   not 2@ == 28 // $ == int 
+else_jump @KNIGHT_4876 
+if 
+   not 2@ == 29 // $ == int 
+else_jump @KNIGHT_4989 
+if 
+   not 2@ == 30 // $ == int 
+else_jump @KNIGHT_5102 
+if 
+   not 2@ == 31 // $ == int 
+else_jump @KNIGHT_5215 
+if 
+   not 2@ == 32 // $ == int 
+else_jump @KNIGHT_5328 
+if 
+   not 2@ == 33 // $ == int 
+else_jump @KNIGHT_5441 
+if 
+   not 2@ == 34 // $ == int 
+else_jump @KNIGHT_5554 
+jump @KNIGHT_40 
+
+:KNIGHT_1712
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST00' time 10 1 
+4@ = -273.252 // @ = float 
+5@ = -504.0593 // @ = float 
+6@ = 12.38627 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_1825
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST01' time 10 1 
+4@ = 241.5331 // @ = float 
+5@ = -1284.478 // @ = float 
+6@ = 10.4295 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_1938
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST02' time 10 1 
+4@ = -524.4386 // @ = float 
+5@ = 693.8073 // @ = float 
+6@ = 10.2786 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2051
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST03' time 10 1 
+4@ = 522.7735 // @ = float 
+5@ = 1264.539 // @ = float 
+6@ = 15.76941 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2164
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST04' time 10 1 
+4@ = 97.23549 // @ = float 
+5@ = -810.3828 // @ = float 
+6@ = 9.99131 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2277
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST05' time 10 1 
+4@ = 307.0433 // @ = float 
+5@ = 381.7351 // @ = float 
+6@ = 12.58493 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2390
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST06' time 10 1 
+4@ = 18.018 // @ = float 
+5@ = -1475.907 // @ = float 
+6@ = 9.83822 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2503
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST07' time 10 1 
+4@ = 417.7646 // @ = float 
+5@ = 652.2811 // @ = float 
+6@ = 10.59482 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2616
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST08' time 10 1 
+4@ = -835.2802 // @ = float 
+5@ = 1296.318 // @ = float 
+6@ = 11.01609 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2729
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST09' time 10 1 
+4@ = -693.2537 // @ = float 
+5@ = -1468.802 // @ = float 
+6@ = 10.74532 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2842
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST10' time 10 1 
+4@ = -859.4515 // @ = float 
+5@ = -562.8613 // @ = float 
+6@ = 10.47323 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_2955
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST11' time 10 1 
+4@ = 108.1236 // @ = float 
+5@ = -1468.295 // @ = float 
+6@ = 9.80981 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3068
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST12' time 10 1 
+4@ = -1011.185 // @ = float 
+5@ = 198.8852 // @ = float 
+6@ = 10.64481 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3181
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST13' time 10 1 
+4@ = -1014.997 // @ = float 
+5@ = -893.045 // @ = float 
+6@ = 12.41473 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3294
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST14' time 10 1 
+4@ = 18.74795 // @ = float 
+5@ = 963.1124 // @ = float 
+6@ = 10.17447 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3407
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST15' time 10 1 
+4@ = -1053.154 // @ = float 
+5@ = -268.7088 // @ = float 
+6@ = 10.81406 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3520
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST16' time 10 1 
+4@ = 498.2021 // @ = float 
+5@ = -84.70548 // @ = float 
+6@ = 9.4314 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3633
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST17' time 10 1 
+4@ = 419.1504 // @ = float 
+5@ = -427.5493 // @ = float 
+6@ = 9.51133 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3746
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST18' time 10 1 
+4@ = 502.5769 // @ = float 
+5@ = 503.3159 // @ = float 
+6@ = 10.76586 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3859
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST19' time 10 1 
+4@ = -664.8285 // @ = float 
+5@ = 799.6377 // @ = float 
+6@ = 10.66389 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_3972
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST20' time 10 1 
+4@ = -860.0165 // @ = float 
+5@ = -666.6837 // @ = float 
+6@ = 10.60841 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4085
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST21' time 10 1 
+4@ = -132.3744 // @ = float 
+5@ = -978.9468 // @ = float 
+6@ = 9.9914 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4198
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST22' time 10 1 
+4@ = 437.5666 // @ = float 
+5@ = 720.5396 // @ = float 
+6@ = 10.77134 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4311
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST23' time 10 1 
+4@ = -820.6381 // @ = float 
+5@ = 1167.148 // @ = float 
+6@ = 10.3024 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4424
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST24' time 10 1 
+4@ = -871.1807 // @ = float 
+5@ = -472.5781 // @ = float 
+6@ = 10.47182 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4537
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST25' time 10 1 
+4@ = -51.97778 // @ = float 
+5@ = -1481.757 // @ = float 
+6@ = 9.8209 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4650
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST26' time 10 1 
+4@ = -678.05 // @ = float 
+5@ = 1192.741 // @ = float 
+6@ = 10.30245 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4763
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST27' time 10 1 
+4@ = 204.2032 // @ = float 
+5@ = -485.635 // @ = float 
+6@ = 10.96365 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4876
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST28' time 10 1 
+4@ = -977.5755 // @ = float 
+5@ = 83.3753 // @ = float 
+6@ = 11.02645 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_4989
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST29' time 10 1 
+4@ = -195.0846 // @ = float 
+5@ = -1455.379 // @ = float 
+6@ = 7.64075 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_5102
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST30' time 10 1 
+4@ = 104.153 // @ = float 
+5@ = 248.3207 // @ = float 
+6@ = 21.15194 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_5215
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST31' time 10 1 
+4@ = 414.2069 // @ = float 
+5@ = 991.0237 // @ = float 
+6@ = 17.71192 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_5328
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST32' time 10 1 
+4@ = -1047.291 // @ = float 
+5@ = 1331.349 // @ = float 
+6@ = 8.06831 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_5441
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST33' time 10 1 
+4@ = -1444.778 // @ = float 
+5@ = -832.7652 // @ = float 
+6@ = 14.00768 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_5554
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @KNIGHT_40 
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @KNIGHT_40 
+00BC: text_highpriority 'DEST34' time 10 1 
+4@ = -1719.784 // @ = float 
+5@ = -301.8761 // @ = float 
+6@ = 14.06358 // @ = float 
+if or
+00E1:   player 0 pressed_button 10 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_920 
+gosub @KNIGHT_5667 
+jump @KNIGHT_920 
+
+:KNIGHT_5667
+if 
+00E1:   player 0 pressed_button 10 
+else_jump @KNIGHT_5723 
+2@ -= 1 // @ -= int 
+if 
+  2@ == -1 // @ == int 
+else_jump @KNIGHT_5779 
+2@ = 34 // @ = int 
+jump @KNIGHT_5779 
+
+:KNIGHT_5723
+if 
+00E1:   player 0 pressed_button 11 
+else_jump @KNIGHT_5779 
+2@ += 1 // @ += int 
+if 
+  2@ == 35 // @ == int 
+else_jump @KNIGHT_5779 
+2@ = 0 // @ = int 
+jump @KNIGHT_5779 
+
+:KNIGHT_5779
+wait 250 
+return 
+
+:KNIGHT_5786
+0477: set_car 1@ action 5 time 10 
+wait 500 
+0369: put_player $PLAYER_CHAR in_car 1@ 
+wait 500 
+jump @KNIGHT_40 
+
+:HJ
+set_wb_check_to 0 
+thread 'HJ' 
+$1062 = 0 // $ = int 
+
+:HJ_21
+wait 0 
+if 
+   not Player.Defined($PLAYER_CHAR)
+else_jump @HJ_48 
+jump @HJ_21 
+
+:HJ_48
+if 
+0445:   are_car_cheats_used 
+else_jump @HJ_68 
+jump @HJ_21 
+
+:HJ_68
+if 
+04C9:   player $PLAYER_CHAR in_flying_vehicle 
+else_jump @HJ_91 
+jump @HJ_21 
+
+:HJ_91
+if 
+04A8:   player $PLAYER_CHAR in_any_boat 
+else_jump @HJ_114 
+jump @HJ_21 
+
+:HJ_114
+if 
+00E0:   player $PLAYER_CHAR in_any_car 
+else_jump @HJ_1591 
+03C1: $1063 = player $PLAYER_CHAR car_no_save 
+04FC: store_stunt_data $PLAYER_CHAR two_wheels: $1064 $1065 wheelie: $1066 $1067 stoppie: $1068 $1069 
+if 
+  $1064 > 0 // $ > int 
+else_jump @HJ_355 
+$1064 /= 1000 // $ /= int 
+008C: $1070 = float_to_integer $1065 
+008D: $1071 = integer_to_float $1070 
+0086: $1072 = $1065 // $ = $ float 
+0061: $1072 -= $1071 // $ -= $ float 
+$1072 *= 100.0 // $ *= float 
+008C: $1073 = float_to_integer $1072 
+0084: $1074 = $1064 // $ = $ int 
+0058: $1074 += $1070 // $ += $ int 
+$1074 /= 2 // $ /= int 
+Player.Money($PLAYER_CHAR) += $1074
+if 
+0424:   metric 
+else_jump @HJ_315 
+0302: text_4numbers_lowpriority 'WHEEL01' $1074 $1070 $1073 $1064 time 3000 1  // TWO WHEELS DOUBLE BONUS: $ ~1~ Distance: ~1~.~1~m Time: ~1~ seconds
+jump @HJ_355 
+
+:HJ_315
+0425: $1075 = meters $1065 to_feet // float 
+008C: $1076 = float_to_integer $1075 
+02FF: text_3numbers_lowpriority 'WHEEL02' $1074 $1076 $1064 time time 3000 1  // TWO WHEELS DOUBLE BONUS: $ ~1~ Distance: ~1~ feet Time: ~1~ seconds
+
+:HJ_355
+if 
+  $1066 > 0 // $ > int 
+else_jump @HJ_563 
+$1066 /= 1000 // $ /= int 
+008C: $1077 = float_to_integer $1067 
+008D: $1078 = integer_to_float $1077 
+0086: $1072 = $1067 // $ = $ float 
+0061: $1072 -= $1078 // $ -= $ float 
+$1072 *= 100.0 // $ *= float 
+008C: $1079 = float_to_integer $1072 
+0084: $1074 = $1066 // $ = $ int 
+0058: $1074 += $1077 // $ += $ int 
+$1074 *= 2 // $ *= int 
+$1074 /= 5 // $ /= int 
+$1074 /= 2 // $ /= int 
+Player.Money($PLAYER_CHAR) += $1074
+if 
+0424:   metric 
+else_jump @HJ_523 
+0302: text_4numbers_lowpriority 'WHEEL06' $1074 $1077 $1079 $1066 time 3000 1  // WHEELIE BONUS: $ ~1~ Distance: ~1~.~1~m Time: ~1~ seconds
+jump @HJ_563 
+
+:HJ_523
+0425: $1080 = meters $1067 to_feet // float 
+008C: $1081 = float_to_integer $1080 
+02FF: text_3numbers_lowpriority 'WHEEL07' $1074 $1081 $1066 time time 3000 1  // WHEELIE BONUS: $ ~1~ Distance: ~1~ feet Time: ~1~ seconds
+
+:HJ_563
+if 
+  $1068 > 0 // $ > int 
+else_jump @HJ_757 
+$1068 /= 1000 // $ /= int 
+008C: $1082 = float_to_integer $1069 
+008D: $1083 = integer_to_float $1082 
+0086: $1072 = $1069 // $ = $ float 
+0061: $1072 -= $1083 // $ -= $ float 
+$1072 *= 100.0 // $ *= float 
+008C: $1084 = float_to_integer $1072 
+0084: $1074 = $1068 // $ = $ int 
+0058: $1074 += $1082 // $ += $ int 
+$1074 /= 2 // $ /= int 
+Player.Money($PLAYER_CHAR) += $1074
+if 
+0424:   metric 
+else_jump @HJ_717 
+0302: text_4numbers_lowpriority 'WHEEL11' $1074 $1082 $1084 $1068 time 3000 1  // STOPPIE BONUS: $ ~1~ Distance: ~1~.~1~m Time: ~1~ seconds
+jump @HJ_757 
+
+:HJ_717
+0425: $1085 = meters $1069 to_feet // float 
+008C: $1086 = float_to_integer $1085 
+02FF: text_3numbers_lowpriority 'WHEEL12' $1074 $1086 $1068 time time 3000 1  // STOPPIE BONUS: $ ~1~ Distance: ~1~ feet Time: ~1~ seconds
+
+:HJ_757
+if 
+01F3:   car $1063 airborne 
+else_jump @HJ_1577 
+$1087 = 0 // $ = int 
+$1088 = 0.0 // $ = float 
+$1089 = 0 // $ = int 
+$1090 = 0 // $ = int 
+$1091 = 0 // $ = int 
+$1092 = 0 // $ = int 
+$1093 = 0 // $ = int 
+$1094 = 0 // $ = int 
+$1095 = 0 // $ = int 
+$1096 = 0 // $ = int 
+$1097 = -100.0 // $ = float 
+$1098 = 0.0 // $ = float 
+$1099 = 0.0 // $ = float 
+$1100 = 0.0 // $ = float 
+$1101 = 0.0 // $ = float 
+$1102 = 0.0 // $ = float 
+$1103 = 0.0 // $ = float 
+$1104 = 0.0 // $ = float 
+$1105 = 0.0 // $ = float 
+$1106 = 0.0 // $ = float 
+$1107 = 0.0 // $ = float 
+$1108 = 0.0 // $ = float 
+$1109 = 0.0 // $ = float 
+$1110 = 0 // $ = int 
+$1111 = 0 // $ = int 
+$1112 = 0 // $ = int 
+$1072 = 0.0 // $ = float 
+$1113 = 0.0 // $ = float 
+$1114 = 0.0 // $ = float 
+$1115 = 0.0 // $ = float 
+$1116 = 0.0 // $ = float 
+$1117 = 0 // $ = int 
+$1118 = 0 // $ = int 
+$1119 = 0 // $ = int 
+$1120 = 0 // $ = int 
+$1121 = 0 // $ = int 
+$1122 = 0 // $ = int 
+
+:HJ_1089
+if or
+01F3:   car $1063 airborne 
+  10 > $1122 // int > $ 
+else_jump @HJ_1570 
+$1122 += 1 // $ += int 
+Car.StorePos($1063, $1098, $1099, $1100)
+0086: $1116 = $1088 // $ = $ float 
+if 
+  $1095 == 0 // $ == int 
+else_jump @HJ_1198 
+$1116 = Car.Angle($1063)
+0086: $1101 = $1098 // $ = $ float 
+0086: $1102 = $1099 // $ = $ float 
+0086: $1103 = $1100 // $ = $ float 
+$1095 = 1 // $ = int 
+
+:HJ_1198
+wait 0 
+if 
+   Car.Wrecked($1063)
+else_jump @HJ_1225 
+jump @HJ_21 
+
+:HJ_1225
+if 
+   not Player.Defined($PLAYER_CHAR)
+else_jump @HJ_1248 
+jump @HJ_21 
+
+:HJ_1248
+if 
+80E0:   not player $PLAYER_CHAR in_any_car 
+else_jump @HJ_1271 
+jump @HJ_21 
+
+:HJ_1271
+if and
+820D:   not car $1063 flipped 
+  $1092 == 0 // $ == int 
+else_jump @HJ_1301 
+$1092 = 1 // $ = int 
+
+:HJ_1301
+if and
+020D:   car $1063 flipped 
+  $1092 == 1 // $ == int 
+else_jump @HJ_1338 
+$1091 += 1 // $ += int 
+$1092 = 0 // $ = int 
+
+:HJ_1338
+$1088 = Car.Angle($1063)
+0086: $1113 = $1088 // $ = $ float 
+0061: $1113 -= $1116 // $ -= $ float 
+if 
+  $1113 > 180.0 // $ > float 
+else_jump @HJ_1416 
+0086: $1115 = $1113 // $ = $ float 
+$1113 = 360.0 // $ = float 
+0061: $1113 -= $1115 // $ -= $ float 
+jump @HJ_1463 
+
+:HJ_1416
+if 
+  -180.0 > $1113 // float > $ 
+else_jump @HJ_1463 
+0086: $1115 = $1113 // $ = $ float 
+$1113 = 360.0 // $ = float 
+0059: $1113 += $1115 // $ += $ float 
+
+:HJ_1463
+if 
+  0.0 > $1113 // float > $ 
+else_jump @HJ_1510 
+0086: $1115 = $1113 // $ = $ float 
+$1113 = 0.0 // $ = float 
+0061: $1113 -= $1115 // $ -= $ float 
+
+:HJ_1510
+0059: $1114 += $1113 // $ += $ float 
+008C: $1087 = float_to_integer $1114 
+if 
+0024:   $1100 > $1097 // $ > $ float 
+else_jump @HJ_1553 
+0086: $1097 = $1100 // $ = $ float 
+
+:HJ_1553
+$1100 = 0.0 // $ = float 
+jump @HJ_1089 
+
+:HJ_1570
+jump @HJ_1584 
+
+:HJ_1577
+jump @HJ_21 
+
+:HJ_1584
+jump @HJ_1598 
+
+:HJ_1591
+jump @HJ_21 
+
+:HJ_1598
+if 
+  $1095 == 1 // $ == int 
+else_jump @HJ_1837 
+Car.StorePos($1063, $1104, $1105, $1072)
+$1090 = 0 // $ = int 
+0086: $1106 = $1101 // $ = $ float 
+0061: $1106 -= $1104 // $ -= $ float 
+0086: $1107 = $1102 // $ = $ float 
+0061: $1107 -= $1105 // $ -= $ float 
+0069: $1106 *= $1106 // $ *= $ float 
+0069: $1107 *= $1107 // $ *= $ float 
+0086: $1108 = $1106 // $ = $ float 
+0059: $1108 += $1107 // $ += $ float 
+01FB: $1109 = square_root $1108 
+030E: save_jump_distance $1109 
+008C: $1110 = float_to_integer $1109 
+0061: $1097 -= $1103 // $ -= $ float 
+030F: save_jump_height $1097 
+008C: $1096 = float_to_integer $1097 
+008D: $1072 = integer_to_float $1110 
+0061: $1109 -= $1072 // $ -= $ float 
+0086: $1072 = $1109 // $ = $ float 
+$1072 *= 100.0 // $ *= float 
+008C: $1111 = float_to_integer $1072 
+008D: $1072 = integer_to_float $1096 
+0061: $1097 -= $1072 // $ -= $ float 
+0086: $1072 = $1097 // $ = $ float 
+$1072 *= 100.0 // $ *= float 
+008C: $1112 = float_to_integer $1072 
+0310: save_jump_flips $1091 
+0311: save_jump_rotation $1087 
+
+:HJ_1837
+if 
+  $1097 > 4.0 // $ > float 
+else_jump @HJ_1865 
+$1094 += 1 // $ += int 
+
+:HJ_1865
+if 
+  $1110 > 40 // $ > int 
+else_jump @HJ_1890 
+$1094 += 1 // $ += int 
+
+:HJ_1890
+if 
+  $1091 > 1 // $ > int 
+else_jump @HJ_1915 
+$1094 += 1 // $ += int 
+
+:HJ_1915
+if 
+  $1087 > 360 // $ > int 
+else_jump @HJ_1941 
+$1094 += 1 // $ += int 
+
+:HJ_1941
+if 
+  $1093 > 60 // $ > int 
+else_jump @HJ_1966 
+$1089 = 1 // $ = int 
+
+:HJ_1966
+if 
+  $1094 > 0 // $ > int 
+else_jump @HJ_2475 
+0084: $1123 = $1091 // $ = $ int 
+$1123 *= 180 // $ *= int 
+0058: $1123 += $1087 // $ += $ int 
+0084: $1124 = $1110 // $ = $ int 
+$1124 *= 6 // $ *= int 
+0058: $1123 += $1124 // $ += $ int 
+0084: $1124 = $1096 // $ = $ int 
+$1124 *= 45 // $ *= int 
+0058: $1123 += $1124 // $ += $ int 
+if 
+  $1089 == 1 // $ == int 
+else_jump @HJ_2079 
+$1123 *= 2 // $ *= int 
+
+:HJ_2079
+0068: $1123 *= $1094 // $ *= $ int 
+$1123 /= 3 // $ /= int 
+$1123 /= 5 // $ /= int 
+Player.Money($PLAYER_CHAR) += $1123
+if 
+  $1094 == 1 // $ == int 
+else_jump @HJ_2149 
+01E4: text_1number_lowpriority 'HJ_IS' $1123 time 2000 1  // INSANE STUNT BONUS: $~1~
+0312: save_jump_type 1 
+
+:HJ_2149
+if 
+  $1094 == 2 // $ == int 
+else_jump @HJ_2189 
+01E4: text_1number_lowpriority 'HJ_DIS' $1123 time 2000 1  // DOUBLE INSANE STUNT BONUS: $~1~
+0312: save_jump_type 3 
+
+:HJ_2189
+if 
+  $1094 == 3 // $ == int 
+else_jump @HJ_2229 
+01E4: text_1number_lowpriority 'HJ_TIS' $1123 time 2000 1  // TRIPLE INSANE STUNT BONUS: $~1~
+0312: save_jump_type 5 
+
+:HJ_2229
+if 
+  $1094 == 4 // $ == int 
+else_jump @HJ_2269 
+01E4: text_1number_lowpriority 'HJ_QIS' $1123 time 2000 1  // QUADRUPLE INSANE STUNT BONUS: $~1~
+0312: save_jump_type 7 
+
+:HJ_2269
+if 
+0424:   metric 
+else_jump @HJ_2380 
+if 
+  $1089 == 1 // $ == int 
+else_jump @HJ_2340 
+0308: text_6numbers_lowpriority 'HJSTATW' $1110 $1111 $1096 $1112 $1091 $1087 time 5000 5  // Distance: ~1~.~1~m Height: ~1~.~1~m Flips: ~1~ Rotation: ~1~_ And what a great landing!
+jump @HJ_2373 
+
+:HJ_2340
+0308: text_6numbers_lowpriority 'HJSTAT' $1110 $1111 $1096 $1112 $1091 $1087 time 5000 5  // Distance: ~1~.~1~m Height: ~1~.~1~m Flips: ~1~ Rotation: ~1~_
+
+:HJ_2373
+jump @HJ_2475 
+
+:HJ_2380
+042D: $1110 = meters $1110 to_feet // int 
+042D: $1096 = meters $1096 to_feet // int 
+if 
+  $1089 == 1 // $ == int 
+else_jump @HJ_2448 
+0302: text_4numbers_lowpriority 'HJSTAWF' $1110 $1096 $1091 $1087 time 5000 5  // Distance: ~1~ft Height: ~1~ft Flips: ~1~ Rotation: ~1~_ And what a great landing!
+jump @HJ_2475 
+
+:HJ_2448
+0302: text_4numbers_lowpriority 'HJSTATF' $1110 $1096 $1091 $1087 time 5000 5  // Distance: ~1~ft Height: ~1~ft Flips: ~1~ Rotation: ~1~_
+
+:HJ_2475
+jump @HJ_21 
+end_thread 
 
 //-------------Mission 0---------------
 // Originally: Initial
@@ -19148,104 +20681,16 @@ jump @GET_10
 :INITIAL
 thread 'INITIAL' 
 $DEFAULT_WAIT_TIME = 250 // $ = int 
-$1066 = 0.0625 // $ = float 
-0086: $1067 = $1066 // $ = $ float 
-$1067 /= 2.0 // $ /= float 
-0086: $1068 = $1067 // $ = $ float 
-$1068 /= 2.0 // $ /= float 
-$1069 = 0 // $ = int 
-$1070 = 0 // $ = int 
-$1071 = 0 // $ = int 
-$846 = 0 // $ = int 
-$847 = 0 // $ = int 
-$1072 = 0 // $ = int 
-$1073 = 0 // $ = int 
-$1074 = 0 // $ = int 
-$1075 = 0 // $ = int 
-$1076 = 0 // $ = int 
-$1077 = 0 // $ = int 
-$1078 = 0 // $ = int 
-$1079 = 0 // $ = int 
-$1080 = 0 // $ = int 
-$1081 = 0 // $ = int 
-$1082 = 0 // $ = int 
-$1083 = 0 // $ = int 
-$1084 = 0 // $ = int 
-$1085 = 0 // $ = int 
-$267 = 0 // $ = int 
-$1086 = 0 // $ = int 
-$1087 = 0 // $ = int 
-$1088 = 0 // $ = int 
-$705 = 1 // $ = int 
-$1089 = 0 // $ = int 
-$266 = 1 // $ = int 
-$PASSED_LAW1_THE_PARTY = 1 // $ = int 
-$PASSED_COK1_THE_CHASE = 0 // $ = int 
-$PASSED_COK2_PHNOM_PENH_86 = 0 // $ = int 
-$PASSED_COK3_THE_FASTEST_BOAT = 0 // $ = int 
-$PASSED_COK4_SUPPLY_AND_DEMAND = 0 // $ = int 
-$PASSED_ASS1_RUB_OUT = 1 // $ = int 
-$1090 = 0 // $ = int 
-$PASSED_KENT1_DEATH_ROW = 0 // $ = int 
-$PASSED_TEX1_FOUR_IRON = 0 // $ = int 
-$708 = 1 // $ = int 
-$720 = 1 // $ = int 
-$1091 = 0 // $ = int 
-$694 = 1 // $ = int 
-$1092 = 0 // $ = int 
-$541 = 1 // $ = int 
-$1093 = 0 // $ = int 
-$1094 = 0 // $ = int 
-$717 = 1 // $ = int 
-$697 = 1 // $ = int 
-$700 = 1 // $ = int 
-$1095 = 0 // $ = int 
-$1096 = 0 // $ = int 
-$1097 = 0 // $ = int 
-$1098 = 0 // $ = int 
-$688 = 1 // $ = int 
-$848 = 0 // $ = int 
-$850 = 0 // $ = int 
-$852 = 0 // $ = int 
-$1099 = 0 // $ = int 
-$1100 = 0 // $ = int 
-$1101 = 0 // $ = int 
-$1102 = 0 // $ = int 
-$PASSED_HAT1_JUJU_SCRAMBLE = 0 // $ = int 
-$PASSED_HAT2_BOMBS_AWAY = 0 // $ = int 
-$PASSED_HAT3_DIRTY_LICKINS = 0 // $ = int 
-$PASSED_ROCK1_LOVE_JUICE = 0 // $ = int 
-$PASSED_ROCK2_PSYCHO_KILLER = 0 // $ = int 
-$PASSED_ROCK3_PUBLICITY_TOUR = 0 // $ = int 
-$1103 = 0 // $ = int 
-$1104 = 0 // $ = int 
-$1105 = 0 // $ = int 
-$1106 = 0 // $ = int 
-$1107 = 0 // $ = int 
-$1108 = 0 // $ = int 
-$1109 = 0 // $ = int 
-$1110 = 0 // $ = int 
-$1111 = 0 // $ = int 
-$1112 = 0 // $ = int 
-$1113 = 0 // $ = int 
-$1114 = 0 // $ = int 
-$1115 = 0 // $ = int 
-$1116 = 0 // $ = int 
-$ONMISSION = 0 // $ = int 
-$1117 = 0 // $ = int 
-$1118 = 0 // $ = int 
-$1119 = 0 // $ = int 
-$1120 = 0 // $ = int 
-$1121 = 0 // $ = int 
-$1122 = 0 // $ = int 
-$1123 = 0 // $ = int 
-$1124 = 0 // $ = int 
-$1125 = 0 // $ = int 
-$1126 = 0 // $ = int 
-$1127 = 0 // $ = int 
+$1125 = 0.0625 // $ = float 
+0086: $1126 = $1125 // $ = $ float 
+$1126 /= 2.0 // $ /= float 
+0086: $1127 = $1126 // $ = $ float 
+$1127 /= 2.0 // $ /= float 
 $1128 = 0 // $ = int 
 $1129 = 0 // $ = int 
 $1130 = 0 // $ = int 
+$846 = 0 // $ = int 
+$847 = 0 // $ = int 
 $1131 = 0 // $ = int 
 $1132 = 0 // $ = int 
 $1133 = 0 // $ = int 
@@ -19260,23 +20705,51 @@ $1141 = 0 // $ = int
 $1142 = 0 // $ = int 
 $1143 = 0 // $ = int 
 $1144 = 0 // $ = int 
+$267 = 0 // $ = int 
 $1145 = 0 // $ = int 
 $1146 = 0 // $ = int 
 $1147 = 0 // $ = int 
+$705 = 1 // $ = int 
 $1148 = 0 // $ = int 
+$266 = 1 // $ = int 
+$PASSED_LAW1_THE_PARTY = 1 // $ = int 
+$PASSED_COK1_THE_CHASE = 0 // $ = int 
+$PASSED_COK2_PHNOM_PENH_86 = 0 // $ = int 
+$PASSED_COK3_THE_FASTEST_BOAT = 0 // $ = int 
+$PASSED_COK4_SUPPLY_AND_DEMAND = 0 // $ = int 
+$PASSED_ASS1_RUB_OUT = 1 // $ = int 
 $1149 = 0 // $ = int 
+$PASSED_KENT1_DEATH_ROW = 0 // $ = int 
+$PASSED_TEX1_FOUR_IRON = 0 // $ = int 
+$708 = 1 // $ = int 
+$720 = 1 // $ = int 
 $1150 = 0 // $ = int 
+$694 = 1 // $ = int 
 $1151 = 0 // $ = int 
+$541 = 1 // $ = int 
 $1152 = 0 // $ = int 
 $1153 = 0 // $ = int 
+$717 = 1 // $ = int 
+$697 = 1 // $ = int 
+$700 = 1 // $ = int 
 $1154 = 0 // $ = int 
-$1155 = -425.0 // $ = float 
-$1156 = 1410.0 // $ = float 
-$1157 = 10.0 // $ = float 
+$1155 = 0 // $ = int 
+$1156 = 0 // $ = int 
+$1157 = 0 // $ = int 
+$688 = 1 // $ = int 
+$848 = 0 // $ = int 
+$850 = 0 // $ = int 
+$852 = 0 // $ = int 
 $1158 = 0 // $ = int 
 $1159 = 0 // $ = int 
 $1160 = 0 // $ = int 
 $1161 = 0 // $ = int 
+$PASSED_HAT1_JUJU_SCRAMBLE = 0 // $ = int 
+$PASSED_HAT2_BOMBS_AWAY = 0 // $ = int 
+$PASSED_HAT3_DIRTY_LICKINS = 0 // $ = int 
+$PASSED_ROCK1_LOVE_JUICE = 0 // $ = int 
+$PASSED_ROCK2_PSYCHO_KILLER = 0 // $ = int 
+$PASSED_ROCK3_PUBLICITY_TOUR = 0 // $ = int 
 $1162 = 0 // $ = int 
 $1163 = 0 // $ = int 
 $1164 = 0 // $ = int 
@@ -19290,10 +20763,9 @@ $1171 = 0 // $ = int
 $1172 = 0 // $ = int 
 $1173 = 0 // $ = int 
 $1174 = 0 // $ = int 
-$283 = 0 // $ = int 
 $1175 = 0 // $ = int 
+$ONMISSION = 0 // $ = int 
 $1176 = 0 // $ = int 
-$710 = 1 // $ = int 
 $1177 = 0 // $ = int 
 $1178 = 0 // $ = int 
 $1179 = 0 // $ = int 
@@ -19301,26 +20773,24 @@ $1180 = 0 // $ = int
 $1181 = 0 // $ = int 
 $1182 = 0 // $ = int 
 $1183 = 0 // $ = int 
-$1184 = 99999999 // $ = int 
-$1185 = 99999999 // $ = int 
-$1186 = 99999999 // $ = int 
-$1187 = 99999999 // $ = int 
-$1188 = 99999999 // $ = int 
-$1189 = 99999999 // $ = int 
-$1190 = 99999999 // $ = int 
-$1191 = 99999999 // $ = int 
-$1192 = 99999999 // $ = int 
-$1193 = 99999999 // $ = int 
-$1194 = 99999999 // $ = int 
-$1195 = 99999999 // $ = int 
-$1196 = 99999999 // $ = int 
-$1197 = 99999999 // $ = int 
-$1198 = 99999999 // $ = int 
-$1199 = 99999999 // $ = int 
+$1184 = 0 // $ = int 
+$1185 = 0 // $ = int 
+$1186 = 0 // $ = int 
+$1187 = 0 // $ = int 
+$1188 = 0 // $ = int 
+$1189 = 0 // $ = int 
+$1190 = 0 // $ = int 
+$1191 = 0 // $ = int 
+$1192 = 0 // $ = int 
+$1193 = 0 // $ = int 
+$1194 = 0 // $ = int 
+$1195 = 0 // $ = int 
+$1196 = 0 // $ = int 
+$1197 = 0 // $ = int 
+$1198 = 0 // $ = int 
+$1199 = 0 // $ = int 
 $1200 = 0 // $ = int 
-$260 = 0 // $ = int 
 $1201 = 0 // $ = int 
-$690 = 1 // $ = int 
 $1202 = 0 // $ = int 
 $1203 = 0 // $ = int 
 $1204 = 0 // $ = int 
@@ -19329,21 +20799,84 @@ $1206 = 0 // $ = int
 $1207 = 0 // $ = int 
 $1208 = 0 // $ = int 
 $1209 = 0 // $ = int 
-$1210 = -569.1451 // $ = float 
-$1211 = 851.0923 // $ = float 
-$1212 = 22.8402 // $ = float 
-$1213 = 28.4463 // $ = float 
-$1214 = -1311.761 // $ = float 
-$1215 = 16.4712 // $ = float 
-$1216 = 375.845 // $ = float 
-$1217 = 332.9194 // $ = float 
-$1218 = 11.5155 // $ = float 
-$1219 = -886.5938 // $ = float 
-$1220 = 236.5693 // $ = float 
-$1221 = 13.9773 // $ = float 
-$1222 = -244.6 // $ = float 
-$1223 = -491.3 // $ = float 
-$1224 = 10.6 // $ = float 
+$1210 = 0 // $ = int 
+$1211 = 0 // $ = int 
+$1212 = 0 // $ = int 
+$1213 = 0 // $ = int 
+$1214 = -425.0 // $ = float 
+$1215 = 1410.0 // $ = float 
+$1216 = 10.0 // $ = float 
+$1217 = 0 // $ = int 
+$1218 = 0 // $ = int 
+$1219 = 0 // $ = int 
+$1220 = 0 // $ = int 
+$1221 = 0 // $ = int 
+$1222 = 0 // $ = int 
+$1223 = 0 // $ = int 
+$1224 = 0 // $ = int 
+$1225 = 0 // $ = int 
+$1226 = 0 // $ = int 
+$1227 = 0 // $ = int 
+$1228 = 0 // $ = int 
+$1229 = 0 // $ = int 
+$1230 = 0 // $ = int 
+$1231 = 0 // $ = int 
+$1232 = 0 // $ = int 
+$1233 = 0 // $ = int 
+$283 = 0 // $ = int 
+$1234 = 0 // $ = int 
+$1235 = 0 // $ = int 
+$710 = 1 // $ = int 
+$1236 = 0 // $ = int 
+$1237 = 0 // $ = int 
+$1238 = 0 // $ = int 
+$1239 = 0 // $ = int 
+$1240 = 0 // $ = int 
+$1241 = 0 // $ = int 
+$1242 = 0 // $ = int 
+$1243 = 99999999 // $ = int 
+$1244 = 99999999 // $ = int 
+$1245 = 99999999 // $ = int 
+$1246 = 99999999 // $ = int 
+$1247 = 99999999 // $ = int 
+$1248 = 99999999 // $ = int 
+$1249 = 99999999 // $ = int 
+$1250 = 99999999 // $ = int 
+$1251 = 99999999 // $ = int 
+$1252 = 99999999 // $ = int 
+$1253 = 99999999 // $ = int 
+$1254 = 99999999 // $ = int 
+$1255 = 99999999 // $ = int 
+$1256 = 99999999 // $ = int 
+$1257 = 99999999 // $ = int 
+$1258 = 99999999 // $ = int 
+$1259 = 0 // $ = int 
+$260 = 0 // $ = int 
+$1260 = 0 // $ = int 
+$690 = 1 // $ = int 
+$1261 = 0 // $ = int 
+$1262 = 0 // $ = int 
+$1263 = 0 // $ = int 
+$1264 = 0 // $ = int 
+$1265 = 0 // $ = int 
+$1266 = 0 // $ = int 
+$1267 = 0 // $ = int 
+$1268 = 0 // $ = int 
+$1269 = -569.1451 // $ = float 
+$1270 = 851.0923 // $ = float 
+$1271 = 22.8402 // $ = float 
+$1272 = 28.4463 // $ = float 
+$1273 = -1311.761 // $ = float 
+$1274 = 16.4712 // $ = float 
+$1275 = 375.845 // $ = float 
+$1276 = 332.9194 // $ = float 
+$1277 = 11.5155 // $ = float 
+$1278 = -886.5938 // $ = float 
+$1279 = 236.5693 // $ = float 
+$1280 = 13.9773 // $ = float 
+$1281 = -244.6 // $ = float 
+$1282 = -491.3 // $ = float 
+$1283 = 10.6 // $ = float 
 $340 = -63.4 // $ = float 
 $341 = -1481.8 // $ = float 
 $342 = 9.4 // $ = float 
@@ -19362,70 +20895,70 @@ $380 = 18.0 // $ = float
 $381 = -967.5 // $ = float 
 $382 = -693.2 // $ = float 
 $383 = 10.3 // $ = float 
-$1225 = 36.798 // $ = float 
-$1226 = -1024.404 // $ = float 
-$1227 = 9.451 // $ = float 
-$1228 = 482.5293 // $ = float 
-$1229 = 244.276 // $ = float 
-$1230 = 10.09 // $ = float 
-$1231 = 38.244 // $ = float 
-$1232 = -1024.251 // $ = float 
-$1233 = 9.451 // $ = float 
-$1234 = -1481.872 // $ = float 
-$1235 = -825.3049 // $ = float 
-$1236 = 13.8777 // $ = float 
-$1237 = -978.0145 // $ = float 
-$1238 = -530.7043 // $ = float 
-$1239 = 9.9513 // $ = float 
-$1240 = 893.5 // $ = float 
-$1241 = -306.1 // $ = float 
-$1242 = -100.0 // $ = float 
-$1243 = 103.0 // $ = float 
-$1244 = -484.2 // $ = float 
-$1245 = -100.0 // $ = float 
-$1246 = -665.0 // $ = float 
-$1247 = -6.5 // $ = float 
-$1248 = -100.0 // $ = float 
+$1284 = 36.798 // $ = float 
+$1285 = -1024.404 // $ = float 
+$1286 = 9.451 // $ = float 
+$1287 = 482.5293 // $ = float 
+$1288 = 244.276 // $ = float 
+$1289 = 10.09 // $ = float 
+$1290 = 38.244 // $ = float 
+$1291 = -1024.251 // $ = float 
+$1292 = 9.451 // $ = float 
+$1293 = -1481.872 // $ = float 
+$1294 = -825.3049 // $ = float 
+$1295 = 13.8777 // $ = float 
+$1296 = -978.0145 // $ = float 
+$1297 = -530.7043 // $ = float 
+$1298 = 9.9513 // $ = float 
+$1299 = 893.5 // $ = float 
+$1300 = -306.1 // $ = float 
+$1301 = -100.0 // $ = float 
+$1302 = 103.0 // $ = float 
+$1303 = -484.2 // $ = float 
+$1304 = -100.0 // $ = float 
+$1305 = -665.0 // $ = float 
+$1306 = -6.5 // $ = float 
+$1307 = -100.0 // $ = float 
 $218 = 925.0 // $ = float 
 $219 = -359.5 // $ = float 
 $220 = -100.0 // $ = float 
-$1249 = 379.0 // $ = float 
-$1250 = -493.8 // $ = float 
-$1251 = -100.0 // $ = float 
-$1252 = -1128.0 // $ = float 
-$1253 = 32.5 // $ = float 
-$1254 = -100.0 // $ = float 
-$1255 = 0 // $ = int 
-$1256 = 1 // $ = int 
+$1308 = 379.0 // $ = float 
+$1309 = -493.8 // $ = float 
+$1310 = -100.0 // $ = float 
+$1311 = -1128.0 // $ = float 
+$1312 = 32.5 // $ = float 
+$1313 = -100.0 // $ = float 
+$1314 = 0 // $ = int 
+$1315 = 1 // $ = int 
 $356 = 0 // $ = int 
-$1257 = 0 // $ = int 
-$1258 = 0 // $ = int 
-$1259 = 0 // $ = int 
-$1260 = 0 // $ = int 
-$1261 = 0 // $ = int 
-$1262 = 0 // $ = int 
-$1263 = 0 // $ = int 
-$1264 = 0 // $ = int 
-$1265 = 0 // $ = int 
-$1266 = 0 // $ = int 
-$1267 = 0 // $ = int 
-$1268 = 999999 // $ = int 
-$1269 = 999999 // $ = int 
-$1270 = 999999 // $ = int 
+$1316 = 0 // $ = int 
+$1317 = 0 // $ = int 
+$1318 = 0 // $ = int 
+$1319 = 0 // $ = int 
+$1320 = 0 // $ = int 
+$1321 = 0 // $ = int 
+$1322 = 0 // $ = int 
+$1323 = 0 // $ = int 
+$1324 = 0 // $ = int 
+$1325 = 0 // $ = int 
+$1326 = 0 // $ = int 
+$1327 = 999999 // $ = int 
+$1328 = 999999 // $ = int 
+$1329 = 999999 // $ = int 
 $706 = 1 // $ = int 
 $704 = 1 // $ = int 
 $259 = 0 // $ = int 
-$1271 = 0 // $ = int 
-04CE: $1272 = create_icon_marker_without_sphere 16 at $340 $341 $342 
-04CE: $1273 = create_icon_marker_without_sphere 16 at 364.8 1051.5 21.0 
-04CE: $1274 = create_icon_marker_without_sphere 16 at $363 $364 $365 
-04CE: $1275 = create_icon_marker_without_sphere 18 at $367 $368 $369 
-04CE: $1276 = create_icon_marker_without_sphere 18 at 364.8 1086.5 21.0 
-04CE: $1277 = create_icon_marker_without_sphere 18 at $381 $382 $383 
-04CE: $1278 = create_icon_marker_without_sphere 27 at -3.8 -1265.8 12.0 
-04CE: $1279 = create_icon_marker_without_sphere 27 at 319.0 441.3 12.0 
-04CE: $1280 = create_icon_marker_without_sphere 27 at -903.0 -1261.1 12.0 
-04CE: $1281 = create_icon_marker_without_sphere 27 at -876.2 -105.5 12.0 
+$1330 = 0 // $ = int 
+04CE: $1331 = create_icon_marker_without_sphere 16 at $340 $341 $342 
+04CE: $1332 = create_icon_marker_without_sphere 16 at 364.8 1051.5 21.0 
+04CE: $1333 = create_icon_marker_without_sphere 16 at $363 $364 $365 
+04CE: $1334 = create_icon_marker_without_sphere 18 at $367 $368 $369 
+04CE: $1335 = create_icon_marker_without_sphere 18 at 364.8 1086.5 21.0 
+04CE: $1336 = create_icon_marker_without_sphere 18 at $381 $382 $383 
+04CE: $1337 = create_icon_marker_without_sphere 27 at -3.8 -1265.8 12.0 
+04CE: $1338 = create_icon_marker_without_sphere 27 at 319.0 441.3 12.0 
+04CE: $1339 = create_icon_marker_without_sphere 27 at -903.0 -1261.1 12.0 
+04CE: $1340 = create_icon_marker_without_sphere 27 at -876.2 -105.5 12.0 
 016C: restart_if_wasted_at 493.5 703.1 11.1 angle 90.0 
 016D: restart_if_busted_at 508.9 506.8 10.3 angle 174.0 
 016C: restart_if_wasted_at -108.3 -974.4 9.4 angle 283.9 
@@ -19833,546 +21366,546 @@ $522 = Object.Init(#STRIPCLBDRCLSD, 97.203, -1469.731, 10.578)
 Object.RemoveFromMissionCleanupList($522)
 $525 = Object.Init(#STRPBCKDRCLSD, 68.988, -1444.242, 10.727)
 Object.RemoveFromMissionCleanupList($525)
-$1282 = Object.Init(#ELECTRICGATE, -1114.1, 67.0, 10.1)
-Object.Angle($1282) = 90.0
-Object.RemoveFromMissionCleanupList($1282)
-$1283 = Object.Init(#ELECTRICGATE, 298.0, -313.6, 11.0)
-Object.RemoveFromMissionCleanupList($1283)
-$1284 = Object.Init(#ELECTRICGATE, -989.9, -1252.2, 10.4)
-Object.Angle($1284) = 249.0
-Object.RemoveFromMissionCleanupList($1284)
-$1285 = Object.Init(#DK_CAMJONESDOOR, -837.134, -901.672, 12.03)
-Object.RemoveFromMissionCleanupList($1285)
-Object.Angle($1285) = 0.0
-$1286 = Object.Init(#DTS_GS_LIFTDOORL, -559.476, 784.807, 23.279)
-Object.RemoveFromMissionCleanupList($1286)
-$1287 = Object.Init(#DTS_GS_LIFTDOORR, -559.476, 779.64, 23.279)
-Object.RemoveFromMissionCleanupList($1287)
-$1288 = Object.Init(#DTS_GS_LIFTDOORL, -553.563, 790.595, 97.917)
-Object.RemoveFromMissionCleanupList($1288)
-$1289 = Object.Init(#DTS_GS_LIFTDOORR, -553.563, 785.427, 97.917)
-Object.RemoveFromMissionCleanupList($1289)
-$1290 = Object.Init(#DTS_SPOT_A, -354.531, 989.975, 45.8)
-034D: rotate_object $1290 from_angle 160.0 to_angle 160.0 flag 0 
-Object.RemoveFromMissionCleanupList($1290)
-$1291 = Object.Init(#DTS_SOAPYTITWANK_A, -324.797, 991.184, 71.708)
-Object.RemoveFromMissionCleanupList($1291)
-$1292 = Object.Init(#DT_GSPOT_STAIRS, -573.897, 1374.25, 15.657)
-Object.RemoveFromMissionCleanupList($1292)
-$1293 = Object.Init(#DT_GSPOT_STAIRS, -367.067, 913.038, 16.058)
-Object.RemoveFromMissionCleanupList($1293)
-034D: rotate_object $1293 from_angle 157.0 to_angle 157.0 flag 0 
-$1294 = Object.Init(#OD_CELLDOOR02, 384.098, -505.893, 9.68)
-0566: object $1294 set_interior 12 
-Object.RemoveFromMissionCleanupList($1294)
-Object.Angle($1294) = 0.0
-$1295 = Object.Init(#NHAITPLATDR, -981.114, 265.419, 8.939)
-Object.RemoveFromMissionCleanupList($1295)
-$1296 = Object.Init(#NHAITPLATDRR, -981.114, 267.607, 8.937)
-Object.RemoveFromMissionCleanupList($1296)
-$1297 = Object.Init(#SPAD_DR_CLOSED1, 465.375, 30.336, 33.181)
-Object.RemoveFromMissionCleanupList($1297)
-$1298 = Object.Init(#SPAD_DR_CLOSED2, 465.375, 30.336, 33.181)
-Object.RemoveFromMissionCleanupList($1298)
-$1299 = Object.Init(#SPAD_DR_CLOSED3, 464.663, 30.336, 23.881)
-Object.RemoveFromMissionCleanupList($1299)
-$1300 = Object.Init(#PH_BUILD_DR_CLOSED, 569.925, 52.0, 14.616)
-Object.RemoveFromMissionCleanupList($1300)
-034D: rotate_object $1300 from_angle 270.0 to_angle 270.0 flag 0 
-$1301 = Object.Init(#ELECTRICGATE, -973.664, -519.65, 10.092)
-Object.Angle($1301) = 98.5
-Object.RemoveFromMissionCleanupList($1301)
-$1302 = Object.Init(#DTS_BBDOOR, -598.017, 651.207, 12.025)
-Object.RemoveFromMissionCleanupList($1302)
-$1303 = Object.Init(#GOLF_GATESOPEN, 107.81, 228.072, 20.989)
-Object.RemoveFromMissionCleanupList($1303)
-$1304 = Object.Init(#PRINTDOOOR, -1063.773, -278.932, 13.024)
-Object.RemoveFromMissionCleanupList($1304)
-$1305 = Object.Init(#UNROCKETED_WIN1, -899.851, -341.061, 14.318)
-0566: object $1305 set_interior 3 
-Object.RemoveFromMissionCleanupList($1305)
-$1306 = Object.Init(#BNK_GRILL01, -899.214, -333.656, 21.233)
-0566: object $1306 set_interior 3 
-Object.CollisionDetection($1306) = False
-Object.ToggleInMovingList($1306) = False
-Object.RemoveFromMissionCleanupList($1306)
-$1307 = Object.Init(#BNK_GRILL01, -899.214, -348.466, 21.233)
-0566: object $1307 set_interior 3 
-Object.CollisionDetection($1307) = False
-Object.ToggleInMovingList($1307) = False
-Object.RemoveFromMissionCleanupList($1307)
-$1308 = Object.Init(#BNK_GRILL01, -907.307, -336.618, 23.987)
-0566: object $1308 set_interior 3 
-Object.CollisionDetection($1308) = False
-Object.ToggleInMovingList($1308) = False
-Object.RemoveFromMissionCleanupList($1308)
-$1309 = Object.Init(#BNK_GRILL01, -907.307, -345.504, 23.987)
-0566: object $1309 set_interior 3 
-Object.CollisionDetection($1309) = False
-Object.ToggleInMovingList($1309) = False
-Object.RemoveFromMissionCleanupList($1309)
-$1310 = Object.Init(#BNK_GRILL01, -915.401, -336.6184, 23.987)
-0566: object $1310 set_interior 3 
-Object.CollisionDetection($1310) = False
-Object.ToggleInMovingList($1310) = False
-Object.RemoveFromMissionCleanupList($1310)
-$1311 = Object.Init(#BNK_GRILL01, -915.401, -345.5, 23.987)
-0566: object $1311 set_interior 3 
-Object.CollisionDetection($1311) = False
-Object.ToggleInMovingList($1311) = False
-Object.RemoveFromMissionCleanupList($1311)
-014B: $1312 = init_car_generator #ADMIRAL 8 8 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at -401.2715 -534.6655 11.7534 angle 149.2032 
-014C: set_parked_car_generator $1312 cars_to_generate_to 101 
-014B: $1313 = init_car_generator #VICECHEE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -870.4673 -717.2427 10.1069 angle 94.1213 
-014C: set_parked_car_generator $1313 cars_to_generate_to 101 
-014B: $1314 = init_car_generator #LOVEFIST -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -865.2949 1158.359 9.8204 angle 2.347 
-014C: set_parked_car_generator $1314 cars_to_generate_to 101 
-014B: $1315 = init_car_generator #FLATBED -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1034.889 -1452.775 10.7 angle 248.8739 
-014C: set_parked_car_generator $1315 cars_to_generate_to 101 
-014B: $1316 = init_car_generator #DINGHY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 403.0317 -178.5811 5.7 angle 350.0462 
-014C: set_parked_car_generator $1316 cars_to_generate_to 101 
-014B: $1317 = init_car_generator #DINGHY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 231.0536 -130.1794 5.7 angle 357.5423 
-014C: set_parked_car_generator $1317 cars_to_generate_to 101 
-014B: $1318 = init_car_generator #MAVERICK -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -853.6609 1353.785 68.6104 angle 0.0 
-014C: set_parked_car_generator $1318 cars_to_generate_to 101 
-014B: $1319 = init_car_generator #PREDATOR -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -69.2982 72.6166 5.7 angle 104.6175 
-014C: set_parked_car_generator $1319 cars_to_generate_to 101 
-014B: $1320 = init_car_generator #TROPIC -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 237.4778 302.2366 5.7 angle 86.2011 
-014C: set_parked_car_generator $1320 cars_to_generate_to 101 
-014B: $1321 = init_car_generator #TRASH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1268.25 83.833 10.4182 angle 179.549 
-014C: set_parked_car_generator $1321 cars_to_generate_to 101 
-014B: $1322 = init_car_generator #SECURICA -1 -1 force_spawn 0 alarm 0 door_lock 70 min_delay 0 max_delay 10000 at -870.2545 -353.9059 10.0475 angle 357.8359 
-014C: set_parked_car_generator $1322 cars_to_generate_to 101 
-014B: $1323 = init_car_generator #BUS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1184.36 -1312.62 13.7274 angle 64.6821 
-014C: set_parked_car_generator $1323 cars_to_generate_to 101 
-014B: $1324 = init_car_generator #BARRACKS -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -1709.024 -287.6807 13.8276 angle 0.0 
-014C: set_parked_car_generator $1324 cars_to_generate_to 101 
-014B: $1325 = init_car_generator #BARRACKS -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -1742.649 -214.2183 13.8276 angle 102.0596 
-014C: set_parked_car_generator $1325 cars_to_generate_to 101 
-014B: $1326 = init_car_generator #PATRIOT 43 72 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1701.372 -234.7718 13.8276 angle 87.8929 
-014C: set_parked_car_generator $1326 cars_to_generate_to 101 
-014B: $1327 = init_car_generator #SENTINEL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1033.211 -856.8564 12.0452 angle 210.278 
-014C: set_parked_car_generator $1327 cars_to_generate_to 101 
-014B: $1328 = init_car_generator #BLOODRB -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1131.4 1236.6 8.4 angle 241.0 
-014C: set_parked_car_generator $1328 cars_to_generate_to 101 
-014B: $1329 = init_car_generator #BLOODRA -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1115.4 1265.1 8.4 angle 238.0 
-014C: set_parked_car_generator $1329 cars_to_generate_to 101 
-014B: $1330 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1210 $1211 $1212 angle 88.2256 
-014C: set_parked_car_generator $1330 cars_to_generate_to 101 
-014B: $1331 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1213 $1214 $1215 angle 0.0 
-014C: set_parked_car_generator $1331 cars_to_generate_to 101 
-014B: $1332 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1216 $1217 $1218 angle 0.0 
-014C: set_parked_car_generator $1332 cars_to_generate_to 101 
-014B: $1333 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1219 $1220 $1221 angle 180.0 
-014C: set_parked_car_generator $1333 cars_to_generate_to 101 
-014B: $1334 = init_car_generator #OCEANIC 6 1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 242.6 -1274.6 10.0 angle 165.0 
-014C: set_parked_car_generator $1334 cars_to_generate_to 101 
-014B: $1335 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 11.5 -1382.0 9.6 angle 261.0 
-014C: set_parked_car_generator $1335 cars_to_generate_to 101 
-014B: $1336 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 19.8 -991.8 9.7 angle 0.0 
-014C: set_parked_car_generator $1336 cars_to_generate_to 101 
-014B: $1337 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -6.4 -991.3 9.7 angle 180.0 
-014C: set_parked_car_generator $1337 cars_to_generate_to 101 
-014B: $1338 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 12.8 -1015.1 9.7 angle 180.0 
-014C: set_parked_car_generator $1338 cars_to_generate_to 101 
-014B: $1339 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at -35.7 -1013.6 9.7 angle 0.0 
-014C: set_parked_car_generator $1339 cars_to_generate_to 101 
-014B: $1340 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 81.3 -871.8 9.7 angle 57.0 
-014C: set_parked_car_generator $1340 cars_to_generate_to 101 
-014B: $1341 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -7.1 -1205.1 9.6 angle 181.0 
-014C: set_parked_car_generator $1341 cars_to_generate_to 101 
-014B: $1342 = init_car_generator #HERMES -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 37.9 -1320.4 9.6 angle 355.0 
-014C: set_parked_car_generator $1342 cars_to_generate_to 101 
-014B: $1343 = init_car_generator #STALLION -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 127.0 -1158.0 32.0 angle 180.0 
-014C: set_parked_car_generator $1343 cars_to_generate_to 101 
-014B: $1344 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 507.4 -308.8 12.8 angle 176.0 
-014C: set_parked_car_generator $1344 cars_to_generate_to 101 
-014B: $1345 = init_car_generator #BANSHEE -1 -1 force_spawn 0 alarm 70 door_lock 0 min_delay 0 max_delay 10000 at 19.8 -1246.9 10.1 angle 0.0 
-014C: set_parked_car_generator $1345 cars_to_generate_to 101 
-014B: $1346 = init_car_generator #TOPFUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 307.9 1254.6 27.5 angle 180.5 
-014C: set_parked_car_generator $1346 cars_to_generate_to 101 
-014B: $1347 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at 277.4 -1175.3 11.0 angle 350.0 
-014C: set_parked_car_generator $1347 cars_to_generate_to 101 
-014B: $1348 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at 278.8 -1074.0 11.0 angle 172.0 
-014C: set_parked_car_generator $1348 cars_to_generate_to 101 
-014B: $1349 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 60 door_lock 0 min_delay 0 max_delay 10000 at 365.3 -837.9 11.0 angle 335.0 
-014C: set_parked_car_generator $1349 cars_to_generate_to 101 
-014B: $1350 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at 237.2 -1377.5 10.9 angle 170.0 
-014C: set_parked_car_generator $1350 cars_to_generate_to 101 
-014B: $1351 = init_car_generator #FAGGIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 127.4 -818.5 9.5 angle 250.6 
-014C: set_parked_car_generator $1351 cars_to_generate_to 101 
-014B: $1352 = init_car_generator #FAGGIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 382.2 -632.8 11.0 angle 9.9 
-014C: set_parked_car_generator $1352 cars_to_generate_to 101 
-014B: $1353 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 235.7 -893.3 11.0 angle 150.0 
-014C: set_parked_car_generator $1353 cars_to_generate_to 101 
-014B: $1354 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 150.6 -995.6 11.0 angle 353.0 
-014C: set_parked_car_generator $1354 cars_to_generate_to 101 
-014B: $1355 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 122.3 -1107.7 9.7 angle 175.0 
-014C: set_parked_car_generator $1355 cars_to_generate_to 101 
-014B: $1356 = init_car_generator #RIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -313.4 -1236.4 5.0 angle 180.0 
-014C: set_parked_car_generator $1356 cars_to_generate_to 101 
-014B: $1357 = init_car_generator #SPEEDER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -328.4 -1317.7 5.0 angle 0.0 
-014C: set_parked_car_generator $1357 cars_to_generate_to 101 
-014B: $1358 = init_car_generator #REEFER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -286.8 -1353.1 5.0 angle 90.0 
-014C: set_parked_car_generator $1358 cars_to_generate_to 101 
-014B: $1359 = init_car_generator #MARQUIS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -314.0 -1318.3 5.0 angle 0.0 
-014C: set_parked_car_generator $1359 cars_to_generate_to 101 
-014B: $1360 = init_car_generator #FAGGIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 376.9 477.0 11.2 angle 282.0 
-014C: set_parked_car_generator $1360 cars_to_generate_to 101 
-014B: $1361 = init_car_generator #TOPFUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 718.465 701.3998 12.394 angle 320.7776 
-014C: set_parked_car_generator $1361 cars_to_generate_to 101 
-014B: $1362 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -256.6 -1275.4 7.4 angle 348.0 
-014C: set_parked_car_generator $1362 cars_to_generate_to 101 
-014B: $1363 = init_car_generator #CHEETAH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -236.6 -1374.6 7.1 angle 280.3 
-014C: set_parked_car_generator $1363 cars_to_generate_to 101 
-014B: $1364 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -168.9 -1392.2 3.1 angle 280.0 
-014C: set_parked_car_generator $1364 cars_to_generate_to 101 
-014B: $1365 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 60 door_lock 0 min_delay 0 max_delay 10000 at -140.2 -1414.1 3.1 angle 108.7 
-014C: set_parked_car_generator $1365 cars_to_generate_to 101 
-014B: $1366 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -142.1 -1373.0 3.1 angle 287.3 
-014C: set_parked_car_generator $1366 cars_to_generate_to 101 
-014B: $1367 = init_car_generator #CADDY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 393.9 -1736.4 8.8 angle 249.6 
-014C: set_parked_car_generator $1367 cars_to_generate_to 101 
-014B: $1368 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 198.2 -504.9 10.9 angle 90.0 
-014C: set_parked_car_generator $1368 cars_to_generate_to 101 
-014B: $1369 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 128.8 -515.2 13.1 angle 270.0 
-014C: set_parked_car_generator $1369 cars_to_generate_to 101 
-014B: $1370 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 215.7 -418.6 9.7 angle 170.0 
-014C: set_parked_car_generator $1370 cars_to_generate_to 101 
-014B: $1371 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 222.7 -351.1 9.9 angle 73.0 
+$1341 = Object.Init(#ELECTRICGATE, -1114.1, 67.0, 10.1)
+Object.Angle($1341) = 90.0
+Object.RemoveFromMissionCleanupList($1341)
+$1342 = Object.Init(#ELECTRICGATE, 298.0, -313.6, 11.0)
+Object.RemoveFromMissionCleanupList($1342)
+$1343 = Object.Init(#ELECTRICGATE, -989.9, -1252.2, 10.4)
+Object.Angle($1343) = 249.0
+Object.RemoveFromMissionCleanupList($1343)
+$1344 = Object.Init(#DK_CAMJONESDOOR, -837.134, -901.672, 12.03)
+Object.RemoveFromMissionCleanupList($1344)
+Object.Angle($1344) = 0.0
+$1345 = Object.Init(#DTS_GS_LIFTDOORL, -559.476, 784.807, 23.279)
+Object.RemoveFromMissionCleanupList($1345)
+$1346 = Object.Init(#DTS_GS_LIFTDOORR, -559.476, 779.64, 23.279)
+Object.RemoveFromMissionCleanupList($1346)
+$1347 = Object.Init(#DTS_GS_LIFTDOORL, -553.563, 790.595, 97.917)
+Object.RemoveFromMissionCleanupList($1347)
+$1348 = Object.Init(#DTS_GS_LIFTDOORR, -553.563, 785.427, 97.917)
+Object.RemoveFromMissionCleanupList($1348)
+$1349 = Object.Init(#DTS_SPOT_A, -354.531, 989.975, 45.8)
+034D: rotate_object $1349 from_angle 160.0 to_angle 160.0 flag 0 
+Object.RemoveFromMissionCleanupList($1349)
+$1350 = Object.Init(#DTS_SOAPYTITWANK_A, -324.797, 991.184, 71.708)
+Object.RemoveFromMissionCleanupList($1350)
+$1351 = Object.Init(#DT_GSPOT_STAIRS, -573.897, 1374.25, 15.657)
+Object.RemoveFromMissionCleanupList($1351)
+$1352 = Object.Init(#DT_GSPOT_STAIRS, -367.067, 913.038, 16.058)
+Object.RemoveFromMissionCleanupList($1352)
+034D: rotate_object $1352 from_angle 157.0 to_angle 157.0 flag 0 
+$1353 = Object.Init(#OD_CELLDOOR02, 384.098, -505.893, 9.68)
+0566: object $1353 set_interior 12 
+Object.RemoveFromMissionCleanupList($1353)
+Object.Angle($1353) = 0.0
+$1354 = Object.Init(#NHAITPLATDR, -981.114, 265.419, 8.939)
+Object.RemoveFromMissionCleanupList($1354)
+$1355 = Object.Init(#NHAITPLATDRR, -981.114, 267.607, 8.937)
+Object.RemoveFromMissionCleanupList($1355)
+$1356 = Object.Init(#SPAD_DR_CLOSED1, 465.375, 30.336, 33.181)
+Object.RemoveFromMissionCleanupList($1356)
+$1357 = Object.Init(#SPAD_DR_CLOSED2, 465.375, 30.336, 33.181)
+Object.RemoveFromMissionCleanupList($1357)
+$1358 = Object.Init(#SPAD_DR_CLOSED3, 464.663, 30.336, 23.881)
+Object.RemoveFromMissionCleanupList($1358)
+$1359 = Object.Init(#PH_BUILD_DR_CLOSED, 569.925, 52.0, 14.616)
+Object.RemoveFromMissionCleanupList($1359)
+034D: rotate_object $1359 from_angle 270.0 to_angle 270.0 flag 0 
+$1360 = Object.Init(#ELECTRICGATE, -973.664, -519.65, 10.092)
+Object.Angle($1360) = 98.5
+Object.RemoveFromMissionCleanupList($1360)
+$1361 = Object.Init(#DTS_BBDOOR, -598.017, 651.207, 12.025)
+Object.RemoveFromMissionCleanupList($1361)
+$1362 = Object.Init(#GOLF_GATESOPEN, 107.81, 228.072, 20.989)
+Object.RemoveFromMissionCleanupList($1362)
+$1363 = Object.Init(#PRINTDOOOR, -1063.773, -278.932, 13.024)
+Object.RemoveFromMissionCleanupList($1363)
+$1364 = Object.Init(#UNROCKETED_WIN1, -899.851, -341.061, 14.318)
+0566: object $1364 set_interior 3 
+Object.RemoveFromMissionCleanupList($1364)
+$1365 = Object.Init(#BNK_GRILL01, -899.214, -333.656, 21.233)
+0566: object $1365 set_interior 3 
+Object.CollisionDetection($1365) = False
+Object.ToggleInMovingList($1365) = False
+Object.RemoveFromMissionCleanupList($1365)
+$1366 = Object.Init(#BNK_GRILL01, -899.214, -348.466, 21.233)
+0566: object $1366 set_interior 3 
+Object.CollisionDetection($1366) = False
+Object.ToggleInMovingList($1366) = False
+Object.RemoveFromMissionCleanupList($1366)
+$1367 = Object.Init(#BNK_GRILL01, -907.307, -336.618, 23.987)
+0566: object $1367 set_interior 3 
+Object.CollisionDetection($1367) = False
+Object.ToggleInMovingList($1367) = False
+Object.RemoveFromMissionCleanupList($1367)
+$1368 = Object.Init(#BNK_GRILL01, -907.307, -345.504, 23.987)
+0566: object $1368 set_interior 3 
+Object.CollisionDetection($1368) = False
+Object.ToggleInMovingList($1368) = False
+Object.RemoveFromMissionCleanupList($1368)
+$1369 = Object.Init(#BNK_GRILL01, -915.401, -336.6184, 23.987)
+0566: object $1369 set_interior 3 
+Object.CollisionDetection($1369) = False
+Object.ToggleInMovingList($1369) = False
+Object.RemoveFromMissionCleanupList($1369)
+$1370 = Object.Init(#BNK_GRILL01, -915.401, -345.5, 23.987)
+0566: object $1370 set_interior 3 
+Object.CollisionDetection($1370) = False
+Object.ToggleInMovingList($1370) = False
+Object.RemoveFromMissionCleanupList($1370)
+014B: $1371 = init_car_generator #ADMIRAL 8 8 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at -401.2715 -534.6655 11.7534 angle 149.2032 
 014C: set_parked_car_generator $1371 cars_to_generate_to 101 
-014B: $1372 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 228.2 -222.2 10.9 angle 250.0 
+014B: $1372 = init_car_generator #VICECHEE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -870.4673 -717.2427 10.1069 angle 94.1213 
 014C: set_parked_car_generator $1372 cars_to_generate_to 101 
-014B: $1373 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 456.5 2.8 10.0 angle 97.4 
+014B: $1373 = init_car_generator #LOVEFIST -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -865.2949 1158.359 9.8204 angle 2.347 
 014C: set_parked_car_generator $1373 cars_to_generate_to 101 
-014B: $1374 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at 478.5 -15.9 9.8 angle 99.7 
+014B: $1374 = init_car_generator #FLATBED -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1034.889 -1452.775 10.7 angle 248.8739 
 014C: set_parked_car_generator $1374 cars_to_generate_to 101 
-014B: $1375 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 413.8 97.7 10.5 angle 301.3 
+014B: $1375 = init_car_generator #DINGHY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 403.0317 -178.5811 5.7 angle 350.0462 
 014C: set_parked_car_generator $1375 cars_to_generate_to 101 
-014B: $1376 = init_car_generator #RUMPO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 483.9 -42.8 9.1 angle 0.0 
+014B: $1376 = init_car_generator #DINGHY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 231.0536 -130.1794 5.7 angle 357.5423 
 014C: set_parked_car_generator $1376 cars_to_generate_to 101 
-014B: $1377 = init_car_generator #FREEWAY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 301.2 265.6 15.3 angle 278.4 
+014B: $1377 = init_car_generator #MAVERICK -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -853.6609 1353.785 68.6104 angle 0.0 
 014C: set_parked_car_generator $1377 cars_to_generate_to 101 
-014B: $1378 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 286.3 394.4 12.3 angle 265.2 
+014B: $1378 = init_car_generator #PREDATOR -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -69.2982 72.6166 5.7 angle 104.6175 
 014C: set_parked_car_generator $1378 cars_to_generate_to 101 
-014B: $1379 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 40 door_lock 0 min_delay 0 max_delay 10000 at 573.0 586.1 12.5 angle 74.0 
+014B: $1379 = init_car_generator #TROPIC -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 237.4778 302.2366 5.7 angle 86.2011 
 014C: set_parked_car_generator $1379 cars_to_generate_to 101 
-014B: $1380 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 604.4 758.8 12.6 angle 90.0 
+014B: $1380 = init_car_generator #TRASH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1268.25 83.833 10.4182 angle 179.549 
 014C: set_parked_car_generator $1380 cars_to_generate_to 101 
-014B: $1381 = init_car_generator #FREEWAY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 388.6 834.5 11.9 angle 273.0 
+014B: $1381 = init_car_generator #SECURICA -1 -1 force_spawn 0 alarm 0 door_lock 70 min_delay 0 max_delay 10000 at -870.2545 -353.9059 10.0475 angle 357.8359 
 014C: set_parked_car_generator $1381 cars_to_generate_to 101 
-014B: $1382 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at 255.4 1297.5 16.5 angle 193.4 
+014B: $1382 = init_car_generator #BUS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1184.36 -1312.62 13.7274 angle 64.6821 
 014C: set_parked_car_generator $1382 cars_to_generate_to 101 
-014B: $1383 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 552.5 1246.8 15.9 angle 88.0 
+014B: $1383 = init_car_generator #BARRACKS -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -1709.024 -287.6807 13.8276 angle 0.0 
 014C: set_parked_car_generator $1383 cars_to_generate_to 101 
-014B: $1384 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 555.1 1032.6 17.9 angle 9.0 
+014B: $1384 = init_car_generator #BARRACKS -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -1742.649 -214.2183 13.8276 angle 102.0596 
 014C: set_parked_car_generator $1384 cars_to_generate_to 101 
-014B: $1385 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 563.4 1053.6 17.6 angle 98.0 
+014B: $1385 = init_car_generator #PATRIOT 43 72 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1701.372 -234.7718 13.8276 angle 87.8929 
 014C: set_parked_car_generator $1385 cars_to_generate_to 101 
-014B: $1386 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 430.3 957.0 12.3 angle 294.0 
+014B: $1386 = init_car_generator #SENTINEL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1033.211 -856.8564 12.0452 angle 210.278 
 014C: set_parked_car_generator $1386 cars_to_generate_to 101 
-014B: $1387 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 309.2 1204.4 16.2 angle 91.0 
+014B: $1387 = init_car_generator #BLOODRB -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1131.4 1236.6 8.4 angle 241.0 
 014C: set_parked_car_generator $1387 cars_to_generate_to 101 
-014B: $1388 = init_car_generator #PACKER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -101.6 1011.5 11.5 angle 270.3 
+014B: $1388 = init_car_generator #BLOODRA -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1115.4 1265.1 8.4 angle 238.0 
 014C: set_parked_car_generator $1388 cars_to_generate_to 101 
-014B: $1389 = init_car_generator #PATRIOT -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -36.8 874.0 11.1 angle 194.2 
+014B: $1389 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1269 $1270 $1271 angle 88.2256 
 014C: set_parked_car_generator $1389 cars_to_generate_to 101 
-014B: $1390 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -6.4 957.1 9.4 angle 355.1 
+014B: $1390 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1272 $1273 $1274 angle 0.0 
 014C: set_parked_car_generator $1390 cars_to_generate_to 101 
-014B: $1391 = init_car_generator #SKIMMER -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -141.1 1030.4 5.5 angle 180.0 
+014B: $1391 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1275 $1276 $1277 angle 0.0 
 014C: set_parked_car_generator $1391 cars_to_generate_to 101 
-014B: $1392 = init_car_generator #GANGBUR -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 16.4 1139.9 18.5 angle 265.0 
+014B: $1392 = init_car_generator #SPARROW -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at $1278 $1279 $1280 angle 180.0 
 014C: set_parked_car_generator $1392 cars_to_generate_to 101 
-014B: $1393 = init_car_generator #INFERNUS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -363.0 -532.2 12.0 angle 355.5 
+014B: $1393 = init_car_generator #OCEANIC 6 1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 242.6 -1274.6 10.0 angle 165.0 
 014C: set_parked_car_generator $1393 cars_to_generate_to 101 
-014B: $1394 = init_car_generator #STRETCH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -394.7 -533.7 12.0 angle 355.5 
+014B: $1394 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 11.5 -1382.0 9.6 angle 261.0 
 014C: set_parked_car_generator $1394 cars_to_generate_to 101 
-014B: $1395 = init_car_generator #MAVERICK -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -391.0 -573.0 40.0 angle 355.5 
+014B: $1395 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 19.8 -991.8 9.7 angle 0.0 
 014C: set_parked_car_generator $1395 cars_to_generate_to 101 
-014B: $1396 = init_car_generator #CHEETAH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -221.3 -422.7 11.2 angle 90.0 
+014B: $1396 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -6.4 -991.3 9.7 angle 180.0 
 014C: set_parked_car_generator $1396 cars_to_generate_to 101 
-014B: $1397 = init_car_generator #STINGER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -492.8 -429.4 10.6 angle 0.0 
+014B: $1397 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 12.8 -1015.1 9.7 angle 180.0 
 014C: set_parked_car_generator $1397 cars_to_generate_to 101 
-014B: $1398 = init_car_generator #BANSHEE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -558.8 -450.7 10.4 angle 0.0 
+014B: $1398 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at -35.7 -1013.6 9.7 angle 0.0 
 014C: set_parked_car_generator $1398 cars_to_generate_to 101 
-014B: $1399 = init_car_generator #ADMIRAL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -678.8 -415.1 9.5 angle 0.0 
+014B: $1399 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 81.3 -871.8 9.7 angle 57.0 
 014C: set_parked_car_generator $1399 cars_to_generate_to 101 
-014B: $1400 = init_car_generator #LANDSTAL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -593.6 -318.3 10.4 angle 130.0 
+014B: $1400 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -7.1 -1205.1 9.6 angle 181.0 
 014C: set_parked_car_generator $1400 cars_to_generate_to 101 
-014B: $1401 = init_car_generator #INFERNUS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -523.8 -295.8 9.7 angle 180.0 
+014B: $1401 = init_car_generator #HERMES -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 37.9 -1320.4 9.6 angle 355.0 
 014C: set_parked_car_generator $1401 cars_to_generate_to 101 
-014B: $1402 = init_car_generator #PHEONIX -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -388.6 -287.7 9.6 angle 270.0 
+014B: $1402 = init_car_generator #STALLION -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 127.0 -1158.0 32.0 angle 180.0 
 014C: set_parked_car_generator $1402 cars_to_generate_to 101 
-014B: $1403 = init_car_generator #COMET -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -267.0 -303.6 9.5 angle 160.0 
+014B: $1403 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 507.4 -308.8 12.8 angle 176.0 
 014C: set_parked_car_generator $1403 cars_to_generate_to 101 
-014B: $1404 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -350.8 -534.9 11.4 angle 86.5 
+014B: $1404 = init_car_generator #BANSHEE -1 -1 force_spawn 0 alarm 70 door_lock 0 min_delay 0 max_delay 10000 at 19.8 -1246.9 10.1 angle 0.0 
 014C: set_parked_car_generator $1404 cars_to_generate_to 101 
-014B: $1405 = init_car_generator #LINERUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -751.5 -1359.4 10.6 angle 69.0 
+014B: $1405 = init_car_generator #TOPFUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 307.9 1254.6 27.5 angle 180.5 
 014C: set_parked_car_generator $1405 cars_to_generate_to 101 
-014B: $1406 = init_car_generator #PONY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -717.2 -1462.2 10.3 angle 0.0 
+014B: $1406 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at 277.4 -1175.3 11.0 angle 350.0 
 014C: set_parked_car_generator $1406 cars_to_generate_to 101 
-014B: $1407 = init_car_generator #RUMPO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -741.7 -1549.5 11.5 angle 336.0 
+014B: $1407 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at 278.8 -1074.0 11.0 angle 172.0 
 014C: set_parked_car_generator $1407 cars_to_generate_to 101 
-014B: $1408 = init_car_generator #BOXVILLE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -898.9971 -1462.046 10.94 angle 10.8204 
+014B: $1408 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 60 door_lock 0 min_delay 0 max_delay 10000 at 365.3 -837.9 11.0 angle 335.0 
 014C: set_parked_car_generator $1408 cars_to_generate_to 101 
-014B: $1409 = init_car_generator #PACKER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -946.3 -1379.5 11.5 angle 69.0 
+014B: $1409 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at 237.2 -1377.5 10.9 angle 170.0 
 014C: set_parked_car_generator $1409 cars_to_generate_to 101 
-014B: $1410 = init_car_generator #BENSON -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -947.7 -1264.1 11.3 angle 164.0 
+014B: $1410 = init_car_generator #FAGGIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 127.4 -818.5 9.5 angle 250.6 
 014C: set_parked_car_generator $1410 cars_to_generate_to 101 
-014B: $1411 = init_car_generator #JETMAX -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -592.3 -1510.3 5.0 angle 250.0 
+014B: $1411 = init_car_generator #FAGGIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 382.2 -632.8 11.0 angle 9.9 
 014C: set_parked_car_generator $1411 cars_to_generate_to 101 
-014B: $1412 = init_car_generator #SQUALO -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -576.4 -1505.2 5.0 angle 250.0 
+014B: $1412 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 235.7 -893.3 11.0 angle 150.0 
 014C: set_parked_car_generator $1412 cars_to_generate_to 101 
-014B: $1413 = init_car_generator #COASTG -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -755.9 -1077.5 5.0 angle 0.0 
+014B: $1413 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 150.6 -995.6 11.0 angle 353.0 
 014C: set_parked_car_generator $1413 cars_to_generate_to 101 
-014B: $1414 = init_car_generator #BFINJECT -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 643.4 -208.1 9.5 angle 33.0 
+014B: $1414 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 122.3 -1107.7 9.7 angle 175.0 
 014C: set_parked_car_generator $1414 cars_to_generate_to 101 
-014B: $1415 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1028.2 82.2 11.2 angle 171.9 
+014B: $1415 = init_car_generator #RIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -313.4 -1236.4 5.0 angle 180.0 
 014C: set_parked_car_generator $1415 cars_to_generate_to 101 
-014B: $1416 = init_car_generator #PATRIOT -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1107.6 292.9 11.5 angle 268.3 
+014B: $1416 = init_car_generator #SPEEDER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -328.4 -1317.7 5.0 angle 0.0 
 014C: set_parked_car_generator $1416 cars_to_generate_to 101 
-014B: $1417 = init_car_generator #VOODOO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -964.94 133.54 8.23 angle 271.61 
+014B: $1417 = init_car_generator #REEFER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -286.8 -1353.1 5.0 angle 90.0 
 014C: set_parked_car_generator $1417 cars_to_generate_to 101 
-014B: $1418 = init_car_generator #MRWHOOP -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -867.6105 -572.2039 10.11294 angle 277.5232 
+014B: $1418 = init_car_generator #MARQUIS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -314.0 -1318.3 5.0 angle 0.0 
 014C: set_parked_car_generator $1418 cars_to_generate_to 101 
-014B: $1419 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -904.2 808.9 10.5 angle 269.6 
+014B: $1419 = init_car_generator #FAGGIO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 376.9 477.0 11.2 angle 282.0 
 014C: set_parked_car_generator $1419 cars_to_generate_to 101 
-014B: $1420 = init_car_generator #LANDSTAL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -426.0 1412.5 10.5 angle 80.0 
+014B: $1420 = init_car_generator #TOPFUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 718.465 701.3998 12.394 angle 320.7776 
 014C: set_parked_car_generator $1420 cars_to_generate_to 101 
-014B: $1421 = init_car_generator #SANCHEZ -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -425.8 1407.0 9.8 angle 80.0 
+014B: $1421 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -256.6 -1275.4 7.4 angle 348.0 
 014C: set_parked_car_generator $1421 cars_to_generate_to 101 
-014B: $1422 = init_car_generator #FBICAR -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -872.843 692.633 10.997 angle 359.746 
+014B: $1422 = init_car_generator #CHEETAH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -236.6 -1374.6 7.1 angle 280.3 
 014C: set_parked_car_generator $1422 cars_to_generate_to 101 
-014B: $1423 = init_car_generator #ANGEL -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -592.301 655.117 10.06 angle 9.794 
+014B: $1423 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -168.9 -1392.2 3.1 angle 280.0 
 014C: set_parked_car_generator $1423 cars_to_generate_to 101 
-014B: $1424 = init_car_generator #ANGEL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -589.212 655.117 10.06 angle 9.794 
+014B: $1424 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 60 door_lock 0 min_delay 0 max_delay 10000 at -140.2 -1414.1 3.1 angle 108.7 
 014C: set_parked_car_generator $1424 cars_to_generate_to 101 
-014B: $1425 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -596.17 676.928 11.271 angle 180.0 
+014B: $1425 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -142.1 -1373.0 3.1 angle 287.3 
 014C: set_parked_car_generator $1425 cars_to_generate_to 101 
-014B: $1426 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -756.7 976.3 10.4 angle 0.0 
+014B: $1426 = init_car_generator #CADDY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 393.9 -1736.4 8.8 angle 249.6 
 014C: set_parked_car_generator $1426 cars_to_generate_to 101 
-014B: $1427 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -803.3 964.1 10.4 angle 270.0 
+014B: $1427 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 198.2 -504.9 10.9 angle 90.0 
 014C: set_parked_car_generator $1427 cars_to_generate_to 101 
-014B: $1428 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -752.6 1003.0 10.4 angle 0.0 
+014B: $1428 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 128.8 -515.2 13.1 angle 270.0 
 014C: set_parked_car_generator $1428 cars_to_generate_to 101 
-014B: $1429 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -781.5 996.5 10.4 angle 90.0 
+014B: $1429 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 215.7 -418.6 9.7 angle 170.0 
 014C: set_parked_car_generator $1429 cars_to_generate_to 101 
-014B: $1430 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -772.7 1031.8 10.4 angle 270.0 
+014B: $1430 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 222.7 -351.1 9.9 angle 73.0 
 014C: set_parked_car_generator $1430 cars_to_generate_to 101 
-014B: $1431 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -781.7 1077.9 10.4 angle 90.0 
+014B: $1431 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 228.2 -222.2 10.9 angle 250.0 
 014C: set_parked_car_generator $1431 cars_to_generate_to 101 
-014B: $1432 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -821.7 563.4 10.5 angle 0.0 
+014B: $1432 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 456.5 2.8 10.0 angle 97.4 
 014C: set_parked_car_generator $1432 cars_to_generate_to 101 
-014B: $1433 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -851.0 581.3 10.5 angle 180.0 
+014B: $1433 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at 478.5 -15.9 9.8 angle 99.7 
 014C: set_parked_car_generator $1433 cars_to_generate_to 101 
-014B: $1434 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -869.5 533.0 10.5 angle 180.0 
+014B: $1434 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 413.8 97.7 10.5 angle 301.3 
 014C: set_parked_car_generator $1434 cars_to_generate_to 101 
-014B: $1435 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -821.6 499.7 10.5 angle 90.0 
+014B: $1435 = init_car_generator #RUMPO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 483.9 -42.8 9.1 angle 0.0 
 014C: set_parked_car_generator $1435 cars_to_generate_to 101 
-014B: $1436 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1324.5 1137.0 9.3 angle 180.0 
+014B: $1436 = init_car_generator #FREEWAY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 301.2 265.6 15.3 angle 278.4 
 014C: set_parked_car_generator $1436 cars_to_generate_to 101 
-014B: $1437 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1353.8 1158.0 9.3 angle 0.0 
+014B: $1437 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 286.3 394.4 12.3 angle 265.2 
 014C: set_parked_car_generator $1437 cars_to_generate_to 101 
-014B: $1438 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1444.8 1162.7 9.3 angle 160.0 
+014B: $1438 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 40 door_lock 0 min_delay 0 max_delay 10000 at 573.0 586.1 12.5 angle 74.0 
 014C: set_parked_car_generator $1438 cars_to_generate_to 101 
-014B: $1439 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1543.8 1227.0 9.3 angle 30.0 
+014B: $1439 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 604.4 758.8 12.6 angle 90.0 
 014C: set_parked_car_generator $1439 cars_to_generate_to 101 
-014B: $1440 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1562.9 1282.4 9.3 angle 98.0 
+014B: $1440 = init_car_generator #FREEWAY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 388.6 834.5 11.9 angle 273.0 
 014C: set_parked_car_generator $1440 cars_to_generate_to 101 
-014B: $1441 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1587.7 1313.8 9.3 angle 87.0 
+014B: $1441 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at 255.4 1297.5 16.5 angle 193.4 
 014C: set_parked_car_generator $1441 cars_to_generate_to 101 
-014B: $1442 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1568.1 1351.0 9.3 angle 261.9 
+014B: $1442 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 552.5 1246.8 15.9 angle 88.0 
 014C: set_parked_car_generator $1442 cars_to_generate_to 101 
-014B: $1443 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1562.7 1406.9 9.3 angle 150.1 
+014B: $1443 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 555.1 1032.6 17.9 angle 9.0 
 014C: set_parked_car_generator $1443 cars_to_generate_to 101 
-014B: $1444 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1445.3 1499.0 9.3 angle 20.6 
+014B: $1444 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 563.4 1053.6 17.6 angle 98.0 
 014C: set_parked_car_generator $1444 cars_to_generate_to 101 
-014B: $1445 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1349.1 1503.7 9.3 angle 180.0 
+014B: $1445 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 430.3 957.0 12.3 angle 294.0 
 014C: set_parked_car_generator $1445 cars_to_generate_to 101 
-014B: $1446 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1318.7 1524.1 9.3 angle 180.0 
+014B: $1446 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 309.2 1204.4 16.2 angle 91.0 
 014C: set_parked_car_generator $1446 cars_to_generate_to 101 
-014B: $1447 = init_car_generator #VCNMAV -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -469.0 1123.5 64.7 angle 270.0 
+014B: $1447 = init_car_generator #PACKER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -101.6 1011.5 11.5 angle 270.3 
 014C: set_parked_car_generator $1447 cars_to_generate_to 101 
-014B: $1448 = init_car_generator #INFERNUS -1 -1 force_spawn 1 alarm 80 door_lock 0 min_delay 0 max_delay 10000 at 386.0 1227.0 19.4 angle 90.0 
+014B: $1448 = init_car_generator #PATRIOT -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -36.8 874.0 11.1 angle 194.2 
 014C: set_parked_car_generator $1448 cars_to_generate_to 101 
-014B: $1449 = init_car_generator #PACKER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1377.7 -961.4 14.4 angle 177.9 
+014B: $1449 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -6.4 957.1 9.4 angle 355.1 
 014C: set_parked_car_generator $1449 cars_to_generate_to 101 
-014B: $1450 = init_car_generator #SENTXS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1142.5 -939.3 14.6 angle 89.6 
+014B: $1450 = init_car_generator #SKIMMER -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -141.1 1030.4 5.5 angle 180.0 
 014C: set_parked_car_generator $1450 cars_to_generate_to 101 
-014B: $1451 = init_car_generator #TOPFUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1235.171 -1235.171 14.77 angle 337.839 
+014B: $1451 = init_car_generator #GANGBUR -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 16.4 1139.9 18.5 angle 265.0 
 014C: set_parked_car_generator $1451 cars_to_generate_to 101 
-014B: $1452 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1414.8 -1268.1 13.9 angle 40.0 
+014B: $1452 = init_car_generator #INFERNUS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -363.0 -532.2 12.0 angle 355.5 
 014C: set_parked_car_generator $1452 cars_to_generate_to 101 
-014B: $1453 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1474.9 -961.7 13.9 angle 282.0 
+014B: $1453 = init_car_generator #STRETCH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -394.7 -533.7 12.0 angle 355.5 
 014C: set_parked_car_generator $1453 cars_to_generate_to 101 
-014B: $1454 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1808.5 -1090.8 13.9 angle 274.0 
+014B: $1454 = init_car_generator #MAVERICK -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -391.0 -573.0 40.0 angle 355.5 
 014C: set_parked_car_generator $1454 cars_to_generate_to 101 
-014B: $1455 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1533.3 -805.9 13.9 angle 178.0 
+014B: $1455 = init_car_generator #CHEETAH -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -221.3 -422.7 11.2 angle 90.0 
 014C: set_parked_car_generator $1455 cars_to_generate_to 101 
-014B: $1456 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1584.2 -656.4 14.0 angle 0.0 
+014B: $1456 = init_car_generator #STINGER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -492.8 -429.4 10.6 angle 0.0 
 014C: set_parked_car_generator $1456 cars_to_generate_to 101 
-014B: $1457 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at -1606.5 -633.8 14.0 angle 180.0 
+014B: $1457 = init_car_generator #BANSHEE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -558.8 -450.7 10.4 angle 0.0 
 014C: set_parked_car_generator $1457 cars_to_generate_to 101 
-014B: $1458 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1628.0 -667.0 14.0 angle 180.0 
+014B: $1458 = init_car_generator #ADMIRAL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -678.8 -415.1 9.5 angle 0.0 
 014C: set_parked_car_generator $1458 cars_to_generate_to 101 
-014B: $1459 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -1637.5 -624.6 14.0 angle 0.0 
+014B: $1459 = init_car_generator #LANDSTAL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -593.6 -318.3 10.4 angle 130.0 
 014C: set_parked_car_generator $1459 cars_to_generate_to 101 
-014B: $1460 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1659.6 -646.4 14.0 angle 180.0 
+014B: $1460 = init_car_generator #INFERNUS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -523.8 -295.8 9.7 angle 180.0 
 014C: set_parked_car_generator $1460 cars_to_generate_to 101 
-014B: $1461 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -1706.0 -655.9 14.0 angle 90.0 
+014B: $1461 = init_car_generator #PHEONIX -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -388.6 -287.7 9.6 angle 270.0 
 014C: set_parked_car_generator $1461 cars_to_generate_to 101 
-014B: $1462 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at -1691.5 -614.8 14.0 angle 0.0 
+014B: $1462 = init_car_generator #COMET -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -267.0 -303.6 9.5 angle 160.0 
 014C: set_parked_car_generator $1462 cars_to_generate_to 101 
-014B: $1463 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1573.3 -614.7 14.0 angle 0.0 
+014B: $1463 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -350.8 -534.9 11.4 angle 86.5 
 014C: set_parked_car_generator $1463 cars_to_generate_to 101 
-014B: $1464 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 516.1 503.1 10.5 angle 0.0 
+014B: $1464 = init_car_generator #LINERUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -751.5 -1359.4 10.6 angle 69.0 
 014C: set_parked_car_generator $1464 cars_to_generate_to 101 
-014B: $1465 = init_car_generator #ENFORCER -1 -1 force_spawn 0 alarm 0 door_lock 40 min_delay 0 max_delay 10000 at 493.2045 503.683 10.4612 angle 179.9753 
+014B: $1465 = init_car_generator #PONY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -717.2 -1462.2 10.3 angle 0.0 
 014C: set_parked_car_generator $1465 cars_to_generate_to 101 
-014B: $1466 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 355.7 -511.4 11.6 angle 320.0 
+014B: $1466 = init_car_generator #RUMPO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -741.7 -1549.5 11.5 angle 336.0 
 014C: set_parked_car_generator $1466 cars_to_generate_to 101 
-014B: $1467 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 372.3 -525.7 11.6 angle 140.0 
+014B: $1467 = init_car_generator #BOXVILLE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -898.9971 -1462.046 10.94 angle 10.8204 
 014C: set_parked_car_generator $1467 cars_to_generate_to 101 
-014B: $1468 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -855.4 -665.4 10.6 angle 0.0 
+014B: $1468 = init_car_generator #PACKER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -946.3 -1379.5 11.5 angle 69.0 
 014C: set_parked_car_generator $1468 cars_to_generate_to 101 
-014B: $1469 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -844.8 -675.6 10.6 angle 90.0 
+014B: $1469 = init_car_generator #BENSON -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -947.7 -1264.1 11.3 angle 164.0 
 014C: set_parked_car_generator $1469 cars_to_generate_to 101 
-014B: $1470 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -665.2 777.6 11.0 angle 180.0 
+014B: $1470 = init_car_generator #JETMAX -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -592.3 -1510.3 5.0 angle 250.0 
 014C: set_parked_car_generator $1470 cars_to_generate_to 101 
-014B: $1471 = init_car_generator #AMBULAN -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at 472.5 701.2 10.5 angle 90.0 
+014B: $1471 = init_car_generator #SQUALO -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -576.4 -1505.2 5.0 angle 250.0 
 014C: set_parked_car_generator $1471 cars_to_generate_to 101 
-014B: $1472 = init_car_generator #AMBULAN -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -111.9 -949.9 10.2 angle 280.0 
+014B: $1472 = init_car_generator #COASTG -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -755.9 -1077.5 5.0 angle 0.0 
 014C: set_parked_car_generator $1472 cars_to_generate_to 101 
-014B: $1473 = init_car_generator #AMBULAN -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -776.1 1135.1 11.5 angle 0.0 
+014B: $1473 = init_car_generator #BFINJECT -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 643.4 -208.1 9.5 angle 33.0 
 014C: set_parked_car_generator $1473 cars_to_generate_to 101 
-014B: $1474 = init_car_generator #FIRETRUK -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -694.9 917.3 10.8 angle 270.0 
+014B: $1474 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1028.2 82.2 11.2 angle 171.9 
 014C: set_parked_car_generator $1474 cars_to_generate_to 101 
-014B: $1475 = init_car_generator #COMET -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 114.6977 252.3439 20.6832 angle 105.6803 
+014B: $1475 = init_car_generator #PATRIOT -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1107.6 292.9 11.5 angle 268.3 
 014C: set_parked_car_generator $1475 cars_to_generate_to 101 
-014B: $1476 = init_car_generator #INFERNUS 1 1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -363.0 -532.2 12.0 angle 0.0 
+014B: $1476 = init_car_generator #VOODOO -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -964.94 133.54 8.23 angle 271.61 
 014C: set_parked_car_generator $1476 cars_to_generate_to 101 
-014B: $1477 = init_car_generator #ZEBRA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1003.1 207.4 11.0 angle 166.6 
+014B: $1477 = init_car_generator #MRWHOOP -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -867.6105 -572.2039 10.11294 angle 277.5232 
 014C: set_parked_car_generator $1477 cars_to_generate_to 101 
-014B: $1478 = init_car_generator #POLMAV -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -614.0 804.0 30.0 angle 0.0 
+014B: $1478 = init_car_generator #PIZZABOY -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -904.2 808.9 10.5 angle 269.6 
 014C: set_parked_car_generator $1478 cars_to_generate_to 101 
-$1479 = Pickup.Create(#CHNSAW, 2, 30.0, -1330.9, 13.0)
-$1480 = Pickup.Create(#BAT, 2, 206.7, -1254.4, 12.0)
-032B: $1481 = create_weapon_pickup #COLT45 15 ammo 34 at -228.4 -1318.2 9.1 
-032B: $1482 = create_weapon_pickup #COLT45 15 ammo 34 at 340.5 -249.5 12.5 
-032B: $1483 = create_weapon_pickup #CHROMEGUN 15 ammo 16 at 42.3 -959.2 21.8 
-032B: $1484 = create_weapon_pickup #CHROMEGUN 15 ammo 16 at 568.9 -449.3 11.1 
-032B: $1485 = create_weapon_pickup #TEC9 15 ammo 100 at 287.9 50.7 10.8 
-032B: $1486 = create_weapon_pickup #GRENADE 15 ammo 4 at 362.2 -500.5 12.3 
-$1487 = Pickup.Create(#CLEAVER, 15, 402.6, 102.5, 11.4)
-032B: $1488 = create_weapon_pickup #RUGER 15 ammo 60 at 418.9 589.9 18.3 
-$1489 = Pickup.Create(#KATANA, 15, 476.9, 1014.9, 19.2)
-$1490 = Pickup.Create(#NITESTICK, 15, 402.4, -488.3, 12.4)
-$1491 = Pickup.Create(#BRASSKNUCKLE, 15, 224.0, -1207.5, 11.0)
-$1492 = Pickup.Create(#KNIFECUR, 15, 118.7, -1546.1, 10.8)
-$1493 = Pickup.Create(#MACHETE, 15, 56.6, -459.3, 11.4)
-032B: $1494 = create_weapon_pickup #UZI 15 ammo 60 at 5.4 -1277.0 10.4 
-032B: $1495 = create_weapon_pickup #UZI 15 ammo 60 at 157.0 -895.3 12.3 
-032B: $1496 = create_weapon_pickup #BOMB 15 ammo 4 at 556.6 207.4 14.5 
-032B: $1497 = create_weapon_pickup #M4 15 ammo 60 at -32.8 1019.2 13.0 
-032B: $1498 = create_weapon_pickup #UZI 15 ammo 60 at 17.3 1145.7 23.5 
-$1499 = Pickup.Create(#GOLFCLUB, 2, 95.0, 279.2, 21.8)
-032B: $1500 = create_weapon_pickup #FLAME 15 ammo 300 at -546.0 -418.9 9.8 
-032B: $1501 = create_weapon_pickup #SNIPER 15 ammo 20 at -476.4 -571.2 12.9 
-$1502 = Pickup.Create(#KATANA, 15, -554.11, -547.7, 10.7)
-032B: $1503 = create_weapon_pickup #MOLOTOV 15 ammo 4 at -755.7 1347.5 11.8 
-032B: $1504 = create_weapon_pickup #UZI 15 ammo 60 at -545.8 694.6 11.0 
-032B: $1505 = create_weapon_pickup #M4 15 ammo 60 at -980.4 118.7 9.3 
-032B: $1506 = create_weapon_pickup #M4 15 ammo 60 at -1221.0 -641.6 11.7 
-032B: $1507 = create_weapon_pickup #SNIPER 15 ammo 20 at -742.1 -949.9 9.9 
-032B: $1508 = create_weapon_pickup #ROCKETLA 15 ammo 4 at -995.1 -1178.1 13.6 
-032B: $1509 = create_weapon_pickup #INGRAMSL 15 ammo 60 at -713.3 -1466.0 11.2 
-032B: $1510 = create_weapon_pickup #FLAME 15 ammo 300 at -1015.1 -1392.9 11.5 
-032B: $1511 = create_weapon_pickup #SHOTGSPA 15 ammo 14 at -1359.0 -742.2 14.9 
-032B: $1512 = create_weapon_pickup #M60 15 ammo 100 at -1744.9 -288.9 29.7 
-032B: $1513 = create_weapon_pickup #GRENADE 15 ammo 4 at -939.8 -464.9 10.9 
-032B: $1514 = create_weapon_pickup #PYTHON 15 ammo 12 at -1182.7 -61.1 11.4 
-032B: $1515 = create_weapon_pickup #BUDDYSHOT 15 ammo 10 at -1305.2 177.1 11.4 
-032B: $1516 = create_weapon_pickup #LASER 15 ammo 14 at -1114.3 -602.0 26.0 
-$1517 = Pickup.Create(#HEALTH, 1, -113.2, -975.7, 10.4)
-$1518 = Pickup.Create(#HEALTH, 15, -225.1, -1158.1, 9.1)
-$1519 = Pickup.Create(#HEALTH, 15, 456.2, -471.4, 16.6)
-$1520 = Pickup.Create(#HEALTH, 15, 377.4, 467.7, 11.6)
-$1521 = Pickup.Create(#HEALTH, 1, 469.6, 697.4, 11.7)
-$1522 = Pickup.Create(#HEALTH, 15, 385.3, 1210.9, 19.4)
-$1523 = Pickup.Create(#HEALTH, 1, 384.3, 756.6, 11.7)
-$1524 = Pickup.Create(#HEALTH, 15, 10.7, 1099.0, 16.6)
-$1525 = Pickup.Create(#HEALTH, 15, 85.3, 402.7, 19.8)
-$1526 = Pickup.Create(#HEALTH, 15, -711.7, -501.7, 11.3)
-$1527 = Pickup.Create(#HEALTH, 15, -404.0, -588.0, 11.6)
-$1528 = Pickup.Create(#HEALTH, 2, -406.2503, -566.4947, 19.5804)
-$1529 = Pickup.Create(#HEALTH, 15, -478.1, 1438.5, 16.1)
-$1530 = Pickup.Create(#HEALTH, 15, -675.0, 1263.3, 25.1)
-$1531 = Pickup.Create(#HEALTH, 15, -821.8, 1144.8, 26.1)
-$1532 = Pickup.Create(#HEALTH, 15, -1139.4, 55.4, 11.2)
-$1533 = Pickup.Create(#HEALTH, 15, -1290.9, 91.9, 26.9)
-$1534 = Pickup.Create(#HEALTH, 1, -885.4, -483.4, 13.1)
-$1535 = Pickup.Create(#HEALTH, 15, -925.1, -638.3, 16.0)
-$1536 = Pickup.Create(#HEALTH, 15, -692.4, -1283.8, 11.1)
-$1537 = Pickup.Create(#HEALTH, 15, -655.1, -1506.3, 8.1)
-$1538 = Pickup.Create(#HEALTH, 15, -1399.4, -865.9, 20.9)
-$1539 = Pickup.Create(#HEALTH, 1, -822.6, 1137.3, 12.4)
-$1540 = Pickup.Create(#HEALTH, 1, -851.4, -78.8, 11.5)
-$1541 = Pickup.Create(#HEALTH, 1, -834.2, 740.6, 11.3)
-$1542 = Pickup.Create(#BODYARMOUR, 15, 4.9, -1239.2, 19.2)
-$1543 = Pickup.Create(#BODYARMOUR, 15, 205.7, -885.7, 12.2)
-$1544 = Pickup.Create(#BODYARMOUR, 15, 148.8, -349.9, 8.7)
-$1545 = Pickup.Create(#BODYARMOUR, 15, 520.2, -171.2, 13.9)
-$1546 = Pickup.Create(#BODYARMOUR, 15, 430.8, 162.1, 11.8)
-$1547 = Pickup.Create(#BODYARMOUR, 15, 416.1, 517.7, 11.2)
-$1548 = Pickup.Create(#BODYARMOUR, 15, 350.2, 884.8, 25.5)
-$1549 = Pickup.Create(#BODYARMOUR, 15, 535.3, 1214.1, 18.9)
-$1550 = Pickup.Create(#BODYARMOUR, 15, 42.8, 951.1, 11.0)
-$1551 = Pickup.Create(#BODYARMOUR, 15, -70.8, 510.6, 11.6)
-$1552 = Pickup.Create(#BODYARMOUR, 15, -1695.6, -289.4, 29.7)
-$1553 = Pickup.Create(#BODYARMOUR, 15, -567.6, 1370.36, 16.4)
-$1554 = Pickup.Create(#BODYARMOUR, 15, -921.9, 722.9, 11.0)
-$1555 = Pickup.Create(#BODYARMOUR, 15, -1058.9, -240.6, 18.2)
-$1556 = Pickup.Create(#BODYARMOUR, 15, -625.5, 622.2, 11.7)
-$1557 = Pickup.Create(#BODYARMOUR, 15, -733.5, -1294.7, 12.4)
-$1558 = Pickup.Create(#BODYARMOUR, 15, -1177.0, -915.3, 14.9)
-$1559 = Pickup.Create(#BODYARMOUR, 15, -1171.0, -457.4, 10.7)
-$1560 = Pickup.Create(#ADRENALINE, 15, -37.7, -938.3, 10.5)
-$1561 = Pickup.Create(#ADRENALINE, 15, 471.1, -444.1, 10.6)
-$1562 = Pickup.Create(#ADRENALINE, 15, 448.6, 16.6, 11.0)
-$1563 = Pickup.Create(#ADRENALINE, 15, 425.6, 221.1, 16.2)
-$1564 = Pickup.Create(#ADRENALINE, 15, 428.4, 947.5, 13.2)
-$1565 = Pickup.Create(#ADRENALINE, 1, 385.6, 752.3, 11.7)
-$1566 = Pickup.Create(#ADRENALINE, 15, -366.6, -500.3, 11.3)
-$1567 = Pickup.Create(#ADRENALINE, 15, -342.2, -591.5, 36.9)
-$1568 = Pickup.Create(#ADRENALINE, 15, -381.2, 1065.2, 13.0)
-$1569 = Pickup.Create(#ADRENALINE, 15, -730.1, 1226.3, 24.2)
-$1570 = Pickup.Create(#ADRENALINE, 15, -1095.1, 99.4, 12.3)
-$1571 = Pickup.Create(#ADRENALINE, 15, -967.1, -62.6, 11.0)
-$1572 = Pickup.Create(#ADRENALINE, 15, -1022.1, -547.0, 11.2)
-$1573 = Pickup.Create(#ADRENALINE, 15, -882.0, 111.2, 9.3)
-$1574 = Pickup.Create(#ADRENALINE, 1, -857.1, -83.6, 11.5)
-$1575 = Pickup.Create(#ADRENALINE, 1, -839.0, 740.6, 11.3)
+014B: $1479 = init_car_generator #LANDSTAL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -426.0 1412.5 10.5 angle 80.0 
+014C: set_parked_car_generator $1479 cars_to_generate_to 101 
+014B: $1480 = init_car_generator #SANCHEZ -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -425.8 1407.0 9.8 angle 80.0 
+014C: set_parked_car_generator $1480 cars_to_generate_to 101 
+014B: $1481 = init_car_generator #FBICAR -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -872.843 692.633 10.997 angle 359.746 
+014C: set_parked_car_generator $1481 cars_to_generate_to 101 
+014B: $1482 = init_car_generator #ANGEL -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -592.301 655.117 10.06 angle 9.794 
+014C: set_parked_car_generator $1482 cars_to_generate_to 101 
+014B: $1483 = init_car_generator #ANGEL -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -589.212 655.117 10.06 angle 9.794 
+014C: set_parked_car_generator $1483 cars_to_generate_to 101 
+014B: $1484 = init_car_generator #PCJ600 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -596.17 676.928 11.271 angle 180.0 
+014C: set_parked_car_generator $1484 cars_to_generate_to 101 
+014B: $1485 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -756.7 976.3 10.4 angle 0.0 
+014C: set_parked_car_generator $1485 cars_to_generate_to 101 
+014B: $1486 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -803.3 964.1 10.4 angle 270.0 
+014C: set_parked_car_generator $1486 cars_to_generate_to 101 
+014B: $1487 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -752.6 1003.0 10.4 angle 0.0 
+014C: set_parked_car_generator $1487 cars_to_generate_to 101 
+014B: $1488 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -781.5 996.5 10.4 angle 90.0 
+014C: set_parked_car_generator $1488 cars_to_generate_to 101 
+014B: $1489 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -772.7 1031.8 10.4 angle 270.0 
+014C: set_parked_car_generator $1489 cars_to_generate_to 101 
+014B: $1490 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -781.7 1077.9 10.4 angle 90.0 
+014C: set_parked_car_generator $1490 cars_to_generate_to 101 
+014B: $1491 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -821.7 563.4 10.5 angle 0.0 
+014C: set_parked_car_generator $1491 cars_to_generate_to 101 
+014B: $1492 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -851.0 581.3 10.5 angle 180.0 
+014C: set_parked_car_generator $1492 cars_to_generate_to 101 
+014B: $1493 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -869.5 533.0 10.5 angle 180.0 
+014C: set_parked_car_generator $1493 cars_to_generate_to 101 
+014B: $1494 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -821.6 499.7 10.5 angle 90.0 
+014C: set_parked_car_generator $1494 cars_to_generate_to 101 
+014B: $1495 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1324.5 1137.0 9.3 angle 180.0 
+014C: set_parked_car_generator $1495 cars_to_generate_to 101 
+014B: $1496 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1353.8 1158.0 9.3 angle 0.0 
+014C: set_parked_car_generator $1496 cars_to_generate_to 101 
+014B: $1497 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1444.8 1162.7 9.3 angle 160.0 
+014C: set_parked_car_generator $1497 cars_to_generate_to 101 
+014B: $1498 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1543.8 1227.0 9.3 angle 30.0 
+014C: set_parked_car_generator $1498 cars_to_generate_to 101 
+014B: $1499 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1562.9 1282.4 9.3 angle 98.0 
+014C: set_parked_car_generator $1499 cars_to_generate_to 101 
+014B: $1500 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1587.7 1313.8 9.3 angle 87.0 
+014C: set_parked_car_generator $1500 cars_to_generate_to 101 
+014B: $1501 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1568.1 1351.0 9.3 angle 261.9 
+014C: set_parked_car_generator $1501 cars_to_generate_to 101 
+014B: $1502 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1562.7 1406.9 9.3 angle 150.1 
+014C: set_parked_car_generator $1502 cars_to_generate_to 101 
+014B: $1503 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1445.3 1499.0 9.3 angle 20.6 
+014C: set_parked_car_generator $1503 cars_to_generate_to 101 
+014B: $1504 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1349.1 1503.7 9.3 angle 180.0 
+014C: set_parked_car_generator $1504 cars_to_generate_to 101 
+014B: $1505 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1318.7 1524.1 9.3 angle 180.0 
+014C: set_parked_car_generator $1505 cars_to_generate_to 101 
+014B: $1506 = init_car_generator #VCNMAV -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -469.0 1123.5 64.7 angle 270.0 
+014C: set_parked_car_generator $1506 cars_to_generate_to 101 
+014B: $1507 = init_car_generator #INFERNUS -1 -1 force_spawn 1 alarm 80 door_lock 0 min_delay 0 max_delay 10000 at 386.0 1227.0 19.4 angle 90.0 
+014C: set_parked_car_generator $1507 cars_to_generate_to 101 
+014B: $1508 = init_car_generator #PACKER -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1377.7 -961.4 14.4 angle 177.9 
+014C: set_parked_car_generator $1508 cars_to_generate_to 101 
+014B: $1509 = init_car_generator #SENTXS -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1142.5 -939.3 14.6 angle 89.6 
+014C: set_parked_car_generator $1509 cars_to_generate_to 101 
+014B: $1510 = init_car_generator #TOPFUN -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1235.171 -1235.171 14.77 angle 337.839 
+014C: set_parked_car_generator $1510 cars_to_generate_to 101 
+014B: $1511 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1414.8 -1268.1 13.9 angle 40.0 
+014C: set_parked_car_generator $1511 cars_to_generate_to 101 
+014B: $1512 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1474.9 -961.7 13.9 angle 282.0 
+014C: set_parked_car_generator $1512 cars_to_generate_to 101 
+014B: $1513 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1808.5 -1090.8 13.9 angle 274.0 
+014C: set_parked_car_generator $1513 cars_to_generate_to 101 
+014B: $1514 = init_car_generator #BAGGAGE -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1533.3 -805.9 13.9 angle 178.0 
+014C: set_parked_car_generator $1514 cars_to_generate_to 101 
+014B: $1515 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1584.2 -656.4 14.0 angle 0.0 
+014C: set_parked_car_generator $1515 cars_to_generate_to 101 
+014B: $1516 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at -1606.5 -633.8 14.0 angle 180.0 
+014C: set_parked_car_generator $1516 cars_to_generate_to 101 
+014B: $1517 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1628.0 -667.0 14.0 angle 180.0 
+014C: set_parked_car_generator $1517 cars_to_generate_to 101 
+014B: $1518 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -1637.5 -624.6 14.0 angle 0.0 
+014C: set_parked_car_generator $1518 cars_to_generate_to 101 
+014B: $1519 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1659.6 -646.4 14.0 angle 180.0 
+014C: set_parked_car_generator $1519 cars_to_generate_to 101 
+014B: $1520 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -1706.0 -655.9 14.0 angle 90.0 
+014C: set_parked_car_generator $1520 cars_to_generate_to 101 
+014B: $1521 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at -1691.5 -614.8 14.0 angle 0.0 
+014C: set_parked_car_generator $1521 cars_to_generate_to 101 
+014B: $1522 = init_car_generator #DTN_STADDOORA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1573.3 -614.7 14.0 angle 0.0 
+014C: set_parked_car_generator $1522 cars_to_generate_to 101 
+014B: $1523 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 516.1 503.1 10.5 angle 0.0 
+014C: set_parked_car_generator $1523 cars_to_generate_to 101 
+014B: $1524 = init_car_generator #ENFORCER -1 -1 force_spawn 0 alarm 0 door_lock 40 min_delay 0 max_delay 10000 at 493.2045 503.683 10.4612 angle 179.9753 
+014C: set_parked_car_generator $1524 cars_to_generate_to 101 
+014B: $1525 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 355.7 -511.4 11.6 angle 320.0 
+014C: set_parked_car_generator $1525 cars_to_generate_to 101 
+014B: $1526 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 372.3 -525.7 11.6 angle 140.0 
+014C: set_parked_car_generator $1526 cars_to_generate_to 101 
+014B: $1527 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -855.4 -665.4 10.6 angle 0.0 
+014C: set_parked_car_generator $1527 cars_to_generate_to 101 
+014B: $1528 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -844.8 -675.6 10.6 angle 90.0 
+014C: set_parked_car_generator $1528 cars_to_generate_to 101 
+014B: $1529 = init_car_generator #POLICE -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -665.2 777.6 11.0 angle 180.0 
+014C: set_parked_car_generator $1529 cars_to_generate_to 101 
+014B: $1530 = init_car_generator #AMBULAN -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at 472.5 701.2 10.5 angle 90.0 
+014C: set_parked_car_generator $1530 cars_to_generate_to 101 
+014B: $1531 = init_car_generator #AMBULAN -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -111.9 -949.9 10.2 angle 280.0 
+014C: set_parked_car_generator $1531 cars_to_generate_to 101 
+014B: $1532 = init_car_generator #AMBULAN -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -776.1 1135.1 11.5 angle 0.0 
+014C: set_parked_car_generator $1532 cars_to_generate_to 101 
+014B: $1533 = init_car_generator #FIRETRUK -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -694.9 917.3 10.8 angle 270.0 
+014C: set_parked_car_generator $1533 cars_to_generate_to 101 
+014B: $1534 = init_car_generator #COMET -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 114.6977 252.3439 20.6832 angle 105.6803 
+014C: set_parked_car_generator $1534 cars_to_generate_to 101 
+014B: $1535 = init_car_generator #INFERNUS 1 1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -363.0 -532.2 12.0 angle 0.0 
+014C: set_parked_car_generator $1535 cars_to_generate_to 101 
+014B: $1536 = init_car_generator #ZEBRA -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1003.1 207.4 11.0 angle 166.6 
+014C: set_parked_car_generator $1536 cars_to_generate_to 101 
+014B: $1537 = init_car_generator #POLMAV -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -614.0 804.0 30.0 angle 0.0 
+014C: set_parked_car_generator $1537 cars_to_generate_to 101 
+$1538 = Pickup.Create(#CHNSAW, 2, 30.0, -1330.9, 13.0)
+$1539 = Pickup.Create(#BAT, 2, 206.7, -1254.4, 12.0)
+032B: $1540 = create_weapon_pickup #COLT45 15 ammo 34 at -228.4 -1318.2 9.1 
+032B: $1541 = create_weapon_pickup #COLT45 15 ammo 34 at 340.5 -249.5 12.5 
+032B: $1542 = create_weapon_pickup #CHROMEGUN 15 ammo 16 at 42.3 -959.2 21.8 
+032B: $1543 = create_weapon_pickup #CHROMEGUN 15 ammo 16 at 568.9 -449.3 11.1 
+032B: $1544 = create_weapon_pickup #TEC9 15 ammo 100 at 287.9 50.7 10.8 
+032B: $1545 = create_weapon_pickup #GRENADE 15 ammo 4 at 362.2 -500.5 12.3 
+$1546 = Pickup.Create(#CLEAVER, 15, 402.6, 102.5, 11.4)
+032B: $1547 = create_weapon_pickup #RUGER 15 ammo 60 at 418.9 589.9 18.3 
+$1548 = Pickup.Create(#KATANA, 15, 476.9, 1014.9, 19.2)
+$1549 = Pickup.Create(#NITESTICK, 15, 402.4, -488.3, 12.4)
+$1550 = Pickup.Create(#BRASSKNUCKLE, 15, 224.0, -1207.5, 11.0)
+$1551 = Pickup.Create(#KNIFECUR, 15, 118.7, -1546.1, 10.8)
+$1552 = Pickup.Create(#MACHETE, 15, 56.6, -459.3, 11.4)
+032B: $1553 = create_weapon_pickup #UZI 15 ammo 60 at 5.4 -1277.0 10.4 
+032B: $1554 = create_weapon_pickup #UZI 15 ammo 60 at 157.0 -895.3 12.3 
+032B: $1555 = create_weapon_pickup #BOMB 15 ammo 4 at 556.6 207.4 14.5 
+032B: $1556 = create_weapon_pickup #M4 15 ammo 60 at -32.8 1019.2 13.0 
+032B: $1557 = create_weapon_pickup #UZI 15 ammo 60 at 17.3 1145.7 23.5 
+$1558 = Pickup.Create(#GOLFCLUB, 2, 95.0, 279.2, 21.8)
+032B: $1559 = create_weapon_pickup #FLAME 15 ammo 300 at -546.0 -418.9 9.8 
+032B: $1560 = create_weapon_pickup #SNIPER 15 ammo 20 at -476.4 -571.2 12.9 
+$1561 = Pickup.Create(#KATANA, 15, -554.11, -547.7, 10.7)
+032B: $1562 = create_weapon_pickup #MOLOTOV 15 ammo 4 at -755.7 1347.5 11.8 
+032B: $1563 = create_weapon_pickup #UZI 15 ammo 60 at -545.8 694.6 11.0 
+032B: $1564 = create_weapon_pickup #M4 15 ammo 60 at -980.4 118.7 9.3 
+032B: $1565 = create_weapon_pickup #M4 15 ammo 60 at -1221.0 -641.6 11.7 
+032B: $1566 = create_weapon_pickup #SNIPER 15 ammo 20 at -742.1 -949.9 9.9 
+032B: $1567 = create_weapon_pickup #ROCKETLA 15 ammo 4 at -995.1 -1178.1 13.6 
+032B: $1568 = create_weapon_pickup #INGRAMSL 15 ammo 60 at -713.3 -1466.0 11.2 
+032B: $1569 = create_weapon_pickup #FLAME 15 ammo 300 at -1015.1 -1392.9 11.5 
+032B: $1570 = create_weapon_pickup #SHOTGSPA 15 ammo 14 at -1359.0 -742.2 14.9 
+032B: $1571 = create_weapon_pickup #M60 15 ammo 100 at -1744.9 -288.9 29.7 
+032B: $1572 = create_weapon_pickup #GRENADE 15 ammo 4 at -939.8 -464.9 10.9 
+032B: $1573 = create_weapon_pickup #PYTHON 15 ammo 12 at -1182.7 -61.1 11.4 
+032B: $1574 = create_weapon_pickup #BUDDYSHOT 15 ammo 10 at -1305.2 177.1 11.4 
+032B: $1575 = create_weapon_pickup #LASER 15 ammo 14 at -1114.3 -602.0 26.0 
+$1576 = Pickup.Create(#HEALTH, 1, -113.2, -975.7, 10.4)
+$1577 = Pickup.Create(#HEALTH, 15, -225.1, -1158.1, 9.1)
+$1578 = Pickup.Create(#HEALTH, 15, 456.2, -471.4, 16.6)
+$1579 = Pickup.Create(#HEALTH, 15, 377.4, 467.7, 11.6)
+$1580 = Pickup.Create(#HEALTH, 1, 469.6, 697.4, 11.7)
+$1581 = Pickup.Create(#HEALTH, 15, 385.3, 1210.9, 19.4)
+$1582 = Pickup.Create(#HEALTH, 1, 384.3, 756.6, 11.7)
+$1583 = Pickup.Create(#HEALTH, 15, 10.7, 1099.0, 16.6)
+$1584 = Pickup.Create(#HEALTH, 15, 85.3, 402.7, 19.8)
+$1585 = Pickup.Create(#HEALTH, 15, -711.7, -501.7, 11.3)
+$1586 = Pickup.Create(#HEALTH, 15, -404.0, -588.0, 11.6)
+$1587 = Pickup.Create(#HEALTH, 2, -406.2503, -566.4947, 19.5804)
+$1588 = Pickup.Create(#HEALTH, 15, -478.1, 1438.5, 16.1)
+$1589 = Pickup.Create(#HEALTH, 15, -675.0, 1263.3, 25.1)
+$1590 = Pickup.Create(#HEALTH, 15, -821.8, 1144.8, 26.1)
+$1591 = Pickup.Create(#HEALTH, 15, -1139.4, 55.4, 11.2)
+$1592 = Pickup.Create(#HEALTH, 15, -1290.9, 91.9, 26.9)
+$1593 = Pickup.Create(#HEALTH, 1, -885.4, -483.4, 13.1)
+$1594 = Pickup.Create(#HEALTH, 15, -925.1, -638.3, 16.0)
+$1595 = Pickup.Create(#HEALTH, 15, -692.4, -1283.8, 11.1)
+$1596 = Pickup.Create(#HEALTH, 15, -655.1, -1506.3, 8.1)
+$1597 = Pickup.Create(#HEALTH, 15, -1399.4, -865.9, 20.9)
+$1598 = Pickup.Create(#HEALTH, 1, -822.6, 1137.3, 12.4)
+$1599 = Pickup.Create(#HEALTH, 1, -851.4, -78.8, 11.5)
+$1600 = Pickup.Create(#HEALTH, 1, -834.2, 740.6, 11.3)
+$1601 = Pickup.Create(#BODYARMOUR, 15, 4.9, -1239.2, 19.2)
+$1602 = Pickup.Create(#BODYARMOUR, 15, 205.7, -885.7, 12.2)
+$1603 = Pickup.Create(#BODYARMOUR, 15, 148.8, -349.9, 8.7)
+$1604 = Pickup.Create(#BODYARMOUR, 15, 520.2, -171.2, 13.9)
+$1605 = Pickup.Create(#BODYARMOUR, 15, 430.8, 162.1, 11.8)
+$1606 = Pickup.Create(#BODYARMOUR, 15, 416.1, 517.7, 11.2)
+$1607 = Pickup.Create(#BODYARMOUR, 15, 350.2, 884.8, 25.5)
+$1608 = Pickup.Create(#BODYARMOUR, 15, 535.3, 1214.1, 18.9)
+$1609 = Pickup.Create(#BODYARMOUR, 15, 42.8, 951.1, 11.0)
+$1610 = Pickup.Create(#BODYARMOUR, 15, -70.8, 510.6, 11.6)
+$1611 = Pickup.Create(#BODYARMOUR, 15, -1695.6, -289.4, 29.7)
+$1612 = Pickup.Create(#BODYARMOUR, 15, -567.6, 1370.36, 16.4)
+$1613 = Pickup.Create(#BODYARMOUR, 15, -921.9, 722.9, 11.0)
+$1614 = Pickup.Create(#BODYARMOUR, 15, -1058.9, -240.6, 18.2)
+$1615 = Pickup.Create(#BODYARMOUR, 15, -625.5, 622.2, 11.7)
+$1616 = Pickup.Create(#BODYARMOUR, 15, -733.5, -1294.7, 12.4)
+$1617 = Pickup.Create(#BODYARMOUR, 15, -1177.0, -915.3, 14.9)
+$1618 = Pickup.Create(#BODYARMOUR, 15, -1171.0, -457.4, 10.7)
+$1619 = Pickup.Create(#ADRENALINE, 15, -37.7, -938.3, 10.5)
+$1620 = Pickup.Create(#ADRENALINE, 15, 471.1, -444.1, 10.6)
+$1621 = Pickup.Create(#ADRENALINE, 15, 448.6, 16.6, 11.0)
+$1622 = Pickup.Create(#ADRENALINE, 15, 425.6, 221.1, 16.2)
+$1623 = Pickup.Create(#ADRENALINE, 15, 428.4, 947.5, 13.2)
+$1624 = Pickup.Create(#ADRENALINE, 1, 385.6, 752.3, 11.7)
+$1625 = Pickup.Create(#ADRENALINE, 15, -366.6, -500.3, 11.3)
+$1626 = Pickup.Create(#ADRENALINE, 15, -342.2, -591.5, 36.9)
+$1627 = Pickup.Create(#ADRENALINE, 15, -381.2, 1065.2, 13.0)
+$1628 = Pickup.Create(#ADRENALINE, 15, -730.1, 1226.3, 24.2)
+$1629 = Pickup.Create(#ADRENALINE, 15, -1095.1, 99.4, 12.3)
+$1630 = Pickup.Create(#ADRENALINE, 15, -967.1, -62.6, 11.0)
+$1631 = Pickup.Create(#ADRENALINE, 15, -1022.1, -547.0, 11.2)
+$1632 = Pickup.Create(#ADRENALINE, 15, -882.0, 111.2, 9.3)
+$1633 = Pickup.Create(#ADRENALINE, 1, -857.1, -83.6, 11.5)
+$1634 = Pickup.Create(#ADRENALINE, 1, -839.0, 740.6, 11.3)
 055B: $724 = create_clothes_pickup 11 at -1200.3 -322.9 10.9 
 $761 = 0 // $ = int 
-$1576 = Pickup.Create(#M60, 1, -1105.9, 335.3, 11.1)
-$1577 = Pickup.Create(#ROCKETLA, 1, -1105.9, 330.3, 11.1)
-$1578 = Pickup.Create(#MINIGUN, 1, -1105.9, 325.3, 11.1)
-$1579 = Pickup.Create(#BOMB, 1, -1105.9, 320.3, 11.1)
+$1635 = Pickup.Create(#M60, 1, -1105.9, 335.3, 11.1)
+$1636 = Pickup.Create(#ROCKETLA, 1, -1105.9, 330.3, 11.1)
+$1637 = Pickup.Create(#MINIGUN, 1, -1105.9, 325.3, 11.1)
+$1638 = Pickup.Create(#BOMB, 1, -1105.9, 320.3, 11.1)
 04A6: $565 = create_asset_money_pickup_at 93.3 -1472.14 $117 money $165 rate $165 
-04A6: $1580 = create_asset_money_pickup_at $58 $59 $60 money $171 rate $171 
-04A6: $1581 = create_asset_money_pickup_at $70 $71 $72 money $179 rate $179 
-04A6: $1582 = create_asset_money_pickup_at $125 $126 $127 money $174 rate $174 
-04A6: $1583 = create_asset_money_pickup_at -378.4 -536.9 17.2 money $168 rate $168 
-04A6: $1584 = create_asset_money_pickup_at $55 $56 $57 money $177 rate $177 
-04A6: $1585 = create_asset_money_pickup_at $131 $132 $133 money $168 rate $168 
-04A6: $1586 = create_asset_money_pickup_at $64 $65 $66 money $162 rate $162 
-04A6: $1587 = create_asset_money_pickup_at $128 $129 $130 money $159 rate $159 
-$1588 = Object.Init(#MAN_DOOROPEN, -378.542, -554.006, 21.96)
-Object.RemoveFromMissionCleanupList($1588)
-$1589 = Object.Init(#COMGATE1OPEN, -712.524, -489.428, 12.549)
-Object.RemoveFromMissionCleanupList($1589)
-$1590 = Object.Init(#COMGATE2OPEN, -183.824, -473.223, 12.615)
-Object.RemoveFromMissionCleanupList($1590)
+04A6: $1639 = create_asset_money_pickup_at $58 $59 $60 money $171 rate $171 
+04A6: $1640 = create_asset_money_pickup_at $70 $71 $72 money $179 rate $179 
+04A6: $1641 = create_asset_money_pickup_at $125 $126 $127 money $174 rate $174 
+04A6: $1642 = create_asset_money_pickup_at -378.4 -536.9 17.2 money $168 rate $168 
+04A6: $1643 = create_asset_money_pickup_at $55 $56 $57 money $177 rate $177 
+04A6: $1644 = create_asset_money_pickup_at $131 $132 $133 money $168 rate $168 
+04A6: $1645 = create_asset_money_pickup_at $64 $65 $66 money $162 rate $162 
+04A6: $1646 = create_asset_money_pickup_at $128 $129 $130 money $159 rate $159 
+$1647 = Object.Init(#MAN_DOOROPEN, -378.542, -554.006, 21.96)
+Object.RemoveFromMissionCleanupList($1647)
+$1648 = Object.Init(#COMGATE1OPEN, -712.524, -489.428, 12.549)
+Object.RemoveFromMissionCleanupList($1648)
+$1649 = Object.Init(#COMGATE2OPEN, -183.824, -473.223, 12.615)
+Object.RemoveFromMissionCleanupList($1649)
 wait 0 
 Player.InfiniteRun($PLAYER_CHAR) = True
 055D: make_player $PLAYER_CHAR fireproof 1 
@@ -20386,10 +21919,10 @@ $725 = 1 // $ = int
 $758 = 1 // $ = int 
 055B: $728 = create_clothes_pickup 1 at -820.2 1364.1 66.4 
 $727 = 1 // $ = int 
-032B: $1591 = create_weapon_pickup #M4 15 ammo 120 at -330.9 -569.7 11.6 
-032B: $1592 = create_weapon_pickup #CHROMEGUN 15 ammo 50 at -335.9 -569.5 11.6 
-$1593 = Pickup.Create(#HEALTH, 2, -330.702, -573.366, 11.6)
-$1594 = Pickup.Create(#BODYARMOUR, 2, -336.0, -573.7, 11.6)
+032B: $1650 = create_weapon_pickup #M4 15 ammo 120 at -330.9 -569.7 11.6 
+032B: $1651 = create_weapon_pickup #CHROMEGUN 15 ammo 50 at -335.9 -569.5 11.6 
+$1652 = Pickup.Create(#HEALTH, 2, -330.702, -573.366, 11.6)
+$1653 = Pickup.Create(#BODYARMOUR, 2, -336.0, -573.7, 11.6)
 055B: $723 = create_clothes_pickup 1 at -384.5 -591.9 25.3 
 $722 = 1 // $ = int 
 Player.Money($PLAYER_CHAR) += 9000000
@@ -20412,7 +21945,7 @@ $743 = 1 // $ = int
 055B: $746 = create_clothes_pickup 10 at -917.4 885.1 11.0 
 $745 = 1 // $ = int 
 055B: $748 = create_clothes_pickup 7 at 465.3 -57.4 15.7 
-$1595 = Pickup.Create(#KNIFECUR, 2, 468.5, -54.2, 15.7)
+$1654 = Pickup.Create(#KNIFECUR, 2, 468.5, -54.2, 15.7)
 $747 = 1 // $ = int 
 04F8: define_police_trigger_type 1 if_player_with_wanted_level_in_rectangle 225.0 -1244.0 227.4 -1248.5 spawn_policeA_at 249.0 -1255.0 headed_towards 246.0 -1250.6 spawn_policeB_at 208.4 -1238.4 headed_towards 209.6 -1243.5 
 04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle 235.3 -1299.6 261.1 -1270.7 spawn_policeA_at 212.2 -1309.6 headed_towards 228.0 -1311.3 spawn_policeB_at 221.2 -1309.6 headed_towards 228.0 -1311.3 
