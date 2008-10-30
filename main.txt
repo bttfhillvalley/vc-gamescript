@@ -586,6 +586,7 @@ create_thread @SAVE6
 create_thread @SAVE7 
 create_thread @GANGMEM 
 create_thread @AMBBANK 
+create_thread @C_SPAWN 
 create_thread @NONAME_2 
 create_thread @SBOARD 
 create_thread @SPDMTR 
@@ -613,76 +614,76 @@ create_thread @WEATHER
 wait 0 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_4940 
+else_jump @MAIN_4948 
 set_weather $293 
 if 
    not Actor.Dead($PLAYER_ACTOR)
-else_jump @MAIN_4897 
+else_jump @MAIN_4905 
 wait 0 
 0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER' 
 038B: load_requested_models 
 if 
    not Actor.Dead($PLAYER_ACTOR)
-else_jump @MAIN_4897 
+else_jump @MAIN_4905 
 0353: refresh_actor $PLAYER_ACTOR 
 
-:MAIN_4897
+:MAIN_4905
 fade 1 1000 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_4931 
+else_jump @MAIN_4939 
 select_interior 0 
 Player.CanMove($PLAYER_CHAR) = True
 
-:MAIN_4931
+:MAIN_4939
 01B7: release_weather 
-jump @MAIN_4940 
+jump @MAIN_4948 
 
-:MAIN_4940
+:MAIN_4948
 wait 1000 
-jump @MAIN_4940 
+jump @MAIN_4948 
 
-:MAIN_4952
+:MAIN_4960
 $ONMISSION = 1 // $ = int 
 Player.CanMove($PLAYER_CHAR) = False
 03D8: show_save_screen 
 wait 0 
 
-:MAIN_4972
+:MAIN_4980
 if 
 83D9:   not save_done 
-else_jump @MAIN_4996 
+else_jump @MAIN_5004 
 wait 0 
-jump @MAIN_4972 
+jump @MAIN_4980 
 
-:MAIN_4996
+:MAIN_5004
 0169: set_fade_color 0 0 0 
 fade 0 1000 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_5042 
+else_jump @MAIN_5050 
 0222: set_player $PLAYER_CHAR health_to 200 
 Player.CanMove($PLAYER_CHAR) = False
 
-:MAIN_5042
+:MAIN_5050
 return 
 
-:MAIN_5044
+:MAIN_5052
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_5064 
+else_jump @MAIN_5072 
 Camera.Restore_WithJumpCut
 Camera.SetBehindPlayer
 
-:MAIN_5064
+:MAIN_5072
 wait 500 
 if 
    Player.Defined($PLAYER_CHAR)
-else_jump @MAIN_5099 
+else_jump @MAIN_5107 
 Player.CanMove($PLAYER_CHAR) = True
 $ONMISSION = 0 // $ = int 
 
-:MAIN_5099
+:MAIN_5107
 return 
 
 :AMBBANK
@@ -1034,7 +1035,7 @@ $299 = 1 // $ = int
 if 
    Pickup.Picked_up($300)
 else_jump @PSAVE1_526 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE1_491 
@@ -1128,7 +1129,7 @@ $302 = 1 // $ = int
 if 
    Pickup.Picked_up($303)
 else_jump @PSAVE2_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE2_267 
@@ -1140,7 +1141,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 0.0 
 
 :PSAVE2_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE2_274
 jump @PSAVE2_311 
@@ -1182,7 +1183,7 @@ $7 = 1 // $ = int
 if 
    Pickup.Picked_up($304)
 else_jump @PSAVE3_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE3_267 
@@ -1194,7 +1195,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 226.0 
 
 :PSAVE3_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE3_274
 jump @PSAVE3_311 
@@ -1236,7 +1237,7 @@ $305 = 1 // $ = int
 if 
    Pickup.Picked_up($306)
 else_jump @PSAVE4_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE4_267 
@@ -1248,7 +1249,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 80.0 
 
 :PSAVE4_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE4_274
 jump @PSAVE4_311 
@@ -1290,7 +1291,7 @@ $307 = 1 // $ = int
 if 
    Pickup.Picked_up($308)
 else_jump @PSAVE5_262 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE5_255 
@@ -1302,7 +1303,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 218.0275 
 
 :PSAVE5_255
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE5_262
 jump @PSAVE5_299 
@@ -1344,7 +1345,7 @@ $309 = 1 // $ = int
 if 
    Pickup.Picked_up($310)
 else_jump @PSAVE6_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE6_267 
@@ -1356,7 +1357,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 248.0 
 
 :PSAVE6_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE6_274
 jump @PSAVE6_311 
@@ -1398,7 +1399,7 @@ $311 = 1 // $ = int
 if 
    Pickup.Picked_up($ICE_CREAM_FACTORY_ASSET)
 else_jump @PSAVE7_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE7_267 
@@ -1410,7 +1411,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 277.0 
 
 :PSAVE7_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE7_274
 jump @PSAVE7_311 
@@ -1452,7 +1453,7 @@ $312 = 1 // $ = int
 if 
    Pickup.Picked_up($314)
 else_jump @PSAVE8_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE8_267 
@@ -1464,7 +1465,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 273.0 
 
 :PSAVE8_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE8_274
 jump @PSAVE8_311 
@@ -1506,7 +1507,7 @@ $315 = 1 // $ = int
 if 
    Pickup.Picked_up($316)
 else_jump @PSAVE9_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE9_267 
@@ -1518,7 +1519,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 274.3 
 
 :PSAVE9_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE9_274
 jump @PSAVE9_311 
@@ -1560,7 +1561,7 @@ $317 = 1 // $ = int
 if 
    Pickup.Picked_up($318)
 else_jump @PSAVE10_274 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @PSAVE10_267 
@@ -1572,7 +1573,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 224.5 
 
 :PSAVE10_267
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :PSAVE10_274
 jump @PSAVE10_311 
@@ -1614,7 +1615,7 @@ $319 = 1 // $ = int
 if 
    Pickup.Picked_up($320)
 else_jump @SAVE1_262 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE1_255 
@@ -1626,7 +1627,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 0.0 
 
 :SAVE1_255
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :SAVE1_262
 jump @SAVE1_299 
@@ -1668,7 +1669,7 @@ $321 = 1 // $ = int
 if 
    Pickup.Picked_up($322)
 else_jump @SAVE2_262 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE2_255 
@@ -1680,7 +1681,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 276.3156 
 
 :SAVE2_255
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :SAVE2_262
 jump @SAVE2_299 
@@ -1722,7 +1723,7 @@ $323 = 1 // $ = int
 if 
    Pickup.Picked_up($324)
 else_jump @SAVE3_262 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE3_255 
@@ -1734,7 +1735,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 200.4458 
 
 :SAVE3_255
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :SAVE3_262
 jump @SAVE3_299 
@@ -1776,7 +1777,7 @@ $325 = 1 // $ = int
 if 
    Pickup.Picked_up($326)
 else_jump @SAVE4_262 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE4_255 
@@ -1788,7 +1789,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 238.8605 
 
 :SAVE4_255
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :SAVE4_262
 jump @SAVE4_299 
@@ -1830,7 +1831,7 @@ $327 = 1 // $ = int
 if 
    Pickup.Picked_up($328)
 else_jump @SAVE5_262 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE5_255 
@@ -1842,7 +1843,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 353.8286 
 
 :SAVE5_255
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :SAVE5_262
 jump @SAVE5_299 
@@ -1884,7 +1885,7 @@ $329 = 1 // $ = int
 if 
    Pickup.Picked_up($330)
 else_jump @SAVE6_262 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE6_255 
@@ -1896,7 +1897,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 131.5277 
 
 :SAVE6_255
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :SAVE6_262
 jump @SAVE6_299 
@@ -1941,7 +1942,7 @@ $331 = 1 // $ = int
 if 
    Pickup.Picked_up($332)
 else_jump @SAVE7_290 
-gosub @MAIN_4952 
+gosub @MAIN_4960 
 if 
    Player.Defined($PLAYER_CHAR)
 else_jump @SAVE7_283 
@@ -1953,7 +1954,7 @@ fade 1 1000
 0171: set_player $PLAYER_CHAR z_angle_to 243.0 
 
 :SAVE7_283
-gosub @MAIN_5044 
+gosub @MAIN_5052 
 
 :SAVE7_290
 jump @SAVE7_327 
@@ -15550,10 +15551,12 @@ else_jump @GARAGE_2040
 :GARAGE_2115
 021B: set_garage $247 to_accept_car 181 
 jump @GARAGE_26 
+
+:C_SPAWN
 thread 'C_SPAWN' 
 10@ = 227 // $ = int 
 11@ = 211 // $ = int 
-12@ = 204 // $ = int 
+12@ = 207 // $ = int 
 
 :C_SPAWN_34
 wait 10 
@@ -15723,9 +15726,6 @@ else_jump @HOVER_10
 :HOVER_147
 03C1: 6@ = player $PLAYER_CHAR car_no_save 
 02E3: 7@ = car 6@ speed 
-if 
-   not 7@ > 30.0 // $ > float 
-else_jump @HOVER_10 
 10@ = 18 // @ = int 
 11@ = 6 // @ = int 
 10@ = 2 // @ = int 
@@ -15739,7 +15739,7 @@ Car.StorePos(6@, 1@, 2@, 3@)
 8@ = Car.Angle(6@)
 0086: 9@ = 7@ // $ = $ float 
 
-:HOVER_271
+:HOVER_250
 wait 10 
 if 
    Player.Defined($PLAYER_CHAR)
@@ -15753,10 +15753,10 @@ else_jump @HOVER_10
 12@ /= 25.0 // @ /= float 
 if 
    not 12@ >= 0.5 // @ >= float 
-else_jump @HOVER_372 
+else_jump @HOVER_351 
 12@ = 0.5 // @ = float 
 
-:HOVER_372
+:HOVER_351
 if or
 80E1:   not player 0 pressed_button 14 
 80E1:   not player 0 pressed_button 16 
@@ -15765,314 +15765,314 @@ if or
 80E1:   not player 0 pressed_button 10@ 
 80E1:   not player 0 pressed_button 16 
 80E1:   not player 0 pressed_button 10 
-else_jump @HOVER_1478 
+else_jump @HOVER_1457 
 if or
 80E1:   not player 0 pressed_button 10@ 
 80E1:   not player 0 pressed_button 16 
 80E1:   not player 0 pressed_button 11 
-else_jump @HOVER_1506 
+else_jump @HOVER_1485 
 if or
 80E1:   not player 0 pressed_button 10@ 
 80E1:   not player 0 pressed_button 14 
 80E1:   not player 0 pressed_button 10 
-else_jump @HOVER_1534 
+else_jump @HOVER_1513 
 if or
 80E1:   not player 0 pressed_button 10@ 
 80E1:   not player 0 pressed_button 14 
 80E1:   not player 0 pressed_button 11 
-else_jump @HOVER_1562 
+else_jump @HOVER_1541 
 if or
 80E1:   not player 0 pressed_button 11@ 
 80E1:   not player 0 pressed_button 16 
 80E1:   not player 0 pressed_button 10 
-else_jump @HOVER_1590 
+else_jump @HOVER_1569 
 if or
 80E1:   not player 0 pressed_button 11@ 
 80E1:   not player 0 pressed_button 16 
 80E1:   not player 0 pressed_button 11 
-else_jump @HOVER_1618 
+else_jump @HOVER_1597 
 if or
 80E1:   not player 0 pressed_button 11@ 
 80E1:   not player 0 pressed_button 14 
 80E1:   not player 0 pressed_button 10 
-else_jump @HOVER_1646 
+else_jump @HOVER_1625 
 if or
 80E1:   not player 0 pressed_button 11@ 
 80E1:   not player 0 pressed_button 14 
 80E1:   not player 0 pressed_button 11 
-else_jump @HOVER_1674 
+else_jump @HOVER_1653 
 if or
 80E1:   not player 0 pressed_button 10@ 
 80E1:   not player 0 pressed_button 16 
+else_jump @HOVER_1681 
+if or
+80E1:   not player 0 pressed_button 10@ 
+80E1:   not player 0 pressed_button 14 
 else_jump @HOVER_1702 
 if or
-80E1:   not player 0 pressed_button 10@ 
-80E1:   not player 0 pressed_button 14 
+80E1:   not player 0 pressed_button 11@ 
+80E1:   not player 0 pressed_button 16 
 else_jump @HOVER_1723 
 if or
 80E1:   not player 0 pressed_button 11@ 
-80E1:   not player 0 pressed_button 16 
+80E1:   not player 0 pressed_button 14 
 else_jump @HOVER_1744 
 if or
-80E1:   not player 0 pressed_button 11@ 
-80E1:   not player 0 pressed_button 14 
+80E1:   not player 0 pressed_button 10@ 
+80E1:   not player 0 pressed_button 10 
 else_jump @HOVER_1765 
 if or
 80E1:   not player 0 pressed_button 10@ 
-80E1:   not player 0 pressed_button 10 
+80E1:   not player 0 pressed_button 11 
 else_jump @HOVER_1786 
 if or
-80E1:   not player 0 pressed_button 10@ 
-80E1:   not player 0 pressed_button 11 
+80E1:   not player 0 pressed_button 11@ 
+80E1:   not player 0 pressed_button 10 
 else_jump @HOVER_1807 
 if or
 80E1:   not player 0 pressed_button 11@ 
-80E1:   not player 0 pressed_button 10 
+80E1:   not player 0 pressed_button 11 
 else_jump @HOVER_1828 
 if or
-80E1:   not player 0 pressed_button 11@ 
-80E1:   not player 0 pressed_button 11 
+80E1:   not player 0 pressed_button 16 
+80E1:   not player 0 pressed_button 10 
 else_jump @HOVER_1849 
 if or
 80E1:   not player 0 pressed_button 16 
-80E1:   not player 0 pressed_button 10 
+80E1:   not player 0 pressed_button 11 
 else_jump @HOVER_1870 
 if or
-80E1:   not player 0 pressed_button 16 
-80E1:   not player 0 pressed_button 11 
+80E1:   not player 0 pressed_button 14 
+80E1:   not player 0 pressed_button 10 
 else_jump @HOVER_1891 
 if or
 80E1:   not player 0 pressed_button 14 
-80E1:   not player 0 pressed_button 10 
-else_jump @HOVER_1912 
-if or
-80E1:   not player 0 pressed_button 14 
 80E1:   not player 0 pressed_button 11 
-else_jump @HOVER_1933 
+else_jump @HOVER_1912 
 if 
 80E1:   not player 0 pressed_button 10@ 
-else_jump @HOVER_1394 
+else_jump @HOVER_1373 
 if 
 80E1:   not player 0 pressed_button 11@ 
-else_jump @HOVER_1408 
+else_jump @HOVER_1387 
 if 
 80E1:   not player 0 pressed_button 10 
-else_jump @HOVER_1422 
+else_jump @HOVER_1401 
 if 
 80E1:   not player 0 pressed_button 11 
-else_jump @HOVER_1436 
+else_jump @HOVER_1415 
 if 
 80E1:   not player 0 pressed_button 16 
-else_jump @HOVER_1450 
+else_jump @HOVER_1429 
 if 
 80E1:   not player 0 pressed_button 14 
-else_jump @HOVER_1464 
+else_jump @HOVER_1443 
 
-:HOVER_1023
+:HOVER_1002
 if 
   9@ > -15.0 // $ > float 
-else_jump @HOVER_1290 
+else_jump @HOVER_1269 
 if or
   9@ > 0.45 // $ > float 
   -0.45 > 9@ // float > $ 
-else_jump @HOVER_1307 
+else_jump @HOVER_1286 
 if 
   9@ > 60.0 // $ > float 
-else_jump @HOVER_1106 
+else_jump @HOVER_1085 
 9@ = 60.0 // $ = float 
 
-:HOVER_1106
+:HOVER_1085
 Car.StorePos(6@, 1@, 2@, 4@)
 4@ += 1.0 // $ += float 
 02CE: 5@ = ground_z 1@ 2@ 4@ 
 3@ -= 0.25 // $ -= float 
 if 
   7.0 > 3@ // float > $ 
-else_jump @HOVER_1185 
+else_jump @HOVER_1164 
 3@ = 7.0 // $ = float 
 
-:HOVER_1185
+:HOVER_1164
 if 
   3@ > 200.0 // @ > float 
-else_jump @HOVER_1216 
+else_jump @HOVER_1195 
 3@ = 200.0 // $ = float 
 
-:HOVER_1216
+:HOVER_1195
 if 
 0034:   5@ >= 3@ // $ >= $ float 
-else_jump @HOVER_1243 
+else_jump @HOVER_1222 
 0086: 3@ = 5@ // $ = $ float 
 
-:HOVER_1243
+:HOVER_1222
 3@ += 0.25 // $ += float 
 Car.PutAt(6@, 1@, 2@, 3@)
 Car.Angle(6@) = 8@
 04BA: set_car 6@ speed_instantly 9@ 
-jump @HOVER_271 
+jump @HOVER_250 
 
-:HOVER_1290
+:HOVER_1269
 9@ = -15.0 // $ = float 
-jump @HOVER_1106 
+jump @HOVER_1085 
 
-:HOVER_1307
+:HOVER_1286
 9@ = 0.0 // $ = float 
-jump @HOVER_1106 
+jump @HOVER_1085 
 
-:HOVER_1324
+:HOVER_1303
 3@ += 0.25 // $ += float 
 return 
 
-:HOVER_1336
+:HOVER_1315
 3@ -= 0.25 // $ -= float 
 return 
 
-:HOVER_1348
+:HOVER_1327
 8@ += 3.0 // $ += float 
 return 
 
-:HOVER_1360
+:HOVER_1339
 8@ -= 3.0 // $ -= float 
 return 
 
-:HOVER_1372
+:HOVER_1351
 9@ += 0.5 // $ += float 
 return 
 
-:HOVER_1384
+:HOVER_1363
 000F: 9@ -= 12@ // @ -= float  // Note: the incorrect math opcode was used here
 return 
 
-:HOVER_1394
-gosub @HOVER_1324 
-jump @HOVER_1023 
+:HOVER_1373
+gosub @HOVER_1303 
+jump @HOVER_1002 
 
-:HOVER_1408
-gosub @HOVER_1336 
-jump @HOVER_1023 
+:HOVER_1387
+gosub @HOVER_1315 
+jump @HOVER_1002 
 
-:HOVER_1422
-gosub @HOVER_1348 
-jump @HOVER_1023 
+:HOVER_1401
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
-:HOVER_1436
-gosub @HOVER_1360 
-jump @HOVER_1023 
+:HOVER_1415
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
-:HOVER_1450
-gosub @HOVER_1372 
-jump @HOVER_1023 
+:HOVER_1429
+gosub @HOVER_1351 
+jump @HOVER_1002 
 
-:HOVER_1464
-gosub @HOVER_1384 
-jump @HOVER_1023 
+:HOVER_1443
+gosub @HOVER_1363 
+jump @HOVER_1002 
 
-:HOVER_1478
-gosub @HOVER_1324 
-gosub @HOVER_1372 
-gosub @HOVER_1348 
-jump @HOVER_1023 
+:HOVER_1457
+gosub @HOVER_1303 
+gosub @HOVER_1351 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
-:HOVER_1506
-gosub @HOVER_1324 
-gosub @HOVER_1372 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+:HOVER_1485
+gosub @HOVER_1303 
+gosub @HOVER_1351 
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
-:HOVER_1534
-gosub @HOVER_1324 
-gosub @HOVER_1384 
-gosub @HOVER_1348 
-jump @HOVER_1023 
+:HOVER_1513
+gosub @HOVER_1303 
+gosub @HOVER_1363 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
-:HOVER_1562
-gosub @HOVER_1324 
-gosub @HOVER_1384 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+:HOVER_1541
+gosub @HOVER_1303 
+gosub @HOVER_1363 
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
-:HOVER_1590
-gosub @HOVER_1336 
-gosub @HOVER_1372 
-gosub @HOVER_1348 
-jump @HOVER_1023 
+:HOVER_1569
+gosub @HOVER_1315 
+gosub @HOVER_1351 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
-:HOVER_1618
-gosub @HOVER_1336 
-gosub @HOVER_1372 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+:HOVER_1597
+gosub @HOVER_1315 
+gosub @HOVER_1351 
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
-:HOVER_1646
-gosub @HOVER_1336 
-gosub @HOVER_1384 
-gosub @HOVER_1348 
-jump @HOVER_1023 
+:HOVER_1625
+gosub @HOVER_1315 
+gosub @HOVER_1363 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
-:HOVER_1674
-gosub @HOVER_1336 
-gosub @HOVER_1384 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+:HOVER_1653
+gosub @HOVER_1315 
+gosub @HOVER_1363 
+gosub @HOVER_1339 
+jump @HOVER_1002 
+
+:HOVER_1681
+gosub @HOVER_1303 
+gosub @HOVER_1351 
+jump @HOVER_1002 
 
 :HOVER_1702
-gosub @HOVER_1324 
-gosub @HOVER_1372 
-jump @HOVER_1023 
+gosub @HOVER_1303 
+gosub @HOVER_1363 
+jump @HOVER_1002 
 
 :HOVER_1723
-gosub @HOVER_1324 
-gosub @HOVER_1384 
-jump @HOVER_1023 
+gosub @HOVER_1315 
+gosub @HOVER_1351 
+jump @HOVER_1002 
 
 :HOVER_1744
-gosub @HOVER_1336 
-gosub @HOVER_1372 
-jump @HOVER_1023 
+gosub @HOVER_1315 
+gosub @HOVER_1363 
+jump @HOVER_1002 
 
 :HOVER_1765
-gosub @HOVER_1336 
-gosub @HOVER_1384 
-jump @HOVER_1023 
+gosub @HOVER_1303 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
 :HOVER_1786
-gosub @HOVER_1324 
-gosub @HOVER_1348 
-jump @HOVER_1023 
+gosub @HOVER_1303 
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
 :HOVER_1807
-gosub @HOVER_1324 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+gosub @HOVER_1315 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
 :HOVER_1828
-gosub @HOVER_1336 
-gosub @HOVER_1348 
-jump @HOVER_1023 
+gosub @HOVER_1315 
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
 :HOVER_1849
-gosub @HOVER_1336 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+gosub @HOVER_1351 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
 :HOVER_1870
-gosub @HOVER_1372 
-gosub @HOVER_1348 
-jump @HOVER_1023 
+gosub @HOVER_1351 
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
 :HOVER_1891
-gosub @HOVER_1372 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+gosub @HOVER_1363 
+gosub @HOVER_1327 
+jump @HOVER_1002 
 
 :HOVER_1912
-gosub @HOVER_1384 
-gosub @HOVER_1348 
-jump @HOVER_1023 
-
-:HOVER_1933
-gosub @HOVER_1384 
-gosub @HOVER_1360 
-jump @HOVER_1023 
+gosub @HOVER_1363 
+gosub @HOVER_1339 
+jump @HOVER_1002 
 
 :R_CONT
 thread 'R_CONT' 
@@ -18307,7 +18307,7 @@ else_jump @T_TRAV_70
 if 
 00E1:   player 0 pressed_button 2 
 else_jump @T_TRAV_70 
-gosub @COLD_959 
+gosub @COLD_975 
 
 :T_TRAV_70
 if or
@@ -18348,27 +18348,21 @@ else_jump @T_TRAV_10
 if or
   $854 == 0 // $ == int 
   $875 == 1 // $ == int 
-else_jump @T_TRAV_373 
-if and
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #MAVERICK 
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #BUS 
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #PHEONIX 
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #VCNMAV 
-else_jump @T_TRAV_514 
+else_jump @T_TRAV_330 
 0229: set_car $848 color_to 1 1 
 if 
 00E1:   player 0 pressed_button 2 
 else_jump @T_TRAV_233 
-gosub @COLD_959 
+gosub @COLD_975 
 jump @T_TRAV_233 
 
-:T_TRAV_373
+:T_TRAV_330
 wait 1000 
 03CF: load_wav 'BAND_07' as 1 
 if or
 00DE:   player $PLAYER_CHAR driving_vehicle_type #MAVERICK 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS 
-else_jump @T_TRAV_514 
+else_jump @T_TRAV_471 
 $876 = 13.0 // $ = float 
 $877 = -2.2 // $ = float 
 $878 = 2.2 // $ = float 
@@ -18378,9 +18372,9 @@ $881 = 2.0 // $ = float
 $882 = 0.15 // $ = float 
 $883 = 0.1 // $ = float 
 $884 = 10.0 // $ = float 
-jump @T_TRAV_604 
+jump @T_TRAV_561 
 
-:T_TRAV_514
+:T_TRAV_471
 $876 = 5.0 // $ = float 
 $877 = -1.2 // $ = float 
 $878 = 1.2 // $ = float 
@@ -18391,10 +18385,16 @@ $883 = 0.1 // $ = float
 $882 = 0.15 // $ = float 
 $884 = 5.0 // $ = float 
 
-:T_TRAV_604
+:T_TRAV_561
 $885 = 0.1 // $ = float 
 
-:T_TRAV_614
+:T_TRAV_571
+if and
+   not Car.Model($848) == #BUS
+   not Car.Model($848) == #MAVERICK
+   not Car.Model($848) == #PHEONIX
+   not Car.Model($848) == #VCNMAV
+else_jump @T_TRAV_623 
 0229: set_car $848 color_to 97 1 
 
 :T_TRAV_623
@@ -18412,13 +18412,13 @@ else_jump @T_TRAV_852
 02E3: $886 = car $848 speed 
 if 
   $886 > 43.5 // $ > float 
-else_jump @T_TRAV_614 
+else_jump @T_TRAV_571 
 gosub @T_TRAV_1956 
 if and
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #MAVERICK 
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #BUS 
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #PHEONIX 
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #VCNMAV 
+   not Car.Model($848) == #BUS
+   not Car.Model($848) == #MAVERICK
+   not Car.Model($848) == #PHEONIX
+   not Car.Model($848) == #VCNMAV
   $137 == 1 // $ == int 
 else_jump @T_TRAV_774 
 0229: set_car $848 color_to 97 98 
@@ -18438,7 +18438,7 @@ else_jump @T_TRAV_9240
 jump @T_TRAV_9240 
 
 :T_TRAV_852
-gosub @COLD_959 
+gosub @COLD_975 
 jump @T_TRAV_623 
 
 :T_TRAV_866
@@ -18888,7 +18888,7 @@ return
 040D: unload_wav 2 
 wait 10 
 03CF: load_wav 'BAND_07' as 1 
-jump @T_TRAV_604 
+jump @T_TRAV_561 
 
 :T_TRAV_9205
 Model.Destroy(#KEYCARD)
@@ -19883,7 +19883,7 @@ $908 = 0 // $ = int
 if and
    not Car.Model(0@) == #BUS
    not Car.Model(0@) == #MAVERICK
-else_jump @COLD_938 
+else_jump @COLD_954 
 0477: set_car 0@ action 3 time 250 
 wait 250 
 if 
@@ -19998,21 +19998,24 @@ return
 wait 0 
 if 
    not Car.Wrecked(0@)
-else_jump @COLD_748 
+else_jump @COLD_764 
 if 
    not 7@ > 5 // @ > int 
-else_jump @COLD_748 
+else_jump @COLD_764 
 gosub @COLD_518 
 gosub @COLD_518 
 
 :COLD_678
 wait 10 
 if 
+   not Car.Wrecked(0@)
+else_jump @COLD_764 
+if 
    Car.Model(0@) == #INFERNUS
-else_jump @COLD_708 
+else_jump @COLD_724 
 gosub @COLD_339 
 
-:COLD_708
+:COLD_724
 if 
   16@ > 499 // @ > int 
 else_jump @COLD_678 
@@ -20020,158 +20023,158 @@ else_jump @COLD_678
 16@ = 0 // @ = int 
 jump @COLD_626 
 
-:COLD_748
+:COLD_764
 $909 = 0 // $ = int 
 $875 = 0 // $ = int 
 040D: unload_wav 1 
 040D: unload_wav 2 
 
-:COLD_770
+:COLD_786
 wait 10 
 if 
    not Car.Wrecked(0@)
-else_jump @COLD_957 
+else_jump @COLD_973 
 if 
    Car.Model(0@) == #INFERNUS
-else_jump @COLD_957 
+else_jump @COLD_973 
 if 
 00DC:   player $PLAYER_CHAR in_car 0@ 
-else_jump @COLD_957 
+else_jump @COLD_973 
 if 
 00E1:   player 0 pressed_button 2 
-else_jump @COLD_770 
+else_jump @COLD_786 
 0407: create_coordinate 11@ 12@ 13@ from_car 0@ offset 0.0 0.0 100.0 
 012A: put_player $PLAYER_CHAR at 11@ 12@ 13@ and_remove_from_car 
 0369: put_player $PLAYER_CHAR in_car 0@ 
 03CF: load_wav 'BURG_02' as 2 
 
-:COLD_908
+:COLD_924
 wait 0 
 if 
 03D0:   wav 2 loaded 
-else_jump @COLD_908 
+else_jump @COLD_924 
 03D1: play_wav 2 
-jump @COLD_957 
+jump @COLD_973 
 
-:COLD_938
+:COLD_954
 wait 30000 
 $909 = 0 // $ = int 
 $875 = 0 // $ = int 
 
-:COLD_957
+:COLD_973
 end_thread 
 
-:COLD_959
+:COLD_975
 $910 = -0.75 // $ = int 
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #DELUXO 
-else_jump @COLD_995 
-jump @COLD_1177 
+else_jump @COLD_1011 
+jump @COLD_1193 
 
-:COLD_995
+:COLD_1011
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #SPARROW 
-else_jump @COLD_1021 
-jump @COLD_1208 
+else_jump @COLD_1037 
+jump @COLD_1224 
 
-:COLD_1021
+:COLD_1037
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS 
-else_jump @COLD_1047 
-jump @COLD_1239 
+else_jump @COLD_1063 
+jump @COLD_1255 
 
-:COLD_1047
+:COLD_1063
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #MAVERICK 
-else_jump @COLD_1073 
-jump @COLD_1280 
+else_jump @COLD_1089 
+jump @COLD_1296 
 
-:COLD_1073
+:COLD_1089
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #PHEONIX 
-else_jump @COLD_1099 
-jump @COLD_1321 
+else_jump @COLD_1115 
+jump @COLD_1337 
 
-:COLD_1099
+:COLD_1115
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #VCNMAV 
-else_jump @COLD_1125 
-jump @COLD_1352 
+else_jump @COLD_1141 
+jump @COLD_1368 
 
-:COLD_1125
+:COLD_1141
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #FBIRANCH 
-else_jump @COLD_1151 
-jump @COLD_1383 
+else_jump @COLD_1167 
+jump @COLD_1399 
 
-:COLD_1151
+:COLD_1167
 if 
 00DE:   player $PLAYER_CHAR driving_vehicle_type #POLMAV 
-else_jump @COLD_1772 
-jump @COLD_1414 
+else_jump @COLD_1788 
+jump @COLD_1430 
 
-:COLD_1177
+:COLD_1193
 $844 = 199 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_07' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1208
+:COLD_1224
 $844 = 211 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_08' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1239
+:COLD_1255
 $844 = 217 // $ = int 
 $910 = -1.25 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_07' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1280
+:COLD_1296
 $844 = 161 // $ = int 
 $910 = -1.25 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_08' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1321
+:COLD_1337
 $844 = 218 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_07' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1352
+:COLD_1368
 $844 = 207 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_08' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1383
+:COLD_1399
 $844 = 227 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_07' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1414
+:COLD_1430
 $844 = 220 // $ = int 
 040D: unload_wav 2 
 03CF: load_wav 'BURG_08' as 2 
-jump @COLD_1445 
+jump @COLD_1461 
 
-:COLD_1445
+:COLD_1461
 $911 = 1 // $ = int 
 end_thread_named 'HOVER' 
 Model.Load($844)
 038B: load_requested_models 
 
-:COLD_1469
+:COLD_1485
 wait 0 
 if and
    Model.Available($844)
 03D0:   wav 2 loaded 
-else_jump @COLD_1469 
+else_jump @COLD_1485 
 03D1: play_wav 2 
 0407: create_coordinate 1@ 2@ 3@ from_car $847 offset 0.0 0.0 100.0 
 012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car 
@@ -20192,14 +20195,14 @@ wait 0
 0369: put_player $PLAYER_CHAR in_car $847 
 if 
    Car.Wrecked($848)
-else_jump @COLD_1742 
+else_jump @COLD_1758 
 if and
    not Car.Model($847) == #FBIRANCH
    not Car.Model($847) == #POLMAV
-else_jump @COLD_1742 
+else_jump @COLD_1758 
 03C1: $848 = player $PLAYER_CHAR car_no_save 
 
-:COLD_1742
+:COLD_1758
 Model.Destroy($844)
 Camera.Restore_WithJumpCut
 Camera.SetBehindPlayer
@@ -20207,7 +20210,7 @@ create_thread @HOVER
 create_thread @PSAVE 
 wait 500 
 
-:COLD_1772
+:COLD_1788
 return 
 
 :SPDMTR
@@ -20381,6 +20384,10 @@ if and
 00E0:   player $PLAYER_CHAR in_any_car 
    not Player.InRemoteMode($PLAYER_CHAR)
 else_jump @GAS_15 
+if 
+80DC:   not player $PLAYER_CHAR in_car $847 
+else_jump @GAS_171 
+03C1: $847 = player $PLAYER_CHAR car_no_save 
 if and
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #FAGGIO 
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #PIZZABOY 
@@ -20389,20 +20396,24 @@ if and
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #ZEBRA 
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #HOTRING 
 else_jump @GAS_15 
-if 
-80DC:   not player $PLAYER_CHAR in_car $847 
-else_jump @GAS_171 
-03C1: $847 = player $PLAYER_CHAR car_no_save 
 0209: $849 = random_int_in_ranges 5 100 
 4@ = 900 // $ = int 
 create_thread @PSAVE 
 wait 100 
 
 :GAS_171
+if and
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #FAGGIO 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #PIZZABOY 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #BUS 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #MAVERICK 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #ZEBRA 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #HOTRING 
+else_jump @GAS_15 
 04F7: status_text $849 1 line 1 'GAS' 
 17@ = 0 // @ = int 
 
-:GAS_195
+:GAS_254
 wait 10 
 if 
 00E0:   player $PLAYER_CHAR in_any_car 
@@ -20410,44 +20421,44 @@ else_jump @GAS_10
 if and
 80FA:   not player $PLAYER_CHAR stopped 0 38.5 -1057.0 10.5 radius 8.0 4.0 2.0 
 80FA:   not player $PLAYER_CHAR stopped 0 58.5 -1075.0 10.5 radius 4.0 8.0 2.0 
-else_jump @GAS_669 
+else_jump @GAS_728 
 if 
   $849 > 0 // $ > int 
-else_jump @GAS_726 
+else_jump @GAS_785 
 if 
   16@ > 99 // @ > int 
-else_jump @GAS_381 
+else_jump @GAS_440 
 16@ = 0 // @ = int 
 if 
 00E1:   player 0 pressed_button 16 
-else_jump @GAS_374 
+else_jump @GAS_433 
 4@ -= 5 // @ -= int 
-jump @GAS_381 
+jump @GAS_440 
 
-:GAS_374
+:GAS_433
 4@ -= 2 // @ -= int 
 
-:GAS_381
+:GAS_440
 if 
   0 >= 4@ // int >= @ 
-else_jump @GAS_414 
+else_jump @GAS_473 
 4@ = 900 // $ = int 
 $849 -= 1 // $ -= int 
 
-:GAS_414
+:GAS_473
 if 
    not $849 > 5 // $ > int 
-else_jump @GAS_632 
+else_jump @GAS_691 
 if 
   $916 == 0 // $ == int 
-else_jump @GAS_477 
+else_jump @GAS_536 
 $916 = 1 // $ = int 
 018A: $917 = create_checkpoint_at 48.5 -1066.0 10.5 
 
-:GAS_477
+:GAS_536
 if 
   $850 == 0 // $ == int 
-else_jump @GAS_195 
+else_jump @GAS_254 
 1@ = 255 // @ = int 
 2@ = 200 // $ = int 
 3@ = 50 // $ = int 
@@ -20462,30 +20473,30 @@ gosub @T_CIRC_2681
 03E4: set_text_draw_align_right 1 
 033F: set_text_draw_letter_width_height 0.25 1.0 
 033E: text_draw 534.0 176.0 'LFUEL' 
-jump @GAS_195 
+jump @GAS_254 
 
-:GAS_632
+:GAS_691
 if 
   $916 == 1 // $ == int 
-else_jump @GAS_195 
+else_jump @GAS_254 
 $916 = 0 // $ = int 
 Marker.Disable($917)
-jump @GAS_195 
+jump @GAS_254 
 
-:GAS_669
+:GAS_728
 if 
    not $849 > 99 // $ > int 
-else_jump @GAS_195 
+else_jump @GAS_254 
 if 
    Player.Money($PLAYER_CHAR) > 1
-else_jump @GAS_195 
+else_jump @GAS_254 
 $849 += 1 // $ += int 
 Player.Money($PLAYER_CHAR) += -27
-jump @GAS_195 
+jump @GAS_254 
 
-:GAS_726
+:GAS_785
 02D4: car $847 turn_off_engine 
-jump @GAS_195 
+jump @GAS_254 
 
 :PSAVE
 thread 'PSAVE' 
@@ -20663,7 +20674,7 @@ gosub @T_CIRC_2681
 if 
 00E1:   player 0 pressed_button 2 
 else_jump @FUEL_700 
-gosub @COLD_959 
+gosub @COLD_975 
 jump @FUEL_700 
 
 :FUEL_982
