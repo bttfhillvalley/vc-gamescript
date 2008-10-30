@@ -16952,7 +16952,7 @@ if
 jf @TC_IN_1005 
 $858 = -446.48 // $ = float 
 $859 = -485.92 // $ = float 
-$860 = 11.07 // $ = float 
+$860 = 10.27 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1005
@@ -16961,7 +16961,7 @@ if
 jf @TC_IN_1060 
 $858 = -1030.84 // $ = float 
 $859 = -909.14 // $ = float 
-$860 = 14.08 // $ = float 
+$860 = 13.38 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1060
@@ -16970,7 +16970,7 @@ if
 jf @TC_IN_1115 
 $858 = -1070.02 // $ = float 
 $859 = 7.84 // $ = float 
-$860 = 11.27 // $ = float 
+$860 = 10.57 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1115
@@ -16979,7 +16979,7 @@ if
 jf @TC_IN_1170 
 $858 = -1735.48 // $ = float 
 $859 = -1463.45 // $ = float 
-$860 = 14.87 // $ = float 
+$860 = 14.17 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1170
@@ -16988,7 +16988,7 @@ if
 jf @TC_IN_1225 
 $858 = 25.06 // $ = float 
 $859 = -1032.42 // $ = float 
-$860 = 10.31 // $ = float 
+$860 = 9.61 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1225
@@ -16997,7 +16997,7 @@ if
 jf @TC_IN_1280 
 $858 = -686.26 // $ = float 
 $859 = 1183.4 // $ = float 
-$860 = 10.9 // $ = float 
+$860 = 10.2 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1280
@@ -17006,7 +17006,7 @@ if
 jf @TC_IN_1335 
 $858 = 746.38 // $ = float 
 $859 = -92.67 // $ = float 
-$860 = 10.23 // $ = float 
+$860 = 9.53 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1335
@@ -17015,7 +17015,7 @@ if
 jf @TC_IN_1390 
 $858 = 36.3 // $ = float 
 $859 = 1028.53 // $ = float 
-$860 = 10.85 // $ = float 
+$860 = 10.15 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1390
@@ -17024,7 +17024,7 @@ if
 jf @TC_IN_1445 
 $858 = 63.72 // $ = float 
 $859 = 78.85 // $ = float 
-$860 = 22.03 // $ = float 
+$860 = 21.33 // $ = float 
 jump @TC_IN_1445 
 
 :TC_IN_1445
@@ -19045,7 +19045,7 @@ if and
    not Car.Wrecked($849)
    not wasted_or_busted 
   $855 == 1 // $ == int 
-jf @T_TRAV_16682 
+jf @T_TRAV_17048 
 gosub @T_TRAV_842 
 gosub @T_TRAV_1932 
 02E3: $887 = car $849 speed 
@@ -19538,11 +19538,11 @@ wait 2000
 :T_TRAV_13864
 if 
    not $852 == 0 // $ == int 
-jf @T_TRAV_14072 
+jf @T_TRAV_14056 
 if or
-00DE:   player $PLAYER_CHAR driving_vehicle_type #PHEONIX 
-00DE:   player $PLAYER_CHAR driving_vehicle_type #VCNMAV 
-jf @T_TRAV_14072 
+  $845 == 207 // $ == int 
+  $845 == 218 // $ == int 
+jf @T_TRAV_14056 
 0059: $900 += $858 // $ += $ float 
 0061: $900 -= $865 // $ -= $ float 
 0059: $901 += $859 // $ += $ float 
@@ -19553,18 +19553,17 @@ jf @T_TRAV_14072
 0061: $870 -= $866 // $ -= $ float 
 0086: $865 = $858 // $ = $ float 
 0086: $866 = $859 // $ = $ float 
-Car.PutAt($849, $865, $866, 5000.0)
 if or
 0024:   $860 > $894 // $ > $ float 
   $845 == 207 // $ == int 
-jf @T_TRAV_14072 
+jf @T_TRAV_14056 
 0059: $902 += $860 // $ += $ float 
 0061: $902 -= $894 // $ -= $ float 
 0059: $864 += $860 // $ += $ float 
 0061: $864 -= $894 // $ -= $ float 
 0086: $894 = $860 // $ = $ float 
 
-:T_TRAV_14072
+:T_TRAV_14056
 040D: unload_wav 2 
 03CF: load_wav 'BAND_01' as 2 
 0506: vehicle_model 141 set_next_variation $847 $846 
@@ -19572,16 +19571,16 @@ Model.Load($845)
 038B: load_requested_models 
 if 
 00DC:   player $PLAYER_CHAR in_car $849 
-jf @T_TRAV_14253 
+jf @T_TRAV_14237 
 if 
    Car.Id($849) == #INFERNUS
-jf @T_TRAV_14331 
+jf @T_TRAV_14489 
 
-:T_TRAV_14144
+:T_TRAV_14128
 wait 0 
 if 
    Model.Available($845)
-jf @T_TRAV_14144 
+jf @T_TRAV_14128 
 012A: put_player $PLAYER_CHAR at $865 $866 5050.0 and_remove_from_car 
 Car.Destroy($848)
 $848 = Car.Create($845, $865, $866, 5000.0)
@@ -19590,9 +19589,34 @@ Car.SetImmunities($848, 0, 0, 0, 1, 1)
 wait 0 
 0369: put_player $PLAYER_CHAR in_car $848 
 03C1: $849 = player $PLAYER_CHAR car_no_save 
-jump @T_TRAV_14331 
+jump @T_TRAV_14489 
 
-:T_TRAV_14253
+:T_TRAV_14237
+if or
+  $845 == 207 // $ == int 
+  $845 == 218 // $ == int 
+jf @T_TRAV_14411 
+0059: $900 += $858 // $ += $ float 
+0061: $900 -= $865 // $ -= $ float 
+0059: $901 += $859 // $ += $ float 
+0061: $901 -= $866 // $ -= $ float 
+0059: $869 += $858 // $ += $ float 
+0061: $869 -= $865 // $ -= $ float 
+0059: $870 += $859 // $ += $ float 
+0061: $870 -= $866 // $ -= $ float 
+0086: $865 = $858 // $ = $ float 
+0086: $866 = $859 // $ = $ float 
+if or
+0024:   $860 > $894 // $ > $ float 
+  $845 == 207 // $ == int 
+jf @T_TRAV_14411 
+0059: $902 += $860 // $ += $ float 
+0061: $902 -= $894 // $ -= $ float 
+0059: $864 += $860 // $ += $ float 
+0061: $864 -= $894 // $ -= $ float 
+0086: $894 = $860 // $ = $ float 
+
+:T_TRAV_14411
 wait 10 
 00BF: $906 = current_time_hours, $907 = current_time_minutes 
 if and
@@ -19602,52 +19626,81 @@ if and
 003A:   $154 == $145 // $ == $ int 
 003A:   $155 == $146 // $ == $ int 
 003A:   $152 == $139 // $ == $ int 
-jf @T_TRAV_14253 
-jump @T_TRAV_14925 
+jf @T_TRAV_14237 
+jump @T_TRAV_15291 
 
-:T_TRAV_14331
+:T_TRAV_14489
 wait 1000 
 0169: set_fade_color 0 0 0 
 fade 0 750 
 wait 750 
+if 
+   not $852 == 0 // $ == int 
+jf @T_TRAV_14706 
+if or
+  $845 == 207 // $ == int 
+  $845 == 218 // $ == int 
+jf @T_TRAV_14706 
+0059: $900 += $858 // $ += $ float 
+0061: $900 -= $865 // $ -= $ float 
+0059: $901 += $859 // $ += $ float 
+0061: $901 -= $866 // $ -= $ float 
+0059: $869 += $858 // $ += $ float 
+0061: $869 -= $865 // $ -= $ float 
+0059: $870 += $859 // $ += $ float 
+0061: $870 -= $866 // $ -= $ float 
+0086: $865 = $858 // $ = $ float 
+0086: $866 = $859 // $ = $ float 
+if or
+0024:   $860 > $894 // $ > $ float 
+  $845 == 207 // $ == int 
+jf @T_TRAV_14706 
+0059: $902 += $860 // $ += $ float 
+0061: $902 -= $894 // $ -= $ float 
+0059: $864 += $860 // $ += $ float 
+0061: $864 -= $894 // $ -= $ float 
+0086: $894 = $860 // $ = $ float 
+
+:T_TRAV_14706
+Car.PutAt($849, $865, $866, 5000.0)
 Camera.SetPosition($900, $901, $902, 0.0, 0.0, 0.0)
 0460: set_camera_pointing_time 0.0 1000 
 Camera.PointAt($869, $870, $864, 1)
 if 
    not $139 > 2010 // $ > int 
-jf @T_TRAV_14450 
+jf @T_TRAV_14816 
 Model.Load(#BLDNGST2MESH)
 Model.Load(#BUILD1)
 Model.Load(#HDRUGFACTORYINT)
 Model.Load(#LODLD1)
-jump @T_TRAV_14469 
+jump @T_TRAV_14835 
 
-:T_TRAV_14450
+:T_TRAV_14816
 Model.Load(#BLDNGST2MESHDAM)
 Model.Load(#BUILDBLOWN)
 Model.Load(#HDRUGFACTORYPOL)
 Model.Load(#LODLDBLOWN)
 
-:T_TRAV_14469
+:T_TRAV_14835
 038B: load_requested_models 
 wait 500 
 Car.PutAt($849, 2000.0, 500.0, 5000.0)
 if 
    not $139 > 2010 // $ > int 
-jf @T_TRAV_14632 
+jf @T_TRAV_14998 
 03B6: replace_model_at 117.991 -362.461 10.179 radius 80.0 from #BLDNGST2MESHDAM to #BLDNGST2MESH 
 03B6: replace_model_at -1165.346 85.534 17.783 radius 80.0 from #BUILDBLOWN to #BUILD1 
 03B6: replace_model_at -1165.346 85.534 17.783 radius 80.0 from #HDRUGFACTORYPOL to #HDRUGFACTORYINT 
 03B6: replace_model_at -1165.346 85.534 17.783 radius 80.0 from #LODLDBLOWN to #LODLD1 
-jump @T_TRAV_14742 
+jump @T_TRAV_15108 
 
-:T_TRAV_14632
+:T_TRAV_14998
 03B6: replace_model_at 117.991 -362.461 10.179 radius 80.0 from #BLDNGST2MESH to #BLDNGST2MESHDAM 
 03B6: replace_model_at -1165.346 85.534 17.783 radius 80.0 from #BUILD1 to #BUILDBLOWN 
 03B6: replace_model_at -1165.346 85.534 17.783 radius 80.0 from #HDRUGFACTORYINT to #HDRUGFACTORYPOL 
 03B6: replace_model_at -1165.346 85.534 17.783 radius 80.0 from #LODLD1 to #LODLDBLOWN 
 
-:T_TRAV_14742
+:T_TRAV_15108
 wait 500 
 00C0: set_current_time $147 $151 
 0084: $152 = $139 // $ = $ int 
@@ -19660,16 +19713,16 @@ end_thread_named 'PARADOX'
 0581: enable_radar 0 
 if 
   $136 == 0 // $ == int 
-jf @T_TRAV_14866 
+jf @T_TRAV_15232 
 create_thread @TIMEMOD 
 create_thread @WEATHER 
 0581: enable_radar 1 
-jump @T_TRAV_14874 
+jump @T_TRAV_15240 
 
-:T_TRAV_14866
+:T_TRAV_15232
 create_thread @PARADOX 
 
-:T_TRAV_14874
+:T_TRAV_15240
 Car.PutAt($849, $865, $866, 5000.0)
 Player.ClearWantedLevel($PLAYER_CHAR)
 04E4: request_collision_at $865 $866 
@@ -19678,12 +19731,12 @@ wait 500
 fade 1 500 
 wait 1000 
 
-:T_TRAV_14925
+:T_TRAV_15291
 03D1: play_wav 2 
 if or
   $845 == 161 // $ == int 
   $845 == 217 // $ == int 
-jf @T_TRAV_15633 
+jf @T_TRAV_15999 
 0437: scatter_particle 43 $885 at $865 $866 $894 0 0 0 
 0437: scatter_particle 43 $885 at $865 $866 $894 0 0 0 
 0437: scatter_particle 43 $885 at $865 $866 $894 0 0 0 
@@ -19716,9 +19769,9 @@ wait 700
 0437: scatter_particle 43 $885 at $865 $866 $894 0 0 0 
 0437: scatter_particle 43 $885 at $865 $866 $894 0 0 0 
 0437: scatter_particle 43 $885 at $865 $866 $894 0 0 0 
-jump @T_TRAV_16303 
+jump @T_TRAV_16669 
 
-:T_TRAV_15633
+:T_TRAV_15999
 0437: scatter_particle 45 $885 at $865 $866 $894 0 0 0 
 0437: scatter_particle 45 $885 at $865 $866 $894 0 0 0 
 0437: scatter_particle 45 $885 at $865 $866 $894 0 0 0 
@@ -19752,21 +19805,21 @@ wait 700
 0437: scatter_particle 45 $885 at $865 $866 $894 0 0 0 
 0437: scatter_particle 45 $885 at $865 $866 $894 0 0 0 
 
-:T_TRAV_16303
+:T_TRAV_16669
 if 
 00DC:   player $PLAYER_CHAR in_car $849 
-jf @T_TRAV_16343 
+jf @T_TRAV_16709 
 Car.PutAt($849, $865, $866, $894)
-jump @T_TRAV_16401 
+jump @T_TRAV_16767 
 
-:T_TRAV_16343
+:T_TRAV_16709
 0506: vehicle_model 141 set_next_variation $847 $846 
 $848 = Car.Create($845, $865, $866, $894)
 0084: $849 = $848 // $ = $ int 
 Car.SetImmunities($849, 0, 0, 0, 1, 1)
 053F: set_car $849 tires_vulnerable 0 
 
-:T_TRAV_16401
+:T_TRAV_16767
 Car.Angle($849) = $904
 04BA: set_car $849 speed_instantly 48.1 
 Car.Health($849) = $905
@@ -19775,33 +19828,33 @@ create_thread_wb @HJ
 17@ = 0 // @ = int 
 if 
 00DC:   player $PLAYER_CHAR in_car $849 
-jf @T_TRAV_16480 
+jf @T_TRAV_16846 
 Camera.OnVehicle($849, 15, 1)
 
-:T_TRAV_16480
+:T_TRAV_16846
 wait 10 
 if 
    not 17@ > 999 // @ > int 
-jf @T_TRAV_16517 
+jf @T_TRAV_16883 
 gosub @T_TRAV_1932 
-jump @T_TRAV_16480 
+jump @T_TRAV_16846 
 
-:T_TRAV_16517
+:T_TRAV_16883
 wait 500 
 040D: unload_wav 1 
 040D: unload_wav 2 
 if and
    not Car.Id($849) == #BUS
    not Car.Id($849) == #MAVERICK
-jf @T_TRAV_16564 
+jf @T_TRAV_16930 
 $137 = 0 // $ = int 
 
-:T_TRAV_16564
+:T_TRAV_16930
 $851 = 0 // $ = int 
 02A3: enable_widescreen 0 
 if 
 00DC:   player $PLAYER_CHAR in_car $849 
-jf @T_TRAV_16645 
+jf @T_TRAV_17011 
 Camera.Restore
 Camera.SetBehindPlayer
 Model.Destroy(#BLDNGST2MESH)
@@ -19815,21 +19868,21 @@ Model.Destroy(#LODLDBLOWN)
 Model.Destroy(#WFYG2)
 Model.Destroy($845)
 
-:T_TRAV_16645
+:T_TRAV_17011
 if 
    Car.Id($849) == #INFERNUS
-jf @T_TRAV_16705 
+jf @T_TRAV_17071 
 create_thread @STEAM $849 
-jump @T_TRAV_16705 
+jump @T_TRAV_17071 
 
-:T_TRAV_16682
+:T_TRAV_17048
 if 
 00DC:   player $PLAYER_CHAR in_car $849 
-jf @T_TRAV_16705 
+jf @T_TRAV_17071 
 Camera.Restore
 Camera.SetBehindPlayer
 
-:T_TRAV_16705
+:T_TRAV_17071
 jump @T_TRAV_10 
 
 :STEAM
