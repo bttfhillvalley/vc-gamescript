@@ -1,0 +1,614 @@
+:HillValley
+00D7: create_thread @TimeMod without_parameters 
+00D7: create_thread @Clocktower without_parameters
+00D7: create_thread @ModelReplace without_parameters 
+end_thread
+
+
+:TimeMod
+16@ = 0 // integer values 
+thread 'TIMEMOD' 
+00BF: 1@ = current_time_hours, 2@ = current_time_minutes 
+$TIME_CHANGE = 1 // integer values
+wait 10
+if
+  00F5:   player $PLAYER_CHAR 0 -284.14 -714.04 25.82 radius 85.0 85.0 85.0
+jf @TimeModStart
+create_thread @ClockBellChime
+
+
+:TimeModStart
+wait 500 
+00BF: 3@ = current_time_hours, 4@ = current_time_minutes 
+00C0: set_current_time 3@ 4@ 
+if 
+803B:   not  1@ == 3@ // integer values (never used VC or GTA 3) 
+else_jump @TimeModClockHourToll 
+16@ = 0 // integer values 
+if 
+001D:   1@ > 3@ // integer values (never used VC or GTA 3) 
+else_jump @TimeModGetTime 
+00BF: 1@ = current_time_hours, 2@ = current_time_minutes 
+create_thread @DayAdvance 
+jump @TimeModClockHourToll 
+
+:TimeModGetTime
+00BF: 1@ = current_time_hours, 2@ = current_time_minutes 
+
+:TimeModClockHourToll
+if and
+  16@ > 39999 // integer values 
+  5@ == 0 // integer values 
+  2@ == 59 // integer values 
+  00F5:   player $PLAYER_CHAR 0 -284.14 -714.04 25.82 radius 85.0 85.0 85.0 
+  $CLOCK_WORKS == 1
+else_jump @TimeModClockAlarm 
+5@ = 1 // integer values 
+create_thread @ClockHourToll
+
+:TimeModClockAlarm
+if and
+  16@ > 45749 // integer values 
+  5@ == 0 // integer values 
+  1@ == 22 // integer values 
+  2@ == 3 // integer values 
+  $CMONTHDAY == 1112 // integer values 
+  $CYEAR == 1955 // integer values 
+else_jump @TimeModAdvance 
+5@ = 1 // integer values 
+create_thread @LightningAlarm 
+jump @TimeModAdvance 
+
+:LightningAlarm
+if and
+00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS 
+  $VARIATION == 2 // integer values 
+else_jump @LightningAlarmRC 
+040D: unload_wav 2 
+03CF: load_wav 'ASS_10' as 2 
+jump @LightningAlarmPlaySound 
+
+:LightningAlarmRC
+if 
+   Player.InRemoteMode($PLAYER_CHAR)
+else_jump @LightningAlarmEnd 
+040D: unload_wav 2 
+03CF: load_wav 'ASS_10' as 2 
+
+:LightningAlarmPlaySound
+wait 0 
+if 
+03D0:   wav 2 loaded 
+else_jump @LightningAlarmPlaySound 
+03D1: play_wav 2 
+
+:LightningAlarmEnd
+end_thread 
+
+:LightningStorm
+040D: unload_wav 2 
+03CF: load_wav 'ASS_11' as 2 
+
+:LightningStormStart
+wait 0 
+if 
+03D0:   wav 2 loaded 
+else_jump @LightningStormStart 
+create_thread @LightningStrike 
+$STRIKE = 1 // integer values 
+03D1: play_wav 2     
+wait 3500 
+$STRIKE = 0 // integer values 
+end_thread 
+
+:LightningStrike
+0169: set_fade_color 255 255 255 
+if 
+//  00F6:   player $PLAYER_CHAR 0 -1552.781 907.9139 32.1378 radius 50.0 50.0 50.0
+0121:   player $PLAYER_CHAR in_zone 'Hill_V'  // Hill Valley 
+then
+  020C: create_explosion_with_radius 8 at -284.20 -713.46 30.82
+end
+fade 0 100 
+wait 100 
+fade 1 100 
+end_thread 
+
+:TimeModAdvance
+if 
+  16@ > 59999 // integer values 
+else_jump @TimeModStart 
+16@ = 0 // integer values 
+5@ = 0 // integer values 
+2@ += 1 // integer values 
+if 
+  2@ > 59 // integer values 
+else_jump @TimeModAdvanceStart
+2@ = 0 // integer values 
+1@ += 1 // integer values 
+if 
+  1@ > 23 // integer values 
+else_jump @TimeModAdvanceStart 
+1@ = 0 // integer values 
+create_thread @DayAdvance 
+
+:TimeModAdvanceStart
+00C0: set_current_time 1@ 2@ 
+$TIME_CHANGE = 1 // integer values 
+if 
+  00F5:   player $PLAYER_CHAR 0 -284.14 -714.04 25.82 radius 85.0 85.0 85.0
+then
+create_thread @ClockBellChime
+end
+if and
+  1@ == 22 // integer values 
+  2@ == 4 // integer values 
+  $CMONTHDAY == 1112 // integer values 
+  $CYEAR == 1955 // integer values 
+else_jump @TimeModStart 
+create_thread @LightningStorm
+jump @TimeModStart 
+
+:DayAdvance
+$CDAY += 1 // integer values 
+0093: 0@ = integer_to_float $CYEAR // never used in VC or GTA 3 
+0@ /= 4.0 // floating-point values (never used in VC or GTA 3) 
+008E: 1@ = float_to_integer 0@ // never used in VC or GTA 3 
+008D: 1@ = integer_to_float 1@ 
+0063: 0@ -= 1@ // floating-point values (never used in VC or GTA 3) 
+0@ *= 100.0 // floating-point values (never used in VC or GTA 3) 
+008E: 0@ = float_to_integer 0@ // never used in VC or GTA 3 
+if 
+  0@ == 0 // integer values 
+else_jump @DayAdvanceLeapYear 
+1@ = 9 // integer values 
+jump @DayAdvanceDay31 
+
+:DayAdvanceLeapYear
+1@ = 8 // integer values 
+
+:DayAdvanceDay31
+if 
+  $CDAY > 31 // integer values 
+else_jump @DayAdvanceDay30 
+if or
+  $CMONTH == 1 // integer values 
+  $CMONTH == 3 // integer values 
+  $CMONTH == 5 // integer values 
+  $CMONTH == 7 // integer values 
+  $CMONTH == 8 // integer values 
+  $CMONTH == 10 // integer values 
+  $CMONTH == 12 // integer values 
+else_jump @DayAdvanceDay30 
+$CDAY = 1 // integer values 
+$CMONTH += 1 // integer values 
+jump @DayAdvanceMonth 
+
+:DayAdvanceDay30
+if 
+  $CDAY > 30 // integer values 
+else_jump @DayAdvanceDay28 
+if or
+  $CMONTH == 4 // integer values 
+  $CMONTH == 6 // integer values 
+  $CMONTH == 9 // integer values 
+  $CMONTH == 11 // integer values 
+else_jump @DayAdvanceDay28 
+$CDAY = 1 // integer values 
+$CMONTH += 1 // integer values 
+jump @DayAdvanceMonth 
+
+:DayAdvanceDay28
+if and
+  $CDAY > 28 // integer values 
+  $CMONTH == 2 // integer values 
+else_jump @DayAdvanceEndthread 
+$CDAY = 1 // integer values 
+$CMONTH += 1 // integer values 
+jump @DayAdvanceMonth 
+
+:DayAdvanceMonth
+if 
+  $CMONTH > 12 // integer values 
+else_jump @DayAdvanceEndthread
+$CMONTH = 1 // integer values 
+$CYEAR += 1 // integer values 
+
+:DayAdvanceEndThread
+end_thread
+
+:ClockHourToll
+018D: 2@ = create_sound 38 at -284.14 -714.04 25.82 
+3@ = 20000
+16@ = 0 // integer values 
+gosub @ClockChimeWait
+jump @ClockStopSound
+
+:ClockBellChime
+wait 100
+if
+  $CLOCK_WORKS == 1
+jf @ClockStopSound
+00BF: 0@ = current_time_hours, 1@ = current_time_minutes
+3@ = 15000
+16@ = 0 // integer values  
+if 
+  1@ == 0 // integer values 
+jf @ClocktowerChimeQuarterAfter 
+if
+  0@ > 12
+then
+  0@ -= 12
+end
+if
+  0@ == 0
+then
+  0@ = 12
+end
+
+:ClockBellHourChime
+if and
+  0@ > 0 // integer values 
+$FADE = 0 // integer values 
+else_jump @ClockStopSound
+16@ = 0 // integer values 
+0@ -= 1 // integer values 
+018D: 2@ = create_sound 37 at -284.14 -714.04 25.82   
+gosub @ClockBellHourChimeWait
+018E: stop_sound 2@ 
+wait 1000 
+jump @ClockBellHourChime
+
+:ClockBellHourChimeWait
+wait 10  
+if 
+   not 16@ >= 3000// integer values 
+jf @ClockReturn 
+if 
+  $FADE == 0 // integer values 
+jf @ClockReturn 
+jump @ClockBellHourChimeWait
+
+:ClocktowerChimeQuarterAfter
+if 
+  1@ == 15 // integer values 
+jf @ClocktowerChimeHalfPast 
+018D: 2@ = create_sound 39 at -284.14 -714.04 25.82 
+gosub @ClockChimeWait   
+jump @ClockStopSound  
+
+:ClocktowerChimeHalfPast
+if 
+  1@ == 30 // integer values 
+jf @ClocktowerChimeQuarterTill 
+018D: 2@ = create_sound 40 at -284.14 -714.04 25.82 
+gosub @ClockChimeWait 
+jump @ClockStopSound
+
+:ClocktowerChimeQuarterTill
+if 
+  1@ == 45 // integer values 
+jf @ClockStopSound 
+018D: 2@ = create_sound 41 at -284.14 -714.04 25.82 
+gosub @ClockChimeWait 
+jump @ClockStopSound
+
+:ClockChimeWait
+wait 10  
+if 
+   802F: not 16@ >= 3@// integer values 
+jf @ClockReturn 
+if 
+  $FADE == 0 // integer values 
+jf @ClockReturn 
+if 
+00F5:   player $PLAYER_CHAR 0 -284.14 -714.04 25.82 radius 85.0 85.0 85.0 
+jf @ClockReturn
+jump @ClockChimeWait
+
+:ClockReturn
+return
+
+:ClockStopSound
+018E: stop_sound 2@  
+end_thread 
+
+:ModelReplace
+thread 'MODREP'
+$PRESENT_COURTHOUSE = #CLOCKTOWER1955
+$PRESENT_COURTHOUSE_LOD = #LODCKTOWER1955
+$FUTURE_COURTHOUSE_LOD = -1
+$FUTURE_COURTHOUSE = -1
+$STARTLINEFLAG = 0
+
+:ModelReplaceStart
+//1885
+wait 10
+if and
+  $CYEAR >= 1885
+  $CYEAR < 1890
+then
+  $FUTURE_COURTHOUSE = #CLOCKTOWER1885
+  $FUTURE_COURTHOUSE_LOD = #LODCKTOWER1885
+end
+
+//1955
+if and
+  $CYEAR >= 1890
+  $CYEAR < 1965
+then
+  $FUTURE_COURTHOUSE = #Clocktower1955
+  $FUTURE_COURTHOUSE_LOD = #LODcktower1955
+end
+
+//1985
+if and 
+  $CYEAR >= 1965 
+  $CYEAR < 2010
+then
+    $FUTURE_COURTHOUSE = #Clocktower1985
+    $FUTURE_COURTHOUSE_LOD = #LODcktower1985
+end
+
+//2015
+if
+  $CYEAR >= 2010
+then
+    $FUTURE_COURTHOUSE = #Clocktower2015
+    $FUTURE_COURTHOUSE_LOD = #LODcktower2015
+end       
+
+//ModelReplaceChange
+if or
+803A:   not  $PRESENT_COURTHOUSE_LOD == $FUTURE_COURTHOUSE_LOD // integer values and handles 
+803A:   not  $PRESENT_COURTHOUSE == $FUTURE_COURTHOUSE // integer values and handles
+then 
+03B6: replace_model_at 284.09 -718.14 10.9116 radius 80.0 from $PRESENT_COURTHOUSE to $FUTURE_COURTHOUSE
+03B6: replace_model_at 284.09 -718.14 10.9116 radius 80.0 from $PRESENT_COURTHOUSE_LOD to $FUTURE_COURTHOUSE_LOD
+0084: $PRESENT_COURTHOUSE_LOD = $FUTURE_COURTHOUSE_LOD
+0084: $PRESENT_COURTHOUSE = $FUTURE_COURTHOUSE
+end
+
+//ModelStartLine
+008B: 0@ = $CMONTH // integer values (never used VC or GTA 3)
+0010: 0@ *= 100
+005C: 0@ += $CDAY // integer values (never used VC or GTA 3)
+0010: 0@ *= 10000
+005C: 0@ += $CTIME1
+if and
+    $CYEAR == 1955
+    0@ >= 11122000 //Check month, day and time combined. If we checked them individually i.e. 1st of December would be false
+then
+    if
+        $STARTLINEFLAG == 0
+    then
+        Model.Load(#STARTLINE)
+        while not Model.Available(#STARTLINE)
+            wait 10
+        end
+        $STARTLINE = Object.Init(#STARTLINE, -307.0, -1070.70, 10.77)//-1579.0, 325.0, 14.217)
+        Object.CollisionDetection($STARTLINE) = False
+        Object.ToggleInMovingList($STARTLINE) = False
+        Object.RemoveFromMissionCleanupList($STARTLINE)
+        $STARTLINEFLAG = 1 
+    end
+else
+    if
+        $STARTLINEFLAG == 1
+    then
+        Object.Destroy($STARTLINE)
+        $STARTLINEFLAG = 0
+    end
+end
+jump @ModelReplaceStart
+
+:Clocktower
+03A4: name_thread 'CLOCK' 
+$CURRENTCLOCKFLAG = -1 
+$CLOCKFLAG = -1
+// 0 = 1885
+// 1 = Before 1955
+// 2 = After 1955
+// 3 = 1985
+$CLOCKMODEL = -1
+$CLOCKNIGHTMODEL = -1
+$VANEMODEL = -1
+$HOURHAND = -1
+$MINUTEHAND = -1
+1@ = -1
+2@ = -1
+3@ = -1
+4@ = -1
+
+:Clock
+wait 100
+00BF: 1@ = current_time_hours, 2@ = current_time_minutes
+1@ *= 100
+005A: 1@ += 2@ // (int) 
+0084: 5@ = $CMONTH
+5@ *= 100
+005A: 5@ += $CDAY
+if and
+  $CYEAR >= 1890
+  $CYEAR < 1955
+then
+  $CLOCKMODEL = #CLOCK1955
+  $CLOCKNIGHTMODEL = #CLOCK_NT1955
+  $VANEMODEL = #VANE_OK1955
+  $CLOCKFLAG  = 1
+else if
+  $CYEAR == 1955
+then
+  if
+    5@ < 1112
+  then
+    $CLOCKMODEL = #CLOCK1955
+    $CLOCKNIGHTMODEL = #CLOCK_NT1955
+    $VANEMODEL = #VANE_OK1955
+    $CLOCKFLAG  = 1
+  else if
+    5@ > 1112
+  then
+    $CLOCKMODEL = #CLOCKDAM
+    $CLOCKNIGHTMODEL = #CLOCKDAM_NT
+    $VANEMODEL = #VANE_DAM1955
+    $CLOCKFLAG  = 2
+  else
+    if 
+      1@ < 2204
+    then
+      $CLOCKMODEL = #CLOCK1955
+      $CLOCKNIGHTMODEL = #CLOCK_NT1955
+      $VANEMODEL = #VANE_OK1955
+      $CLOCKFLAG  = 1
+    else 
+      $CLOCKMODEL = #CLOCKDAM
+      $CLOCKNIGHTMODEL = #CLOCKDAM_NT
+      $VANEMODEL = #VANE_DAM1955
+      $CLOCKFLAG  = 2
+    end
+  end
+  end
+else if and
+  $CYEAR > 1955
+  $CYEAR < 1965
+then
+  $CLOCKMODEL = #CLOCKDAM
+  $CLOCKNIGHTMODEL = #CLOCKDAM_NT
+  $VANEMODEL = #VANE_DAM1955
+  $CLOCKFLAG  = 2
+else if and
+  $CYEAR >= 1965
+  $CYEAR < 2010
+then
+    $CLOCKMODEL = #CLOCK1985
+    $CLOCKNIGHTMODEL = #CLOCK_NT1985
+    $VANEMODEL = #VANE_DAM1985
+    $CLOCKFLAG  = 3
+else if
+  $CYEAR >= 2010
+then
+    $CLOCKMODEL = #CLOCK2015
+    $CLOCKNIGHTMODEL = #CLOCK_NT2015
+    $VANEMODEL = #VANE_DAM2015
+    $CLOCKFLAG  = 4
+else
+  8@ = -1
+end
+end
+end
+end
+end  
+
+:ClockCreate
+if
+  $CYEAR >= 1890
+jf @ClockReset
+if
+83CA:   not object $HOURHAND exists
+then
+  //hands
+  $HOURHAND = Object.Init(#CLOCKHOURHAND, -284.13, -714.37, 25.81)
+  Object.CollisionDetection($HOURHAND) = False
+  Object.ToggleInMovingList($HOURHAND) = False
+  Object.RemoveFromMissionCleanupList($HOURHAND)
+  $MINUTEHAND = Object.Init(#CLOCKMINHAND, -284.15, -714.39, 25.81)
+  Object.CollisionDetection($MINUTEHAND) = False
+  Object.ToggleInMovingList($MINUTEHAND) = False
+  Object.RemoveFromMissionCleanupList($MINUTEHAND)
+  //clock
+  $CLOCKDAY = Object.Init($CLOCKMODEL, -284.14, -714.04, 25.82)
+  Object.RemoveFromMissionCleanupList($CLOCKDAY)
+  $CLOCK_NT = Object.Init($CLOCKNIGHTMODEL, -284.14, -714.04, 25.82)
+  Object.RemoveFromMissionCleanupList($CLOCK_NT)
+  $VANE = Object.Init($VANEMODEL, -284.20, -713.46, 28.82)
+  Object.RemoveFromMissionCleanupList($VANE)
+  Object.Angle($CLOCKDAY) = 90.0
+  Object.Angle($CLOCK_NT) = 90.0
+  Object.Angle($VANE) = 90.0   
+  0084: $CURRENTCLOCKFLAG = $CLOCKFLAG
+end 
+if
+  803B:   not  $CURRENTCLOCKFLAG == $CLOCKFLAG // (int) 
+then
+  Object.Destroy($CLOCKDAY)
+  Object.Destroy($CLOCK_NT)
+  Object.Destroy($VANE)
+  $CLOCKDAY = Object.Init($CLOCKMODEL, -284.14, -714.04, 25.82)
+  Object.RemoveFromMissionCleanupList($CLOCKDAY)
+  $CLOCK_NT = Object.Init($CLOCKNIGHTMODEL, -284.14, -714.04, 25.82)
+  Object.RemoveFromMissionCleanupList($CLOCK_NT)
+  $VANE = Object.Init($VANEMODEL, -284.20, -713.46, 28.82)
+  Object.RemoveFromMissionCleanupList($VANE)
+  Object.Angle($CLOCKDAY) = 90.0
+  Object.Angle($CLOCK_NT) = 90.0
+  Object.Angle($VANE) = 90.0   
+  0084: $CURRENTCLOCKFLAG = $CLOCKFLAG
+end  
+
+if
+  $CYEAR > 1955
+then
+  1@ = 22
+  2@ = 04
+  $CLOCK_WORKS = 0
+else if
+  $CYEAR == 1955
+then
+  if
+    5@ > 1112
+  then
+    1@ = 22
+    2@ = 04
+    $CLOCK_WORKS = 0
+  else if
+    5@ == 1112
+  then
+    if 1@ >= 2204
+    then
+      1@ = 22
+      2@ = 04
+      $CLOCK_WORKS = 0
+    else
+      00BF: 1@ = current_time_hours, 2@ = current_time_minutes
+      $CLOCK_WORKS = 1 
+    end
+  else
+    00BF: 1@ = current_time_hours, 2@ = current_time_minutes 
+    $CLOCK_WORKS = 1 
+  end  
+  end
+else
+  00BF: 1@ = current_time_hours, 2@ = current_time_minutes 
+  $CLOCK_WORKS = 1 
+end
+end
+if or
+803B:   not 1@ == 3@ // (int)
+803B:   not 2@ == 4@ // (int)
+jf @Clock             
+008D: 3@ = integer 1@ to_float
+008D: 4@ = integer 2@ to_float
+0013: 3@ *= 30.0
+0013: 4@ *= 6.0
+0017: 4@ /= 12.0
+005B: 3@ += 4@ // (float)
+0013: 4@ *= 12.0
+0453: object $HOURHAND set_rotation 0.0 3@ 0.0 
+0453: object $MINUTEHAND set_rotation 0.0 4@ 0.0 
+0085: 3@ = 1@ // (int)
+0085: 4@ = 2@ // (int)
+jump @Clock
+
+:ClockReset
+if
+03CA:   object $HOURHAND exists
+then
+  Object.Destroy($HOURHAND)
+  Object.Destroy($MINUTEHAND)
+  Object.Destroy($CLOCKDAY)
+  Object.Destroy($CLOCK_NT)
+  Object.Destroy($VANE)
+end 
+$CLOCK_WORKS = 0
+jump @Clock

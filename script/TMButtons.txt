@@ -1,0 +1,103 @@
+{$USE CLEO}
+:tmbuttons
+thread 'tmbut'
+wait 10 
+008B: 0@ = $DELOREAN // integer values and handles 
+if or
+   not Car.Wrecked(0@)
+00DC:   player $PLAYER_CHAR driving 0@ 
+else_jump @tmbuttons0
+3FFC: move_car_part "tcdkeypadbutton0" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton1" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton2" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton3" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton4" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton5" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton6" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton7" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton8" pos 0.0 0.0 0.0 car 0@
+3FFC: move_car_part "tcdkeypadbutton9" pos 0.0 0.0 0.0 car 0@
+3FFB: set_car 0@ component "tcdkeypadenterlighton" visible 0                                                  
+
+:tmbuttons0
+if or
+0AB0: key_pressed 0x60
+0AB0: key_pressed 0x30
+else_jump @tmbuttons1 
+3FFC: move_car_part "tcdkeypadbutton0" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons1
+if or
+0AB0: key_pressed 0x61
+0AB0: key_pressed 0x31
+else_jump @tmbuttons2 
+3FFC: move_car_part "tcdkeypadbutton1" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons2
+if or
+0AB0: key_pressed 0x62
+0AB0: key_pressed 0x32
+else_jump @tmbuttons3 
+3FFC: move_car_part "tcdkeypadbutton2" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons3
+if or
+0AB0: key_pressed 0x63
+0AB0: key_pressed 0x33
+else_jump @tmbuttons4 
+3FFC: move_car_part "tcdkeypadbutton3" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons4
+if or
+0AB0: key_pressed 0x64
+0AB0: key_pressed 0x34
+else_jump @tmbuttons5 
+3FFC: move_car_part "tcdkeypadbutton4" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons5
+if or
+0AB0: key_pressed 0x65
+0AB0: key_pressed 0x35
+else_jump @tmbuttons6 
+3FFC: move_car_part "tcdkeypadbutton5" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons6
+if or
+0AB0: key_pressed 0x66
+0AB0: key_pressed 0x36
+else_jump @tmbuttons7 
+3FFC: move_car_part "tcdkeypadbutton6" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons7
+if or
+0AB0: key_pressed 0x67
+0AB0: key_pressed 0x37
+else_jump @tmbuttons8 
+3FFC: move_car_part "tcdkeypadbutton7" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons8
+if or
+0AB0: key_pressed 0x68
+0AB0: key_pressed 0x38
+else_jump @tmbuttons9 
+3FFC: move_car_part "tcdkeypadbutton8" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttons9
+if or
+0AB0: key_pressed 0x69
+0AB0: key_pressed 0x39
+else_jump @tmbuttonslight 
+3FFC: move_car_part "tcdkeypadbutton9" pos 0.0 0.005 0.0 car 0@
+
+:tmbuttonslight
+if or
+0AB0: key_pressed 0x6D
+0AB0: key_pressed 0xBD
+else_jump @tmbuttonsend 
+3FFB: set_car 0@ component "tcdkeypadenterlighton" visible 1
+
+:tmbuttonsend
+jump @tmbuttons
+
+    
+

@@ -1,0 +1,12 @@
+objs
+5198, clocktower2015, clocktower2015, 1, 600, 0
+5199, LODcktower2015, clocktower2015, 1, 1200, 0
+5200, vane_dam2015, clocktower2015, 1, 600, 128
+5201, bin2015, clocktower2015, 1, 200, 128
+end
+tobj
+5202, clock2015, clocktower1955, 1, 600, 128, 7, 19
+5203, clock_nt2015, clocktower1955, 1, 600, 128, 19, 7
+end
+2dfx
+end

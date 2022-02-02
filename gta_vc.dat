@@ -1,0 +1,76 @@
+#
+# Load IDEs first, then the models and after that the IPLs
+#
+
+# everything is loaded on a per directory basis and in alphabetical order
+# to improve the speed of loading
+CDIMAGE MODELS\BTTF.IMG
+#
+# Object types
+#
+IDE DATA\MAPS\generic.IDE
+IDE DATA\MAPS\1885\square\1885square.IDE
+IDE DATA\MAPS\1955\square\1955square.IDE
+IDE DATA\MAPS\1955\LyonEstates\lyon55.IDE
+IDE DATA\MAPS\1955\generic\generic1955.IDE
+IDE DATA\MAPS\1985\square\1985square.IDE
+IDE DATA\MAPS\2015\square\2015square.IDE
+IDE DATA\MAPS\animation\animation.IDE
+IDE DATA\MAPS\1955\farm\farm.IDE
+IDE DATA\MAPS\1955\drivein\drivein.IDE
+IDE DATA\MAPS\1955\downtown\1955downtown.IDE
+IDE DATA\MAPS\1985\downtown\1985downtown.IDE
+IDE DATA\MAPS\1985\mall\mall.IDE
+IDE DATA\MAPS\2015\downtown\2015downtown.IDE
+IDE DATA\MAPS\ground\ground.IDE
+
+SPLASH loadsc2
+
+#collision data
+COLFILE 0 MODELS\COLL\GENERIC.COL
+COLFILE 0 DATA\MAPS\animation\animation.COL
+COLFILE 0 data\maps\1885\square\1885square.col
+COLFILE 0 data\maps\1955\square\1955square.col
+COLFILE 0 data\maps\1955\LyonEstates\lyon55.col
+COLFILE 0 data\maps\1985\square\1985square.col
+COLFILE 0 data\maps\2015\square\2015square.col
+COLFILE 0 data\maps\1955\farm\farm.col
+COLFILE 0 data\maps\1955\drivein\drivein.col
+COLFILE 0 data\maps\1955\downtown\1955downtown.col
+COLFILE 0 data\maps\1985\downtown\1985downtown.col
+COLFILE 0 data\maps\1985\mall\mall.col
+COLFILE 0 data\maps\2015\downtown\2015downtown.col
+COLFILE 0 data\maps\ground\ground.col
+
+# have to load map.zon before any of the IPLs
+IPL DATA\MAP.ZON
+IPL DATA\NAVIG.ZON
+IPL DATA\INFO.ZON
+
+#
+# Scene information
+#
+
+SPLASH loadsc3
+
+IPL DATA\MAPS\1955\square\1955square.IPL
+IPL DATA\MAPS\1955\LyonEstates\lyon55.IPL
+IPL DATA\MAPS\1955\farm\farm.IPL
+IPL DATA\MAPS\1955\drivein\drivein.IPL
+IPL DATA\MAPS\1955\downtown\1955downtown.IPL
+IPL DATA\MAPS\1985\downtown\1985downtown.IPL
+IPL DATA\MAPS\1985\mall\mall_build.IPL
+IPL DATA\MAPS\2015\downtown\2015downtown.IPL
+IPL DATA\MAPS\ground\ground.IPL
+
+
+IPL DATA\MAPS\paths.ipl
+IPL DATA\MAPS\cull.ipl
+#IPL DATA\occlu.ipl
+
+
+#
+#  Interiors
+#
+SPLASH loadsc4
+

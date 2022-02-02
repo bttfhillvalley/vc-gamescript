@@ -1,0 +1,266 @@
+:Taxi
+thread 'TaxiAni'
+
+:TaxiStart
+while true
+    wait 0
+    if and
+        Player.Defined($PLAYER_CHAR)
+        003A:   $KEY == $KEY_HOVERCONVERSION // C
+    then 
+        if or 
+            00DE:   player $PLAYER_CHAR driving_vehicle_type #KAUFMAN
+            00DE:   player $PLAYER_CHAR driving_vehicle_type #VCNMAV
+            //not Car.Wrecked($TAXI)
+        then
+            //replace the vehicle with the tireless variant
+            Model.Load(#KAUFMAN)
+            Model.Load(#VCNMAV)
+            Model.Load(#TAXI_RETRACT_BACK)
+            Model.Load(#TAXI_WHEEL_L)
+            Model.Load(#TAXI_WHEEL_R)
+            Model.Load(#TAXI_RETRACT_FRONT)
+            040D: unload_wav 2 
+            038B: load_requested_models
+            
+            //originally for testing also outside of the car
+            //if
+            //    00E0:   player $PLAYER_CHAR driving
+            //then 
+                03C1: 0@ = player $PLAYER_CHAR car
+            //else
+            //    008B: 0@ = $TAXI
+            //end
+            $HEIGHTOFFSET = -0.75
+            
+            0441: 9@ = car 0@ model
+            if
+                9@ == #KAUFMAN
+            then
+                9@ = #VCNMAV
+                03CF: load_wav 'BURG_07' as 2
+            else
+                9@ = #KAUFMAN
+                03CF: load_wav 'BURG_08' as 2
+            end
+            
+            while true
+                wait 10
+                if and
+                    Model.Available(#KAUFMAN)            
+                    Model.Available(#VCNMAV)
+                    Model.Available(#TAXI_RETRACT_BACK)
+                    Model.Available(#TAXI_WHEEL_L)
+                    Model.Available(#TAXI_WHEEL_R)
+                    Model.Available(#TAXI_RETRACT_FRONT)
+                    03D0:   wav 2 loaded
+                then
+                    break
+                end
+            end
+
+            03D1: play_wav 2
+            0506: vehicle_model #VCNMAV set_next_variation -1 -1
+            0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0 
+            0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0 
+            012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car 
+            0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -5.0 0.0 
+            Camera.SetPosition(1@, 2@, 3@, 0.0, 0.0, 0.0)
+            0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET 
+            0460: set_camera_pointing_time 0.0 100 
+            Camera.PointAt(1@, 2@, 3@, 1)
+            4@ = Car.Angle(0@)
+            02E3: 5@ = car 0@ speed 
+            6@ = Car.Health(0@)
+            Car.Destroy(0@)
+            0@ = Car.Create(#VCNMAV, 1@, 2@, 3@)
+            Car.Angle(0@) = 4@
+            04BA: set_car 0@ speed_instantly 5@ 
+            Car.Health(0@) = 6@
+            wait 0 
+            0369: put_player $PLAYER_CHAR in_car 0@ 
+            008A: $TAXI = 0@ // integer values and handles 
+            Car.SetImmunities($TAXI, 0, 0, 0, 1, 1)
+            053F: set_car $TAXI tires_vulnerable 0 
+            Camera.Restore
+            Camera.SetBehindPlayer
+
+            10@ = Object.Create(#TAXI_RETRACT_FRONT, 0.0, 0.0, 1000.0)
+            Object.ToggleInMovingList(10@) = False
+            11@ = Object.Create(#TAXI_WHEEL_L, 0.0, 0.0, 1000.0)
+            Object.ToggleInMovingList(11@) = False
+            12@ = Object.Create(#TAXI_WHEEL_R, 0.0, 0.0, 1000.0)
+            Object.ToggleInMovingList(12@) = False
+            13@ = Object.Create(#TAXI_RETRACT_BACK, 0.0, 0.0, 1000.0)
+            Object.ToggleInMovingList(13@) = False
+            14@ = Object.Create(#TAXI_WHEEL_L, 0.0, 0.0, 1000.0)
+            Object.ToggleInMovingList(14@) = False
+            15@ = Object.Create(#TAXI_WHEEL_R, 0.0, 0.0, 1000.0)
+            Object.ToggleInMovingList(15@) = False
+
+            if
+                9@ == #VCNMAV
+            then
+                //fold the wheels out
+                $TAXI_FRONT_HEIGHT = -0.456 //height of front parts
+                $TAXI_BACK_HEIGHT = -0.456 //height of back parts
+                $TAXI_WHEEL_ROTATION = 0.0   //wheel rotation
+                while $TAXI_FRONT_HEIGHT > -0.556
+                    //animation step 1: movement on z-axis from -0.456 to -0.556
+                    wait 10
+                    gosub @TaxiUpdateModels
+                    $TAXI_FRONT_HEIGHT -= 0.0044955//0.00333333333
+                    $TAXI_BACK_HEIGHT -= 0.0243//0.018
+                end
+                while $TAXI_WHEEL_ROTATION < 90.0
+                    //animation step 2: rotation on y-axis from 0.0 to 90.0 for all, plus movement on z-axis from -0.556 to -0.61
+                    wait 10
+                    gosub @TaxiUpdateModels
+                    $TAXI_BACK_HEIGHT += 0.0130275//0.00965
+                    $TAXI_WHEEL_ROTATION += 3.0375//2.25            
+                end
+            else
+                //fold the wheels in
+                $TAXI_FRONT_HEIGHT = -0.556 //height of front parts
+                $TAXI_BACK_HEIGHT = -0.61 //height of back parts
+                $TAXI_WHEEL_ROTATION = 90.0   //wheel rotation
+                while $TAXI_WHEEL_ROTATION > 0.0
+                    //animation step 1: rotation on y-axis from 0.0 to 90.0 for all, plus movement on z-axis from -0.556 to -0.61
+                    wait 10
+                    gosub @TaxiUpdateModels
+                    $TAXI_BACK_HEIGHT -= 0.0130275//0.00965
+                    $TAXI_WHEEL_ROTATION -= 3.0375//2.25            
+                end
+                while $TAXI_FRONT_HEIGHT < -0.456
+                    //animation step 2: movement on z-axis from -0.456 to -0.556
+                    wait 10
+                    gosub @TaxiUpdateModels
+                    $TAXI_FRONT_HEIGHT += 0.0044955//0.00333333333
+                    $TAXI_BACK_HEIGHT += 0.0243//0.018
+                end            
+            end
+               
+            0506: vehicle_model #VCNMAV set_next_variation 0 -1
+            0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0 
+            if 
+            00DC:   player $PLAYER_CHAR driving 0@ 
+            then 
+                012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car 
+                0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -5.0 0.0 
+                Camera.SetPosition(1@, 2@, 3@, 0.0, 0.0, 0.0)
+                0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 -0.75 
+                0460: set_camera_pointing_time 0.0 100 
+                Camera.PointAt(1@, 2@, 3@, 1)
+                4@ = Car.Angle(0@)
+                02E3: 7@ = car 0@ speed 
+                6@ = Car.Health(0@)
+                Car.Destroy(0@)
+                0@ = Car.Create(9@, 1@, 2@, 3@)
+                Car.Angle(0@) = 4@
+                04BA: set_car 0@ speed_instantly 7@ 
+                Car.Health(0@) = 6@
+                wait 0 
+                0369: put_player $PLAYER_CHAR in_car 0@
+                Camera.Restore
+                Camera.SetBehindPlayer
+            else 
+                0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET 
+                4@ = Car.Angle(0@)
+                02E3: 7@ = car 0@ speed 
+                6@ = Car.Health(0@)
+                Car.Destroy(0@)
+                0@ = Car.Create(9@, 1@, 2@, 3@)
+                Car.Angle(0@) = 4@
+                04BA: set_car 0@ speed_instantly 7@ 
+                Car.Health(0@) = 6@
+            end
+            008A: $TAXI = 0@ // integer values and handles 
+            Car.SetImmunities($TAXI, 0, 0, 0, 1, 1)
+            053F: set_car $TAXI tires_vulnerable 0
+
+            Object.Destroy(10@) //#TAXI_RETRACT_FRONT
+            Object.Destroy(11@) //#TAXI_WHEEL_L (front)
+            Object.Destroy(12@) //#TAXI_WHEEL_R (front)
+            Object.Destroy(13@) //#TAXI_RETRACT_BACK
+            Object.Destroy(14@) //#TAXI_WHEEL_L (back)
+            Object.Destroy(15@) //#TAXI_WHEEL_R (back)
+            Model.Destroy(#KAUFMAN)            
+            Model.Destroy(#VCNMAV)
+            Model.Destroy(#TAXI_RETRACT_BACK)
+            Model.Destroy(#TAXI_WHEEL_L)
+            Model.Destroy(#TAXI_WHEEL_R)
+            Model.Destroy(#TAXI_RETRACT_FRONT)
+        end     
+    end
+end
+
+:TaxiUpdateModels
+//var
+//    7@: Float
+//    8@: Float
+//    $TAXI_WHEEL_ROTATION: Float
+//    $TAXI_FRONT_HEIGHT: Float
+//    $TAXI_BACK_HEIGHT: Float
+//    $X_POS_TT: Float
+//    $Y_POS_TT: Float
+//    $Z_POS_TT: Float
+//end
+gosub @ObjectAngle
+008C: $NUM1 = float_to_integer 8@
+008C: $NUM2 = float_to_integer 7@
+//02FD: text_2numbers_lowpriority '2NUM' $NUM1 $NUM2 100 flag 1 
+
+$X_POS_TT = 0.0 
+$Y_POS_TT = 1.591 
+0086: $Z_POS_TT = $TAXI_FRONT_HEIGHT 
+gosub @FlyAnimDeloreanOffset 
+01BC: put_object 10@ at $X_POS_TT $Y_POS_TT $Z_POS_TT //#TAXI_RETRACT_FRONT
+0453: object 10@ set_rotation 8@ 7@ 4@
+
+$X_POS_TT = -0.649 
+$Y_POS_TT = 1.591 
+0086: $Z_POS_TT = $TAXI_FRONT_HEIGHT 
+gosub @FlyAnimDeloreanOffset 
+01BC: put_object 11@ at $X_POS_TT $Y_POS_TT $Z_POS_TT //#TAXI_WHEEL_L (front)
+$TAXI_WHEEL_ROTATION *= -1.0
+000B: 7@ += $TAXI_WHEEL_ROTATION
+0453: object 11@ set_rotation 8@ 7@ 4@
+000F: 7@ -= $TAXI_WHEEL_ROTATION
+$TAXI_WHEEL_ROTATION *= -1.0
+
+$X_POS_TT = 0.649 
+$Y_POS_TT = 1.591 
+0086: $Z_POS_TT = $TAXI_FRONT_HEIGHT 
+gosub @FlyAnimDeloreanOffset 
+01BC: put_object 12@ at $X_POS_TT $Y_POS_TT $Z_POS_TT //#TAXI_WHEEL_R (front)
+000B: 7@ += $TAXI_WHEEL_ROTATION
+0453: object 12@ set_rotation 8@ 7@ 4@
+000F: 7@ -= $TAXI_WHEEL_ROTATION
+
+$X_POS_TT = 0.0 
+$Y_POS_TT = -1.922 
+0086: $Z_POS_TT = $TAXI_BACK_HEIGHT 
+gosub @FlyAnimDeloreanOffset 
+01BC: put_object 13@ at $X_POS_TT $Y_POS_TT $Z_POS_TT //#TAXI_RETRACT_BACK
+0453: object 13@ set_rotation 8@ 7@ 4@ 
+
+$X_POS_TT = -0.456 
+$Y_POS_TT = -1.922 
+0086: $Z_POS_TT = $TAXI_BACK_HEIGHT 
+gosub @FlyAnimDeloreanOffset 
+01BC: put_object 14@ at $X_POS_TT $Y_POS_TT $Z_POS_TT //#TAXI_WHEEL_L (back)
+$TAXI_WHEEL_ROTATION *= -1.0
+000B: 7@ += $TAXI_WHEEL_ROTATION
+0453: object 14@ set_rotation 8@ 7@ 4@
+000F: 7@ -= $TAXI_WHEEL_ROTATION
+$TAXI_WHEEL_ROTATION *= -1.0
+
+$X_POS_TT = 0.456 
+$Y_POS_TT = -1.922 
+0086: $Z_POS_TT = $TAXI_BACK_HEIGHT 
+gosub @FlyAnimDeloreanOffset 
+01BC: put_object 15@ at $X_POS_TT $Y_POS_TT $Z_POS_TT //#TAXI_WHEEL_R (back)
+000B: 7@ += $TAXI_WHEEL_ROTATION
+0453: object 15@ set_rotation 8@ 7@ 4@
+000F: 7@ -= $TAXI_WHEEL_ROTATION
+return

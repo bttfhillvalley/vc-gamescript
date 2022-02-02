@@ -1,0 +1,144 @@
+
+:GetPlutonium
+thread 'GET'
+1@ = 0
+
+:GetPlutoniumStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @GetPlutoniumStart 
+if
+  $PLUTONIUM_CONTROL == 1 // integer values 
+else_jump @GetPlutoniumStart
+//if 
+//00F5:   player $PLAYER_CHAR 1 -1300.5 173.85 11.45 radius 1.0 1.0 2.0 
+//else_jump @GetPlutoniumStart   
+if
+    1@ == 0    
+then  
+    0@ = Pickup.Create(376, 3, -1300.5, 173.85, 11.45)
+    1@ = 1
+end 
+if
+    Pickup.Picked_up(0@)
+jf @GetPlutoniumStart
+Marker.Disable($LOC1)
+018C: play_sound 1 at 0.0 0.0 0.0 
+04F7: status_text $PLUTONIUM 0 line 2 'PLUTO'  // Plutonium: 
+$PLUTONIUM += 12 // integer values 
+wait 3000 
+0151: remove_status_text $PLUTONIUM 
+0506: vehicle_model 170 set_next_variation -1 -1 
+Model.Load(#RUMPO)
+Model.Load(#CLA)
+Model.Load(#CLB)
+Model.Load(#RUGER)
+Model.Load(#MP5LNG)
+
+:GetPlutoniumLoadModels
+wait 0 
+if and
+   Model.Available(#RUMPO)
+   Model.Available(#CLA)
+   Model.Available(#CLB)
+   Model.Available(#RUGER)
+   Model.Available(#MP5LNG)
+else_jump @GetPlutoniumLoadModels 
+$LYBIAN = Car.Create(#RUMPO, -1066.072, -55.111, 10.262)
+0229: set_car $LYBIAN color_to 7 1 
+
+:GetPlutoniumCreateLybians
+wait 10 
+if 
+00A3:   actor $PLAYER_ACTOR 0 -1235.0 -5000.0 -1240.0 5000.0 
+else_jump @GetPlutoniumCreateLybians 
+$CHASE = 1 // integer values 
+0129: $LDRIVER = create_actor 10 #CLA in_car $LYBIAN driverseat 
+01C8: $LGUNNER = create_actor 10 #CLB in_car $LYBIAN passenger_seat 0 
+Car.Angle($LYBIAN) = 355.752
+01ED: reset_actor $LDRIVER flags 
+011A: set_actor $LDRIVER flags 1 
+0243: set_actor $LDRIVER ped_stats_to 16 
+03FE: set_actor $LDRIVER money 200 
+01B2: give_actor $LDRIVER weapon 25 ammo 30000 // Load the weapon model before using this 
+020A: set_car $LYBIAN door_status_to 2 
+04BA: set_car $LYBIAN speed_instantly 10.0 
+00AE: set_vehicle $LYBIAN traffic_behavior_to 2 
+Car.SetMaxSpeed($LYBIAN, 50.0)
+Car.SetToPsychoDriver($LYBIAN)
+00AF: set_car $LYBIAN driver_behaviour_to 5
+0362: put_actor $LGUNNER at -1055.072 -55.111 10.262 and_remove_from_car 
+0489: set_actor $LGUNNER muted 0 
+011C: actor $LGUNNER clear_objective 
+0464: put_actor $LGUNNER into_turret_on_car $LYBIAN at_car_offset 0.0 0.0 1.0 position 0 angle 360.0 with_weapon 27 
+01B2: give_actor $LGUNNER weapon 27 ammo 30000 // Load the weapon model before using this 
+011A: set_actor $LGUNNER flags 1 
+02E2: set_actor $LGUNNER weapon_accuracy_to 50 
+01CA: actor $LGUNNER kill_player $PLAYER_CHAR 
+0319: set_actor $LGUNNER wander_state_to 1 
+
+:GetPlutoniumLybianChase
+wait 0 
+if 
+   not Car.Wrecked($LYBIAN)
+else_jump @GetPlutoniumLybianRemoveA 
+if 
+00E0:   player $PLAYER_CHAR driving 
+else_jump @GetPlutoniumLybianKillPlayer 
+if 
+  $TRAVEL == 1 // integer values 
+else_jump @GetPlutoniumLybianChase 
+if 
+  $MODE == 0 // integer values 
+else_jump @GetPlutoniumLybianDelete 
+wait 500 
+0407: create_coordinate 1@ 2@ 3@ from_car $LYBIAN offset 0.0 100.0 0.0 
+Car.DriveTo($LYBIAN, 1@, 2@, 3@)
+$LHEALTH = Car.Health($LYBIAN)
+jump @GetPlutoniumLybianTimeTravel 
+
+:GetPlutoniumLybianDelete
+Car.Destroy($LYBIAN)
+Actor.DestroyInstantly($LGUNNER)
+jump @GetPlutoniumLybianRemoveA 
+
+:GetPlutoniumLybianKillPlayer
+wait 10 
+if 
+   not Car.Wrecked($LYBIAN)
+else_jump @GetPlutoniumLybianRemoveA 
+if 
+00E0:   player $PLAYER_CHAR driving 
+else_jump @GetPlutoniumLybianKillPlayer 
+01ED: reset_actor $LDRIVER flags 
+011A: set_actor $LDRIVER flags 1 
+0243: set_actor $LDRIVER ped_stats_to 16 
+00AF: set_car $LYBIAN driver_behaviour_to 5
+jump @GetPlutoniumLybianChase 
+
+:GetPlutoniumLybianTimeTravel
+wait 10 
+if 
+   not Car.Wrecked($LYBIAN)
+else_jump @GetPlutoniumLybianRemoveA 
+if 
+   not fading 
+else_jump @GetPlutoniumLybianRemove 
+if 
+8185:   not car $LYBIAN health >= $LHEALTH 
+else_jump @GetPlutoniumLybianTimeTravel 
+020B: explode_car $LYBIAN 
+wait 2500 
+jump @GetPlutoniumLybianRemoveA 
+
+:GetPlutoniumLybianRemove
+wait 1000 
+$CHASE = 0 // integer values 
+Car.Destroy($LYBIAN)
+Actor.DestroyInstantly($LGUNNER)
+
+:GetPlutoniumLybianRemoveA
+Actor.RemoveReferences($LGUNNER)
+Car.RemoveReferences($LYBIAN)
+jump @GetPlutoniumStart 

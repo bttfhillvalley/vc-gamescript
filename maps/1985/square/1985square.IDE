@@ -1,0 +1,14 @@
+objs
+5192, clocktower1985, clocktower1985, 1, 600, 0
+5195, brokenledge1985, clocktower1985, 1, 600, 0
+5196, LODcktower1985, clocktower1985, 1, 1200, 0
+5197, vane_dam1985, clocktower1985, 1, 600, 128
+end
+tobj
+5193, clock1985, clocktower1985, 1, 600, 128, 7, 19
+5194, clock_nt1985, clocktower1985, 1, 600, 128, 19, 7
+end
+2dfx
+5192, 0.799, -5.451, 3.326, 255, 255, 255, 200, 0, "coronastar", "shad_exp", 100, 8, 2, 0, 40, 1, 0, 0, 0
+5192, 0.799, 5.451, 3.326, 255, 255, 255, 200, 0, "coronastar", "shad_exp", 100, 8, 2, 0, 40, 1, 0, 0, 0
+end

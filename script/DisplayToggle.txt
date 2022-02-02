@@ -1,0 +1,20 @@
+:Display
+thread 'DISP'
+$SPEED_DISP = 1
+$TIME_DISP = 1
+
+:DisplayStart
+wait 0
+if
+003A:   $KEY == $KEY_TOGGLEDISPSPEED // [
+then
+  $SPEED_DISP *= -1
+  $SPEED_DISP += 1
+end
+if
+003A:   $KEY == $KEY_TOGGLEDISPTCS // [
+then
+  $TIME_DISP *= -1
+  $TIME_DISP += 1
+end      
+jump @DisplayStart

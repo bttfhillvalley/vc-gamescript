@@ -1,0 +1,3856 @@
+:Time
+//{$INCLUDE TimeEffects.txt} 
+// ========================================
+// 0@ is the car itself
+// 1@ is typically used for the speed
+// 2@, 3@, 4@ are for the car coordinates
+// 9@ is for spark sound tracking when not time travelling
+// 10@ is for the model
+// 12@ - 15@ are reserved for time circuits
+// 16@ - 17@ are the timers, so no touchy
+// ========================================
+// 12@ and 13@ are the destination time
+// 13@ is compounded with the status of the time circuits.
+// FTHHMM
+// - F: Are the Time Circuits Fried
+// - T: Are the Time Circuits On
+// - HH: Hours
+// - MM: Minutes
+// 14@ and 15@ are the past time
+// 15@ is compounded with Fuel Status, BTTF1 Variation and Plate.    
+// TODO: Removing BTTF1 Variation
+// Things we need to track on a delorean
+// - TT sound loaded/not 
+// - Time Circuits On/Off
+// - Time Circuits Damaged/Undamaged
+// - Flying Circuits Damaged/Undamaged
+// - Fueled/Unfueled (Do we want Mr. Fusion to allow more trips?)
+// - BTTF1 Variation (Clean, Hook on side, Hook hooked in, Missing Hook)
+// - BTTF1 Plate On/Off
+// ====== 13@ =======
+// TXHHMM
+// 100000
+// T: Time circuit status.  0 - Off, 1 - On, > 2 - Fried
+// X: Unused
+// HH: Destination Hours
+// MM: Last Time Departed Minutes
+// ====== 15@ =======
+//
+// FXHHMMVV
+// 11012100
+// F: Plutonium/Mr. Fusion Fuel status.  1 for fueled, 0 for empty.
+// X: Used to tracking of global/local variable exchange in MemoryHandling.  
+// HH: Last Time Departed Hours
+// MM: Last Time Departed Minutes
+// VV: Delorean Variation flags.
+//     Tentatively
+//     0x00 - BTTF1 no plate
+//     0x01 - BTTF2 Plate attached
+//     0x02 - BTTF2 Driving Version
+//     0x03 - BTTF2 Flying Version
+//     0x04 - BTTF3 Version
+//     0x05 - Railroad Version
+//     BTTF1 variations are tracked separately from the others so they can be combined
+//     0x10 - Hook attachment w/o hook
+//     0x20 - Hook on side
+//     0x30 - Hook up
+
+{$USE bitwise}   
+thread 'TIME' 
+Car.SetImmunities(0@, 0, 0, 0, 1, 1)
+053F: set_car 0@ tires_vulnerable 0 
+create_thread @SetVariation 0@ 15@   
+3FFB: set_car 0@ component "pchamberemptylight" visible 0  
+
+:TimeStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @TimeStart 
+if
+   not Car.Wrecked(0@)
+else_jump @TimeReset
+//3FF5: 1@ = car 0@ engine_state
+//045A: text_draw_1number 10.0 10.0 'DAY' 1@  // Best Result: ~1~th       
+02E3: 1@ = car 0@ speed
+0B10: 7@ = 15@ AND 0x0f  // Get car variation
+0B10: 8@ = 15@ AND 0x30  // Get hook variation
+0B15: 8@ = 8@ SHR 4  
+
+10@ = Car.Model(0@)
+gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
+gosub @Hook  // Controls putting up/down the hook.  I forget the variations though.  It's in the garage thread so I can document it here as well.                                                                                                               
+gosub @TimeResetCamera 
+if
+    00DC:   player $PLAYER_CHAR driving 0@
+else_jump @TimeFuel     
+gosub @TimeUnloadSparkSounds   
+
+// Check Fuel
+:TimeFuel
+if and
+   not 10@ == #MAVERICK  // Not Train
+   not 10@ == #BUS
+   15@ < 10000000 // not fueled 
+else_jump @TimeFly
+gosub @Fuel
+
+// Check To see if we're going to hover.  
+// FIXME: This will be removed from this section in the future since there will be no need for model swaps that require setting everything back up since it'll be the same car instance
+:TimeFly 
+if and
+    7@ == 3
+    13@ >= 200000
+then
+    02D4: car 0@ turn_off_engine 
+end
+
+if 
+    003A:   $KEY == $KEY_HOVERCONVERSION // C
+else_jump @TimeLightning
+if or
+    7@ == 2
+    7@ == 3
+then
+    if 
+        7@ == 2
+    then
+        7@ = 3                   
+    else 
+        7@ = 2         
+    end        
+    15@ /= 100
+    15@ *= 100
+    005C: 15@ += 7@ // integer values (never used VC or GTA 3)
+end         
+//gosub @Fly 
+     
+
+// Lightning check
+:TimeLightning
+0209: 2@ = random_int 0 1000 
+if and
+    $WEATHER == 2 // integer values 
+    2@ == 500 // integer values 
+    7@ == 3
+    00DC:   player $PLAYER_CHAR driving 0@     
+else_jump @TimeCircuitsCheck
+040D: unload_wav 1 
+if or
+  13@ < 100000 // integer values 
+  13@ >= 200000 // integer values 
+then          
+    03CF: load_wav 'BURG_12' as 1 
+else if 
+    $MODE == 0 // integer values 
+then
+    03CF: load_wav 'BURG_10' as 1 
+else
+    03CF: load_wav 'BURG_11' as 1 
+end
+end  
+create_thread @PlaySound 1
+0169: set_fade_color 255 255 255
+if and
+    $MODE == 0
+    13@ >= 100000
+then
+    $CAMERA_CONTROL = 0   
+    0407: create_coordinate $CAM_X $CAM_Y $CAM_Z from_car 0@ offset -15.0 10.0 7.5          
+    Camera.SetPosition($CAM_X, $CAM_Y, $CAM_Z, 0.0, 0.0, 0.0)
+    Camera.OnVehicle(0@, 15, 1)
+end
+
+17@ = 0 // integer values 
+
+:LightningFlash
+fade 0 100 
+wait 100 
+fade 1 100 
+if 
+   not 17@ > 1800 // integer values 
+else_jump @LightningFryCircuits 
+wait 500 
+jump @LightningFlash 
+
+:LightningFryCircuits     
+wait 100
+Car.Health(0@) = 300
+$FRIED = 1 // integer values 
+13@ += 200000 // integer values 
+02D4: car 0@ turn_off_engine   
+if 
+    13@ >= 300000
+else_jump @TimeCircuitsCheck
+13@ -= 100000 // Also turn off so we don't retrigger this section again.  
+0407: create_coordinate $CCX $CCY $CCZ from_car 0@ offset 0.0 0.0 2.5
+jump @Time88TrackCamera 
+
+:TimeCircuitsCheck    
+// Check Time Circuits On for Effects        
+if and  
+    13@ >= 100000 // Time Circuits are On        
+    13@ < 200000 // Time Circuits are not fried
+    $COOLDOWN == 0
+else_jump @TimeStart        
+
+:TimeEffectsCheck       
+3FFB: set_car 0@ component "fluxcapacitorlightson" visible 0 
+3FFB: set_car 0@ component "fluxcapacitorlightsoff" visible 1  
+3FFB: set_car 0@ component "flux1" visible 0
+3FFB: set_car 0@ component "flux2" visible 0 
+3FFB: set_car 0@ component "flux3" visible 0 
+3FFB: set_car 0@ component "flux4" visible 0
+3FFB: set_car 0@ component "flux5" visible 0 
+3FFB: set_car 0@ component "flux6" visible 0
+3ff4: set car 0@ comp "fluxcoilson" alpha 0
+3ff4: set car 0@ comp "wormhole" alpha 0
+3FFB: set_car 0@ component "sidledsstatus1" visible 0
+3FFB: set_car 0@ component "sidledsstatus2" visible 0 
+3FFB: set_car 0@ component "sidledsstatus3" visible 0 
+3FFB: set_car 0@ component "sidledsstatus4" visible 0
+3FFB: set_car 0@ component "sidledsstatus5" visible 0 
+3FFB: set_car 0@ component "sidledsstatus6" visible 0
+3FFB: set_car 0@ component "sidledsstatus7" visible 0 
+3FFB: set_car 0@ component "sidledsstatus8" visible 0 
+gosub @IdleAnims
+gosub @TimeUnloadSparkSounds         
+
+// Bunch of speed related stuff for SID, coils, plasma, etc.
+if 
+  1@ > 30.5 // == 56 mph
+else_jump @TimeStart
+
+3FFB: set_car 0@ component "sidledsstatus1" visible 1  
+if 
+  1@ > 36.5 // == 67 mph
+else_jump @TimeStart
+3FFB: set_car 0@ component "sidledsstatus1" visible 0
+3FFB: set_car 0@ component "sidledsstatus2" visible 1  
+if 
+  1@ > 40.5 // == 74.3 mph
+else_jump @TimeStart
+3FFB: set_car 0@ component "sidledsstatus2" visible 0
+3FFB: set_car 0@ component "sidledsstatus3" visible 1  
+// Set alpha of coils to match speed of car
+0087: 2@ = 1@
+2@ -= 40.5
+2@ *= 64.0
+008C: 3@ = float_to_integer 2@
+// Cap Alpha at 255     
+if 
+  3@ > 255
+then
+  3@ = 255
+end
+3ff4: set car 0@ comp "fluxcoilson" alpha 3@   
+if 
+  1@ > 43.5 // == 79.8 mph // floating-point values 
+else_jump @TimeStart
+3FFB: set_car 0@ component "sidledsstatus3" visible 0
+3FFB: set_car 0@ component "sidledsstatus4" visible 1 
+// Coils start glowing around 80 mph
+gosub @TimeCoil
+if 
+  1@ > 44.5 // == 81.7 mph // floating-point values
+else_jump @TimeStart 
+3FFB: set_car 0@ component "sidledsstatus4" visible 0
+3FFB: set_car 0@ component "sidledsstatus5" visible 1
+3FFB: set_car 0@ component "fluxcapacitorlightson" visible 1 
+3FFB: set_car 0@ component "fluxcapacitorlightsoff" visible 0 
+3FFB: set_car 0@ component "flux1" visible 1
+3FFB: set_car 0@ component "flux2" visible 1 
+3FFB: set_car 0@ component "flux3" visible 1 
+3FFB: set_car 0@ component "flux4" visible 1
+3FFB: set_car 0@ component "flux5" visible 1 
+3FFB: set_car 0@ component "flux6" visible 1      
+
+// If we are fueled, go ahead and show sparks and 
+// Load and play spark sounds       
+if or
+    03D2:   wav 1 ended 
+    83D0:   not wav 1 loaded 
+then
+    040D: unload_wav 1    
+    if 
+       7@ >= 4
+    then 
+       03CF: load_wav 'BIKEREV' as 1 
+    else 
+       03CF: load_wav 'BAND_07' as 1
+    end 
+end   
+9@ = 1 
+03D1: play_wav 1
+
+// Plasma and wormhole starts around 82 mph
+gosub @TimePlasma 
+
+// Wormhole and sparks only pop up if fueled or if its the train
+if or
+  15@ >= 10000000 // Fueled 
+   Car.Model(0@) == #BUS
+   Car.Model(0@) == #MAVERICK
+then
+   gosub @TimeSparks
+   gosub @TimeWormhole
+end 
+
+if 
+  1@ > 45.0 // floating-point values
+else_jump @TimeStart 
+3FFB: set_car 0@ component "sidledsstatus5" visible 0
+3FFB: set_car 0@ component "sidledsstatus6" visible 1 
+if
+  1@ > 46.5 // floating-point values
+else_jump @TimeStart
+3FFB: set_car 0@ component "sidledsstatus6" visible 0
+3FFB: set_car 0@ component "sidledsstatus7" visible 1 
+if 
+  1@ > 47.6 // == 87.3 mph // floating-point values 
+else_jump @TimeStart
+3FFB: set_car 0@ component "sidledsstatus7" visible 0
+3FFB: set_car 0@ component "sidledsstatus8" visible 1 
+gosub @Wire 
+
+// Prepare for temporal displacement
+if or
+  15@ >= 10000000 // Fueled
+  Car.Model(0@) == #BUS
+  Car.Model(0@) == #MAVERICK
+jf @TimeStart  
+
+// Setup camera if we're in cutscene mode so we track the car before it time travels
+if and
+    $MODE == 0 // integer values 
+    00DC:   player $PLAYER_CHAR driving 0@ 
+then
+    0208: $RANDOMX = random_float -5.0 -3.0 
+    0208: $RANDOMY = random_float -15.0 -10.0     
+    if or
+        Car.Model(0@) == #SPARROW
+        Car.Model(0@) == #MAVERICK
+    then
+        0208: $RANDOMZ = random_float -10.0 10.0 
+    else
+        0208: $RANDOMZ = random_float 2.5 7.5 
+    end 
+    $CAMERA_CONTROL = 0                                   
+    0407: create_coordinate $CAM_X $CAM_Y $CAM_Z from_car 0@ offset $RANDOMX $RANDOMY $RANDOMZ      
+    0460: set_camera_pointing_time 0.0 1000 
+    Camera.SetPosition($CAM_X, $CAM_Y, $CAM_Z, 0.0, 0.0, 0.0)
+    Camera.OnVehicle(0@, 15, 1)
+end                
+
+// 88 MPH!!!!!!!  
+if
+  1@ > 48.1 // floating-point values 
+else_jump @TimeStart           
+
+//=============================================================================================
+// Load various explosion sounds.
+
+:Time88
+040D: unload_wav 1 
+040D: unload_wav 2 
+
+// Check for cutscene mode
+if or
+    80DC:   not player $PLAYER_CHAR driving 0@ 
+    $MODE == 0 // integer values 
+then
+    if or
+        Car.Model(0@) == #BUS
+        Car.Model(0@) == #MAVERICK
+    then
+        // Train  
+        03CF: load_wav 'ASS_3' as 1 
+    else if 
+        $WIRE == 0 // integer values 
+    then 
+        // Delorean
+        03CF: load_wav 'BAND_02' as 1 
+    else
+        // Clocktower
+        03CF: load_wav 'ASS_9' as 1 
+    end
+    end
+else
+    // Instant
+    03CF: load_wav 'ASS_1' as 1
+end 
+
+// Play Sound
+create_thread @PlaySound 1                          
+
+// ================================
+// Cutscene camera related stuff to figure out what to track
+0407: create_coordinate $CCX $CCY $CCZ from_car 0@ offset 0.0 0.0 0.0 
+
+:Time88TrackCamera  
+if and                                  
+    00DC:   player $PLAYER_CHAR driving 0@ 
+    $MODE == 0 // integer values 
+then
+    // Set camera position         
+    Camera.SetPosition($CAM_X, $CAM_Y, $CAM_Z, 0.0, 0.0, 0.0)
+    0460: set_camera_pointing_time 0.0 1000 
+    Camera.PointAt($CCX, $CCY, $CCZ, 1)    
+    $CUTSCENE = 1 // integer values 
+    $TRAVEL = 1 // integer values 
+    $INST_TRAVEL = 1 // integer values
+end 
+
+// Make care invincible while its supposed to be outatime (that way it doesn't explode while we're in a cutscene)
+Car.SetImmunities(0@, 1, 1, 1, 1, 1)
+9@ = Car.Health(0@)
+10@ = Car.Model(0@)
+11@ = Car.Angle(0@)
+Car.Health(0@) = 1000  
+
+// Change current time if we are the ones time travelling
+if 
+    00DC:   player $PLAYER_CHAR driving 0@ 
+then
+    0581: toggle_radar 0 
+    gosub @GlobalDateToLocal 
+end     
+
+// Get BTTF1 variation before we overwrite the Last Departed Time
+0B10: 7@ = 15@ AND 0x0f  // Get car variation
+0B10: 8@ = 15@ AND 0x30  // Get hook variation
+0B15: 8@ = 8@ SHR 4  
+
+// Set Last Departed date
+008B: 14@ = $CMONTH // integer values and handles 
+14@ *= 100 // integer values (never used in VC or GTA 3) 
+005C: 14@ += $CDAY // integer values (never used VC or GTA 3) 
+14@ *= 10000 // integer values (never used in VC or GTA 3) 
+005C: 14@ += $CYEAR // integer values (never used VC or GTA 3)    
+
+// Get Last Departed Time
+00BF: $CHOUR = current_time_hours, $CMINUTE = current_time_minutes 
+008B: 15@ = $CHOUR // integer values and handles 
+15@ *= 100 // integer values (never used in VC or GTA 3) 
+005C: 15@ += $CMINUTE // integer values (never used VC or GTA 3)*/ 
+
+// Set date/time globals if we're driving
+if 
+00DC:   player $PLAYER_CHAR driving 0@ 
+then       
+    008A: $PTIME = 14@ // integer values and handles 
+    008A: $PTIME1 = 15@ // integer values and handles
+end 
+
+// Now for the actual temporal displacement 
+// Record coordinates
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0 
+if and
+    $MODE == 1
+    00DC:   player $PLAYER_CHAR driving 0@
+then
+    // Instant Time Travel effects
+    0169: set_fade_color 255 255 255 
+    043C: set_game_sounds_disable_on_fade 0 
+    fade 0 0 
+    wait 0 
+    $TRAVEL = 1 // integer values 
+    $INST_TRAVEL = 1 // integer values 
+    $FADE = 1 // integer values         
+    3ff4: set car 0@ comp "fluxcoilson" alpha 0 
+    3ff4: set car 0@ comp "wormhole" alpha 0
+    3FFB: set_car 0@ component "fluxcapacitorlightson" visible 0 
+    3FFB: set_car 0@ component "fluxcapacitorlightsoff" visible 1
+    3FFB: set_car 0@ component "lightfl" visible 0                                     
+    3FFB: set_car 0@ component "lightfr" visible 0     
+
+else     
+    // BTTF1 specific stuff
+    if or
+        7@ == 0
+        7@ == 1
+    then
+        // Do plate animation if we have it
+        if
+            7@ == 1
+        then                   
+            create_thread @Plate 0@ 2@ 3@ 4@
+        end        
+    
+        // Detach hook
+        if   
+            8@ == 2
+        then
+            create_thread @HookSideDetach 0@ 2@ 3@ 4@ 11@
+        else if
+            8@ == 3
+        then
+            create_thread @HookDetach 0@ 2@ 3@ 4@ 11@
+        end
+        end
+    end
+    
+    // Create explosion
+    gosub @EntryExplosion
+    
+    // Create Firetrail
+    if 
+       13@ < 200000
+    then
+        create_thread @FireTrail 0@ 7@
+    else          
+        create_thread @FireTrail99 0@
+    end    
+    
+    // Handle the Train stuff if it has to dissapear.  This will be gone later.
+    if or
+        Car.Model(0@) == #BUS
+        Car.Model(0@) == #MAVERICK
+    then
+        end_thread_named 'H_WHEEL' 
+        end_thread_named 'WHEEL' 
+        end_thread_named 'ROTATE' 
+        gosub @TrainAnimDestroy 
+        gosub @TrainWheelDestroy 
+    end 
+    
+    // Wait a bit during cutscene
+    // Need to get rid of this for RC control I think.
+    wait 5000                       
+    
+    // Wait longer if its the clocktower scene
+    if and
+        $WIRE == 1 // integer values
+        00DC:   player $PLAYER_CHAR driving 0@ 
+    then         
+        wait 10000 
+    end
+end
+13@ -= 100000 // Hide Time Circuits?
+
+// Update the variation
+if or
+    7@ == 0
+    7@ == 1
+then         
+    // Detach plate
+    if 
+        7@ == 1
+    then
+        7@ = 0
+    end
+    
+    // Detach hook
+    if 
+        8@ > 1
+    then
+        8@ = 1
+    end
+end
+
+// Update 15@ to include the new variations
+15@ *= 100
+0B16: 8@ = 8@ SHL 4
+005C: 15@ += 7@ // integer values (never used VC or GTA 3) 
+005C: 15@ += 8@ // integer values (never used VC or GTA 3)
+
+if 
+    80DC:   not player $PLAYER_CHAR driving 0@
+else_jump @TimeReentryFadeOut      
+
+// =================================================================================
+// This part deals with when the player is not driving the Delorean and is awaiting its return.    
+
+:TimePast
+wait 10 
+// Wait until we hit the target time
+if and
+003C:   $CTIME == 12@ // integer values (never used VC or GTA 3) 
+003C:   $CTIME1 == 13@ // integer values (never used VC or GTA 3) 
+else_jump @TimePastA 
+jump @TimePastReentry 
+
+:TimePastA
+// Only preload the time machine in if we are changing time periods.
+if
+    $SET_TIME == 1 // integer values 
+else_jump @TimePast
+// Check same date, but time is in the future
+if and
+003C:   $CTIME == 12@ // integer values (never used VC or GTA 3) 
+001E:   $CTIME1 > 13@ // integer values 
+else_jump @TimePastCheckYear 
+jump @TimePastLoadModel 
+
+:TimePastCheckYear
+// Need to separate out year and month date since we're using mdy instead of ymd
+0085: 5@ = 12@ // integer values and handles 
+0085: 6@ = 12@ // integer values and handles 
+5@ /= 10000 // integer values (never used VC or GTA 3) 
+5@ *= 10000 // integer values (never used in VC or GTA 3) 
+0062: 6@ -= 5@ // integer values (never used VC or GTA 3) 
+5@ /= 10000 // integer values (never used VC or GTA 3) 
+
+// Check for future year
+if 
+001E:   $CYEAR > 6@ // integer values 
+else_jump @TimePastCheckDay 
+jump @TimePastLoadModel 
+
+:TimePastCheckDay
+// Check for future month/date but same year
+if and
+003C:   $CYEAR == 6@ // integer values (never used VC or GTA 3) 
+001E:   $CMONTHDAY > 5@ // integer values 
+else_jump @TimePast 
+jump @TimePastLoadModel 
+
+:TimePastLoadModel
+Model.Load(10@)
+
+:TimePastModelVariation
+wait 0 
+if 
+   Model.Available(10@)
+else_jump @TimePastModelVariation 
+
+:TimePastModelCreateCar
+0@ = Car.Create(10@, 2@, 3@, 4@)
+Model.Destroy(10@)
+// Rotate the time machine to make it look like it braked after entry
+11@ += 120.0
+Car.Angle(0@) = 11@
+11@ -= 120.0 
+Car.Health(0@) = 9@
+13@ += 100000 // integer values    
+create_thread @SetVariation 0@ 15@  
+
+:TimePastWait
+wait 0 
+if 
+  $INST_TRAVEL == 0 // integer values 
+else_jump @TimePastWait 
+jump @TimeStart 
+
+:TimePastReentry
+//00BC: text_highpriority 'DEL0' 1000 ms 1  // dmc12 deLoRean
+if 
+  $INST_TRAVEL == 0 // integer values 
+else_jump @TimePastReentryCheckMode 
+040D: unload_wav 1 
+if or
+  10@ == #BUS // integer values 
+  10@ == #MAVERICK // integer values 
+then
+03CF: load_wav 'ASS_4' as 1 
+else
+03CF: load_wav 'BAND_01' as 1
+end 
+while 83D0:   not wav 1 loaded
+    wait 0
+end 
+jump @TimePastReentryPlaySound 
+
+:TimePastReentryCheckMode
+if 
+  $MODE == 0 // integer values 
+else_jump @TimePastReentryPlaySound 
+
+// Need to wait until we stop fading before we start playing the explosion to sync up
+:TimePastReentryCheckFade
+wait 10 
+if 
+  $FADE == 0 // integer values 
+else_jump @TimePastReentryCheckFade 
+
+:TimePastReentryPlaySound
+03D1: play_wav 1
+jump @TimeReentryExplosion                         
+
+// =========================================================================
+
+:TimeReentryTrainAnimations
+// Set up train animations again.
+if or
+   Car.Model(0@) == #BUS
+   Car.Model(0@) == #MAVERICK
+then
+    create_thread @TrainAnim 0@ 
+    if 
+       Car.Model(0@) == #BUS
+    then   
+        create_thread @TrainWheel 0@  
+    else
+        create_thread @TrainHoverWheel 0@ 
+    end
+end
+return  
+
+// =========================================================================
+// We're going to fade out here, then set the current time.
+
+:TimeReentryFadeOut
+// Fade out only for cutscene 
+if 
+  $MODE == 0 // integer values 
+then
+    wait 1000 
+    0169: set_fade_color 0 0 0 
+    fade 0 750 
+    wait 750 
+    // We are now faded to black
+    $FADE = 1 // integer values 
+    
+    // Reset camera to look at reentry point (for example if it was already looking at the Lybians from before
+    // Might gosub this
+    Camera.SetPosition($CAM_X, $CAM_Y, $CAM_Z, 0.0, 0.0, 0.0)
+    0460: set_camera_pointing_time 0.0 1000 
+    Camera.PointAt($CCX, $CCY, $CCZ, 1)
+    Object.Destroy($HOOK)
+end
+
+// Set time                      
+00C0: set_current_time $HOUR $MINUTE 
+0084: $CYEAR = $YEAR // integer values and handles 
+0084: $CMONTH = $MONTH // integer values and handles 
+0084: $CDAY = $DAY // integer values and handles  
+$SET_TIME = 1 // integer values 
+
+// Reset the realtime and weather threads
+end_thread_named 'TIMEMOD' 
+end_thread_named 'WEATHER' 
+create_thread @TimeMod 
+create_thread @Weather 
+
+// Clear stuff
+Player.ClearWantedLevel($PLAYER_CHAR)
+03BA: clear_cars_from_cube -5000.0 -5000.0 -5000.0 5000.0 5000.0 5000.0 
+042B: clear_peds_from_cube -5000.0 -5000.0 -5000.0 5000.0 5000.0 5000.0     
+0395: clear_area 1 at 2@ 3@ range 4@ 5000.0    
+04E4: unknown_refresh_game_renderer_at 2@ 3@ 
+Model.Destroy(#KEYCARD)
+if 
+  $MODE == 0 // integer values 
+then
+    wait 2000 
+    fade 1 500 
+    040D: unload_wav 1 
+    if or
+        Car.Model(0@) == #BUS
+        Car.Model(0@) == #MAVERICK
+    then
+        03CF: load_wav 'ASS_4' as 1
+    else 
+        03CF: load_wav 'BAND_01' as 1 
+    end    
+    wait 1000 
+    $FADE = 0 // integer values
+    
+    // Play Re entry sounds   
+    03D1: play_wav 1 
+else
+    015D: set_gamespeed 1.0 
+    fade 1 100 
+    $FADE = 0 // integer values 
+end
+
+:TimeReentryExplosion
+create_thread @SetVariation 0@ 15@  
+gosub @ReentryExplosion 
+if or
+  $INST_TRAVEL == 0 // integer values 
+  $MODE == 0 // integer values 
+then
+    // Two more explosions if we're in cutscene
+    wait 750        
+    gosub @ReentryExplosion 
+    wait 700 
+    gosub @ReentryExplosion  
+end
+                                               
+// Have the time vehicle come back
+if 
+00DC:   player $PLAYER_CHAR driving 0@ 
+else_jump @TimeReentryLoadModel 
+$TRAVEL = 0 // integer values 
+0581: toggle_radar 1 
+if
+  $MODE == 0 // integer values 
+else_jump @TimeReentrySetSpeed 
+Car.PutAt(0@, 2@, 3@, 4@)   
+Car.Angle(0@) = 11@       
+wait 10  // Small delay to counteract the Train from coming back still
+jump @TimeReentrySetVehicleData 
+
+:TimeReentrySetSpeed
+13@ += 100000 // integer values 
+04BA: set_car 0@ speed_instantly 1@
+jump @TimeReentrySetImmunities  
+
+// Create vehicle if driver is not playing.  
+:TimeReentryLoadModel
+Model.Load(10@)
+
+:TimeReentryCreateModel
+wait 10 
+if 
+   Model.Available(10@)
+else_jump @TimeReentryCreateModel 
+0@ = Car.Create(10@, 2@, 3@, 4@)     
+create_thread @SetVariation 0@ 15@
+Model.Destroy(10@)         
+
+:TimeReentrySetVehicleData
+gosub @TimeReentryTrainAnimations 
+$CUTSCENE = 0 // integer values 
+053F: set_car 0@ tires_vulnerable 0 
+Car.Angle(0@) = 11@
+Car.Health(0@) = 9@
+13@ += 100000 // integer values 
+04BA: set_car 0@ speed_instantly 1@             
+
+// This is for RC mode to get it to handbrake turn
+:TimeReentryBrakes
+if and
+80DC:   not player $PLAYER_CHAR driving 0@ 
+   not Car.Model(0@) == #SPARROW
+   not Car.Model(0@) == #MAVERICK
+else_jump @TimeReentrySetImmunities 
+0477: set_car 0@ animation 3 250 ms 
+wait 250 
+02D4: car 0@ turn_off_engine 
+jump @TimeReentrySetImmunities 
+
+:TimeReentrySetImmunities
+Car.SetImmunities(0@, 0, 0, 0, 1, 1) 
+
+:TimeReentryCold    
+create_thread @Cold 0@ 15@ 
+17@ = 0 // integer values 
+if 
+00DC:   player $PLAYER_CHAR driving 0@ 
+else_jump @TimeReentryCoil 
+if 
+  $MODE == 0 // integer values 
+else_jump @TimeReentryCoil        
+Camera.OnVehicle(0@, 15, 1)
+
+:TimeReentryCoil
+wait 0 
+if 
+   not 17@ > 999 // integer values 
+else_jump @TimeReentryTravelFlag 
+if
+   13@ < 200000 // integer values 
+else_jump @TimeReentryCoil 
+gosub @TimeCoil 
+gosub @TimeBodyGlow
+jump @TimeReentryCoil 
+
+:TimeReentryTravelFlag
+$SET_TIME = 0 // integer values 
+$INST_TRAVEL = 0 // integer values 
+043C: set_game_sounds_disable_on_fade 1 
+
+:TimeReentryResetCamera    
+if
+    00DC:   player $PLAYER_CHAR driving 0@ 
+then    
+    Camera.Restore
+    Camera.SetBehindPlayer  
+end
+$CAMERA_CONTROL = 1
+9@ = 0                
+
+create_thread @Steam 0@ 15@    
+create_thread @Engine 0@ 15@ 
+create_thread @FuelEmpty 0@ 15@ 
+jump @TimeStart 
+
+
+// ==================================================================================
+// Reset stuff related to the camera and sound effects since they can loop (vfx effects do not)
+
+:TimeResetCamera
+if and
+    00DC:   player $PLAYER_CHAR driving 0@ 
+    $CAMERA_CONTROL == 0
+then        
+    if or
+        1@ < 47.6
+        13@ < 100000 // Time Circuits are Off
+        13@ >= 200000 // Time Circuits are fried
+    then                           
+        Model.Destroy(#KEYCARD)
+        $CAMERA_CONTROL = 1
+        // I forget if this has to change for RC mode, but this can be figured out later
+        Camera.Restore
+        Camera.SetBehindPlayer          
+    end
+end
+return
+
+:TimeUnloadSparkSounds
+if   
+    9@ == 1
+then    
+    if or
+        1@ < 44.5
+        13@ < 100000
+        13@ >= 200000
+    then  
+        040D: unload_wav 1
+        9@ = 0  
+    end
+end  
+return   
+              
+//================================================================================================
+
+:TimeReset
+// This pretty much checks to see if the delorean/train has been turned into an RC car since it has to be destroyed
+wait 100 
+if or
+  10@ == #BUS // integer values 
+  10@ == #MAVERICK // integer values 
+else_jump @TimeCheckDelorean 
+if 
+   not Car.Wrecked($TRAIN)
+else_jump @TimeCheckTrain
+008B: 0@ = $TRAIN // integer values and handles 
+jump @TimeStart  
+
+:TimeCheckDelorean
+// RC Check
+if
+   not Car.Wrecked($DELOREAN)
+else_jump @TimeEnd 
+008B: 0@ = $DELOREAN // integer values and handles 
+jump @TimeStart 
+
+:TimeCheckTrain
+$TRAIN_CREATE = 0 // integer values 
+
+:TimeEnd
+Car.RemoveReferences(0@)
+end_thread 
+
+//======================================================================================================
+// Play steam effects after reentry for BTTF1 Delorean
+:Steam
+thread 'STEAM' 
+0B10: 15@ = 1@ AND 0x0f  // Get car variation       
+if
+    15@ > 1
+then
+    end_thread
+end
+wait 10000
+if 
+    Car.Wrecked(0@)
+then
+    end_thread
+end 
+if 
+01FC:   player $PLAYER_CHAR near_car 0@ radius 50.0 50.0 0 
+else_jump @SteamStart 
+$STEAM = 1 // integer values 
+040D: unload_wav 2 
+03CF: load_wav 'LIFTBEL' as 2   
+create_thread @PlaySound 2
+
+:SteamStart
+16@ = 0    
+while 16@ < 5000
+    wait 10 
+    if 
+        Car.Wrecked(0@)
+    then
+        jump @SteamUnloadSound
+    end 
+    
+    // Keep the steam relative to the car speed.
+    02E3: 2@ = car 0@ speed 
+    2@ /= 40.0 // floating-point values (never used in VC or GTA 3) 
+    2@ -= 0.2 // floating-point values 
+    02F8: get_vehicle 0@ Z_angle_sine_to 3@ 
+    02F9: get_vehicle 0@ Z_angle_cosine_to 4@ 
+    0011: 3@ *= 2@ // floating-point values  // Note: the incorrect math opcode was used here
+    0011: 4@ *= 2@ // floating-point values  // Note: the incorrect math opcode was used here
+    0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 0.4 -2.3 0.5 
+    0407: create_coordinate 8@ 9@ 10@ from_car 0@ offset -0.4 -2.3 0.5 
+    0437: scatter_particle 21 0.5 at 5@ 6@ 7@ 3@ 4@ 0.0 //right
+    0437: scatter_particle 21 0.5 at 8@ 9@ 10@ 3@ 4@ 0.0 //left
+end
+
+:SteamUnloadSound
+if 
+    $STEAM == 1
+then
+    040D: unload_wav 2  
+    $STEAM = 0 // integer values
+end 
+end_thread 
+
+// ======================================================================================================
+
+:Cold
+thread 'COLD' 
+7@ = 0 // integer values 
+8@ = 0 // integer values 
+9@ = 0 // integer values    
+0B10: 15@ = 1@ AND 0x0f  // Get car variation  
+
+:ColdStart
+wait 10 
+if 
+   16@ < 81000 // integer values 
+else_jump @ColdWisps 
+if 
+  $TRAVEL == 0 // integer values 
+else_jump @ColdEnd 
+if 
+   not Car.Wrecked(0@)
+else_jump @ColdCheckDelorean 
+if 
+001D:   17@ > 7@ // integer values (never used VC or GTA 3) 
+else_jump @ColdStart 
+17@ = 0 // integer values 
+9@ += 1 // integer values 
+if 
+  9@ == 2 // integer values 
+else_jump @ColdSteam 
+7@ += 1 // integer values 
+9@ = 0 // integer values 
+
+:ColdSteam
+02E3: 11@ = car 0@ speed 
+if 
+  11@ < 10.0
+jf @ColdUnloadSound
+if and
+   not Car.Model(0@) == #BUS
+   not Car.Model(0@) == #MAVERICK
+else_jump @ColdTrainSteam 
+gosub @ColdSteamParticle 
+gosub @ColdSteamParticle 
+
+// BTTF1 gets extra steam particles
+if or
+   1@ == 0
+   1@ == 1
+else_jump @ColdSound 
+gosub @ColdSteamParticle 
+gosub @ColdSteamParticle 
+gosub @ColdSteamParticle 
+jump @ColdSound 
+
+:ColdTrainSteam
+gosub @ColdTrainSteamParticle 
+gosub @ColdTrainSteamParticle 
+gosub @ColdTrainSteamParticle 
+gosub @ColdTrainSteamParticle 
+gosub @ColdTrainSteamParticle 
+
+// No cold sounds for the train
+jump @ColdStart 
+
+:ColdSound
+// Only play if near the car
+if 
+01FC:   player $PLAYER_CHAR near_car 0@ radius 50.0 50.0 0 
+else_jump @ColdUnloadSound 
+10@ = 1 // Keeps track if the sound is playing or not.  Needs to be specific to each time machine as to not overlap sounds.
+03D1: play_wav 2 
+
+// Don't overwrite the vent sounds
+if 
+  $STEAM == 0 // integer values 
+else_jump @ColdStart 
+if or
+03D2:   wav 2 ended 
+83D0:   not wav 2 loaded 
+else_jump @ColdStart 
+040D: unload_wav 2 
+03CF: load_wav 'BURG_01' as 2 
+jump @ColdStart
+
+:ColdUnloadSound
+// Stop the sound if we get too far away
+if 
+  10@ == 1 // integer values 
+else_jump @ColdStart 
+10@ = 0 // integer values 
+040D: unload_wav 2 
+jump @ColdStart
+
+:ColdCheckDelorean
+// Probably won't need this in the future.  This is to check if the player switches between flying models
+wait 50 
+if 
+   not Car.Wrecked($DELOREAN)
+else_jump @ColdCheckDelorean 
+008B: 0@ = $DELOREAN // integer values and handles 
+jump @ColdStart 
+
+:ColdSteamParticle
+0208: 1@ = random_float -1.2 1.2 
+0208: 2@ = random_float -2.5 2.5 
+0208: 3@ = random_float 0.0 0.65 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset 1@ 2@ 3@ 
+0437: scatter_particle 22 0.2 at 4@ 5@ 6@ 0 0 0 
+return 
+                                                            
+
+:ColdTrainSteamParticle
+0208: 1@ = random_float -1.5 1.5 
+0208: 2@ = random_float -8.5 8.0 
+0208: 3@ = random_float -0.75 2.75 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset 1@ 2@ 3@ 
+0437: scatter_particle 22 0.5 at 4@ 5@ 6@ 0 0 0 
+return 
+
+:ColdWisps
+// This is when we have less cold effects and it stops
+7@ = 0 // integer values 
+16@ = 0 // integer values 
+
+:ColdWispsStart
+wait 0 
+if 
+   not Car.Wrecked(0@)
+else_jump @ColdEnd 
+if 
+   not 7@ > 5 // integer values 
+else_jump @ColdEnd 
+02E3: 11@ = car 0@ speed 
+if 
+  11@ < 10.0
+jf @ColdWispsIntermittent
+gosub @ColdSteamParticle 
+gosub @ColdSteamParticle 
+
+:ColdWispsIntermittent
+wait 10 
+if 
+   not Car.Wrecked(0@)
+else_jump @ColdEnd 
+if 
+  16@ > 499 // integer values 
+else_jump @ColdWispsIntermittent 
+7@ += 1 // integer values 
+16@ = 0 // integer values 
+jump @ColdWispsStart 
+
+:ColdEnd
+040D: unload_wav 2 
+end_thread 
+
+//==================================================================================
+
+:Engine
+thread 'START' 
+0B10: 15@ = 1@ AND 0x0f  // Get car variation       
+if
+    1@ > 1
+then
+    end_thread
+end
+if 
+    
+1@ = 10000
+16@ = 0 // integer values 
+
+:EngineStart
+wait 10
+$IGNITION = 1 // integer values 
+if 
+801F:   17@ < 1@ // integer values 
+else_jump @EngineBrake 
+if 
+  $TRAVEL == 0 // integer values 
+else_jump @EngineEnd 
+if 
+   not Car.Wrecked(0@)
+else_jump @EngineEnd 
+jump @EngineStart 
+
+:EngineBrake
+if 
+   not Car.Wrecked(0@)
+else_jump @EngineEnd 
+0477: set_car 0@ animation 3 250 ms 
+wait 250 
+if 
+   not Car.Wrecked(0@)
+else_jump @EngineEnd 
+02D4: car 0@ turn_off_engine
+16@ = 0 // integer values 
+
+:EngineTurnover
+wait 10 
+if 
+   not Car.Wrecked(0@)
+else_jump @EngineEnd 
+if 
+00DC:   player $PLAYER_CHAR driving 0@ 
+else_jump @EngineOn 
+02D4: car 0@ turn_off_engine 
+05F5: call_scm_func @DrawTexture params_count 5 5 782.0 155.0 45.0 23.0    
+3FFB: set_car 0@ component "lightfl" visible 0
+3FFB: set_car 0@ component "lightfr" visible 0 
+3FFB: set_car 0@ component "seatbeltlight" visible 0
+3FFB: set_car 0@ component "lambdalight" visible 0 
+3FFB: set_car 0@ component "oillight" visible 1 
+3FFB: set_car 0@ component "doorajarlight" visible 0
+3FFB: set_car 0@ component "fuellight" visible 0
+3FFB: set_car 0@ component "brakelight" visible 1
+3FFB: set_car 0@ component "batterylight" visible 1  
+if 
+00E1:   key_pressed 0 16 
+else_jump @EngineOn 
+05F5: call_scm_func @DrawTexture params_count 5 4 782.0 155.0 45.0 23.0 // battery light off   
+  3FFB: set_car 0@ component "lightfl" visible 1
+  3FFB: set_car 0@ component "lightfr" visible 1 
+0209: 1@ = random_int 1 100 
+if and
+   not 1@ == 50 // integer values 
+   not 16@ > 60000 // integer values 
+else_jump @EngineStarting 
+if 
+  $START == 0 // integer values 
+else_jump @EngineOff 
+$START = 1 // integer values 
+040D: unload_wav 1 
+03CF: load_wav 'BURG_05' as 1  
+create_thread @PlaySound 1
+jump @EngineOff 
+
+:EngineOn
+if 
+  $START == 1 // integer values 
+else_jump @EngineOff 
+$START = 0 // integer values 
+040D: unload_wav 1                                                                                 
+
+:EngineOff
+jump @EngineTurnover 
+
+:EngineEnd
+end_thread 
+
+:EngineStarting
+wait 10 
+if 
+   not Car.Wrecked(0@)
+else_jump @EngineStartingEnd 
+if 
+00DC:   player $PLAYER_CHAR driving 0@ 
+else_jump @EngineStartingEnd 
+if 
+00E1:   key_pressed 0 16 
+else_jump @EngineStarting 
+0407: create_coordinate 11@ 12@ 13@ from_car 0@ offset 0.0 0.0 100.0 
+012A: put_player $PLAYER_CHAR at 11@ 12@ 13@ and_remove_from_car 
+0369: put_player $PLAYER_CHAR in_car 0@ 
+//3FF6: car 0@ turn_on_engine
+040D: unload_wav 1 
+03CF: load_wav 'BURG_02' as 2 
+if 
+while 83D0:   wav 2 loaded
+    wait 0
+end  
+3FFB: set_car 0@ component "doorajarlight" visible 1
+3FFB: set_car 0@ component "oillight" visible 1
+3FFB: set_car 0@ component "brakelight" visible 1
+3FFB: set_car 0@ component "batterylight" visible 1 
+03D1: play_wav 2 
+wait 1000
+3FFB: set_car 0@ component "batterylight" visible 0
+wait 1000
+3FFB: set_car 0@ component "oillight" visible 0
+wait 1000
+3FFB: set_car 0@ component "seatbeltlight" visible 1
+wait 1000
+3FFB: set_car 0@ component "seatbeltlight" visible 0
+wait 1000
+3FFB: set_car 0@ component "brakelight" visible 0
+3FFB: set_car 0@ component "lightfl" visible 0
+3FFB: set_car 0@ component "lightfr" visible 0  
+jump @EngineStartingEnd 
+
+:EngineStartingEnd
+end_thread
+// =========================================================================================
+:LocalDateToGlobal
+008A: $MONTH = 12@ // integer values and handles
+008A: $DAY = 12@ // integer values and handles 
+$DAY /= 10000
+008A: $YEAR = 12@ // integer values and handles  
+$MONTH /= 10000
+$MONTH *= 10000
+0060: $YEAR -= $MONTH
+$MONTH /= 1000000
+$MONTH *= 100
+0060: $DAY -= $MONTH
+$MONTH /= 100
+008A: $TCON = 13@ // integer values and handles
+008A: $HOUR = 13@ // integer values and handles 
+$HOUR /= 100
+008A: $MINUTE = 13@ // integer values and handles  
+$TCON /= 100
+$TCON *= 100
+0060: $MINUTE -= $TCON
+$TCON /= 10000
+$TCON *= 100
+0060: $HOUR -= $TCON
+$TCON /= 1000
+0084: $HOURN = $HOUR // integer values and handles 
+if 
+    $HOUR >= 12 // integer values 
+then
+    $AM = 1 // integer values 
+    $HOURN -= 12 // integer values 
+else
+    $AM = 0 // integer values
+end 
+if 
+    $TCON >= 2 // integer values 
+then
+    $FRIED = 1 // integer values 
+    $TCON = 0 // integer values 
+else
+    $FRIED = 0 // integer values
+end 
+gosub @GlobalDateToLocal 
+return 
+
+:GlobalDateToLocal
+008B: 12@ = $MONTH // integer values and handles 
+12@ *= 100 // integer values (never used in VC or GTA 3) 
+005C: 12@ += $DAY // integer values (never used VC or GTA 3) 
+12@ *= 10000 // integer values (never used in VC or GTA 3) 
+005C: 12@ += $YEAR // integer values (never used VC or GTA 3) 
+008B: 13@ = $FRIED // integer values and handles 
+13@ *= 2 // integer values (never used in VC or GTA 3) 
+005C: 13@ += $TCON // integer values (never used VC or GTA 3) 
+13@ *= 1000 // integer values (never used in VC or GTA 3) 
+005C: 13@ += $HOUR // integer values (never used VC or GTA 3) 
+13@ *= 100 // integer values (never used in VC or GTA 3) 
+005C: 13@ += $MINUTE // integer values (never used VC or GTA 3) 
+return
+
+:LocalToGlobal
+008A: $DELOREAN = 0@ // integer values and handles 
+008A: $PTIME = 14@ // integer values and handles 
+008A: $TEMP_DRIVE = 15@ // integer values and handles 
+$TEMP_DRIVE /= 1000000 // integer values 
+$TEMP_DRIVE *= 1000000 // integer values 
+008A: $PTIME1 = 15@ // integer values and handles
+0060: $PTIME1 -= $TEMP_DRIVE // integer values  
+$PTIME1 /= 100 // integer values 
+0B10: $TM_TYPE = 15@ AND 0x0f  // Get time machine variation
+0B10: $BTTF1_VARIATION = 15@ AND 0x30  // Get bttf1 variation  
+0B15: $BTTF1_VARIATION = $BTTF1_VARIATION SHR 4       
+return 
+
+:MemoryHandling
+// This section is responsible for manipulating between local and global variables for each time machine
+// When driving, the local variables are always being updated by global variables so the car knows its time circuits status.
+// Any time the player reenters the car, any global variables are overwritten by local ones so the last state in known by the time machine is used.  Once again, to configure the
+// Time circuits on the HUD.
+if 
+00DC:   player $PLAYER_CHAR driving 0@ 
+jf @MemoryHandlingD 
+
+// Get global variables for the car and present time
+gosub @LocalToGlobal 
+if 
+    15@ < 1000000 // integer values 
+jf @MemoryHandlingA 
+jump @MemoryHandlingB 
+
+:MemoryHandlingA
+if and
+    15@ >= 10000000 // integer values 
+    15@ <  11000000 // integer values 
+else_jump @MemoryHandlingC 
+
+:MemoryHandlingB
+15@ += 1000000 // integer values 
+gosub @LocalDateToGlobal 
+jump @MemoryHandlingReturn 
+
+:MemoryHandlingC
+gosub @GlobalDateToLocal 
+jump @MemoryHandlingReturn 
+
+:MemoryHandlingD
+if and
+    15@ >= 11000000 // integer values 
+    15@ <  20000000 // integer values 
+else_jump @MemoryHandlingE 
+jump @MemoryHandlingF 
+
+:MemoryHandlingE
+if and
+    15@ >= 1000000 // integer values 
+    15@ < 10000000 // integer values 
+else_jump @MemoryHandlingReturn 
+jump @MemoryHandlingF 
+
+:MemoryHandlingF
+15@ -= 1000000 // integer values 
+
+:MemoryHandlingReturn
+return     
+
+// ==================================================================================================
+:ShowWheels
+3FFB: set_car 0@ component "wheel_rf" visible 1@      
+3FFB: set_car 0@ component "wheel_lf" visible 1@
+3FFB: set_car 0@ component "wheel_rb" visible 1@
+3FFB: set_car 0@ component "wheel_lb" visible 1@
+3FFB: set_car 0@ component "wheelbttf1rf" visible 1@      
+3FFB: set_car 0@ component "tirebttf1rf" visible 1@
+3FFB: set_car 0@ component "thrusterbttf2rf" visible 1@
+3FFB: set_car 0@ component "wheelbttf1lf" visible 1@      
+3FFB: set_car 0@ component "tirebttf1lf" visible 1@
+3FFB: set_car 0@ component "thrusterbttf2lf" visible 1@
+3FFB: set_car 0@ component "wheelbttf1rb" visible 1@      
+3FFB: set_car 0@ component "tirebttf1rb" visible 1@
+3FFB: set_car 0@ component "thrusterbttf2rb" visible 1@
+3FFB: set_car 0@ component "wheelbttf1lb" visible 1@      
+3FFB: set_car 0@ component "tirebttf1lb" visible 1@
+3FFB: set_car 0@ component "thrusterbttf2lb" visible 1@ 
+end_thread
+
+
+// Will probably create this as a separate thread 
+:HoverConversion
+thread 'HOVER' 
+// 1@ is reserved for speed
+// 2@, 3@, and 4@ are reserved for positioning
+// 5@ is for temporary variables, like ground z
+6@ = 0.0 // Wheel extending
+7@ = 0.0 // Wheel rotating
+
+// Hover control
+// 0 = landed
+// 1 = taking off
+// 2 = flying
+// 3 = landing
+15@ = 0 
+
+:HoverConversionstart
+wait 10
+if and
+   Player.Defined($PLAYER_CHAR)
+   $TRAVEL == 0  
+else_jump @HoverConversionstart
+// Only works for the Delorean....for now
+if
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS
+then
+    03C1: 0@ = player $PLAYER_CHAR car
+end 
+if 
+8119:   not car 0@ wrecked
+else_jump @HoverConversionstart
+Car.StorePos(0@, 2@, 3@, 4@)
+02E3: 1@ = car 0@ speed
+02CE: 5@ = ground_z 2@ 3@ 4@ 
+0063: 4@ -= 5@ // floating-point values (never used in VC or GTA 3) 
+
+// Move struts
+// Shocks are at a 45 degree angle so they have a weird movement,  They need to be adjusted in both the X and Z axis.
+// 8@ will adjust both X
+02F7: 8@ = sinus 45.0 // cosine swapped with sinus
+006B: 8@ *= 6@ 
+
+// 9@ will adjust Z. It is always negative.
+0087: 9@ = 8@ // Shock
+9@ *= -1.0 
+
+// 10@ is for the piston extension
+0087: 10@ = 9@ // Piston
+
+// 11@ controls how far the piston extends based on wheel rotation.
+0087: 11@ = 7@ // Piston
+11@ *= 0.001
+
+// Extend/retract piston
+0063: 10@ -= 11@
+3FFC: move_car_part "strutrb" pos 6@ 0.0 0.0 car 0@       
+3FFC: move_car_part "holderrb" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shockrb" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonrb" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheelrbdummy" pos 6@ 0.0 0.0 car 0@
+
+3FFC: move_car_part "strutrf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "holderrf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shockrf" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonrf" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheelrfdummy" pos 6@ 0.0 0.0 car 0@    
+6@ *= -1.0      
+8@ *= -1.0 
+3FFC: move_car_part "strutlb" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "holderlb" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shocklb" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonlb" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheellbdummy" pos 6@ 0.0 0.0 car 0@ 
+
+3FFC: move_car_part "strutlf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "holderlf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shocklf" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonlf" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheellfdummy" pos 6@ 0.0 0.0 car 0@   
+
+// Rotate wheels
+0087: 5@ = 7@ // Piston   
+3FFD: rotate_car_part "holderrf" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "holderrb" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheelrfdummy" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheelrbdummy" angle 0.0 5@ 0.0 car 0@
+5@ *= -1.0
+3FFD: rotate_car_part "holderlf" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "holderlb" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheellfdummy" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheellbdummy" angle 0.0 5@ 0.0 car 0@        
+
+// Animate
+6@ *= -1.0
+if 
+    $TM_TYPE == 2 // Driving Delorean
+then
+    if 
+        7@ > 0.0
+    then
+        7@ -= 5.0
+    else if 
+        6@ > 0.0
+    then
+        6@ -= 0.01
+    end
+    end
+else if 
+    $TM_TYPE == 3 // Flying Delorean
+then
+    if
+        6@ < 0.3
+    then
+        6@ += 0.01
+    else if
+        7@ < 90.0
+    then
+        7@ += 5.0
+    end
+    end
+end
+end  
+
+
+// Set take off flag
+if
+    $TM_TYPE == 3
+then
+    if or
+        15@ == 0
+        15@ == 3
+    then
+        15@ = 1
+        create_thread @ShowDeloreanWheels 0@ 0
+        create_thread @ShowHoverWheels 0@ 1
+        040D: unload_wav 2 
+        03CF: load_wav 'BURG_07' as 2 
+        create_thread @PlaySound 2    
+        
+    end
+    if and
+        15@ == 1
+        7@ >= 90.0  // Wheels are fully extended
+    then
+        15@ = 2
+        create_thread @WheelThrust 0@
+    end 
+end
+
+
+if 
+    $TM_TYPE == 2
+then
+    if or
+        15@ == 1
+        15@ == 2
+    then
+        15@ = 3
+        040D: unload_wav 2 
+        03CF: load_wav 'BURG_08' as 2 
+        create_thread @PlaySound 2
+    end
+    if 
+        6@ <= 0.0  // Wheels are fully retracted
+    then             
+        if or
+            4@ > 5.0  // If we're really high up, just disable hovering
+            81F3:   not car 0@ airborne
+        then
+            15@ = 0
+            create_thread @ShowDeloreanWheels 0@ 1
+            create_thread @ShowHoverWheels 0@ 0
+        end       
+    end                                                                 
+end
+
+if or
+    $TM_TYPE == 3  // Flying Delorean 
+    15@ == 3       // Landing   
+else_jump @HoverConversionstart
+3FFA: set_car 0@ hover 1    
+// Effects
+// Smoke effects on takeoff/landing
+if and 
+    1@ < 5.0   // slow speeds only as well
+    4@ < 5.0   // Only show smoke close to the ground. 
+then
+    if or
+        15@ == 1
+        15@ == 3
+    then
+        0087: 5@ = 1@ // floating-point values only  
+        5@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+        5@ += 0.8 // floating-point values 
+        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.75 5@ -0.425 
+        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02 
+        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.75 5@ -0.425 
+        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02 
+        5@ += -1.4 // floating-point values 
+        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.625 5@ -0.425 
+        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02 
+        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.625 5@ -0.425 
+        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02    
+    end
+end
+
+// Thrust
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    $TM_TYPE == 3  // Flying Delorean 
+else_jump @HoverConversionstart
+Car.StorePos(0@, 2@, 3@, 4@)   
+if and
+    4@ < 200.0 // floating-point values 
+    00E1:   key_pressed 0 6 
+else_jump @HoverConversionReset     
+
+02E3: 1@ = car 0@ speed
+// Various speed options
+if 
+    1@ < 7.5 // floating-point values 
+then
+    1@ = 10.0 
+else if 
+    1@ < 40.0 // floating-point values
+then
+    0087: 5@ = 1@ // floating-point values only 
+    5@ *= -0.001 // floating-point values (never used in VC or GTA 3) 
+    5@ += 1.25575 // floating-point values 
+    0069: 1@ *= 5@ // floating-point values  
+else
+    0087: 5@ = 1@ // floating-point values only 
+    5@ *= -0.0005 // floating-point values (never used in VC or GTA 3) 
+    5@ += 1.233 // floating-point values 
+    0069: 1@ *= 5@ // floating-point values 
+end
+end
+04BA: set_car 0@ speed_instantly 1@ 
+02E3: 1@ = car 0@ speed
+
+// Vent Glow
+if and
+    $VSOUND == 0 // not loaded  
+    $TRAVEL == 0
+then
+    $VSOUND = 1 // loaded 
+    040D: unload_wav 2 
+    03CF: load_wav 'BURG_04' as 2 
+end
+
+if and
+    $VSOUND == 1 // loaded
+    $TRAVEL == 0
+    03D0:   wav 2 loaded 
+then
+    03D1: play_wav 2
+    $VSOUND = 2 // playing
+    17@ = 0 // integer values 
+end 
+
+if and
+    $VSOUND == 2   
+    $TRAVEL == 0 
+    17@ > 2999 // integer values 
+    17@ < 3050
+then
+    040D: unload_wav 2
+end  
+0087: 5@ = 1@ // floating-point values only 
+5@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+5@ -= 2.345 // floating-point values 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.417 5@ 0.476 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.75 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@  from_car 0@ offset -0.417 5@ 0.476 
+04D5: create_corona_at 2@ 3@ 4@  radius 0.75 type 1 flare 0 RGB 255 225 175 
+jump @HoverConversionStart
+
+:HoverConversionReset
+$VSOUND = 0
+jump @HoverConversionStart    
+
+// ==================================================================================================
+:WheelThrust
+wait 0 
+if and
+    8119:   not car 0@ wrecked
+    00DC:   player $PLAYER_CHAR driving 0@
+jf @WheelThrustEnd
+// Limited amount of time to engage wheel thrusters after hover conversion
+if 
+   16@ < 500 // integer values 
+jf @WheelThrustEnd 
+if 
+00E1:   key_pressed 0 16 
+jf @WheelThrust 
+16@ = 0 // integer values 
+040D: unload_wav 2 
+03CF: load_wav 'BURG_03' as 2 
+create_thread @PlaySound 2
+
+:WheelThrustCheck
+wait 10 
+// Only thrust for 2 seconds max
+if  and
+    8119:   not car 0@ wrecked
+    00DC:   player $PLAYER_CHAR driving 0@
+jf @WheelThrustUnloadSound
+if 
+   16@ < 2000 // integer values 
+jf @WheelThrustUnloadSound 
+
+// Unload if we let go of the gas
+if 
+00E1:   key_pressed 0 16 
+jf @WheelThrustUnloadSound 
+
+// Vent thruster will override the wheel thruster
+if 
+80E1:   not key_pressed 0 6 
+jf @WheelThrustEnd 
+
+// Show lights     
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.5 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -1.5 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.2 -1.339 -1.5 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -1.5 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175     
+
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.0 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -1.0 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.2 -1.339 -1.0 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -1.0 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175   
+
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -0.5 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -0.5 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.2 -1.339 -0.5 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -0.5 
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175   
+jump @WheelThrustCheck
+
+:WheelThrustUnloadSound
+040D: unload_wav 2 
+
+:WheelThrustEnd
+end_thread
+
+// ==================================================================================================    
+
+:Plate      
+4@ = Car.Angle(0@) 
+Model.Load(#KEYCARD)
+038B: load_requested_models       
+02CE: 3@ = ground_z 1@ 2@ 3@ 
+3@ += -0.35 // floating-point values 
+10@ = Object.Create(#KEYCARD, 1@, 2@, 3@)
+Object.CollisionDetection(10@) = False
+5@ = 0 // integer values 
+6@ = 0.0 // floating-point values 
+7@ = 45.0 // floating-point values  
+if 
+  $WIRE == 0 // integer values 
+jf @PlateSpin 
+03CF: load_wav 'ASS_13' as 2 
+create_thread @PlaySound 2
+
+:PlateSpin
+wait 10 
+if 
+   not 5@ == 28 // integer values 
+jf @PlateFall 
+if 
+  5@ == 20 // integer values 
+jf @PlateSpinTimer 
+7@ = 22.5 // floating-point values 
+
+:PlateSpinTimer
+if 
+  5@ == 12 // integer values 
+jf @PlateSpinAngle 
+
+:PlateSpinAngle
+if 
+  -360.0 > 4@ // floating-point values 
+jf @PlateSpinSetAngle 
+4@ += 360.0 // floating-point values 
+
+:PlateSpinSetAngle
+0453: object 10@ set_rotation 0.0 -45.0 4@ 
+000F: 4@ -= 7@ // floating-point values  // Note: the incorrect math opcode was used here
+5@ += 1 // integer values 
+jump @PlateSpin 
+
+:PlateFall
+wait 10 
+if 
+   not -90.0 > 6@ // floating-point values 
+jf @PlateFallLoadSound 
+0453: object 10@ set_rotation 6@ -45.0 4@ 
+6@ += -10.0 // floating-point values 
+jump @PlateFall 
+
+:PlateFallLoadSound
+if 
+  $WIRE == 0 // integer values 
+jf @PlateDestroy 
+040D: unload_wav 1 
+wait 0 
+03CF: load_wav 'ASS_14' as 1 
+create_thread @PlaySound 1
+wait 500 
+040D: unload_wav 1 
+
+:PlateDestroy
+wait 10 
+04C4: create_coordinate 11@ 12@ 13@ from_actor $PLAYER_ACTOR offset 0.0 1.2 0.0 
+0509: 14@ = distance between point 1@ 2@ and point 11@ 12@ 
+if or
+    $SET_TIME == 1
+    14@ > 100.0 // floating-point values 
+jf @PlateDestroy 
+Object.Destroy(10@)
+end_thread 
+
+// ======================================================================================================
+
+:HookDetach
+3@ += 2.0
+9@ = 30.0
+jump @HookDetachLoad
+
+:HookSideDetach
+3@ -= 0.75
+02F7: 5@ = sinus 4@ // cosine swapped with sinus
+02F6: 6@ = cosine 4@ // sinus swapped with cosine 
+005B: 1@ += 5@
+005B: 2@ += 6@
+5@ *= 5.0
+6@ *= 5.0
+005B: 1@ += 6@
+005B: 2@ += 5@
+9@ = -90.0
+
+:HookDetachLoad
+Model.Load(#delhook)
+038B: load_requested_models   
+while not Model.Available(#delhook)
+   wait 0
+end
+10@ = Object.Create(#delhook, 1@, 2@, 3@)  
+0453: object 10@ set_rotation 9@ 0.0 4@   
+0382: set_object 10@ collision_detection 1
+0392: object 10@ toggle_in_moving_list 1
+
+:HookDetachDestroy
+wait 10 
+04C4: create_coordinate 11@ 12@ 13@ from_actor $PLAYER_ACTOR offset 0.0 1.2 0.0 
+0509: 14@ = distance between point 1@ 2@ and point 11@ 12@ 
+if or
+    $SET_TIME == 1
+    14@ > 100.0 // floating-point values 
+jf @HookDetachDestroy 
+Object.Destroy(10@)
+end_thread 
+
+// ======================================================================================================
+:Hook
+if 
+80DC:   not player $PLAYER_CHAR driving 0@ 
+else_jump @HookReturn
+// BTTF1 variation
+if or
+    7@ == 0
+    7@ == 1
+else_jump @HookReturn
+
+// Hook check 
+if or
+    8@ == 2
+    8@ == 3
+else_jump @HookReturn 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1.5 0.0 0.0 
+if and 
+    00E1:   key_pressed 0 4 
+    00F6:   player $PLAYER_CHAR 0 1@ 2@ 3@ radius 1.0 1.0 2.0 
+else_jump @HookReturn 
+
+// Put hook up or down
+if 
+    8@ == 2
+then
+    8@ = 3    
+else
+    8@ = 2    
+end
+
+15@ /= 100
+15@ *= 100
+0B16: 8@ = 8@ SHL 4
+005C: 15@ += 7@ // integer values (never used VC or GTA 3) 
+005C: 15@ += 8@ // integer values (never used VC or GTA 3)   
+create_thread @SetVariation 0@ 15@ 
+wait 250
+
+:HookReturn
+return
+
+// =============================================================================================================
+// Stuff related to the clocktower lightning scene.  This will have to be redone.
+:Wire
+// TODO: Cutscene mode for the lightning strike?
+4@ = 0 // integer values 
+$WIRE = 0 // integer values 
+if 
+  $STRIKE == 1 // integer values 
+else_jump @WireReturn 
+if 
+   Car.Model(0@) == #INFERNUS
+else_jump @WireReturn 
+0085: 1@ = 15@ // integer values and handles 
+0085: 2@ = 15@ // integer values and handles 
+2@ /= 100 // integer values (never used VC or GTA 3) 
+2@ *= 100 // integer values (never used in VC or GTA 3) 
+005C: 1@ += 2@ // integer values (never used VC or GTA 3) 
+0085: 2@ = 1@ // integer values and handles 
+1@ /= 10 // integer values (never used VC or GTA 3) 
+1@ *= 10 // integer values (never used in VC or GTA 3) 
+0062: 2@ -= 1@ // integer values (never used VC or GTA 3) 
+if 
+  2@ == 2 // integer values 
+else_jump @WireReturn 
+02E3: 1@ = car 0@ speed 
+if 
+  1@ >= 48.1 // floating-point values (never used in VC or GTA 3) 
+else_jump @WireReturn 
+1@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+3@ = -2.795 // floating-point values 
+005B: 3@ += 1@ // floating-point values (never used in VC or GTA 3) 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 3@ 2.91 
+008C: 2@ = float_to_integer 2@ 
+008C: 3@ = float_to_integer 3@ 
+008C: 4@ = float_to_integer 4@ 
+if and
+  2@ >= -1586 // integer values 
+   not 2@ > -1571 // integer values 
+  3@ >= 898 // integer values 
+   not 3@ > 900 // integer values 
+  4@ >= 16 // integer values 
+   not 4@ > 18 // integer values 
+else_jump @WireReset 
+4@ = 1 // integer values 
+$WIRE = 1 // integer values 
+if or
+80DC:   not player $PLAYER_CHAR driving 0@ 
+  $MODE == 0 // integer values 
+else_jump @WireReturn 
+Model.Load(#DELHOOK)
+038B: load_requested_models 
+
+:WireLoadHook
+wait 0 
+if 
+   Model.Available(#DELHOOK)
+else_jump @WireLoadHook 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 -2.795 2.91 
+$HOOK = Object.Create(#DELHOOK, 2@, 899.35, 13.22)
+Object.ToggleInMovingList($HOOK) = False
+Object.CollisionDetection($HOOK) = False
+create_thread @WireSparks 2@ 
+4@ = 1 // integer values 
+$CAM_X = -1575.0 // floating-point values 
+$CAM_Y = 915.0 // floating-point values 
+$CAM_Z = 17.0 // floating-point values 
+0407: create_coordinate $CCX $CCY $CCZ from_car 0@ offset 0.0 0.0 0.0 
+Camera.SetPosition($CAM_X, $CAM_Y, $CAM_Z, 0.0, 0.0, 0.0)
+0460: set_camera_pointing_time 0.0 1000 
+Camera.PointAt($CCX, $CCY, $CCZ, 2)
+jump @WireReturn 
+
+:WireReset
+4@ = 0 // integer values 
+$WIRE = 0 // integer values 
+
+:WireReturn
+return 
+
+// ===============================================================================================================
+// Wire effects after the lightning strike on the clocktower
+
+:WireSparks
+3@ = 64 // integer values 
+4@ = 128 // integer values 
+5@ = 255 // integer values 
+
+:WireSparksStart
+wait 10 
+0208: 2@ = random_float 13.22 17.77 
+04D5: create_corona_at 0@ 899.35 2@ radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float 13.22 17.77 
+04D5: create_corona_at 0@ 899.35 2@ radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+0208: 2@ = random_float -1585.0 -1573.0 
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@ 
+if 
+  16@ > 4950 // integer values 
+else_jump @WireSparksStart 
+3@ = 0 // integer values 
+4@ = 0 // integer values 
+5@ = 0 // integer values 
+if 
+  16@ > 5000 // integer values 
+else_jump @WireSparksStart 
+16@ = 0 // integer values 
+0087: 1@ = 0@ // floating-point values only 
+0087: 2@ = 0@ // floating-point values only 
+wait 2000 
+17@ = 0 // integer values 
+
+:WireFire
+wait 10 
+if 
+   not 16@ >= 10000 // integer values 
+else_jump @WireFireEnd 
+0437: scatter_particle 27 0.4 at 1@ 899.35 17.85 0 0 0 
+0437: scatter_particle 27 0.4 at 2@ 899.35 17.85 0 0 0 
+gosub @WireFireDrop 
+1@ -= 0.2 // floating-point values 
+2@ += 0.2 // floating-point values 
+if 
+   not 1@ >= -1585.0 // floating-point values (never used in VC or GTA 3) 
+else_jump @WireFireLength 
+1@ = -1585.0 // floating-point values 
+wait 20 
+
+:WireFireLength
+if 
+  2@ > -1573.0 // floating-point values 
+else_jump @WireFire
+2@ = -1573.0 // floating-point values 
+wait 20            
+jump @WireFire 
+
+:WireFireDrop
+if 
+  17@ > 50 // integer values 
+else_jump @WireFireDropReturn 
+17@ = 0 // integer values 
+0087: 3@ = 0@ // floating-point values only 
+0087: 4@ = 0@ // floating-point values only 
+
+:WireFireDropRandomSpeed
+3@ -= 0.5 // floating-point values 
+0209: 5@ = random_int 0 50 
+if 
+  5@ == 25 // integer values 
+else_jump @WireFireNoDrop 
+0208: 5@ = random_float 0.0 -0.2 
+jump @WireFireDropCreateFire 
+
+:WireFireNoDrop
+5@ = 0 // integer values 
+
+:WireFireDropCreateFire
+if 
+0024:   3@ > 1@ // floating-point values only 
+else_jump @WireFireDrop2 
+0437: scatter_particle 27 0.4 at 3@ 899.35 17.85 0 0 5@ 
+jump @WireFireDropRandomSpeed 
+
+:WireFireDrop2
+4@ += 0.5 // floating-point values 
+0209: 5@ = random_int 0 50 
+if 
+  5@ == 25 // integer values 
+else_jump @WireFireDrop2RandomSpeed 
+0208: 5@ = random_float 0.0 -0.2 
+jump @WireFireDrop2CreateFire 
+
+:WireFireDrop2RandomSpeed
+5@ = 0 // integer values 
+
+:WireFireDrop2CreateFire
+if 
+0024:   2@ > 4@ // floating-point values only 
+else_jump @WireFireDropReturn 
+0437: scatter_particle 27 0.4 at 4@ 899.35 17.85 0 0 5@ 
+jump @WireFireDrop2 
+
+:WireFireDropReturn
+return 
+
+:WireFireEnd
+end_thread
+
+// ======================================================================================================             
+// Plays empty chamber sound, as well as having a short cooldown before time travel effects can start appearing again.   
+
+:FuelEmpty       
+$COOLDOWN = 1
+$EMPTY_FLASH = 1    
+wait 5000     
+// Only play sounds if driving and if its not the train
+if
+    not Car.Wrecked(0@)
+else_jump @FuelEmptyEnd
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    not Car.Model(0@) == #BUS
+    not Car.Model(0@) == #MAVERICK
+else_jump @FuelEmptyEnd
+
+0B10: 15@ = 1@ AND 0x0f  // Get car variation       
+if
+    15@ <= 1
+then
+    040D: unload_wav 1 
+    03CF: load_wav 'INLIFT' as 1    
+    create_thread @PlaySound 1
+end   
+
+for 1@ = 0 to 2 step 1
+  $EMPTY_FLASH = 0
+  wait 450
+  $EMPTY_FLASH = 1
+  wait 450
+end   
+
+:FuelEmptyEnd
+$EMPTY_FLASH = 0
+wait 2000
+$COOLDOWN = 0
+end_thread     
+
+// ======================================================================================================
+// Controls the empty light, as well as refueling
+:Fuel
+if 
+00DC:   player $PLAYER_CHAR driving 0@ 
+jf @FuelCreateCoordinates 
+if 
+    $EMPTY_FLASH == 0
+then
+    05F5: call_scm_func @DrawTexture params_count 5 2 825.0 155.0 38.0 23.0
+    3FFB: set_car 0@ component "pchamberemptylight" visible 1
+else
+    05F5: call_scm_func @DrawTexture params_count 5 3 825.0 155.0 38.0 23.0 
+    3FFB: set_car 0@ component "pchamberemptylight" visible 0
+end 
+jump @FuelReturn                 
+
+:FuelCreateCoordinates
+if 
+  $FUELING_CONTROL == 1 // integer values 
+jf @FuelReturn 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 -3.25 0.0 
+
+:FuelCheckAtCoordinates
+if or
+80E1:   not key_pressed 0 4 
+80F6:   not player $PLAYER_CHAR 0 2@ 3@ 4@ radius 0.75 0.75 2.0 
+jf @FuelCheckBTTF1 
+jump @FuelReturn 
+
+:FuelCheckBTTF1
+0B10: 7@ = 15@ AND 0x0f  // Get car variation  
+if or
+   7@ == 0
+   7@ == 1
+jf @FuelRefuel
+if 
+   not 0 >= $PLUTONIUM // integer values 
+jf @Plutonium 
+
+:FuelRefuel
+wait 0 
+5@ = Car.Angle(0@)      
+01B4: set_player $PLAYER_CHAR can_move 0      
+0171: set_player $PLAYER_CHAR z_angle_to 5@     
+$FUELING = 1 // integer values
+if or
+   7@ == 0
+   7@ == 1
+then 
+    03CF: load_wav 'BAND_08' as 1
+else 
+    03CF: load_wav 'LIFTRUN' as 1
+end 
+create_thread @PlaySound 1
+ 
+if or 
+   7@ == 0
+   7@ == 1
+jf @FuelRefuelOpenFusion
+
+// Plutonium refueling      
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.5 -3.2 -0.3 
+0055: put_player $PLAYER_CHAR at 2@ 3@ 4@
+008A: $DELOREAN = 0@ // integer values and handles 
+//preplace canister on vent
+3FFC: move_car_part "plutcanliquiddummy" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcandummy" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcaninteriordummy" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutpelletdummy" pos -0.4 -0.0 -0.02 car 0@
+3FFD: rotate_car_part "plutcaninteriordummy" angle 0.0 0.0 -90.0 car 0@
+3FFD: rotate_car_part "plutcanliquiddummy" angle 0.0 0.0 -90.0 car 0@
+3FFD: rotate_car_part "plutcandummy" angle 0.0 0.0 -90.0 car 0@
+3FFD: rotate_car_part "plutpelletdummy" angle 0.0 0.0 -90.0 car 0@
+//show can
+3FFB: set_car 0@ component "plutcan" visible 1
+3FFB: set_car 0@ component "plutcanliquid" visible 1
+3FFB: set_car 0@ component "plutcaninterior" visible 1 
+3FFB: set_car 0@ component "plut" visible 1
+
+//open cap
+For 4@ = 0.0 To 90.0 Step 5.0
+    3FFD: rotate_car_part "reactorlidbttf1dummy" angle 0.0 0.0 4@ car 0@
+    wait 10
+end
+//set cap on vent
+For 4@ = 0.0 To 0.05 Step 0.01
+    3FFC: move_car_part "reactorlidbttf1dummy" pos 0.0 0.0 4@ car 0@
+    wait 10
+end
+For 2@ = 0.0 DownTo -0.4 Step 0.05
+  0087: 3@ = 2@
+  3@ *= 0.35
+  3FFC: move_car_part "reactorlidbttf1dummy" pos 2@ 3@ 0.05 car 0@
+  wait 10
+end
+wait 250
+04F7: status_text $PLUTONIUM 0 line 2 'PLUTO'  // Plutonium:
+//set canister in reactor
+For 4@ = 0.41 DownTo -0.01 Step 0.01
+    3FFC: move_car_part "plutcanliquiddummy" pos 0.0 0.0 4@ car 0@
+    3FFC: move_car_part "plutcandummy" pos 0.0 0.0 4@ car 0@
+    3FFC: move_car_part "plutcaninteriordummy" pos 0.0 0.0 4@ car 0@
+    3FFC: move_car_part "plutpelletdummy" pos 0.0 0.0 4@ car 0@
+    wait 10
+end   
+//turn canister                                       
+    For 4@ = -90.0 To 0.0 Step 5.0
+    3FFD: rotate_car_part "plutcaninteriordummy" angle 0.0 0.0 4@ car 0@
+    3FFD: rotate_car_part "plutcanliquiddummy" angle 0.0 0.0 4@ car 0@
+    3FFD: rotate_car_part "plutcandummy" angle 0.0 0.0 4@ car 0@
+    3FFD: rotate_car_part "plutpelletdummy" angle 0.0 0.0 4@ car 0@
+    wait 10
+end 
+//drop pellet
+For 4@ = -0.01 DownTo -0.3 Step 0.1
+    3FFC: move_car_part "plutpelletdummy" pos 0.0 0.0 4@ car 0@
+    wait 10
+end 
+$PLUTONIUM -= 1 // integer values
+3FFB: set_car 0@ component "plut" visible 0
+wait 500
+//set canister back on vent
+3FFC: move_car_part "plutcanliquiddummy" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcandummy" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcaninteriordummy" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutpelletdummy" pos -0.4 -0.0 -0.02 car 0@
+wait 500
+//place lid back on reactor 
+For 2@ = -0.4 To 0.0 Step 0.05
+    0087: 3@ = 2@
+    3@ *= 0.35
+    3FFC: move_car_part "reactorlidbttf1dummy" pos 2@ 3@ 0.05 car 0@
+    wait 10
+end
+3FFC: move_car_part "reactorlidbttf1dummy" pos 0.0 0.0 0.05 car 0@
+wait 500
+For 4@ = 0.05 DownTo 0.0 Step 0.01
+    3FFC: move_car_part "reactorlidbttf1dummy" pos 0.0 0.0 4@ car 0@
+    wait 10
+end              
+// Close cap
+For 4@ = 90.0 DownTo 0.0 Step 5.0
+    3FFD: rotate_car_part "reactorlidbttf1dummy" angle 0.0 0.0 4@ car 0@ 
+    wait 10
+end   
+wait 1000
+{hide canister and set default height and rotation}
+3FFB: set_car 0@ component "plutcan" visible 0
+3FFB: set_car 0@ component "plutcanliquid" visible 0
+3FFB: set_car 0@ component "plutcaninterior" visible 0 
+3FFC: move_car_part "plutcaninteriordummy" pos 0.0 0.0 0.4 car 0@
+3FFC: move_car_part "plutcanliquiddummy" pos 0.0 0.0 0.4 car 0@
+3FFC: move_car_part "plutcandummy" pos 0.0 0.0 0.4 car 0@
+3FFC: move_car_part "plutpelletdummy" pos 0.0 0.0 0.4 car 0@  
+3FFD: rotate_car_part "plutcaninteriordummy" angle 0.0 0.0 4.0 car 0@
+3FFD: rotate_car_part "plutcanliquiddummy" angle 0.0 0.0 4.0 car 0@
+3FFD: rotate_car_part "plutcandummy" angle 0.0 0.0 4.0 car 0@
+3FFD: rotate_car_part "plutpelletdummy" angle 0.0 0.0 4.0 car 0@ 
+jump @FuelDoneRefueling 
+
+
+// Leaving this for now, but disabling all animations until we actually get a real one since its real jank to respawn.
+:FuelRefuelOpenFusion
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.5 -3.2 -0.3
+10@ = Car.Model(0@) 
+0055: put_player $PLAYER_CHAR at 2@ 3@ 4@
+
+//Open Mr. Fusion
+For 1@ = 0.0 DownTo -90.0 Step 5.0    
+    3FFD: rotate_car_part "fusion" angle 1@ 0.0 0.0 car 0@
+    wait 10
+End
+
+
+for 5@ = 0 to 10 step 1 
+    wait 0 
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.0 -1.69 0.6 
+    0437: scatter_particle 70 0.01 at 2@ 3@ 4@ 0 0 0        
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.0 -1.69 -1.6          
+    0437: scatter_particle 33 0.01 at 2@ 3@ 4@ 0 0 0
+end
+wait 2000      
+
+//Close Mr. Fusion
+For 1@ = -90.0 To 0.1 Step 5.0    
+    3FFD: rotate_car_part "fusion" angle 1@ 0.0 0.0 car 0@
+    wait 10
+End
+
+jump @FuelDoneRefueling
+
+:FuelRefuelWait
+wait 3500 
+
+:FuelDoneRefueling
+3FFB: set_car 0@ component "pchamberemptylight" visible 0
+3FFD: rotate_car_part "pchamberneedle" angle 0.0 60.0 0.0 car 0@ 
+gosub @LocalToGlobal 
+wait 500 
+01B4: set_player $PLAYER_CHAR can_move 1
+wait 500 
+040D: unload_wav 1 
+0151: remove_status_text $PLUTONIUM 
+15@ += 10000000 // integer values 
+$FUELING = 0 // integer values 
+jump @FuelReturn 
+
+// No plutonium?  Lets mark it on the map
+:Plutonium
+if 
+  $MCOUNT == 0 // integer values 
+jf @PlutoniumRadar 
+$MCOUNT = 1 // integer values 
+02A8: $LOC1 = create_marker 31 at -1300.5 173.85 11.45 
+
+:PlutoniumRadar
+03E7: flash_hud 8 
+00BC: text_highpriority 'GETMORE' 3000 ms 1  // Get More Plutonium
+04F7: status_text $PLUTONIUM 0 line 2 'PLUTO'  // Plutonium: 
+wait 3000 
+03E7: flash_hud -1 
+0151: remove_status_text $PLUTONIUM 
+jump @FuelReturn 
+
+:FuelReturn
+return 
+
+// =======================================================================================================================================
+
+:FireTrailCheckDriving
+if 
+    00DC:   player $PLAYER_CHAR driving 0@ 
+then    
+    Car.PutAt(0@, 5@, 6@, 5000.0)
+else
+    Car.Destroy(0@)
+end
+return  
+
+:FireTrailRun
+// To make the fire trail form fastrer, we draw 2 new ones every frame.
+gosub @FireTrailLoopCoords   
+for 14@ = 0 to $FIRETRAIL_SPEED step 1
+    gosub @FireTrailCreate
+    gosub @FireTrailNextCoords
+end   
+return
+
+:FireTrailStay
+// This is for the fire trail that stays after the entire trail has formed.
+gosub @FireTrailLoopCoords 
+gosub @FireTrailCreate
+return
+
+:FireTrailLoopCoords
+// This loop is to go to the next position starting from the initial spot.
+for 15@ = 0 to 0@ step 1
+    gosub @FireTrailNextCoords
+end       
+gosub @FireTrailCreate  
+return    
+
+:FireTrailInitialRight
+0087: 11@ = 5@
+0087: 12@ = 6@
+0087: 13@ = 7@
+return
+
+:FireTrailInitialLeft
+0087: 11@ = 8@
+0087: 12@ = 9@
+0087: 13@ = 10@
+return
+
+:FireTrailNextCoords
+005B: 11@ += 2@ // floating-point values (never used in VC or GTA 3) 
+005B: 12@ += 3@ // floating-point values (never used in VC or GTA 3) 
+005B: 13@ += 4@ // floating-point values (never used in VC or GTA 3)
+return
+
+:FireTrailCreate 
+0437: scatter_particle 27 0.4 at 11@ 12@ 13@ 0 0 0 
+return    
+
+// =============================================================================================
+
+:FireTrail
+// 0@ is for the car, but will be forgotten once we start the firetrail
+// 1@ is for the car model, and later whatever flag we use to tell if the car is flying or not      
+// 2@-4@ is to remember the delta for the firetrail direction
+// 5@-7@ is where the right firetrail currently is
+// 8@-10@ is where the left firetrail currently is
+// 11-13@ is reserved for drawing the firetrail
+// Left with 3 variables to play around with (after 0@ gets released) 
+
+// Controls how fast the firetrail forms.   Unfortunately, we are at the whims of the particle limit for now which does put a damper
+// on how long it can be.
+$FIRETRAIL_SPEED = 4 
+
+// Calculate Delta     
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.5 0.0                                               
+0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 0.0 0.0 0.0
+ 
+0063: 2@ -= 5@ // floating-point values (never used in VC or GTA 3) 
+0063: 3@ -= 6@ // floating-point values (never used in VC or GTA 3)
+0063: 4@ -= 7@ // floating-point values (never used in VC or GTA 3)  
+
+// The train is taller
+if or
+    Car.Model(0@) == #BUS
+    Car.Model(0@) == #MAVERICK
+then
+    0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 0.98 0.0 -1.315 
+    0407: create_coordinate 8@ 9@ 10@ from_car 0@ offset -0.98 0.0 -1.315 
+else
+    0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 0.98 0.0 -0.75 
+    0407: create_coordinate 8@ 9@ 10@ from_car 0@ offset -0.98 0.0 -0.75
+end 
+
+// Figure out what to do with the car now that we have the coordinates
+// This frees up 0@ to be anything
+gosub @FireTrailCheckDriving      
+
+// Draw the firetrail
+for 0@ = 0 to 50 step $FIRETRAIL_SPEED
+    wait 10   // Wait a little so the firetrail shows up slowly
+    gosub @FireTrailInitialRight
+    gosub @FireTrailRun
+    
+    gosub @FireTrailInitialLeft
+    gosub @FireTrailRun
+end            
+
+// Now do we keep the fire lit for a few seconds?
+16@ = 0 // integer values 
+
+// Keep it lit after the lightning strike.
+if 
+    $WIRE == 0 // integer values 
+else_jump @FireTrailProlong 
+
+//  Get rid of it if we're flying or if its raining
+if or
+    1@ == 3 // Flying version
+    $WEATHER == 2 // integer values 
+    $WEATHER == 5 // integer values 
+else_jump @FireTrailProlong 
+jump @FireTrailEnd     
+
+:FireTrailDisplay
+wait 200 
+if 
+  $SET_TIME == 0 // integer values 
+else_jump @FireTrailEnd 
+if 
+   16@ < 19999 // integer values 
+else_jump @FireTrailEnd 
+
+:FireTrailProlong         
+for 0@ = 0 to 50 step 1  // Note that we use 14@ here instead of 0@ like above
+    // Unlike the other one, there is no wait.
+    // Right side
+    gosub @FireTrailInitialRight
+    gosub @FireTrailStay
+    
+    // Left Side
+    gosub @FireTrailInitialLeft
+    gosub @FireTrailStay    
+end  
+jump @FireTrailDisplay 
+
+
+// ================================================================
+:FireTrail99
+wait 10
+for 7@ = 0.0 to 6.0 step 0.04
+    0087: 8@ = 7@ 
+    8@ *= 65.0
+    02F6: 5@ = cosine 8@ // sinus swapped with cosine 
+    02F7: 6@ = sinus 8@ // cosine swapped with sinus
+    5@ *= 2.5 // floating-point values (never used in VC or GTA 3) 
+    6@ *= -3.0 // floating-point values (never used in VC or GTA 3) 
+    005B: 6@ += 7@ // floating-point values (never used in VC or GTA 3) 
+    
+    // Slightly different 99s for the train
+    if 
+        Car.Model(0@) == #MAVERICK
+    then 
+        6@ += 1.685 // floating-point values 
+    else
+        6@ += 2.25 // floating-point values
+    end 
+    0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -0.98 5@ 6@ 
+    0437: scatter_particle 27 0.4 at 1@ 2@ 3@ 0 0 0 
+    0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.98 5@ 6@ 
+    0437: scatter_particle 27 0.4 at 1@ 2@ 3@ 0 0 0 
+end                 
+gosub @FireTrailCheckDriving
+
+:FireTrailEnd
+end_thread   
+
+//====================================================================================================================
+// Plasma effects
+:TimeAddSpeedOffset
+005D: 2@ += $X_OFF // floating-point values (never used in VC or GTA 3) 
+005D: 3@ += $Y_OFF // floating-point values (never used in VC or GTA 3) 
+005D: 4@ += $Z_OFF // floating-point values (never used in VC or GTA 3) 
+return
+
+:TimePlasma
+if           
+   not 7@ == 3
+then
+    // Show Wheel Plasma effects on appropriate vehicles.
+    // Might need special ones for the non-canon Time Machines
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 -1.8 -0.75 //Back right 
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+    
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 -1.8 -0.75 //back Left
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+    
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 1.0 -0.75 //front right 
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+     
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 1.0 -0.75 //front right 
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0 
+    
+    // Wheel sparks animations for BTTF3
+    if 
+       7@ == 4
+    then
+       create_thread @WheelSparks 0@
+    end 
+end
+return
+
+// ====================================================================
+// Spark effects
+:TimeSparks
+if
+  17@ > 100 // integer values 
+then
+  17@ = 0
+  create_thread @Sparks 0@
+end
+return
+
+// =====================================================================
+// Wormhole Effect
+:TimeWormhole
+// Adjust the size of the wormhole based on speed
+0087: 5@ = 1@
+5@ -= 44.9 // floating-point values 
+5@ /= 1.6 // floating-point values (never used in VC or GTA 3) 
+5@ *= 1.25 // floating-point values (never used in VC or GTA 3) 
+if or
+   Car.Model(0@) == #BUS
+   Car.Model(0@) == #MAVERICK
+then
+    // Train Wormhole
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 14.0 0.15 
+    04D5: create_corona_at 2@ 3@ 4@ radius 5@ type 1 flare 0 RGB 255 100 150 
+else
+    // Delorean Wormhole
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 7.0 0.15          
+    if
+       7@ <= 3
+    then
+        04D5: create_corona_at 2@ 3@ 4@ radius 5@ type 1 flare 0 RGB 64 128 255 
+        //3FF7: create_light type 0 at 2@ 3@ 4@ dir 0.0 0.0 -1.0 range 10.0 rgb 5@ 5@ 5@ fog 0
+    else
+        04D5: create_corona_at 2@ 3@ 4@ radius 5@ type 1 flare 0 RGB 255 100 75 
+        //3FF7: create_light type 0 at 2@ 3@ 4@ dir 0.0 0.0 -1.0 range 10.0 rgb 5@ 5@ 5@ fog 0      
+    end
+end
+5@ /= 1.25 // floating-point values (never used in VC or GTA 3) 
+0437: scatter_particle 50 5@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 50 5@ at 2@ 3@ 4@ 0 0 0 
+return 
+
+
+// =======================================================================================================
+// Time Coils
+
+:TimeCoil
+if and
+   not Car.Model(0@) == #BUS
+   not Car.Model(0@) == #MAVERICK
+else_jump @TimeCoilTrain 
+if
+   7@ >= 4
+then
+    02E3: 1@ = car 0@ speed 
+    1@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+    0208: 3@ = random_float 1.425 1.825 
+    0208: 2@ = random_float -0.2 0.2 
+    005D: 3@ += 1@ // floating-point values (never used in VC or GTA 3) 
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 2@ 3@ 0.35 
+    0437: scatter_particle 2 0.1 at 2@ 3@ 4@ 0 0 0 
+    0208: 3@ = random_float 1.425 1.825 
+    0208: 2@ = random_float -0.2 0.2 
+    005D: 3@ += 1@ // floating-point values (never used in VC or GTA 3) 
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 2@ 3@ 0.35 
+    0437: scatter_particle 11 0.1 at 2@ 3@ 4@ 0 0 0 
+end
+
+:TimeCoilOn
+02E3: 1@ = car 0@ speed 
+0209: $RAND = random_int 0 3 
+if or
+    7@ <= 3
+    1@ > 47.0 // floating-point values 
+    $RAND == 0 // integer values 
+then
+    // All on
+    $R1 = 64 // integer values 
+    $G1 = 128 // integer values 
+    $B1 = 255 // integer values 
+    $R2 = 64 // integer values 
+    $G2 = 128 // integer values 
+    $B2 = 255 // integer values 
+else if
+    $RAND == 1 // integer values 
+then
+    // Partially On
+    $R1 = 64 // integer values 
+    $G1 = 128 // integer values 
+    $B1 = 255 // integer values 
+    $R2 = 1 // integer values 
+    $G2 = 1 // integer values 
+    $B2 = 1 // integer values 
+else
+    // Off
+    $R1 = 1 // integer values 
+    $G1 = 1 // integer values 
+    $B1 = 1 // integer values 
+    $R2 = 1 // integer values 
+    $G2 = 1 // integer values 
+    $B2 = 1 // integer values 
+end
+end
+
+:TimeCoilDelorean
+// Front Coils             
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.9 2.25 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.9 2.25 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.8 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2   
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.6 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2     
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.4 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2    
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.2 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2    
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.2 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.4 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.6 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.8 2.35 -0.125 
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
+
+// Side Coils
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.4 -0.9 0.6       
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.6 -0.9 0.6
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.4 -0.9 0.6
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.6 -0.9 0.6
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.7 -0.915 0.5
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.7 -0.915 0.5
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.8 -0.93 0.4
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.8 -0.93 0.4
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.9 -0.945 0.3
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.9 -0.945 0.3
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.0 -0.96 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.0 -0.96 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2  
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.995 -1.16 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.995 -1.16 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.99 -1.36 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.99 -1.36 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.985 -1.56 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.985 -1.56 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -1.76 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -1.76 0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -1.86 0.1
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -1.86 0.1
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -1.955 0.0
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -1.955 0.0
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -2.045 -0.1
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -2.045 -0.1
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -2.13 -0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -2.13 -0.2
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.88 -2.21 -0.3
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.88 -2.21 -0.3
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.78 -2.21 -0.3       
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.78 -2.21 -0.3
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2 
+return 
+
+:TimeCoilTrain
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 10.9 -1.0           
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.2 10.9 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.2 10.9 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.2 10.7 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.2 10.7 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.2 10.5 -1.0            
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.2 10.5 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.4 10.15 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.4 10.15 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.6 9.8 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.6 9.8 -1.0         
+gosub @TimeAddSpeedOffset 
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.8 9.45 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.8 9.45 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.0 9.1 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.0 9.1 -1.0
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.595 7.3 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.595 7.3 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.595 7.425 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.595 7.425 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.595 7.55 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.595 7.55 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.595 7.675 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.595 7.675 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.595 7.8 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.595 7.8 1.34
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.545 7.85 1.275
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.545 7.85 1.275
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.495 7.9 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.495 7.9 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.35 7.91 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.35 7.91 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.2 7.91 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.2 7.91 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.05 7.91 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.05 7.91 1.21
+gosub @TimeAddSpeedOffset  
+04D5: create_corona_at 2@ 3@ 4@ radius 0.2 type 1 flare 0 RGB $TR $TG $TB 
+return 
+
+// =========================================================================
+
+:EntryExplosion
+// Entry is normal yellow explosion
+5@ = 43
+if or
+    10@ == #BUS
+    10@ == #MAVERICK
+then
+    6@ = 10.0     
+else
+    6@ = 5.0
+end
+jump @CreateExplosion
+
+:ReentryExplosion   
+if or
+    10@ == #BUS
+    10@ == #MAVERICK
+then
+    5@ = 43  // Yellow
+    6@ = 10.0
+else
+    5@ = 45  // Blue
+    6@ = 5.0
+end   
+
+:CreateExplosion         
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+0437: scatter_particle 5@ 6@ at 2@ 3@ 4@ 0 0 0 
+return          
+
+//=============================================================================================
+:TimeBodyGlow
+/*0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 3.0 0.0
+0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 0.0 2.5 0.0  
+3FF7: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -3.0 0.0 2.0
+0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset -2.5 0.0 1.0  
+3FF7: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0 
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 3.0 0.0 0.0
+0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 2.5 0.0 0.0  
+3FF7: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0*/   
+return
+
+// ======================================================================================================
+:Sparks
+if 
+   not 1@ == 1 // integer values 
+else_jump @SparksFirst 
+0209: 10@ = random_int 0 10 
+jump @SparksNotFirst 
+
+:SparksFirst
+10@ = 0 // integer values 
+jump @SparksDeloreanCheck 
+
+:SparksNotFirst
+if 
+003C:   $REPEAT == 10@ // integer values (never used VC or GTA 3) 
+else_jump @SparksDeloreanCheck 
+0209: 10@ = random_int 0 10 
+jump @SparksNotFirst 
+
+:SparksDeloreanCheck
+if or
+   Car.Model(0@) == #INFERNUS
+   Car.Model(0@) == #DELUXO
+   Car.Model(0@) == #SPARROW
+   Car.Model(0@) == #BANSHEE
+   Car.Model(0@) == #BAGGAGE
+else_jump @SparksTrain
+if 
+  10@ == 0 // integer values 
+else_jump @SparksDeloreanFrontCoil 
+1@ = 0.0 // floating-point values 
+2@ = -0.75 // floating-point values 
+3@ = 0.71 // floating-point values 
+4@ = 0.0 // floating-point values 
+5@ = 1.0 // floating-point values 
+6@ = -0.05 // floating-point values 
+12@ = 5.0 // floating-point values 
+15@ = 0.0 // floating-point values 
+jump @SparksCreate 
+
+:SparksDeloreanFrontCoil
+if 
+  10@ == 1 // integer values 
+else_jump @SparksDeloreanSideCoilTop 
+0208: 1@ = random_float -0.9 0.9 
+2@ = 2.4 // floating-point values 
+3@ = -0.2 // floating-point values 
+0087: 4@ = 1@ // floating-point values only 
+4@ /= -2.0 // floating-point values (never used in VC or GTA 3) 
+5@ = 1.0 // floating-point values 
+6@ = 0.2 // floating-point values 
+12@ = 2.0 // floating-point values 
+15@ = 0.0 // floating-point values 
+jump @SparksCreate 
+
+:SparksDeloreanSideCoilTop
+if or
+  10@ == 2 // integer values 
+  10@ == 3 // integer values 
+else_jump @SparksDeloreanSideCoilDoor 
+0208: 1@ = random_float -0.65 -0.2 
+if 
+  10@ == 3 // integer values 
+else_jump @SparksDeloreanSideCoilTopA 
+1@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+
+:SparksDeloreanSideCoilTopA
+2@ = -0.75 // floating-point values 
+3@ = 0.61 // floating-point values 
+0087: 4@ = 1@ // floating-point values only 
+4@ /= -5.0 // floating-point values (never used in VC or GTA 3) 
+5@ = 1.0 // floating-point values 
+6@ = -0.05 // floating-point values 
+12@ = 5.0 // floating-point values 
+15@ = 0.0 // floating-point values 
+jump @SparksCreate 
+
+:SparksDeloreanSideCoilDoor
+if or
+  10@ == 4 // integer values 
+  10@ == 5 // integer values 
+else_jump @SparksDeloreanSideCoil
+0208: 3@ = random_float 0.2 0.6 
+0087: 1@ = 3@ // floating-point values only 
+1@ *= -0.95 // floating-point values (never used in VC or GTA 3) 
+1@ += 1.27 // floating-point values 
+0087: 2@ = 3@ // floating-point values only 
+2@ *= 0.175 // floating-point values (never used in VC or GTA 3) 
+2@ += -0.98 // floating-point values 
+if 
+  10@ == 5 // integer values 
+else_jump @SparksDeloreanSideCoilDoorA 
+1@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+
+:SparksDeloreanSideCoilDoorA
+0087: 4@ = 1@ // floating-point values only 
+4@ /= 10.0 // floating-point values (never used in VC or GTA 3) 
+5@ = 1.0 // floating-point values 
+0087: 6@ = 3@ // floating-point values only 
+6@ /= -4.0 // floating-point values (never used in VC or GTA 3) 
+12@ = 5.0 // floating-point values 
+0087: 15@ = 1@ // floating-point values only 
+15@ /= -15.0 // floating-point values (never used in VC or GTA 3) 
+jump @SparksCreate 
+
+:SparksDeloreanSideCoil
+if or
+  10@ == 6 // integer values 
+  10@ == 7 // integer values 
+else_jump @SparksDeloreanSideCoilRear 
+0208: 2@ = random_float -1.0 -1.8 
+0087: 1@ = 2@ // floating-point values only 
+1@ *= -0.05 // floating-point values (never used in VC or GTA 3) 
+1@ += -1.09 // floating-point values 
+3@ = 0.19 // floating-point values 
+if 
+  10@ == 7 // integer values 
+else_jump @SparksDeloreanSideCoilA 
+1@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+
+:SparksDeloreanSideCoilA
+0087: 4@ = 1@ // floating-point values only 
+4@ /= 4.0 // floating-point values (never used in VC or GTA 3) 
+0087: 5@ = 2@ // floating-point values only 
+5@ *= -0.125 // floating-point values (never used in VC or GTA 3) 
+5@ += 0.775 // floating-point values 
+6@ = 0.01 // floating-point values 
+12@ = 6.0 // floating-point values 
+0087: 15@ = 1@ // floating-point values only 
+15@ /= -15.0 // floating-point values (never used in VC or GTA 3) 
+jump @SparksCreate 
+
+:SparksDeloreanSideCoilRear
+0208: 2@ = random_float -1.85 -2.15 
+0087: 3@ = 2@ // floating-point values only 
+3@ *= 1.333 // floating-point values (never used in VC or GTA 3) 
+3@ += 2.61595 // floating-point values 
+0087: 1@ = 3@ // floating-point values only 
+if 
+  1@ >= 0.015 // floating-point values (never used in VC or GTA 3) 
+else_jump @SparksDeloreanSideCoilRearA 
+1@ *= 0.185 // floating-point values (never used in VC or GTA 3) 
+1@ += -1.04275 // floating-point values 
+jump @SparksDeloreanSideCoilBottom 
+
+:SparksDeloreanSideCoilRearA
+1@ *= -0.377 // floating-point values (never used in VC or GTA 3) 
+1@ += -1.03425 // floating-point values 
+
+:SparksDeloreanSideCoilBottom
+if 
+  10@ == 9 // integer values 
+else_jump @SparksDeloreanSideCoilBottomA 
+1@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+
+:SparksDeloreanSideCoilBottomA
+0087: 4@ = 1@ // floating-point values only 
+4@ /= 4.0 // floating-point values (never used in VC or GTA 3) 
+0087: 5@ = 2@ // floating-point values only 
+5@ = 1.0 // floating-point values 
+0087: 6@ = 3@ // floating-point values only 
+6@ /= -5.0 // floating-point values (never used in VC or GTA 3) 
+12@ = 6.0 // floating-point values 
+0087: 15@ = 1@ // floating-point values only 
+15@ /= -15.0 // floating-point values (never used in VC or GTA 3) 
+jump @SparksCreate 
+
+:SparksTrain
+0208: 1@ = random_float -1.0 1.0 
+0087: 2@ = 1@ // floating-point values only 
+2@ *= 1.8 // floating-point values (never used in VC or GTA 3) 
+if 
+  1@ >= 0.0 // floating-point values (never used in VC or GTA 3) 
+else_jump @SparksTrainA 
+2@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+
+:SparksTrainA
+2@ += 10.9 // floating-point values 
+3@ = -1.0 // floating-point values 
+0087: 4@ = 1@ // floating-point values only 
+4@ /= -2.0 // floating-point values (never used in VC or GTA 3) 
+5@ = 0.75 // floating-point values 
+6@ = 0.35 // floating-point values 
+12@ = 2.0 // floating-point values 
+15@ = 0.0 // floating-point values 
+jump @SparksCreate 
+
+:SparksCreate
+008A: $REPEAT = 10@ // integer values and handles 
+10@ = 0.0 // floating-point values 
+11@ = 0.15 // floating-point values 
+02E3: 8@ = car 0@ speed 
+8@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+005B: 8@ += 2@ // floating-point values (never used in VC or GTA 3) 
+0407: create_coordinate 7@ 8@ 9@ from_car 0@ offset 1@ 8@ 3@ 
+if and
+   not Car.Model(0@) == #BUS
+   not Car.Model(0@) == #MAVERICK
+   not Car.Model(0@) == #BANSHEE
+   not Car.Model(0@) == #BAGGAGE
+else_jump @SparksCreateBlue 
+0437: scatter_particle 2 1.0 at 7@ 8@ 9@ 0 0 0 
+jump @SparksSpeed 
+
+:SparksCreateBlue
+0437: scatter_particle 11 1.0 at 7@ 8@ 9@ 0 0 0 
+
+:SparksSpeed
+wait 10 
+if 
+0025:   12@ > 10@ // floating-point values (never used in VC or GTA 3) 
+else_jump @SparksBounce 
+if and
+   not Car.Wrecked(0@)
+   not $TRAVEL == 1 // integer values 
+else_jump @SparksEnd 
+02E3: 14@ = car 0@ speed 
+14@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+11@ = 0.15 // floating-point values 
+gosub @SparksCheckLength 
+11@ = 0.0725 // floating-point values 
+
+:SparksTrail
+gosub @SparksCheckLength 
+if 
+   not 11@ > 0.01 // floating-point values 
+else_jump @SparksTrail 
+10@ += 2.3 // floating-point values 
+jump @SparksSpeed 
+
+:SparksBounce
+if 
+   not Car.Wrecked(0@)
+else_jump @SparksEnd 
+02E3: 14@ = car 0@ speed 
+14@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+0087: 7@ = 10@ // floating-point values only 
+0087: 8@ = 10@ // floating-point values only 
+0087: 9@ = 10@ // floating-point values only 
+0069: 7@ *= 4@ // floating-point values 
+0069: 8@ *= 5@ // floating-point values 
+0069: 9@ *= 6@ // floating-point values 
+0087: 13@ = 15@ // floating-point values only 
+0069: 13@ *= 10@ // floating-point values 
+0069: 13@ *= 10@ // floating-point values 
+005B: 7@ += 13@ // floating-point values (never used in VC or GTA 3) 
+005B: 7@ += 1@ // floating-point values (never used in VC or GTA 3) 
+005B: 8@ += 2@ // floating-point values (never used in VC or GTA 3) 
+005B: 9@ += 3@ // floating-point values (never used in VC or GTA 3) 
+8@ += 5.0 // floating-point values 
+0208: 5@ = random_float 0.0 180.0 
+02F6: 1@ = cosine 5@ // sinus swapped with cosine 
+02F7: 2@ = sinus 5@ // cosine swapped with sinus 
+5@ = -0.05 // floating-point values 
+0208: 4@ = random_float 0.1 0.3 
+0069: 4@ *= 2@ // floating-point values 
+0208: 6@ = random_float 0.1 0.2 
+0069: 6@ *= 1@ // floating-point values 
+4@ *= 0.1 // floating-point values (never used in VC or GTA 3) 
+6@ *= 0.1 // floating-point values (never used in VC or GTA 3) 
+005B: 4@ += 7@ // floating-point values (never used in VC or GTA 3) 
+005B: 5@ += 8@ // floating-point values (never used in VC or GTA 3) 
+005B: 6@ += 9@ // floating-point values (never used in VC or GTA 3) 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset 4@ 5@ 6@ 
+0407: create_coordinate 7@ 8@ 9@ from_car 0@ offset 7@ 8@ 9@ 
+0063: 4@ -= 7@ // floating-point values (never used in VC or GTA 3) 
+0063: 5@ -= 8@ // floating-point values (never used in VC or GTA 3) 
+0063: 6@ -= 9@ // floating-point values (never used in VC or GTA 3) 
+10@ = 0.0 // floating-point values 
+11@ = 0.01 // floating-point values 
+
+:SparksCheckDistance
+wait 10 
+if 
+   not 10@ >= 10.0 // floating-point values (never used in VC or GTA 3) 
+else_jump @SparksEnd 
+if and
+   not Car.Wrecked(0@)
+   not $TRAVEL == 1 // integer values 
+else_jump @SparksEnd 
+
+:NONAME_4_2826
+gosub @SparksDrawHead 
+if 
+  11@ > 0.075 // floating-point values 
+else_jump @NONAME_4_2826 
+11@ = 0.15 // floating-point values 
+gosub @SparksDrawHead 
+10@ += 2.3 // floating-point values 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+gosub @SparksUndoTrail 
+11@ = 0.01 // floating-point values 
+jump @SparksCheckDistance 
+
+:SparksEnd
+end_thread 
+
+:SparksDrawHead
+005B: 7@ += 4@ // floating-point values (never used in VC or GTA 3) 
+005B: 8@ += 5@ // floating-point values (never used in VC or GTA 3) 
+005B: 9@ += 6@ // floating-point values (never used in VC or GTA 3) 
+if 
+  10@ >= 0.0 // floating-point values (never used in VC or GTA 3) 
+else_jump @SparksDrawHeadReturn 
+if and
+   not Car.Model(0@) == #BUS
+   not Car.Model(0@) == #MAVERICK
+   not Car.Model(0@) == #BANSHEE
+   not Car.Model(0@) == #BAGGAGE
+else_jump @SparksDrawHeadBlue 
+0437: scatter_particle 2 11@ at 7@ 8@ 9@ 0 0 0 
+jump @SparksDrawHeadReturn 
+
+:SparksDrawHeadBlue
+0437: scatter_particle 11 11@ at 7@ 8@ 9@ 0 0 0 
+
+:SparksDrawHeadReturn
+11@ += 0.0025 // floating-point values 
+10@ -= 0.05 // floating-point values 
+return 
+
+:SparksUndoTrail
+0063: 7@ -= 4@ // floating-point values (never used in VC or GTA 3) 
+0063: 8@ -= 5@ // floating-point values (never used in VC or GTA 3) 
+0063: 9@ -= 6@ // floating-point values (never used in VC or GTA 3) 
+return 
+
+:SparksCheckLength
+if 
+  10@ >= 0.0 // floating-point values (never used in VC or GTA 3) 
+else_jump @SparksResetTrail 
+0087: 7@ = 10@ // floating-point values only 
+0087: 8@ = 10@ // floating-point values only 
+0087: 9@ = 10@ // floating-point values only 
+0069: 7@ *= 4@ // floating-point values 
+0069: 8@ *= 5@ // floating-point values 
+0069: 9@ *= 6@ // floating-point values 
+if 
+   not 15@ == 0 // integer values 
+else_jump @SparksDrawTrail 
+0087: 13@ = 15@ // floating-point values only 
+0069: 13@ *= 10@ // floating-point values 
+0069: 13@ *= 10@ // floating-point values 
+005B: 7@ += 13@ // floating-point values (never used in VC or GTA 3) 
+jump @SparksDrawTrail 
+
+:SparksResetTrail
+7@ = 0.0 // floating-point values 
+8@ = 0.0 // floating-point values 
+9@ = 0.0 // floating-point values 
+
+:SparksDrawTrail
+005B: 7@ += 1@ // floating-point values (never used in VC or GTA 3) 
+005B: 8@ += 2@ // floating-point values (never used in VC or GTA 3) 
+005B: 9@ += 3@ // floating-point values (never used in VC or GTA 3) 
+005B: 8@ += 14@ // floating-point values (never used in VC or GTA 3) 
+0407: create_coordinate 7@ 8@ 9@ from_car 0@ offset 7@ 8@ 9@ 
+if and
+   not Car.Model(0@) == #BUS
+   not Car.Model(0@) == #MAVERICK
+   not Car.Model(0@) == #BANSHEE
+   not Car.Model(0@) == #BAGGAGE
+else_jump @SparksDrawBlueTrail 
+0437: scatter_particle 2 11@ at 7@ 8@ 9@ 0 0 0 
+jump @SparksDrawTrailReturn 
+
+:SparksDrawBlueTrail
+0437: scatter_particle 11 11@ at 7@ 8@ 9@ 0 0 0 
+
+:SparksDrawTrailReturn
+10@ -= 0.05 // floating-point values 
+11@ -= 0.0025 // floating-point values 
+return 
+
+// =================================================================================================
+
+:WheelSparks
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -1.236 0.0 
+wait 10 
+if
+    not Car.Wrecked(0@)
+jf @WheelSparksEnd 
+0407: create_coordinate 7@ 8@ 13@ from_car 0@ offset 0.0 -1.236 0.0 
+0067: 7@ -= 1@ // floating-point values 
+0067: 8@ -= 2@ // floating-point values 
+0067: 13@ -= 3@ // floating-point values 
+7@ *= 0.6 // floating-point values (never used in VC or GTA 3) 
+8@ *= 0.6 // floating-point values (never used in VC or GTA 3) 
+13@ *= 0.6 // floating-point values (never used in VC or GTA 3) 
+02F8: get_vehicle 0@ Z_angle_sine_to 1@ 
+02F9: get_vehicle 0@ Z_angle_cosine_to 2@ 
+1@ *= 0.8 // floating-point values (never used in VC or GTA 3) 
+2@ *= 0.8 // floating-point values (never used in VC or GTA 3) 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset 1.1 1.5 0.12 
+0437: scatter_particle 1 0.01 at 4@ 5@ 6@ 1@ 2@ -0.1 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset -1.1 1.5 0.12 
+0437: scatter_particle 1 0.01 at 4@ 5@ 6@ 1@ 2@ -0.1  
+gosub @WheelSparksCreate
+gosub @WheelSparksCreate
+gosub @WheelSparksCreate
+if 
+  $WHEEL_SPARKS >= 360.0 // floating-point values 
+else_jump @WheelSparksEnd 
+$WHEEL_SPARKS = 0.0 // floating-point values 
+
+:WheelSparksEnd
+end_thread
+
+:WheelSparksCreate
+02F7: 2@ = sinus $WHEEL_SPARKS // cosine swapped with sinus 
+02F6: 3@ = cosine $WHEEL_SPARKS // sinus swapped with cosine 
+2@ *= 0.3 // floating-point values (never used in VC or GTA 3) 
+3@ *= -0.3 // floating-point values (never used in VC or GTA 3) 
+2@ -= 1.236 // floating-point values 
+3@ -= 0.302 // floating-point values 
+02F6: 9@ = cosine $WHEEL_SPARKS // sinus swapped with cosine 
+02F7: 10@ = sinus $WHEEL_SPARKS // cosine swapped with sinus 
+9@ *= 0.025 // floating-point values (never used in VC or GTA 3) 
+10@ *= 0.025 // floating-point values (never used in VC or GTA 3) 
+0059: 10@ += 13@ // floating-point values 
+02F8: get_vehicle 0@ Z_angle_sine_to 11@ 
+02F9: get_vehicle 0@ Z_angle_cosine_to 12@ 
+0069: 11@ *= 9@ // floating-point values 
+0069: 12@ *= 9@ // floating-point values 
+005B: 7@ += 11@ // floating-point values (never used in VC or GTA 3) 
+005B: 8@ += 12@ // floating-point values (never used in VC or GTA 3) 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset 1.2 2@ 3@ 
+0437: scatter_particle 0 0.01 at 4@ 5@ 6@ 7@ 8@ 10@ 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset -1.2 2@ 3@ 
+0437: scatter_particle 0 0.01 at 4@ 5@ 6@ 7@ 8@ 10@ 
+0063: 7@ -= 11@ // floating-point values (never used in VC or GTA 3) 
+0063: 8@ -= 12@ // floating-point values (never used in VC or GTA 3) 
+$WHEEL_SPARKS += 10.0 // floating-point values 
+return
+
+// ==========================================================================================================
+// VV: Delorean Variation flags.
+//     Tentatively
+//     0x00 - BTTF1 no plate
+//     0x01 - BTTF1 Plate attached
+//     0x02 - BTTF2 Driving Version
+//     0x03 - BTTF2 Flying Version
+//     0x04 - BTTF3 Version
+//     0x05 - Railroad Version
+//     BTTF1 variations are tracked separately from the others so they can be combined
+//     0x10 - Hook attachment w/o hook
+//     0x20 - Hook on side
+//     0x30 - Hook up
+:SetVariation
+0B10: 2@ = 1@ AND 0x0f  // Get car variation
+0B10: 3@ = 1@ AND 0x30  // Get hook variation
+
+
+0B15: 3@ = 3@ SHR 4
+create_thread @HideFuel 0@
+// Basic parts
+3FFB: set_car 0@ component "hitch" visible 0
+if or
+    2@ == 0
+    2@ == 1
+then
+    create_thread @ShowBTTF1 0@ 1 2@ 3@  // Include variations
+    create_thread @ShowBTTF2 0@ 0
+    
+else 
+    create_thread @ShowBTTF1 0@ 0 0 0
+    create_thread @ShowBTTF2 0@ 1 
+    if 
+        2@ >= 4   // BTTF3 versions have the hitch
+    then
+        3FFB: set_car 0@ component "hitch" visible 1
+    end
+end
+
+// Wheels/Hoodbox need to be separate because BTTF1/BTTF2 share stuff
+if 
+    2@ == 3
+then
+    create_thread @ShowDeloreanWheels 0@ 0
+    create_thread @ShowHoverWheels 0@ 1
+    create_thread @Show50sWheels 0@ 0
+    create_thread @ShowTrainWheels 0@ 0
+    create_thread @ShowHoodBox 0@ 0
+else if 
+    2@ == 4
+then
+    create_thread @ShowDeloreanWheels 0@ 0
+    create_thread @ShowHoverWheels 0@ 0
+    create_thread @Show50sWheels 0@ 1
+    create_thread @ShowTrainWheels 0@ 0
+    create_thread @ShowHoodBox 0@ 1
+else if
+    2@ == 5
+then
+    create_thread @ShowDeloreanWheels 0@ 0
+    create_thread @ShowHoverWheels 0@ 0
+    create_thread @Show50sWheels 0@ 0
+    create_thread @ShowTrainWheels 0@ 1
+    create_thread @ShowHoodBox 0@ 1
+else
+    create_thread @ShowDeloreanWheels 0@ 1
+    create_thread @ShowHoverWheels 0@ 0
+    create_thread @Show50sWheels 0@ 0
+    create_thread @ShowTrainWheels 0@ 0
+    create_thread @ShowHoodBox 0@ 0
+end
+end
+end
+end_thread
+
+:ShowHoverWheels            
+if 
+    1@ == 0
+then   
+    3FFB: set_car 0@ component "wheel_rb" visible 1   
+    3FFB: set_car 0@ component "wheel_lb" visible 1   
+    3FFB: set_car 0@ component "wheel_rf" visible 1   
+    3FFB: set_car 0@ component "wheel_lf" visible 1
+else
+    3FFB: set_car 0@ component "wheel_rb" visible 0   
+    3FFB: set_car 0@ component "wheel_lb" visible 0   
+    3FFB: set_car 0@ component "wheel_rf" visible 0   
+    3FFB: set_car 0@ component "wheel_lf" visible 0
+end   
+                 
+3FFB: set_car 0@ component "fxwheelrb" visible 1@
+3FFB: set_car 0@ component "fxwheelbttf1rb" visible 1@
+3FFB: set_car 0@ component "fxtirebttf1rb" visible 1@     
+3FFB: set_car 0@ component "fxthrusterbttf2rb" visible 1@      
+
+3FFB: set_car 0@ component "fxwheellb" visible 1@
+3FFB: set_car 0@ component "fxwheelbttf1lb" visible 1@
+3FFB: set_car 0@ component "fxtirebttf1lb" visible 1@     
+3FFB: set_car 0@ component "fxthrusterbttf2lb" visible 1@    
+
+3FFB: set_car 0@ component "fxwheelrf" visible 1@
+3FFB: set_car 0@ component "fxwheelbttf1rf" visible 1@
+3FFB: set_car 0@ component "fxtirebttf1rf" visible 1@     
+3FFB: set_car 0@ component "fxthrusterbttf2rf" visible 1@    
+
+3FFB: set_car 0@ component "fxwheellf" visible 1@
+3FFB: set_car 0@ component "fxwheelbttf1lf" visible 1@
+3FFB: set_car 0@ component "fxtirebttf1lf" visible 1@     
+3FFB: set_car 0@ component "fxthrusterbttf2lf" visible 1@ 
+
+// For now, no BTTF3 hovering
+3FFB: set_car 0@ component "fxwheelbttf3rb" visible 0
+3FFB: set_car 0@ component "fxtirebttf3rb" visible 0     
+3FFB: set_car 0@ component "fxhubcapbttf3rb" visible 0      
+
+3FFB: set_car 0@ component "fxwheelbttf3lb" visible 0
+3FFB: set_car 0@ component "fxtirebttf3lb" visible 0     
+3FFB: set_car 0@ component "fxhubcapbttf3lb" visible 0    
+
+3FFB: set_car 0@ component "fxwheelbttf3rf" visible 0
+3FFB: set_car 0@ component "fxtirebttf3rf" visible 0     
+3FFB: set_car 0@ component "fxhubcapbttf3rf" visible 0    
+
+3FFB: set_car 0@ component "fxwheelbttf3lf" visible 0
+3FFB: set_car 0@ component "fxtirebttf3lf" visible 0     
+3FFB: set_car 0@ component "fxhubcapbttf3lf" visible 0    
+
+3FFB: set_car 0@ component "fxwheelbttf3rrrb" visible 0
+3FFB: set_car 0@ component "fxwheelbttf3rrlb" visible 0
+3FFB: set_car 0@ component "fxwheelbttf3rrrf" visible 0
+3FFB: set_car 0@ component "fxwheelbttf3rrlf" visible 0 
+end_thread
+
+:ShowBTTF1 
+// BTTF1 parts
+3FFB: set_car 0@ component "bttf1" visible 1@     
+3FFB: set_car 0@ component "xchassis" visible 1@      
+3FFB: set_car 0@ component "underbody" visible 1@
+3FFB: set_car 0@ component "engine" visible 1@        
+
+// Suspension        
+3FFB: set_car 0@ component "brakerf" visible 1@      
+3FFB: set_car 0@ component "brakelf" visible 1@
+3FFB: set_car 0@ component "brakerb" visible 1@
+3FFB: set_car 0@ component "brakelb" visible 1@
+
+// Plate
+3FFB: set_car 0@ component "plate" visible 2@    
+
+// Hook 
+if 
+    3@ == 0
+then
+    // No Hook
+    3FFB: set_car 0@ component "hookbttf1" visible 0
+    3FFB: set_car 0@ component "hookandholderbttf1" visible 0
+    3FFB: set_car 0@ component "holderbttf1" visible 0
+    
+    // No Clock
+    3FFB: set_car 0@ component "minutehand" visible 0    
+    3FFB: set_car 0@ component "clockhammer" visible 0
+    3FFB: set_car 0@ component "clockhammer" visible 0 
+    3FFB: set_car 0@ component "alarmhand" visible 0
+    3FFB: set_car 0@ component "clock" visible 0
+else
+    // Clock visible
+    3FFB: set_car 0@ component "minutehand" visible 1    
+    3FFB: set_car 0@ component "clockhammer" visible 1
+    3FFB: set_car 0@ component "clockhammer" visible 1 
+    3FFB: set_car 0@ component "alarmhand" visible 1
+    3FFB: set_car 0@ component "clock" visible 1
+    if 
+        3@ == 1 // Hook Holder w/o hook
+    then
+        3FFB: set_car 0@ component "hookbttf1" visible 0
+        3FFB: set_car 0@ component "hookandholderbttf1" visible 0
+        3FFB: set_car 0@ component "holderbttf1" visible 1
+    else if
+        3@ == 2 // Hook on side
+    then
+        3FFB: set_car 0@ component "hookbttf1" visible 1
+        3FFB: set_car 0@ component "hookandholderbttf1" visible 0
+        3FFB: set_car 0@ component "holderbttf1" visible 1
+    else if
+        3@ == 3  // Hook up
+    then
+        3FFB: set_car 0@ component "hookbttf1" visible 0
+        3FFB: set_car 0@ component "hookandholderbttf1" visible 1
+        3FFB: set_car 0@ component "holderbttf1" visible 0 
+    end
+    end
+    end
+end
+end_thread
+
+:ShowBTTF2
+// BTTF2 parts
+3FFB: set_car 0@ component "bttf2" visible 1@
+3FFB: set_car 0@ component "xchassisbttf2" visible 1@
+3FFB: set_car 0@ component "underbodybttf2" visible 1@
+3FFB: set_car 0@ component "platebttf2" visible 1@
+3FFB: set_car 0@ component "mrfusion" visible 1@
+
+// Suspension
+3FFB: set_car 0@ component "strutrb" visible 1@
+3FFB: set_car 0@ component "holderrb" visible 1@
+3FFB: set_car 0@ component "shockpistonrb" visible 1@
+3FFB: set_car 0@ component "shocklb" visible 1@
+      
+3FFB: set_car 0@ component "strutlb" visible 1@
+3FFB: set_car 0@ component "holderlb" visible 1@
+3FFB: set_car 0@ component "shockpistonlb" visible 1@
+3FFB: set_car 0@ component "shocklb" visible 1@
+   
+3FFB: set_car 0@ component "strutrf" visible 1@
+3FFB: set_car 0@ component "holderrf" visible 1@
+3FFB: set_car 0@ component "shockpistonrf" visible 1@
+3FFB: set_car 0@ component "shockrf" visible 1@
+   
+3FFB: set_car 0@ component "strutlf" visible 1@
+3FFB: set_car 0@ component "holderlf" visible 1@
+3FFB: set_car 0@ component "shockpistonlf" visible 1@
+3FFB: set_car 0@ component "shocklf" visible 1@         
+end_thread
+
+:ShowBTTF3
+
+end_thread  
+
+:ShowDeloreanWheels
+   
+3FFB: set_car 0@ component "wheelbttf1rb" visible 1@
+3FFB: set_car 0@ component "tirebttf1rb" visible 1@     
+3FFB: set_car 0@ component "thrusterbttf2rb" visible 1@      
+
+3FFB: set_car 0@ component "wheelbttf1lb" visible 1@
+3FFB: set_car 0@ component "tirebttf1lb" visible 1@     
+3FFB: set_car 0@ component "thrusterbttf2lb" visible 1@    
+
+3FFB: set_car 0@ component "wheelbttf1rf" visible 1@
+3FFB: set_car 0@ component "tirebttf1rf" visible 1@     
+3FFB: set_car 0@ component "thrusterbttf2rf" visible 1@    
+
+3FFB: set_car 0@ component "wheelbttf1lf" visible 1@
+3FFB: set_car 0@ component "tirebttf1lf" visible 1@     
+3FFB: set_car 0@ component "thrusterbttf2lf" visible 1@   
+end_thread
+
+:Show50sWheels
+3FFB: set_car 0@ component "wheelbttf3rb" visible 1@
+3FFB: set_car 0@ component "tirebttf3rb" visible 1@     
+3FFB: set_car 0@ component "hubcapbttf3rb" visible 1@      
+
+3FFB: set_car 0@ component "wheelbttf3lb" visible 1@
+3FFB: set_car 0@ component "tirebttf3lb" visible 1@     
+3FFB: set_car 0@ component "hubcapbttf3lb" visible 1@    
+
+3FFB: set_car 0@ component "wheelbttf3rf" visible 1@
+3FFB: set_car 0@ component "tirebttf3rf" visible 1@     
+3FFB: set_car 0@ component "hubcapbttf3rf" visible 1@    
+
+3FFB: set_car 0@ component "wheelbttf3lf" visible 1@
+3FFB: set_car 0@ component "tirebttf3lf" visible 1@     
+3FFB: set_car 0@ component "hubcapbttf3lf" visible 1@    
+end_thread
+
+:ShowTrainWheels
+3FFB: set_car 0@ component "wheelbttf3rrrb" visible 1@
+3FFB: set_car 0@ component "wheelbttf3rrlb" visible 1@
+3FFB: set_car 0@ component "wheelbttf3rrrf" visible 1@
+3FFB: set_car 0@ component "wheelbttf3rrlf" visible 1@        
+end_thread
+
+:ShowHoodbox
+if 
+    1@ == 0
+then
+
+    3FFB: set_car 0@ component "bonnetbttf1" visible 1
+    3FFB: set_car 0@ component "bonnetbttf3" visible 0
+else
+
+    3FFB: set_car 0@ component "bonnetbttf1" visible 0
+    3FFB: set_car 0@ component "bonnetbttf3" visible 1
+end   
+end_thread
+
+:HideFuel
+// Hide canister used for fueling
+3FFB: set_car 0@ component "plutcan" visible 0
+3FFB: set_car 0@ component "plutcanliquid" visible 0
+3FFB: set_car 0@ component "plutcaninterior" visible 0
+3FFB: set_car 0@ component "plut" visible 0   
+
+// Hide Plutonium box
+3FFB: set_car 0@ component "pluttop" visible 0
+3FFB: set_car 0@ component "plutbox" visible 0
+
+// Hide 12 plutonium canisters
+3FFB: set_car 0@ component "plutcan01"  visible 0
+3FFB: set_car 0@ component "plutcan01liquid"  visible 0
+3FFB: set_car 0@ component "plutcan01interior"  visible 0
+3FFB: set_car 0@ component "plut01"  visible 0
+3FFB: set_car 0@ component "plutcan02"  visible 0
+3FFB: set_car 0@ component "plutcan02liquid"  visible 0
+3FFB: set_car 0@ component "plutcan02interior"  visible 0
+3FFB: set_car 0@ component "plut02"  visible 0
+3FFB: set_car 0@ component "plutcan03"  visible 0
+3FFB: set_car 0@ component "plutcan03liquid"  visible 0
+3FFB: set_car 0@ component "plutcan03interior"  visible 0
+3FFB: set_car 0@ component "plut03"  visible 0
+3FFB: set_car 0@ component "plutcan04"  visible 0
+3FFB: set_car 0@ component "plutcan04liquid"  visible 0
+3FFB: set_car 0@ component "plutcan04interior"  visible 0
+3FFB: set_car 0@ component "plut04"  visible 0
+3FFB: set_car 0@ component "plutcan05"  visible 0
+3FFB: set_car 0@ component "plutcan05liquid"  visible 0
+3FFB: set_car 0@ component "plutcan05interior"  visible 0
+3FFB: set_car 0@ component "plut05"  visible 0
+3FFB: set_car 0@ component "plutcan06"  visible 0
+3FFB: set_car 0@ component "plutcan06liquid"  visible 0
+3FFB: set_car 0@ component "plutcan06interior"  visible 0
+3FFB: set_car 0@ component "plut06"  visible 0
+3FFB: set_car 0@ component "plutcan07"  visible 0
+3FFB: set_car 0@ component "plutcan07liquid"  visible 0
+3FFB: set_car 0@ component "plutcan07interior"  visible 0
+3FFB: set_car 0@ component "plut07"  visible 0
+3FFB: set_car 0@ component "plutcan08"  visible 0
+3FFB: set_car 0@ component "plutcan08liquid"  visible 0
+3FFB: set_car 0@ component "plutcan08interior"  visible 0
+3FFB: set_car 0@ component "plut08"  visible 0
+3FFB: set_car 0@ component "plutcan09"  visible 0
+3FFB: set_car 0@ component "plutcan09liquid"  visible 0
+3FFB: set_car 0@ component "plutcan09interior"  visible 0
+3FFB: set_car 0@ component "plut09"  visible 0
+3FFB: set_car 0@ component "plutcan10"  visible 0
+3FFB: set_car 0@ component "plutcan10liquid"  visible 0
+3FFB: set_car 0@ component "plutcan10interior"  visible 0
+3FFB: set_car 0@ component "plut10"  visible 0
+3FFB: set_car 0@ component "plutcan11"  visible 0
+3FFB: set_car 0@ component "plutcan11liquid"  visible 0
+3FFB: set_car 0@ component "plutcan11interior"  visible 0
+3FFB: set_car 0@ component "plut11"  visible 0
+3FFB: set_car 0@ component "plutcan12"  visible 0
+3FFB: set_car 0@ component "plutcan12liquid"  visible 0
+3FFB: set_car 0@ component "plutcan12interior"  visible 0
+3FFB: set_car 0@ component "plut12"  visible 0
+
+/*
+for 1@ = 1 to 12 step 1
+3FF8: set_car 0@ component "plutcan" index 1@ visible 0
+3FF8: set_car 0@ component "plutcanliquid" index 1@ visible 0
+3FF8: set_car 0@ component "plutcaninterior" index 1@ visible 0
+3FF8: set_car 0@ component "plut" index 1@ visible 0      
+end
+*/
+
+// Hide Boiler Gauge
+3FFB: set_car 0@ component "fireboxgauge" visible 0
+3FFB: set_car 0@ component "fireboxgaugeneedle" visible 0        
+
+end_thread

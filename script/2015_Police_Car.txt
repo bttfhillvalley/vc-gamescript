@@ -1,0 +1,65 @@
+:FlyPolice
+thread "2015pol" 
+
+:FlyPoliceStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @FlyPoliceStart 
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #FBIRANCH 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #POLMAV 
+else_jump @FlyPoliceStart 
+if 
+003A:   $KEY == $KEY_HOVERCONVERSION // P
+else_jump @FlyPoliceStart 
+03C1: 0@ = player $PLAYER_CHAR car 
+02E3: 1@ = car 0@ speed 
+if 
+   Car.Model(0@) == #FBIRANCH
+else_jump @FlyPoliceHover 
+10@ = #POLMAV // integer values 
+040D: unload_wav 2 
+03CF: load_wav 'BURG_07' as 2 
+jump @FlyPoliceLoadModel 
+
+:FlyPoliceHover
+10@ = #FBIRANCH // integer values 
+040D: unload_wav 2 
+03CF: load_wav 'BURG_08' as 2 
+
+:FlyPoliceLoadModel
+$FLY = 1 // integer values 
+end_thread_named 'HOVER' 
+Model.Load(10@)
+
+:FlyPoliceCreateModel
+wait 0 
+if and
+   Model.Available(10@)
+03D0:   wav 2 loaded 
+else_jump @FlyPoliceCreateModel 
+03D1: play_wav 2 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0 
+012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -5.0 0.0 
+Camera.SetPosition(1@, 2@, 3@, 0.0, 0.0, 0.0)
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 -0.75 
+0460: set_camera_pointing_time 0.0 100 
+Camera.PointAt(1@, 2@, 3@, 1)
+4@ = Car.Angle(0@)
+02E3: 5@ = car 0@ speed 
+6@ = Car.Health(0@)
+Car.Destroy(0@)
+0@ = Car.Create(10@, 1@, 2@, 3@)
+Car.Angle(0@) = 4@
+04BA: set_car 0@ speed_instantly 5@ 
+Car.Health(0@) = 6@
+wait 0 
+0369: put_player $PLAYER_CHAR in_car 0@ 
+Camera.Restore
+Camera.SetBehindPlayer
+Model.Destroy(10@)
+$FLY = 0 // integer values 
+wait 500 
+jump @FlyPoliceStart

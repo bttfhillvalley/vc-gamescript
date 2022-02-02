@@ -1,0 +1,38 @@
+:MemoryManipulation
+{$OPCODE 0124=2,write_memory_address %1d% value %2d%}
+{$OPCODE 0125=2,%2d% = read_memory_address %1d%}
+thread 'KEYS'
+$2072 = -1995422835 // integer values 
+$2073 = 1342335705 // integer values 
+$2074 = -1025694744 // integer values 
+$2075 = 1949868543 // integer values 
+$2076 = 495648893 // integer values 
+$2077 = 8221756 // integer values 
+$2078 = -1070589815 // integer values 
+$2079 = 10011777 // integer values 
+$2080 = 1599930368 // integer values 
+$2081 = 79846238 // integer values 
+$2082 = 272862464 // integer values 
+$2083 = 23779721 // integer values 
+$2084 = -587536304 // integer values 
+$2085 = 950140866 // integer values 
+$2086 = -1962902156 // integer values 
+$2087 = 1949868800 // integer values 
+$2088 = 1133314173 // integer values 
+$2089 = 1792641296 // integer values 
+$2090 = 568872961 // integer values 
+$2091 = 822067931 // integer values 
+$2092 = -1731952192 // integer values 
+$2093 = 1560281088 // integer values 
+$2094 = -1034199457 // integer values 
+$2095 = 4 // integer values 
+03FD: set_player -5035 handling_responsiveness 8532704 
+0124: write_memory_address 6850752 value 8532745 
+
+while true
+    wait 10
+    0125: $KEY = read_memory_address 10553666
+    0124: write_memory_address 10553666 value 0  
+
+    //01E5: text_1number_highpriority 'SPEED' $KEY 10 ms 1  // ~1~.
+end

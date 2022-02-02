@@ -1,0 +1,66 @@
+:Thrust
+thread 'THRUST' 
+
+:ThrustStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @ThrustStart 
+if 
+  $OFF == 0 // integer values 
+jf @ThrustStart 
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #SPARROW   //Flying BTTF2
+00DE:   player $PLAYER_CHAR driving_vehicle_type #MAVERICK //Flying Time Train
+00DE:   player $PLAYER_CHAR driving_vehicle_type #POLMAV  //Flying 2015 Police Car 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #VCNMAV //Flying 2015 Taxi
+jf @ThrustStart 
+if and
+   Player.Controllable($PLAYER_CHAR)
+  $FLY == 0 // integer values 
+jf @ThrustStart 
+03C1: 0@ = player $PLAYER_CHAR car 
+if 
+   not Car.Wrecked(0@)
+jf @ThrustStart 
+if or
+   not $FRIED == 0 // integer values 
+8185:   not car 0@ health >= 400 
+jf @ThrustHeightLimit 
+02D4: car 0@ turn_off_engine 
+jump @ThrustStart 
+
+:ThrustHeightLimit
+Car.StorePos(0@, 3@, 4@, 5@)
+if 
+   not 5@ > 200.0 // floating-point values 
+jf @ThrustStart 
+if 
+00E1:   key_pressed 0 6 
+jf @ThrustStart 
+02E3: 1@ = car 0@ speed 
+if 
+  1@ > 7.5 // floating-point values 
+jf @ThrustInstant 
+if 
+  1@ > 44.0 // floating-point values 
+jf @ThrustHighSpeedMultiplier 
+0087: 2@ = 1@ // floating-point values only 
+2@ *= -0.0005 // floating-point values (never used in VC or GTA 3) 
+2@ += 1.233 // floating-point values 
+0069: 1@ *= 2@ // floating-point values 
+jump @ThrustSetSpeed 
+
+:ThrustHighSpeedMultiplier
+0087: 2@ = 1@ // floating-point values only 
+2@ *= -0.001 // floating-point values (never used in VC or GTA 3) 
+2@ += 1.25575 // floating-point values 
+0069: 1@ *= 2@ // floating-point values 
+jump @ThrustSetSpeed 
+
+:ThrustInstant
+1@ = 10.0 // floating-point values 
+
+:ThrustSetSpeed
+04BA: set_car 0@ speed_instantly 1@ 
+jump @ThrustStart 

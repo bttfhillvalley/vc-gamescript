@@ -1,0 +1,36 @@
+:Mode
+thread 'MODE'     
+
+:ModeStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @ModeStart 
+if 
+   not Car.Wrecked($DELOREAN)
+jf @ModeStart 
+if 
+00DC:   player $PLAYER_CHAR driving $DELOREAN 
+jf @ModeStart 
+if and
+  $TRAVEL == 0 // integer values 
+  $CUTSCENE == 0 // integer values 
+  $MODE_CONTROL == 1 // integer values 
+  $CAMERA_CONTROL == 1 // integer values
+jf @ModeStart 
+if 
+003A:   $KEY == $KEY_TOGGLEMODE // M
+jf @ModeStart 
+$MODE += 1 // integer values 
+if 
+  $MODE == 1 // integer values 
+jf @ModeChange 
+03E5: text_box 'MODE2'  // Mode: Instant Time Travel Sequence
+wait 1000 
+jump @ModeStart 
+
+:ModeChange
+$MODE = 0 // integer values 
+03E5: text_box 'MODE1'  // Mode: Cutscene Time Travel Sequence
+wait 1000 
+jump @ModeStart 

@@ -1,0 +1,18 @@
+:CurrentTime
+thread 'C_TIME' 
+
+:CurrentTimeStart
+wait 0 
+00BF: $CHOUR = current_time_hours, $CMINUTE = current_time_minutes 
+0084: $CTIME_TEMP = $CMONTH // integer values and handles 
+$CTIME_TEMP *= 100 // integer values 
+0058: $CTIME_TEMP += $CDAY // integer values 
+0084: $CMONTHDAY = $CTIME_TEMP // integer values and handles 
+$CTIME_TEMP *= 10000 // integer values 
+0058: $CTIME_TEMP += $CYEAR // integer values 
+0084: $CTIME_TEMP1 = $CHOUR // integer values and handles 
+$CTIME_TEMP1 *= 100 // integer values 
+0058: $CTIME_TEMP1 += $CMINUTE // integer values 
+0084: $CTIME = $CTIME_TEMP // integer values and handles 
+0084: $CTIME1 = $CTIME_TEMP1 // integer values and handles 
+jump @CurrentTimeStart 

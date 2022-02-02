@@ -1,0 +1,19 @@
+:Swirl
+thread 'SWIRL' 
+wait 0 
+$SWIRL = Object.Init(#SWIRL,  -1587.4, 895.722, 16.365)
+wait 250 
+Object.Angle($SWIRL) = 0.0
+Object.CollisionDetection($SWIRL) = False
+
+:animatedswirl
+wait 0
+while true
+    0@ = 0.0
+    while 0@ <= 360.0
+        Object.Angle($SWIRL) = 0@
+        0@ += 1.0
+        wait 0
+    end
+end
+jump @animatedswirl

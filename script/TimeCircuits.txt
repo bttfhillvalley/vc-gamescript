@@ -1,0 +1,301 @@
+:TimeCircuits
+thread 'T_CIRC' 
+
+:TimeCircuitsStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @TimeCircuitsStart 
+if 
+00DC:   player $PLAYER_CHAR driving $DELOREAN 
+jf @TimeCircuitsStart 
+if 
+  $TCON == 1 // integer values 
+jf @TimeCircuitsStart 
+if and
+  $TRAVEL == 0 // integer values 
+  $CUTSCENE == 0 // integer values 
+jf @TimeCircuitsStart 
+if 
+  $FRIED == 0 // integer values 
+jf @TimeCircuitsStart 
+if
+  $TIME_DISP == 1   
+jf @TimeCircuitsStart
+05F5: call_scm_func @DrawTexture params_count 5 1 733.0 242.0 216.0 128.0 //time circuits display image 
+8@ = 172.0 // floating-point values 
+if
+  $FLASH == 0
+then
+  17@ = 0
+  1@ = 255 // integer values 
+  2@ = 50 // integer values 
+  3@ = 50 // integer values 
+  008B: 4@ = $YEAR // integer values and handles
+  008B: 9@ = $HOUR // integer values and handles 
+  008B: 11@ = $MINUTE // integer values and handles 
+  008B: 13@ = $MONTH // integer values and handles 
+  008B: 14@ = $DAY // integer values and handles 
+  gosub @NumbersToDate
+  gosub @TimeCircuitsDisplay 
+else if
+  17@ > 500
+then
+  $FLASH = 0
+end
+end
+8@ += 40.0 // floating-point values 
+1@ = 75 // integer values 
+2@ = 255 // integer values 
+3@ = 100 // integer values 
+008B: 4@ = $CYEAR // integer values and handles 
+00BF: 9@ = current_time_hours, 11@ = current_time_minutes 
+008B: 13@ = $CMONTH // integer values and handles 
+008B: 14@ = $CDAY // integer values and handles 
+gosub @NumbersToDate
+gosub @TimeCircuitsDisplay 
+8@ += 39.5 // floating-point values 
+1@ = 255 // integer values 
+2@ = 175 // integer values 
+3@ = 100 // integer values 
+008B: 4@ = $PTIME
+if 
+   not 4@ == -1 // integer values 
+jf @TimeCircuitsDamage
+008B: 13@ = $PTIME // integer values and handles
+008B: 14@ = $PTIME
+14@ /= 10000
+13@ /= 10000
+13@ *= 10000
+0062: 4@ -= 13@   
+13@ /= 1000000
+13@ *= 100
+0062: 14@ -= 13@
+13@ /= 100
+008B: 9@ = $PTIME1 // integer values and handles
+008B: 11@ = $PTIME1 // integer values and handles  
+9@ /= 100
+9@ *= 100
+0062: 11@ -= 9@
+9@ /= 100 
+gosub @NumbersToDate
+gosub @TimeCircuitsDisplay
+
+:TimeCircuitsDamage
+if 
+8185:   not car $DELOREAN health >= 650 
+jf @TimeCircuitsStart 
+05F5: call_scm_func @DrawTexture params_count 5 6 735.0 155.0 45.0 23.0 //lambda error light
+3FFB: set_car $DELOREAN component "lambdalight" visible 1
+jump @TimeCircuitsStart 
+
+:NumbersToDate
+// year
+0085: 5@ = 4@ // integer values and handles 
+5@ /= 100
+0085: 6@ = 4@ // integer values and handles
+6@ /= 10 
+0085: 7@ = 4@ // integer values and handles 
+4@ /= 10
+4@ *= 10
+0062: 7@ -= 4@
+4@ /= 100
+4@ *= 10
+0062: 6@ -= 4@
+4@ /= 100
+4@ *= 10
+0062: 5@ -= 4@
+4@ /= 10
+
+//Minute
+0085: 12@ = 11@
+11@ /= 10
+11@ *= 10
+0062: 12@ -= 11@
+11@ /= 10
+
+//Day
+0085: 15@ = 14@
+14@ /= 10
+14@ *= 10
+0062: 15@ -= 14@
+14@ /= 10
+return
+
+:TimeCircuitsDisplay
+gosub @TimeCircuitsMonth 
+
+:TimeCircuitsDayA
+gosub @TextDrawRight   
+045A: text_draw_1number 519.0 8@ 'DAY' 14@  // ~1~
+gosub @TextDrawRight  
+045A: text_draw_1number 529.0 8@ 'DAY' 15@  // ~1~
+gosub @TextDrawRight     
+045A: text_draw_1number 545.0 8@ 'YEAR' 4@  // ~1~
+gosub @TextDrawRight        
+045A: text_draw_1number 555.0 8@ 'YEAR' 5@  // ~1~
+gosub @TextDrawRight 
+045A: text_draw_1number 565.0 8@ 'YEAR' 6@  // ~1~
+gosub @TextDrawRight              
+045A: text_draw_1number 575.0 8@ 'YEAR' 7@  // ~1~
+if 9@ == 0
+then
+  9@ = 12
+  jump @TimeCircuitsAMColon
+end
+if 9@ == 12
+then
+  jump @TimeCircuitsPMColon
+end
+if 9@ > 12
+then
+  9@ -= 12
+  jump @TimeCircuitsPMColon
+end
+jump @TimeCircuitsAMColon
+
+:TimeCircuitsPMColon
+gosub @TimeCircuitsHourDraw 
+gosub @TextDraw 
+if 
+   not 16@ > 500 // integer values 
+then
+033E: text_draw 581.5 8@ 'PM'  // .    :
+else
+033E: text_draw 581.5 8@ 'PM1'  // .
+end
+jump @TimeCircuitsDisplayEnd 
+
+:TimeCircuitsAMColon
+gosub @TimeCircuitsHourDraw 
+gosub @TextDraw 
+if 
+   not 16@ > 500 // integer values 
+then
+033E: text_draw 581.5 8@ 'AM'  // ?    :
+else
+033E: text_draw 581.5 8@ 'AM1'  // ? 
+end
+jump @TimeCircuitsDisplayEnd 
+
+:TimeCircuitsHourDraw
+//Hour
+0085: 10@ = 9@
+9@ /= 10
+9@ *= 10
+0062: 10@ -= 9@
+9@ /= 10
+gosub @TextDrawRight 
+045A: text_draw_1number 599.5 8@ 'HOUR1' 9@  // ~1~
+gosub @TextDrawRight 
+045A: text_draw_1number 610.5 8@ 'HOUR1' 10@  // ~1~
+if 
+  16@ > 999 // integer values 
+then
+  16@ = 0 // integer values
+end 
+gosub @TextDrawRight 
+045A: text_draw_1number 624.5 8@ 'MINUTE' 11@  // ~1~
+gosub @TextDrawRight 
+045A: text_draw_1number 634.5 8@ 'MINUTE' 12@  // ~1~
+
+:TimeCircuitsPointer
+//033E: text_draw $POSX $POSY 'POINTER'  // .
+return 
+
+:TimeCircuitsMonth
+gosub @TextDraw 
+
+:TimeCircuitsJan
+if 
+  13@ == 1 // integer values 
+jf @TimeCircuitsFeb 
+033E: text_draw 476.0 8@ 'MONTH01'  // Jan
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsFeb
+if 
+  13@ == 2 // integer values 
+jf @TimeCircuitsMar 
+033E: text_draw 476.0 8@ 'MONTH02'  // feb
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsMar
+if 
+  13@ == 3 // integer values 
+jf @TimeCircuitsApr 
+033E: text_draw 476.0 8@ 'MONTH03'  // mar
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsApr
+if 
+  13@ == 4 // integer values 
+jf @TimeCircuitsMay 
+033E: text_draw 476.0 8@ 'MONTH04'  // apr
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsMay
+if 
+  13@ == 5 // integer values 
+jf @TimeCircuitsJun 
+033E: text_draw 476.0 8@ 'MONTH05'  // may
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsJun
+if 
+  13@ == 6 // integer values 
+jf @TimeCircuitsJul 
+033E: text_draw 476.0 8@ 'MONTH06'  // Jun
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsJul
+if 
+  13@ == 7 // integer values 
+jf @TimeCircuitsAug 
+033E: text_draw 476.0 8@ 'MONTH07'  // Jul
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsAug
+if 
+  13@ == 8 // integer values 
+jf @TimeCircuitsSep 
+033E: text_draw 476.0 8@ 'MONTH08'  // aug
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsSep
+if 
+  13@ == 9 // integer values 
+jf @TimeCircuitsOct 
+033E: text_draw 476.0 8@ 'MONTH09'  // sep
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsOct
+if 
+  13@ == 10 // integer values 
+jf @TimeCircuitsNov 
+033E: text_draw 476.0 8@ 'MONTH10'  // oct
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsNov
+if 
+  13@ == 11 // integer values 
+jf @TimeCircuitsDec 
+033E: text_draw 476.0 8@ 'MONTH11'  // nov
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsDec
+if 
+  13@ == 12 // integer values 
+jf @TimeCircuitsErr
+033E: text_draw 476.0 8@ 'MONTH12'  // dec
+jump @TimeCircuitsMonthEnd 
+
+:TimeCircuitsErr
+033E: text_draw 486.0 8@ 'ERR'  // dec
+
+:TimeCircuitsMonthEnd
+gosub @TextDraw 
+return 
+
+:TimeCircuitsDisplayEnd
+return 

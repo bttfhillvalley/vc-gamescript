@@ -1,0 +1,44 @@
+objs
+;cant delete for some reason
+584, Esc_step, escstep, 1, 15, 128
+
+;needed
+337, Money, generic, 1, 40, 128
+365, info, icons6, 1, 100, 128
+366, health, icons5, 1, 100, 128
+367, adrenaline, icons8, 1, 100, 128
+368, bodyarmour, icons7, 1, 100, 128
+375, bribe, icons9, 1, 100, 128
+376, bonus, bonus, 1, 100, 128
+382, camerapickup, icons, 1, 100, 128
+383, killfrenzy, icons, 1, 100, 128
+406, property_locked, icons4, 1, 100, 128
+407, property_fsale, icons3, 1, 100, 128
+408, bigdollar, icons2, 1, 100, 128
+409, clothesp, icons1, 1, 100, 128
+410, package1, package1, 1, 35, 0
+411, pickupsave, icons4, 1, 100, 160
+431, craigpackage, craigpackage, 1, 80, 0
+432, pickupmusic, icons4, 1, 100, 128
+508, keycard, dyn_keycard, 1, 40, 128
+526, beachball, beachball, 1, 50, 128
+527, fish1single, fish1, 1, 50, 132
+528, fish2single, fish2, 1, 50, 132
+529, fish3s, fish3, 1, 50, 132
+530, jellyfish, jellyfish1, 1, 50, 140
+531, jellyfish01, jellyfish2, 1, 50, 140
+532, fish3single, fish3, 1, 50, 132
+533, fish1s, fish1, 1, 50, 132
+534, fish2s, fish2, 1, 50, 132
+535, dolphin, dolphin, 1, 50, 128
+536, shark, shark, 1, 50, 128
+537, turtle, turtle, 1, 40, 128
+564, rcbomb, rcbomb, 1, 100, 128
+600, Gasgrenade, gasgren, 1, 50, 0
+end
+tobj
+end
+path
+end
+2dfx
+end

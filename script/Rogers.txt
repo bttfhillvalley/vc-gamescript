@@ -1,0 +1,527 @@
+:Rogers
+00D7: create_thread @RogersSpawn without_parameters 
+00D7: create_thread @RailroadDelorean without_parameters 
+end_thread
+
+:RogersSpawn
+thread 'ROGERS' 
+
+:RogersStart
+wait 100
+if
+   Player.Defined($PLAYER_CHAR)
+jf @RogersStart
+if
+  car.wrecked($ROGERS)
+then
+  $ROGERS_CREATE = 0
+end
+if and
+  $CYEAR < 1800
+  $ROGERS_CREATE == 1
+then
+  $ROGERS_CREATE = 0
+  Car.Destroy($ROGERS)
+end
+if and
+  $ROGERS_CREATE == 0
+  $CYEAR >= 1800
+  //0056:   player $PLAYER_CHAR 0 -897.126 -1567.59  -1827.32 -759.467
+jf @RogersStart
+Model.Load(#PACKER)
+
+:RogersCreate
+wait 10 
+if 
+   Model.Available(#PACKER)
+jf @RogersCreate 
+$RTIRES = 0
+0506: vehicle_model #PACKER set_next_variation $RTIRES -1 
+$ROGERS = Car.Create(#PACKER, -19.8329, -1098.9350, 11.7884)
+Car.Angle($ROGERS) = 0.0
+053F: set_car $ROGERS tires_vulnerable 0 
+Model.Destroy(#PACKER)
+create_thread @RogersConv $ROGERS 
+create_thread @RogersWheel $ROGERS 
+create_thread @RogersTires $ROGERS
+create_thread @RogersEffects $ROGERS
+$ROGERS_CREATE = 1 // integer values 
+jump @RogersStart
+
+:RogersConv
+wait 10 
+$X_OFFSET_R = 0.0 // floating-point values 
+$Y_OFFSET_R = 0.0 // floating-point values 
+$Z_OFFSET_R = 0.0 // floating-point values 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 0.0 
+
+:RogersConvStart
+wait 10 
+if 
+   not Car.Wrecked(0@)
+jf @RogersConvEnd 
+0407: create_coordinate $X_OFFSET_R $Y_OFFSET_R $Z_OFFSET_R from_car 0@ offset 0.0 0.0 0.0 
+0067: $X_OFFSET_R -= 1@ // floating-point values 
+0067: $Y_OFFSET_R -= 2@ // floating-point values 
+0067: $Z_OFFSET_R -= 3@ // floating-point values 
+005D: 1@ += $X_OFFSET_R // floating-point values (never used in VC or GTA 3) 
+005D: 2@ += $Y_OFFSET_R // floating-point values (never used in VC or GTA 3) 
+005D: 3@ += $Z_OFFSET_R // floating-point values (never used in VC or GTA 3) 
+jump @RogersConvStart
+
+:RogersConvEnd
+end_thread 
+
+:RogersConvOffset	
+0407: create_coordinate $X_POS_R $Y_POS_R $Z_POS_R from_car 0@ offset $X_POS_R $Y_POS_R $Z_POS_R 
+0059: $X_POS_R += $X_OFFSET_R // floating-point values 
+0059: $Y_POS_R += $Y_OFFSET_R // floating-point values 
+0059: $Z_POS_R += $Z_OFFSET_R // floating-point values 
+return 
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// The actual thread that handles all the animations.  The wheels and rods were taken from the 
+// JVT with some modifications (The rods here are MUCH easier to code then the JVT's)
+// The rest of the stuff is scratch
+:RogersWheel
+thread 'WHEEL_R' 
+
+:RogersWheelBegin
+wait 10 
+if 
+   not Car.Wrecked(0@)
+jf @RogersWheelEnd 
+10@ = 1
+15@ = 0.0 // floating-point values 
+$FRONTWHEEL = Object.Create(#ROG_WHEEL1, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($FRONTWHEEL) = False
+$MIDDLEWHEEL = Object.Create(#ROG_WHEEL2, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($MIDDLEWHEEL) = False
+$BACKWHEEL = Object.Create(#ROG_WHEEL1, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($BACKWHEEL) = False
+$RODS = Object.Create(#ROG_RODS, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($RODS) = False
+$PRODS = Object.Create(#ROG_PRODS, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($PRODS) = False
+$PISTONS = Object.Create(#ROG_PISTONS, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($PISTONS) = False
+$LEV = Object.Create(#ROG_LEV_VALVES, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($LEV) = False
+$VALVES = Object.Create(#ROG_VALVES, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($VALVES) = False	
+$VPIST = Object.Create(#ROG_VALVES_PIST, 0.0, 0.0, 1000.0)
+Object.ToggleInMovingList($VPIST) = False
+jump @RogersWheelStart 
+
+:RogersWheelSetup
+wait 10 
+if 
+   not Car.Wrecked(0@)
+jf @RogersWheelEnd 
+
+:RogersWheelStart
+gosub @ObjectAngle 
+0063: 7@ -= 15@ // floating-point values (never used in VC or GTA 3)
+//wheels							   
+4@ += 90.0 // floating-point values 
+$X_POS_R = 0.0 // floating-point values 
+$Y_POS_R = 5.325 // floating-point values 
+$Z_POS_R = -0.433 // floating-point values 
+gosub @RogersConvOffset 
+01BC: put_object $FRONTWHEEL at $X_POS_R $Y_POS_R $Z_POS_R 
+0453: object $FRONTWHEEL set_rotation 8@ 7@ 4@ 
+$X_POS_R = 0.0 // floating-point values 
+$Y_POS_R = 3.489 // floating-point values 
+$Z_POS_R = -0.433 // floating-point values 
+gosub @RogersConvOffset 
+01BC: put_object $MIDDLEWHEEL at $X_POS_R $Y_POS_R $Z_POS_R 
+0453: object $MIDDLEWHEEL set_rotation 8@ 7@  4@ 
+$X_POS_R = 0.0 // floating-point values 
+$Y_POS_R = 0.397 // floating-point values 
+$Z_POS_R = -0.433 // floating-point values 
+gosub @RogersConvOffset 
+01BC: put_object $BACKWHEEL at $X_POS_R $Y_POS_R $Z_POS_R 
+0453: object $BACKWHEEL set_rotation 8@ 7@ 4@ 
+
+005b: 7@ += 15@ // floating-point values (never used in VC or GTA 3)  
+
+//rods 
+02F7: 2@ = sinus 15@ // cosine swapped with sinus 
+2@ *= -0.397 // floating-point values (never used in VC or GTA 3) 
+2@ += 3.489 // floating-point values 
+02F6: 3@ = cosine 15@ // sinus swapped with cosine 
+3@ *= -0.397 // floating-point values (never used in VC or GTA 3) 
+3@ -= 0.433 // floating-point values 
+1@ = -0.433 // floating-point values 
+0063: 1@ -= 3@ // floating-point values (never used in VC or GTA 3)  
+1@ *= 19.70974 // floating-point values (never used in VC or GTA 3) 
+$X_POS_R = 0.0 // floating-point values 
+0088: $Y_POS_R = 2@ // floating-point values only 
+0088: $Z_POS_R = 3@ // floating-point values only 
+gosub @RogersConvOffset 
+01BC: put_object $RODS at $X_POS_R $Y_POS_R $Z_POS_R 
+0011: 7@ *= -1.0 // floating-point values
+0453: object $RODS set_rotation 8@ 7@ 4@ 
+01BC: put_object $PRODS at $X_POS_R $Y_POS_R $Z_POS_R 
+0063: 7@ -= 1@ // floating-point values (never used in VC or GTA 3) 
+0453: object $PRODS set_rotation 8@ 7@ 4@ 
+005b: 7@ += 1@ // floating-point values (never used in VC or GTA 3) 
+//0011: 7@ *= -1.0 // floating-point values
+
+//piston
+$X_POS_R = 0.0
+0088: $Y_POS_R = 2@
+$Y_POS_R += 2.934
+$Z_POS_R = -0.219
+gosub @RogersConvOffset 
+01BC: put_object $PISTONS at $X_POS_R $Y_POS_R $Z_POS_R 
+0453: object $PISTONS set_rotation 8@ 7@ 4@ 
+
+//lev valves
+12@ = 3.489
+0063: 12@ -= 2@
+12@ *= -28.647889
+$X_POS_R = 0.0
+$Y_POS_R = 6.273
+$Z_POS_R = -0.164
+gosub @RogersConvOffset 
+01BC: put_object $LEV at $X_POS_R $Y_POS_R $Z_POS_R 
+0063: 7@ -= 12@
+0453: object $LEV set_rotation 8@ 7@ 4@ 
+005b: 7@ += 12@		 
+
+//valve pistons
+$X_POS_R = 0.0
+$Y_POS_R = 3.489
+0063: $Y_POS_R -= 2@ // floating-point values only 
+$Y_POS_R *= 0.2
+$Y_POS_R += 7.25467
+$Z_POS_R = 0.261	  
+gosub @RogersConvOffset 
+01BC: put_object $VPIST at $X_POS_R $Y_POS_R $Z_POS_R 
+0453: object $VPIST set_rotation 8@ 7@ 4@ 
+
+//valves
+0087: 13@ = 12@ // floating-point values only
+13@ *= 0.0174532925
+13@ *= 56.5
+13@ += 72.03
+02F7: 2@ = sinus 13@ // sinus swapped with cosine 
+2@ *= 0.445
+2@ += 6.273
+02F6: 3@ = cosine 13@ // cosine swapped with sinus 
+3@ *= 0.445
+3@ -= 0.164
+
+0087: 14@ = 12@
+14@ *= 0.0174532925
+14@ *= 15.0
+14@ -= 150.0
+02F7: 11@ = sinus 14@ // cosine swapped with sinus
+11@ += 0.6925
+11@ += 0.164			   
+11@ /= 0.0174532925 
+
+$X_POS_R = 0.0
+0088: $Y_POS_R = 2@ // floating-point values only
+0088: $Z_POS_R = 3@ // floating-point values only 
+gosub @RogersConvOffset 
+01BC: put_object $VALVES at $X_POS_R $Y_POS_R $Z_POS_R 
+005b: 7@ += 11@
+0453: object $VALVES set_rotation 8@ 7@ 4@ 
+0063: 7@ -= 11@  
+4@ -= 90.0 // floating-point values   
+0011: 7@ *= -1.0 // floating-point values
+
+//wheel direction
+0089: 12@ = $X_OFFSET_R // floating-point values only 
+0069: 12@ *= $X_OFFSET_R // floating-point values 
+0089: 13@ = $Y_OFFSET_R // floating-point values only 
+0069: 13@ *= $Y_OFFSET_R // floating-point values 
+0089: 14@ = $Z_OFFSET_R // floating-point values only 
+0069: 14@ *= $Z_OFFSET_R // floating-point values 
+005B: 12@ += 13@ // floating-point values (never used in VC or GTA 3) 
+005B: 12@ += 14@ // floating-point values (never used in VC or GTA 3) 
+01FB: 12@ = square_root 12@ 
+12@ *= -30.0 // floating-point values (never used in VC or GTA 3)  
+if and
+   not 4@ > 45.0 // floating-point values 
+   not $Y_OFFSET_R > 0.0 // floating-point values 
+jf @RogersWheelA
+12@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @RogersWheelRotate  
+
+:RogersWheelA
+if and
+  4@ > 45.0 // floating-point values 
+   not 4@ > 135.0 // floating-point values 
+  $X_OFFSET_R >= 0.0 // floating-point values 
+jf @RogersWheelB 
+12@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @RogersWheelRotate  
+
+:RogersWheelB
+if and
+  4@ == 90.0
+  $X_OFFSET_R < 0.0
+jf @RogersWheelC
+12@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @RogersWheelRotate  
+
+:RogersWheelC
+if and
+  4@ > 135.0 // floating-point values 
+   not 4@ > 225.0 // floating-point values 
+  $Y_OFFSET_R >= 0.0 // floating-point values 
+jf @RogersWheelD 
+12@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @RogersWheelRotate 
+
+:RogersWheelD
+if and
+  4@ > 225.0 // floating-point values 
+   not 4@ > 315.0 // floating-point values 
+   not $X_OFFSET_R > 0.0 // floating-point values 
+jf @RogersWheelE
+12@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @RogersWheelRotate  
+
+:RogersWheelE
+if and
+  4@ > 315.0 // floating-point values 
+   not $Y_OFFSET_R > 0.0 // floating-point values 
+jf @RogersWheelRotate 
+12@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @RogersWheelRotate 
+
+:RogersWheelRotate
+005B: 15@ += 12@ // floating-point values (never used in VC or GTA 3) 
+
+:RogersWheelResetRotation
+while 15@ > 180.0
+  15@ -= 360.0
+end
+while 15@ < -180.0
+  15@ += 360.0
+end 
+008C: $ROGERS_CHUG = float_to_integer 15@
+jump @RogersWheelSetup
+
+:RogersWheelEnd
+gosub @RogersWheelDestroy 
+if 
+   Car.Wrecked(0@)
+jf @RogersWheelBegin 
+end_thread 
+
+:RogersWheelDestroy
+Object.Destroy($FRONTWHEEL)
+Object.Destroy($MIDDLEWHEEL)
+Object.Destroy($BACKWHEEL)
+Object.Destroy($RODS)
+Object.Destroy($PRODS)
+Object.Destroy($PISTONS)
+Object.Destroy($LEV)
+Object.Destroy($VALVES)
+Object.Destroy($VPIST)
+return
+
+/*:RogersPlayChug
+while 83D0: not wav 2 loaded
+  wait 0
+end
+03D1: play_wav 2
+return*/
+
+:RogersTires
+thread 'RTIRES'
+
+:RogersTiresStart
+wait 100
+if
+   Player.Defined($PLAYER_CHAR)
+jf @RogersTiresStart
+if
+  not Car.Wrecked($ROGERS)
+jf @RogersTiresEnd
+0407: create_coordinate 1@ 2@ 3@ from_car $ROGERS offset 0.0 11.0 -1.45 
+if and
+00E1: key_pressed 0 4 
+00F6: player $PLAYER_CHAR 0 1@ 2@ 3@ radius 0.75 0.75 2.0 
+jf @RogersTiresStart
+0004: $CONNECTED = 0 // integer values 
+if
+0038:   $RTIRES == 0 // integer values 
+jf @RogersTiresAdd
+0004: $RTIRES = -1 // integer values
+jump @RogersTiresLoadModel
+
+:RogersTiresAdd
+0004: $RTIRES = 0 // integer values 
+
+:RogersTiresLoadModel
+Model.Load(#PACKER)
+
+:RogersTiresCreateModel
+wait 10 
+if 
+   Model.Available(#PACKER)
+jf @RogersTiresCreateModel 
+0407: create_coordinate 1@ 2@ 3@ from_car $ROGERS offset 0.0 0.0 -1.45 
+4@ = Car.Angle($ROGERS)
+Car.Destroy($ROGERS)
+0506: vehicle_model 173 set_next_variation $RTIRES -1 
+$ROGERS = Car.Create(#PACKER, 1@, 2@, 3@)
+Car.Angle($ROGERS) = 4@
+053F: set_car $ROGERS tires_vulnerable 0 
+Model.Destroy(#PACKER)
+wait 10
+create_thread @RogersConv $ROGERS 
+create_thread @RogersWheel $ROGERS 
+jump @RogersTiresStart		   
+
+:RogersTiresEnd
+end_thread
+
+:RogersEffects
+thread "RSTEAM"
+
+:RogersEffectsStart
+wait 0
+if
+  Player.Defined($PLAYER_CHAR)
+jf @RogersEffectsStart
+if
+  not Car.Wrecked(0@)
+jf @RogersEffectsEnd
+02E3: 1@ = car 0@ speed
+if
+  1@ > 0.0
+jf @RogersEffectsStart 
+jump @RogersEffectsStart
+
+:RogersEffectsEnd
+end_thread
+
+:RailroadDelorean
+thread 'BTTF3' 
+
+:RailroadDeloreanStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @RailroadDeloreanStart 
+if 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS 
+else_jump @RailroadDeloreanStart 
+if 
+   not Car.Wrecked($ROGERS)
+else_jump @RailroadDeloreanStart 
+if and
+   Car.Model($ROGERS) == #PACKER
+0038:   $RTIRES == 0 // integer values 
+else_jump @RailroadDeloreanStart 
+03C1: 0@ = player $PLAYER_CHAR car 
+0407: create_coordinate 1@ 2@ 3@ from_car $ROGERS offset 0.0 14.25 -1.35 
+4@ = Car.Angle($ROGERS)
+5@ = Car.Angle(0@)
+0087: 6@ = 4@ // floating-point values only 
+0087: 7@ = 4@ // floating-point values only 
+6@ -= 10.0 // floating-point values 
+7@ += 10.0 // floating-point values     
+if and
+01B0:   car 0@ stopped 0 1@ 2@ 3@ radius 2.0 2.0 2.0 
+0024:   5@ > 6@ // floating-point values only 
+8024:   not  5@ > 7@ // floating-point values only 
+00E1:   key_pressed 0 2 
+else_jump @RailroadDeloreanStart 
+16@ = 0 // integer values 
+10@ = 0 // integer values 
+$RC_ROG = 0 // integer values 
+11@ = 0.0 // floating-point values
+$CONNECTED = 1 
+
+:RailroadDeloreanConnect
+wait 10 
+if 
+  $TRAVEL == 0 // integer values 
+else_jump @RailroadDeloreanFadeCheck 
+if 
+   not Car.Wrecked(0@)
+else_jump @RailroadDeloreanReset 
+if or
+   not 16@ > 100 // integer values 
+80E1:   not key_pressed 0 2 
+else_jump @RailroadDeloreanStart 
+if 
+00E1:   key_pressed 0 18 
+else_jump @RailroadDeloreanSpeedLimit 
+10@ = 1 // integer values 
+$RC_ROG = 1 // integer values       
+$LOG = 0
+
+:RailroadDeloreanSpeedLimit
+if 
+  10@ == 1 // integer values 
+else_jump @RailroadDeloreanCheckConnected 
+11@ += 0.1 // floating-point values 
+if 
+  11@ > 65.0 // floating-point values 
+else_jump @RailroadDeloreanSetSpeed 
+11@ = 65.0 // floating-point values 
+
+:RailroadDeloreanSetSpeed
+04BA: set_car $ROGERS speed_instantly 11@ 
+0407: create_coordinate 1@ 2@ 3@ from_car $ROGERS offset 0.0 0.0 -2.0
+02CE: 4@ = ground_z 1@ 2@ 5000.0
+4@ += 1.0 // floating-point values only
+if or
+0024:   3@ > 4@ // floating-point values only 
+018F:   vehicle 0@ flipped
+0119:   car 0@ wrecked 
+else_jump @RailroadDeloreanCheckConnected 
+10@ = 0 // integer values 
+$RC_ROG = 0 // integer values 
+$CONNECTED = 0
+jump @RailroadDeloreanStart 
+
+:RailroadDeloreanCheckConnected
+if
+   $CONNECTED == 0
+else_jump @RailroadDeloreanTimeTravel 
+10@ = 0 // integer values 
+$RC_ROG = 0 // integer values 
+$CONNECTED = 0
+jump @RailroadDeloreanStart 
+
+:RailroadDeloreanTimeTravel
+0407: create_coordinate 1@ 2@ 3@ from_car $ROGERS offset 0.0 13.2 -1.2 
+4@ = Car.Angle($ROGERS)
+02E3: 5@ = car $ROGERS speed 
+Car.PutAt(0@, 1@, 2@, 3@)
+Car.Angle(0@) = 4@
+5@ *= 1.19 // floating-point values (never used in VC or GTA 3) 
+04BA: set_car 0@ speed_instantly 5@ 
+jump @RailroadDeloreanConnect 
+
+:RailroadDeloreanFadeCheck
+wait 10 
+if 
+  $FADE == 1 // integer values 
+else_jump @RailroadDeloreanFadeCheck 
+$CONNECTED = 0
+
+:RailroadDeloreanPositionRogers
+wait 10 
+if 
+  $FADE == 0 // integer values 
+else_jump @RailroadDeloreanPositionRogers 
+if 
+   not Car.Wrecked($ROGERS)
+else_jump @RailroadDeloreanReset 
+Car.PutAt($ROGERS, -19.8329, -1098.9350, 11.7884)
+Car.Angle($ROGERS) = 0.0
+
+:RailroadDeloreanReset
+$RC_ROG = 0 // integer values 
+jump @RailroadDeloreanStart

@@ -1,0 +1,73 @@
+:date_check_start
+wait 0
+3FFF: remove_build "55lyon" amnt 4 
+3FFF: remove_build "farm" amnt 17
+3FFF: remove_build "1985" amnt 7
+3FFF: remove_build "2015" amnt 7
+3FFF: remove_build "85mall" amnt 90
+
+:date_check
+if 
+   $CYEAR < 1980
+then
+3FFE: add_build "55lyon" amnt 4
+3FFE: add_build "farm" amnt 17 
+   jump @wait_to_leave_1955
+else if 
+   $CYEAR >= 2010
+then
+   3FFE: add_build "2015" amnt 7   
+   jump @wait_to_leave_2015
+else
+   3FFE: add_build "1985" amnt 7
+   3FFE: add_build "85mall" amnt 90
+   create_thread @canopener
+   jump @wait_to_leave_1985
+end
+end
+ 
+:wait_to_leave_1955
+wait 0
+if 
+  $CYEAR >= 1980 // We traveled to the present/future
+jf @wait_to_leave_1955
+3FFF: remove_build "55lyon" amnt 4 
+3FFF: remove_build "farm" amnt 17
+jump @date_check
+ 
+:wait_to_leave_1985
+wait 0
+if or
+  $CYEAR < 1980 // We traveled back to the past
+  $CYEAR >= 2010 // We traveled to the future
+jf @wait_to_leave_1985
+3FFF: remove_build "1985" amnt 7
+3FFF: remove_build "85mall" amnt 90
+end_thread_named 'canopn'
+0108: destroy_object $dogfoodbase
+0108: destroy_object $dogfoodarm
+0108: destroy_object $dogfoodclaw
+0108: destroy_object $dogfoodcan 
+0108: destroy_object $dogfoodcan1
+0108: destroy_object $dogfoodcan2
+0108: destroy_object $garagetoast1
+0108: destroy_object $garagetoast2
+0108: destroy_object $timerpart1
+0108: destroy_object $timerpart3
+0108: destroy_object $timerpart2
+0108: destroy_object $garageclockswitch
+0108: destroy_object $garagelightswitch
+0108: destroy_object $dogfoodpile
+0108: destroy_object $dogemptycan
+0108: destroy_object $dogfoodfull
+0108: destroy_object $dogfoodspin                                                    
+0215: destroy_pickup $docscamera
+jump @date_check
+ 
+:wait_to_leave_2015
+wait 0
+if 
+  $CYEAR < 2010 // We traveled to the past/present
+jf @wait_to_leave_2015
+3FFF: remove_build "2015" amnt 7
+jump @date_check  

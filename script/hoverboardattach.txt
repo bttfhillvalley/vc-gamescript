@@ -1,0 +1,47 @@
+:Board
+thread 'BOARD' 
+
+:BoardStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @BoardStart 
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #FAGGIO 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #PIZZABOY 
+jf @BoardStart 
+03C1: 0@ = player $PLAYER_CHAR car 
+if 
+00E1:   key_pressed 0 2 
+jf @BoardStart 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -5.0 1.5 0.0 
+0407: create_coordinate 4@ 5@ 6@ from_car 0@ offset 5.0 7.5 0.0 
+053E: 10@ = get_random_car_with_actors -1 in_area 1@ 2@ 4@ 5@ 
+if and
+   not Car.Wrecked(10@)
+80DC:   not player $PLAYER_CHAR driving 10@ 
+jf @BoardStart 
+0407: create_coordinate 1@ 2@ 3@ from_car 10@ offset 0.0 -4.5 0.0 
+if 
+00F5:   player $PLAYER_CHAR 0 1@ 2@ 3@ radius 2.0 2.0 2.0 
+jf @BoardStart 
+
+:BoardHitch
+wait 10 
+if and
+80E1:   not key_pressed 0 3 
+00E0:   player $PLAYER_CHAR driving 
+   not Car.Wrecked(0@)
+   not Car.Wrecked(10@)
+jf @BoardRelease 
+0407: create_coordinate 1@ 2@ 3@ from_car 10@ offset 0.0 -4.5 0.0 
+02CE: 3@ = ground_z 1@ 2@ 3@ 
+4@ = Car.Angle(10@)
+Car.PutAt(0@, 1@, 2@, 3@)
+Car.Angle(0@) = 4@
+jump @BoardHitch 
+
+:BoardRelease
+02E3: 5@ = car 10@ speed 
+04BA: set_car 0@ speed_instantly 5@ 
+jump @BoardStart 

@@ -1,0 +1,112 @@
+objs
+5054, courtyard1955, courtyard1955, 1, 600, 13
+5163, LODcktower1955, LODcktower1955, 1, 1200, 0
+5055, clocktower1955, clocktower1955, 1, 600, 0
+5067, bank1955, bank1955, 1, 600, 0
+5069, realty1955, realty1955, 1, 600, 0
+5071, stationers1955, stationers1955, 1, 600, 0
+5072, elite1955, elite1955, 1, 600, 0
+5076, ruthfs1955, ruthfs1955, 1, 600, 0
+5077, statler1955, statler1955, 1, 600, 0
+5107, clockminhand, clocktower1955, 1, 600, 0
+5108, clockhourhand, clocktower1955, 1, 600, 0
+5165, LODrtyard1955, LODrtyard1955, 1, 1200, 0
+5166, LODk1955, LODk1955, 1, 1200, 0
+5173, LODlty1955, LODlty1955, 1, 1200, 0
+5176, LODhfs1955, LODhfs1955, 1, 1200, 0
+5177, LODtler1955, LODtler1955, 1, 1200, 0
+5181, delhook, delhook, 1, 100, 0
+5185, brokenledge1955, clocktower1955, 1, 600, 0
+5186, vane_ok1955, clocktower1955, 1, 600, 128
+5189, vane_dam1955, clocktower1955, 1, 600, 128
+5205, diner1955, diner1955, 1, 600, 12
+5208, dinerdrL1955, diner1955, 1, 600, 12
+5209, dinerdrR1955, diner1955, 1, 600, 12
+5212, LODer1955, diner1955, 1, 1200, 12
+5213, LODnst1955, mainst1955, 1, 600, 1
+5228, lawrence1955, lawrence1955, 1, 600, 0
+5229, LODrence1955, lawrence1955, 1, 1200, 0
+5230, squarestreets1955, squarestreets1955, 1, 600, 12
+5237, alleybar1955, alleybar1955, 1, 600, 0
+5238, LODeybar1955, alleybar1955, 1, 1200, 0
+5255, endblock_1955, endblock_1955, 1, 600, 0
+5256, LODblock_1955, endblock_1955, 1, 1200, 0
+5277, servicecenter1955, servicecenter1955, 1, 600, 13
+5282, HVSign, LionEstates, 1, 300, 0
+5283, LESign, LionEstates, 1, 300, 0
+5288, startline, startline, 1, 200, 128
+5284, endroad1955, endroad1955, 1, 300, 0
+5287, 55_downtownart, 55_downtown, 1, 300, 0
+5289, hvhigh, hvhigh, 1, 300, 0
+5290, roadhv, 1955grownd, 1, 300, 4
+5293, 55_bikeshop2, 55_bikeshop2, 1, 300, 1
+5294, 55_photography, 55_photography, 1, 300, 1
+5297, 55_lousback, 55_lousback, 1, 200, 1
+5298, 55_lousback2, 55_lousback2, 1, 200, 1
+5299, 55_lousback3, 55_lousback3, 1, 200, 1
+5300, 55_lousback4, 55_lousback4, 1, 200, 1
+5301, 55_lousback5, 55_lousback5, 1, 200, 1
+5302, 55_lousback6, 55_lousback6, 1, 200, 1
+5303, 55_nnwbldng_st, 55_nnwbldng_st, 1, 200, 1
+5304, 55_bench, 55_bench, 1, 300, 1
+5307, textruck, textruck, 1, 300, 1
+6475, 55_bigsign, 55_bigsign, 1, 300, 1
+6476, 55_liqset2, 55_bigsign, 1, 300, 1
+
+end
+tobj
+5305, 55_bicycle, 55_bicycle, 1, 600, 20, 7, 19
+5306, 55_bicyclegroup, 55_bicyclegroup, 1, 600, 20, 7, 19
+5295, motel_p, motel_p, 1, 600, 20, 7, 19
+5296, motel_p_nt, motel_p, 1, 600, 6, 19, 7
+5285, endroad1955_d, 55_bigsign, 1, 600, 20, 7, 19
+5286, endroad1955_n, 55_bigsign, 1, 600, 6, 19, 7
+5206, dinersgn_dy1955, diner1955, 1, 600, 20, 7, 19
+5207, dinersgn_nt1955, diner1955, 1, 600, 6, 19, 7
+5210, diner_int1955, diner_int1955, 1, 600, 0, 7, 19
+5211, diner_intnt1955, diner_int1955, 1, 600, 0, 19, 7
+5090, foster_nt1955, foster1955, 1, 600, 6, 19, 7
+5068, foster1955, foster1955, 1, 600, 20, 7, 19
+5091, westernautos_nt1955, westernautos1955, 1, 600, 6, 19, 7
+5075, westernautos1955, westernautos1955, 1, 600, 20, 6, 19
+5092, zales_nt1955, zales1955, 1, 600, 6, 19, 7
+5070, zales1955, zales1955, 1, 600, 20, 7, 19
+5073, hvroof1955, hvroof1955, 1, 600, 20, 7, 19
+5093, hvroof_nt1955, hvroof1955, 1, 600, 6, 19, 7
+5074, bluebird1955, bluebird1955, 1, 600, 20, 7, 19
+5094, bluebird_nt1955, bluebird1955, 1, 600, 6, 19, 7
+5167, LODebird1955, LODebird1955, 1, 1200, 0, 7, 19
+5168, LODebird_nt1955, LODebird1955, 1, 1200, 0, 19, 7
+5169, LODoof1955, LODoof1955, 1, 1200, 0, 7, 19
+5170, LODoof_nt1955, LODoof1955, 1, 1200, 0, 19, 7
+5171, LODter1955, LODter1955, 1, 1200, 0, 7, 19
+5172, LODter_nt1955, LODter1955, 1, 0, 0, 19, 7
+5174, LODternautos1955, LODternautos1955, 1, 1200, 0, 7, 19
+5175, LODternautos_nt1955, LODternautos1955, 1, 1200, 0, 19, 7
+5187, clock1955, clocktower1955, 1, 600, 128, 7, 19
+5188, clock_nt1955, clocktower1955, 1, 600, 128, 19, 7
+5190, clockdam, clocktower1955, 1, 600, 128, 7, 19
+5191, clockdam_nt, clocktower1955, 1, 600, 128, 19, 7
+5214, texaco1955, texaco1955, 1, 600, 20, 7, 19
+5215, grgdoor_l_1955, texaco1955, 1, 600, 0, 7, 19
+5216, grgdoor_r_1955, texaco1955, 1, 600, 0, 7, 19
+5217, LODaco1955, texaco1955, 1, 1200, 12, 7, 19
+5220, texaco_nt1955, texaco1955, 1, 600, 12, 19, 7
+5065, LODaco_nt1955, texaco1955, 1, 600, 12, 19, 7
+5221, grgdoor_l_nt1955, texaco1955, 1, 600, 0, 19, 7
+5222, grgdoor_r_nt1955, texaco1955, 1, 600, 0, 19, 7
+5224, schwinn_dy_1955, schwinn_1955, 1, 600, 13, 7, 19
+5225, schwinn_nt_1955, schwinn_1955, 1, 600, 6, 19, 7
+5226, LODwinn_dy_1955, schwinn_1955, 1, 1200, 20, 7, 19
+5227, LODwinn_nt_1955, schwinn_1955, 1, 1200, 6, 19, 7
+5232, essex1955, essex1955, 1, 600, 20, 7, 19
+5234, essex_nt1955, essex1955, 1, 600, 20, 19, 7
+5235, LODex1955, essex1955, 1, 1200, 0, 7, 19
+5236, LODex_nt1955, essex1955, 1, 1200, 0, 19, 7
+5257, town1955, town1955, 1, 600, 20, 7, 19
+5258, LODn1955, town1955, 1, 1200, 20, 7, 19
+5259, town_nt1955, town1955, 1, 600, 13, 19, 7
+5260, LODn_nt1955, town1955, 1, 1200, 20, 19, 7
+end
+2dfx
+end

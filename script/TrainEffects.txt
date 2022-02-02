@@ -1,0 +1,671 @@
+:TrainGlow
+thread 'TGLOW' 
+11@ = 0.0 // floating-point values 
+12@ = 0.935 // floating-point values 
+13@ = -2.6 // floating-point values 
+
+:TrainGlowStart
+wait 10 
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @TrainGlowStart 
+if 
+  $TRAVEL == 0 // integer values 
+jf @TrainGlowStart
+if and
+    $RC_TRAIN == 1
+    not Car.Wrecked($TRAIN)
+then
+    008B: 0@ = $TRAIN // integer values and handles 
+    jump @TrainGlowOffset    
+end
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #MAVERICK 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS
+then
+    03C1: 0@ = player $PLAYER_CHAR car 
+    jump @TrainGlowOffset
+end
+
+if and
+    $RC_ROG == 1
+    not Car.Wrecked($ROGERS)
+then
+    008B: 0@ = $ROGERS // integer values and handles
+    jump @RogersOffset
+end
+if     
+00DE:   player $PLAYER_CHAR driving_vehicle_type #PACKER
+then
+    03C1: 0@ = player $PLAYER_CHAR car 
+    jump @RogersOffset
+end
+jump @TrainGlowStart 
+ 
+:RogersOffset
+0089: 4@ = $X_OFF // floating-point values only 
+0069: 4@ *= $X_OFF // floating-point values 
+0089: 5@ = $Y_OFF // floating-point values only 
+0069: 5@ *= $Y_OFF // floating-point values 
+005B: 4@ += 5@ // floating-point values (never used in VC or GTA 3) 
+01FB: 4@ = square_root 4@ 
+02E3: 9@ = car 0@ speed
+if and
+  9@ > 0.0
+  9@ < 8.5
+then 
+gosub @RogersSteam
+end
+gosub @TrainGlowDirection 
+gosub @RogersSmokestack
+jump @TrainGlowStart 
+
+:TrainGlowVehicle
+03C1: 0@ = player $PLAYER_CHAR car 
+
+:TrainGlowOffset
+1@ = 0.0 // floating-point values 
+2@ = -0.1 // floating-point values 
+3@ = 0.0 // floating-point values 
+0089: 4@ = $X_OFF // floating-point values only 
+0069: 4@ *= $X_OFF // floating-point values 
+0089: 5@ = $Y_OFF // floating-point values only 
+0069: 5@ *= $Y_OFF // floating-point values 
+005B: 4@ += 5@ // floating-point values (never used in VC or GTA 3) 
+01FB: 4@ = square_root 4@ 
+4@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+5@ = Car.Angle(0@)
+if and
+  5@ >= 0.0 // floating-point values (never used in VC or GTA 3) 
+   not 5@ >= 90.0 // floating-point values (never used in VC or GTA 3) 
+   not $X_OFF >= 0.0 // floating-point values 
+  $Y_OFF >= 0.0 // floating-point values 
+jf @TrainGlowQuadrant2 
+4@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @TrainGlowEffects 
+
+:TrainGlowQuadrant2
+if and
+  5@ >= 90.0 // floating-point values (never used in VC or GTA 3) 
+   not 5@ >= 180.0 // floating-point values (never used in VC or GTA 3) 
+   not $X_OFF >= 0.0 // floating-point values 
+   not $Y_OFF >= 0.0 // floating-point values 
+jf @TrainGlowQuadrant3 
+4@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @TrainGlowEffects 
+
+:TrainGlowQuadrant3
+if and
+  5@ >= 180.0 // floating-point values (never used in VC or GTA 3) 
+   not 5@ >= 270.0 // floating-point values (never used in VC or GTA 3) 
+  $X_OFF >= 0.0 // floating-point values 
+   not $Y_OFF >= 0.0 // floating-point values 
+jf @TrainGlowQuadrant4 
+4@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @TrainGlowEffects 
+
+:TrainGlowQuadrant4
+if and
+  5@ >= 270.0 // floating-point values (never used in VC or GTA 3) 
+   not 5@ >= 360.0 // floating-point values (never used in VC or GTA 3) 
+  $X_OFF >= 0.0 // floating-point values 
+  $Y_OFF >= 0.0 // floating-point values 
+jf @TrainGlowEffects 
+4@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+jump @TrainGlowEffects 
+
+:TrainGlowEffects
+gosub @ConversionOffset10 
+4@ -= 0.1 // floating-point values 
+gosub @TrainGlowDirection 
+4@ += 0.1 // floating-point values 
+gosub @TrainSteam 
+gosub @TrainGlowDirection 
+gosub @TrainSteamVehicle 
+gosub @TrainFluxSteam 
+0087: 10@ = 12@ // floating-point values only 
+if 
+  12@ > 4.35 // floating-point values 
+jf @TrainGlowCoil 
+0087: 9@ = 12@ // floating-point values only 
+9@ -= 4.35 // floating-point values 
+0069: 9@ *= 9@ // floating-point values 
+9@ /= 0.49 // floating-point values (never used in VC or GTA 3) 
+9@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+9@ += 1.0 // floating-point values 
+9@ *= 0.2025 // floating-point values (never used in VC or GTA 3) 
+01FB: 9@ = square_root 9@ 
+15@ = 0.0 // floating-point values 
+005B: 15@ += 9@ // floating-point values (never used in VC or GTA 3) 
+gosub @TrainGlowCoilEffect 
+jump @TrainGlowRearCoil 
+
+:TrainGlowCoil
+15@ = 0.45 // floating-point values 
+gosub @TrainGlowCoilEffect 
+
+:TrainGlowRearCoil
+0087: 10@ = 13@ // floating-point values only 
+if 
+  13@ > -3.1 // floating-point values 
+jf @TrainGlowRearCoilA 
+9@ = 1.45 // floating-point values 
+10@ = -3.1 // floating-point values 
+15@ = 0.0 // floating-point values 
+0063: 15@ -= 13@ // floating-point values (never used in VC or GTA 3) 
+15@ -= 3.2 // floating-point values 
+gosub @TrainGlowRearCoilEffect 
+jump @TrainGlowSpeedFactor 
+
+:TrainGlowRearCoilA
+if 
+  13@ > -10.5 // floating-point values 
+jf @TrainGlowRearCoilB 
+9@ = 1.45 // floating-point values 
+15@ = -0.1 // floating-point values 
+gosub @TrainGlowRearCoilEffect 
+jump @TrainGlowSpeedFactor 
+
+:TrainGlowRearCoilB
+10@ = -10.5 // floating-point values 
+0087: 9@ = 13@ // floating-point values only 
+9@ += 11.95 // floating-point values 
+15@ = -0.1 // floating-point values 
+gosub @TrainGlowRearCoilEffect 
+
+:TrainGlowSpeedFactor
+02E3: 9@ = car 0@ speed 
+9@ /= 150.0 // floating-point values (never used in VC or GTA 3) 
+9@ += 0.1 // floating-point values 
+005B: 12@ += 9@ // floating-point values (never used in VC or GTA 3) 
+9@ *= 2.25 // floating-point values (never used in VC or GTA 3) 
+0063: 13@ -= 9@ // floating-point values (never used in VC or GTA 3) 
+if 
+  12@ > 5.05 // floating-point values 
+jf @TrainGlowSpiral 
+12@ = 0.935 // floating-point values 
+13@ = -2.5 // floating-point values 
+
+:TrainGlowSpiral
+005D: 11@ += $SPIRAL // floating-point values (never used in VC or GTA 3) 
+02F7: 9@ = sinus 11@ // cosine swapped with sinus 
+02F6: 10@ = cosine 11@ // sinus swapped with cosine 
+0065: 11@ -= $SPIRAL // floating-point values (never used in VC or GTA 3) 
+9@ *= -0.37 // floating-point values (never used in VC or GTA 3) 
+10@ *= -0.37 // floating-point values (never used in VC or GTA 3) 
+10@ += 1.02 // floating-point values 
+0087: 6@ = 11@ // floating-point values only 
+6@ *= 49.0 // floating-point values (never used in VC or GTA 3) 
+6@ /= 90000.0 // floating-point values (never used in VC or GTA 3) 
+6@ += 1.96 // floating-point values 
+0087: 1@ = 9@ // floating-point values only 
+0087: 2@ = 10@ // floating-point values only 
+0087: 3@ = 6@ // floating-point values only 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 0.25 type 1 flare 0 RGB 250 100 75 
+11@ += 30.0 // floating-point values 
+if 
+  11@ > 1440.0 // floating-point values 
+jf @TrainGlowPistonSteam 
+11@ = 0.0 // floating-point values 
+
+:TrainGlowPistonSteam
+0209: 9@ = random_int 1 100 
+0208: 6@ = random_float 1.07 1.32 
+if or
+  9@ == 5 // integer values 
+  9@ == 55 // integer values 
+jf @TrainGlowPistonSteamA 
+10@ = 3.442 // floating-point values 
+jump @TrainGlowPistonSteamSide 
+
+:TrainGlowPistonSteamA
+if or
+  9@ == 10 // integer values 
+  9@ == 60 // integer values 
+jf @TrainGlowPistonSteamB 
+10@ = 3.625 // floating-point values 
+jump @TrainGlowPistonSteamSide 
+
+:TrainGlowPistonSteamB
+if or
+  9@ == 15 // integer values 
+  9@ == 65 // integer values 
+jf @TrainGlowPistonSteamC 
+10@ = 3.796 // floating-point values 
+jump @TrainGlowPistonSteamSide 
+
+:TrainGlowPistonSteamC
+if or
+  9@ == 20 // integer values 
+  9@ == 70 // integer values 
+jf @TrainGlowPistonSteamD 
+10@ = 4.011 // floating-point values 
+jump @TrainGlowPistonSteamSide 
+
+:TrainGlowPistonSteamD
+if or
+  9@ == 25 // integer values 
+  9@ == 75 // integer values 
+jf @TrainGlowPistonSteamE 
+10@ = 4.17 // floating-point values 
+jump @TrainGlowPistonSteamSide 
+
+:TrainGlowPistonSteamE
+if or
+  9@ == 30 // integer values 
+  9@ == 80 // integer values 
+jf @TrainGlowPistonSteamNone 
+10@ = 4.335 // floating-point values 
+jump @TrainGlowPistonSteamSide 
+
+:TrainGlowPistonSteamNone
+7@ = 0 // integer values 
+8@ = 0 // integer values 
+9@ = 0 // integer values 
+gosub @TrainGlowPistonSteamEffect 
+jump @TrainGlowDone 
+
+:TrainGlowPistonSteamSide
+5@ = -0.745 // floating-point values 
+if 
+  9@ > 50 // integer values 
+jf @TrainGlowPistonSteamCreate 
+5@ = 0.745 // floating-point values 
+
+:TrainGlowPistonSteamCreate
+gosub @TrainGlowPistonSteamColor 
+gosub @TrainGlowPistonSteamEffect 
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 0 
+
+:TrainGlowDone
+jump @TrainEffect 
+
+:TrainGlowDirection
+02F8: get_vehicle 0@ Z_angle_sine_to 7@ 
+02F9: get_vehicle 0@ Z_angle_cosine_to 8@ 
+0069: 7@ *= 4@ // floating-point values 
+0069: 8@ *= 4@ // floating-point values 
+7@ /= 2.0 // floating-point values (never used in VC or GTA 3) 
+8@ /= 2.0 // floating-point values (never used in VC or GTA 3) 
+7@ *= 1.25 // floating-point values (never used in VC or GTA 3) 
+8@ *= 1.25 // floating-point values (never used in VC or GTA 3) 
+return 
+
+:TrainGlowCoilEffect
+1@ = -1.215 // floating-point values 
+0087: 2@ = 10@ // floating-point values only 
+0087: 3@ = 15@ // floating-point values only 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+1@ = 1.215 // floating-point values 
+0087: 2@ = 10@ // floating-point values only 
+0087: 3@ = 15@ // floating-point values only 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+return 
+
+:TrainGlowRearCoilEffect
+0087: 1@ = 9@ // floating-point values only 
+0087: 2@ = 10@ // floating-point values only 
+0087: 3@ = 15@ // floating-point values only 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+9@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+0087: 1@ = 9@ // floating-point values only 
+0087: 2@ = 10@ // floating-point values only 
+0087: 3@ = 15@ // floating-point values only 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 0.5 type 1 flare 0 RGB $TR $TG $TB 
+9@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
+return 
+
+:TrainGlowPistonSteamEffect              
+0087: 1@ = 5@ // floating-point values only 
+0087: 2@ = 10@ // floating-point values only 
+0087: 3@ = 6@ // floating-point values only 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 0.5 type 1 flare 0 RGB 7@ 8@ 9@ 
+return 
+
+:TrainGlowPistonSteamColor
+7@ = 200 // integer values 
+8@ = 155 // integer values 
+9@ = 175 // integer values 
+return 
+
+:TrainSteam
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -1.7 6.2 -0.5 
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 7@ 8@ -0.05 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1.7 6.2 -0.5 
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 7@ 8@ -0.05 
+return
+
+:RogersSteam
+4@ -= 0.4 // floating-point values 
+9@ = Car.Angle(0@)
+9@ += 20.0
+gosub @RogersDirection  
+//left
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1.211 6.579 -0.357 
+0437: scatter_particle 33 0.5 at 1@ 2@ 3@ 7@ 8@ -0.05
+//right
+9@ -= 40.0
+gosub @RogersDirection     
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -1.211 6.579 -0.357 
+0437: scatter_particle 33 0.5 at 1@ 2@ 3@ 7@ 8@ -0.05
+4@ += 0.4 // floating-point values
+return
+
+:RogersSmokestack 
+02E3: 9@ = car 0@ speed 
+//9@ /= 30.0
+//9@ += 7.85
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 7.85 3.5
+if
+  $RC_ROG == 1
+then
+  if 
+    9@ > 38.2
+  then       
+    if
+      not $LOG == 3
+    then
+      020C: create_explosion_with_radius 1 at 1@ 2@ 3@
+      Car.Health(0@) = 250.0
+    end
+    $LOG = 3    
+    0437: scatter_particle 30 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1
+    0437: scatter_particle 30 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1 
+  else if 
+    9@ > 19.1
+  then      
+    $LOG = 2 
+    0437: scatter_particle 29 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1
+    0437: scatter_particle 29 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1 
+  else if
+    9@ > 13.7
+  then       
+    $LOG = 1
+    0437: scatter_particle 28 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1
+    0437: scatter_particle 28 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1 
+  else
+    0437: scatter_particle 31 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1
+    0437: scatter_particle 31 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1 
+  end
+  end
+  end 
+else
+    0437: scatter_particle 31 0.5 at 1@ 2@ 3@ 7@ 8@ 0.1
+
+    if
+      $ROGERS_PUFF > 0
+    then
+      0437: scatter_particle 57 0.5 at 1@ 2@ 3@ 7@ 8@ 0.2
+      0437: scatter_particle 57 0.5 at 1@ 2@ 3@ 7@ 8@ 0.2
+      0437: scatter_particle 57 0.5 at 1@ 2@ 3@ 7@ 8@ 0.2
+      0437: scatter_particle 57 0.5 at 1@ 2@ 3@ 7@ 8@ 0.2
+      $ROGERS_PUFF -= 1
+    end
+  end     
+return      
+
+:RogersDirection
+02F6: 7@ = cosine 9@ // sinus swapped with cosine 
+02F7: 8@ = sinus 9@ // cosine swapped with sinus 
+0069: 7@ *= 4@ // floating-point values 
+0069: 8@ *= 4@ // floating-point values
+7@ /= -2.0 // floating-point values (never used in VC or GTA 3) 
+8@ /= 2.0 // floating-point values (never used in VC or GTA 3) 
+7@ *= 1.5 // floating-point values (never used in VC or GTA 3) 
+8@ *= 1.5 // floating-point values (never used in VC or GTA 3) 
+return
+
+:TrainSteamVehicle
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -1.25 5.05 -0.1 
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 7@ 8@ -0.05 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1.25 5.05 -0.1 
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 7@ 8@ -0.05 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -1.5 -3.125 -0.8 
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 7@ 8@ -0.05 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1.5 -3.125 -0.8 
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 7@ 8@ -0.05 
+return 
+
+:TrainSteamPistons
+02E3: 6@ = car 0@ speed 
+6@ /= 20.0 // floating-point values (never used in VC or GTA 3) 
+6@ -= 0.4 // floating-point values 
+4@ = Car.Angle(0@)
+02F7: 4@ = sinus 4@ // cosine swapped with sinus 
+//02F8: get_vehicle 0@ Z_angle_sine_to 4@ 
+02F6: 5@ = cosine 4@ // sinus swapped with cosine 
+//02F9: get_vehicle 0@ Z_angle_cosine_to 5@ 
+0011: 4@ *= 6@ // floating-point values  // Note: the incorrect math opcode was used here
+0011: 5@ *= 6@ // floating-point values  // Note: the incorrect math opcode was used here
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1.208 7.974 -0.786 
+0437: scatter_particle 28 0.5 at 1@ 2@ 3@ 4@ 5@ 0 
+02E3: 6@ = car 0@ speed 
+6@ /= 20.0 // floating-point values (never used in VC or GTA 3) 
+6@ -= 0.4 // floating-point values 
+4@ = Car.Angle(0@)
+4@ -= 90.0
+02F7: 4@ = sinus 4@ // cosine swapped with sinus 
+//02F8: get_vehicle 0@ Z_angle_sine_to 4@ 
+02F6: 5@ = cosine 4@ // sinus swapped with cosine 
+//02F9: get_vehicle 0@ Z_angle_cosine_to 5@ 
+0011: 4@ *= 6@ // floating-point values  // Note: the incorrect math opcode was used here
+0011: 5@ *= 6@ // floating-point values  // Note: the incorrect math opcode was used here
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -1.208 7.974 -0.786 
+0437: scatter_particle 33 0.5 at 1@ 2@ 3@ 4@ 5@ 0 
+return 
+
+:TrainFluxSteam
+0208: 1@ = random_float -0.25 0.25 
+0208: 2@ = random_float 7.0 7.4 
+0208: 3@ = random_float 1.8 2.3 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1@ 2@ 3@
+0437: scatter_particle 33 0.4 at 1@ 2@ 3@ 7@ 8@ 0 
+//0437: scatter_particle 83 0.4 at 1@ 2@ 3@ 7@ 8@ 0
+return 
+
+:TrainEffect
+if 
+  $FLY == 0 // integer values 
+jf @TrainEffectHover 
+if 
+   Car.Model(0@) == #MAVERICK
+jf @TrainGlowStart 
+Car.StorePos(0@, 1@, 2@, 3@)
+if 
+   not 3@ > 200.0 // floating-point values 
+jf @TrainEffectNoBoost 
+if 
+00E1:   key_pressed 0 6 
+jf @TrainEffectNoBoost 
+if and
+  $VSOUND == 0 // integer values 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectBoost 
+$VSOUND = 1 // integer values 
+040D: unload_wav 2 
+03CF: load_wav 'ASS_12' as 2 
+
+:TrainEffectBoost
+if and
+  $VSOUND == 1 // integer values 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectBoostSound 
+if 
+03D0:   wav 2 loaded 
+jf @TrainEffectBoostSound 
+$VSOUND = 2 // integer values 
+03D1: play_wav 2 
+17@ = 0 // integer values 
+
+:TrainEffectBoostSound
+if and
+  17@ > 2999 // integer values 
+   not 17@ > 3050 // integer values 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectBoostEffect 
+040D: unload_wav 2 
+
+:TrainEffectBoostEffect
+02E3: 4@ = car 0@ speed 
+4@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
+4@ -= 10.8 // floating-point values 
+02E3: 5@ = car 0@ speed 
+5@ /= -75.0 // floating-point values (never used in VC or GTA 3) 
+5@ += 2.5 // floating-point values 
+1@ = -0.668 // floating-point values 
+2@ = -10.8 // floating-point values 
+3@ = 2.8 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+1@ = 0.668 // floating-point values 
+2@ = -10.8 // floating-point values 
+3@ = 2.8 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+1@ = -0.668 // floating-point values 
+2@ = -10.95 // floating-point values 
+3@ = 0.4565 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+1@ = 0.668 // floating-point values 
+2@ = -10.95 // floating-point values 
+3@ = 0.4565 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+1@ = -0.668 // floating-point values 
+2@ = -11.15 // floating-point values 
+3@ = 2.033 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+1@ = 0.668 // floating-point values 
+2@ = -11.15 // floating-point values 
+3@ = 2.033 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+1@ = 0.668 // floating-point values 
+2@ = -11.165 // floating-point values 
+3@ = 1.2255 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+1@ = -0.668 // floating-point values 
+2@ = -11.165 // floating-point values 
+3@ = 1.2255 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 5@ type 1 flare 0 RGB 245 150 75 
+jump @TrainGlowStart 
+
+:TrainEffectHover
+if 
+  $LANDING == 0 // integer values 
+jf @TrainGlowStart 
+if 
+00E1:   key_pressed 0 16 
+jf @TrainEffectNoHover 
+$VSOUND = 0 // integer values 
+if and
+  $WSOUND == 0 // integer values 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectHoverSound 
+$WSOUND = 1 // integer values 
+040D: unload_wav 1 
+03CF: load_wav 'BURG_03' as 1 
+
+:TrainEffectHoverSound
+if and
+  $WSOUND == 1 // integer values 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectHoverUnloadSound 
+if 
+03D0:   wav 1 loaded 
+jf @TrainEffectHoverUnloadSound 
+$WSOUND = 2 // integer values 
+03D1: play_wav 1 
+17@ = 0 // integer values 
+
+:TrainEffectHoverUnloadSound
+if and
+  17@ > 1999 // integer values 
+   not 17@ > 2050 // integer values 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectHoverEffect 
+040D: unload_wav 1 
+
+:TrainEffectHoverEffect
+1@ = 0.0 // floating-point values 
+2@ = 7.3 // floating-point values 
+3@ = -1.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 3.6 // floating-point values 
+3@ = -1.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 0.2 // floating-point values 
+3@ = -1.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 7.3 // floating-point values 
+3@ = -2.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 3.6 // floating-point values 
+3@ = -2.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 0.2 // floating-point values 
+3@ = -2.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 7.3 // floating-point values 
+3@ = -3.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 3.6 // floating-point values 
+3@ = -3.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+1@ = 0.0 // floating-point values 
+2@ = 0.2 // floating-point values 
+3@ = -3.0 // floating-point values 
+gosub @ConversionOffset10 
+04D5: create_corona_at 1@ 2@ 3@ radius 2.0 type 1 flare 0 RGB 250 100 50 
+jump @TrainGlowStart 
+
+:TrainEffectNoBoost
+if or
+  $WSOUND > 0 // integer values 
+  $VSOUND > 0 // integer values 
+jf @TrainEffectResetFlags 
+if 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectResetFlags 
+040D: unload_wav 2 
+jump @TrainEffectResetFlags 
+
+:TrainEffectNoHover
+if or
+  $WSOUND > 0 // integer values 
+  $VSOUND > 0 // integer values 
+jf @TrainEffectResetFlags 
+if 
+  $TRAVEL == 0 // integer values 
+jf @TrainEffectResetFlags 
+040D: unload_wav 1 
+
+:TrainEffectResetFlags
+$WSOUND = 0 // integer values 
+$VSOUND = 0 // integer values 
+jump @TrainGlowStart 
