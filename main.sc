@@ -37,8 +37,8 @@ fade 0 0
 set_wb_check_to 0 
 00C0: set_current_time 8 0 
 0572: set_taxi_boost_jump 1           
-04E4: unknown_refresh_game_renderer_at 29.8682 -1048.8800 
-Camera.SetAtPos(-304.5, -561.1, 14.0)
+04E4: unknown_refresh_game_renderer_at 892.0571 -1136.9220
+Camera.SetAtPos(892.0571, -1136.9220, 10.2717)
 
 $PLAYER_CHAR = Player.Create(#NULL, 892.0571, -1136.9220, 10.2717) //mall
 //$PLAYER_CHAR = Player.Create(#NULL, -1116.9710, 699.6134, 15.1518) //garage
@@ -136,17 +136,15 @@ create_thread @TimeCircuitsModel                     //in car time circuits
 create_thread @CurrentTime                          //Present Time information
 create_thread @MemoryManipulation                  //The Keypad Core    
 create_thread @Display                            //keys for turning on/off speedometer and time circuits
-create_thread @HoverConversion                    // New Hover Conversion code
-create_thread @Thrust                            //Vent Boost
+//create_thread @HoverConversion                    // New Hover Conversion code
+//create_thread @Thrust                            //Vent Boost
 //create_thread @Hover                            //flying 2015 cars
-create_thread @RadioControl                    //RC Mode
+//create_thread @RadioControl                    //RC Mode
 create_thread @Shutdown                       //all the parts that move when exiting a DeLorean
-create_thread @otherShutdown                 //Exit Delorean Sound
-create_thread @GetPlutonium                 //Plutonium pickup and lybians
-create_thread @Garage                      //DeLorean Garage
+//create_thread @GetPlutonium                 //Plutonium pickup and lybians
+//create_thread @Garage                      //DeLorean Garage
 create_thread @DrawRefresh                //on screen text display rendering
 create_thread @Ignition                  //all the parts that move when entering a DeLorean
-create_thread @otherIgnition            //Enter Delorean Sound
 create_thread @Environment             //Weather, parked car and ped generators for time trave
 create_thread @HillValley             //Real Time Clock and courthouse spawner
 create_thread @Conversion            //Flying DeLorean and Train hover conversion animations

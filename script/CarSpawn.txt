@@ -1,27 +1,27 @@
 :CarSpawn
 thread 'CARSPWN'
-10@ = #INFERNUS 
+10@ = #INFERNUS
 
 :CarSpawnWait
 wait 0
-if 
+if
   $KEY == 46
 else_jump @CarSpawnWait
-Model.Load(10@) 
+Model.Load(10@)
 
 :CarSpawnStart
 wait 0
-if 
+if
    Model.Available(10@)
-else_jump @CarSpawnStart 
+else_jump @CarSpawnStart
 04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset 2.0 0.0 0.0
-0172: 4@ = actor $PLAYER_ACTOR z_angle 
+0172: 4@ = actor $PLAYER_ACTOR z_angle
 //0506: vehicle_model #INFERNUS set_next_variation -1 -1
 0@ = Car.Create(10@, 1@, 2@, 3@)
 0175: set_car 0@ z_angle_to 4@
-create_thread @Time 0@ 0 0 0 0 0 0 0 $CTIME $CTIME1 0 0 11121955 102204 -1 10000002
+create_thread @Time 0@ 0 0 0 0 0 0 0 0 0 10@ 0x4108 10261985 1000 -1 -1
 /*wait 1000
-3FF3: set car 0@ suspension 
+3FF3: set car 0@ suspension
 wait 1000
 
 04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset -2.0 0.0 0.0
@@ -39,5 +39,5 @@ wait 5000
 :CarSpawnWait1
 wait 0
 00BC: text_highpriority 'DEL0' 10 ms 1  // dmc12 deLoRean
-3FF3: set car 0@ suspension 
+3FF3: set car 0@ suspension
 jump @CarSpawnWait

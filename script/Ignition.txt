@@ -1,187 +1,88 @@
-:ignition
-thread 'IGNTN' 
+:Ignition
+thread 'IGNTN'
 
-:ignitionStart
-wait 10 
-if 
-   Player.Defined($PLAYER_CHAR)
-else_jump @ignitionStart 
-if 
-00E0:   player $PLAYER_CHAR driving 
-else_jump @ignitionStart 
-03C1: 0@ = player $PLAYER_CHAR car  
+// TODO:  This startup sequence needs to be redone
+// The oil pressure needle moves, but not the oil temp
+// Volts needle is oscillating too much
 
-:ignitionLoadSound
-wait 10 
-if 
-   Player.Defined($PLAYER_CHAR)
-else_jump @ignitionStart 
-if 
-00E0:   player $PLAYER_CHAR driving 
-else_jump @ignitionStart 
+:IgnitionStart
+wait 10
 if
-00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS //BTTF1 
-else_jump @ignitionWait 
-if 
-  $IGNITION == 0 // integer values 
-else_jump @ignitionWait 
+   Player.Defined($PLAYER_CHAR)
+else_jump @IgnitionStart
+if
+00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS //BTTF1
+else_jump @IgnitionStart
+03C1: 0@ = player $PLAYER_CHAR car
+040D: unload_wav 2
+03CF: load_wav 'BURG_02' as 2
+create_thread @PlaySound 2
 
-:ignitionemulatorstart
 //turn key
 wait 0
-gosub @ignitionemuatorinit
-gosub @ignitionemulatorvolts
-gosub @ignitionemulatorvolts
-gosub @ignitionemulatorvolts
-gosub @ignitionemulatorvoltcenter
-gosub @ignitionemulatoroildrop
-gosub @ignitionemulatorvolts
-gosub @ignitionemulatorvoltcenter
-gosub @ignitionemulatoroilcheck
-gosub @ignitionemulatorlightfinal
-gosub @ignitionemulatoroilfinal
+// Initialize dashboard
+3FFD: rotate_car_part "ignitionkey" angle 135.0 0.0 0.0 car 0@
+3FFD: rotate_car_part "ignition" angle 135.0 0.0 0.0 car 0@
+3FFD: rotate_car_part "oilneedle" angle 0.0 -30.0 0.0 car 0@  //warm main temp
+3FFB: set_car 0@ component "lambdalight" visible 0 //keep off
+3FFB: set_car 0@ component "fuellight" visible 0   //keep off
+//3FFB: set_car 0@ component "doorajarlight" visible 1 //activate
+3FFB: set_car 0@ component "oillight" visible 1     //activate
+3FFB: set_car 0@ component "brakelight" visible 1    //activate
+3FFB: set_car 0@ component "batterylight" visible 1  //activate
 
+// Wiggle volts needle
+for 2@ = 0 to 3 step 1
+    for 1@ = 80.0 downto 0.0 step 20.0
+        wait 10
+        3FFD: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
+    end
+    // Down
+    for 1@ = 0.0 to 80.0 step 20.0
+        wait 10
+        3FFD: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
+    end
+end
 
+// Center Volts
+3FFD: rotate_car_part "voltsneedle" angle 0.0 40.0 0.0 car 0@
 
-:ignitionWait
-wait 10 
-if 
-80E0:   not player $PLAYER_CHAR driving 
-else_jump @ignitionWait 
-jump @ignitionStart 
-
-:ignitionemuatorinit
-3FFD: rotate_car_part "ignitionkey" angle -229.183 0.0 0.0 car $DELOREAN
-wait 0
-3FFD: rotate_car_part "ignition" angle -229.183 0.0 0.0 car $DELOREAN
-wait 0
-3FFD: rotate_car_part "oilneedle" angle 0.0 -389.611 0.0 car $DELOREAN  //warm main temp 
-wait 0
-3FFB: set_car $DELOREAN component "lambdalight" visible 0 //keep off
-3FFB: set_car $DELOREAN component "fuellight" visible 0   //keep off
-3FFB: set_car $DELOREAN component "doorajarlight" visible 1 //activate
-3FFB: set_car $DELOREAN component "oillight" visible 1     //activate
-3FFB: set_car $DELOREAN component "brakelight" visible 1    //activate
-3FFB: set_car $DELOREAN component "batterylight" visible 1  //activate
-return    
-
-:ignitionemulatorvolts
-//wiggle volts needle
-//up      
-3FFD: rotate_car_part "voltsneedle" angle 0.0 441.178 0.0 car $DELOREAN
-wait 1
-3FFD: rotate_car_part "voltsneedle" angle 0.0 418.259 0.0 car $DELOREAN
-wait 1
-3FFD: rotate_car_part "voltsneedle" angle 0.0 366.693 0.0 car $DELOREAN
-//down
-wait 1                    
-3FFD: rotate_car_part "voltsneedle" angle 0.0 389.611 0.0 car $DELOREAN
-wait 1
-3FFD: rotate_car_part "voltsneedle" angle 0.0 441.178 0.0 car $DELOREAN
-return
-
-:ignitionemulatorvoltcenter
-//center
-wait 1
-3FFD: rotate_car_part "voltsneedle" angle 0.0 401.07 0.0 car $DELOREAN 
-return
-
-:ignitionemulatoroildrop
-//drop oil
-wait 700
-3FFD: rotate_car_part "oilneedle" angle 0.0 -378.152 0.0 car $DELOREAN   //oil dropping to the bottom 
-wait 30
-3FFD: rotate_car_part "oilneedle" angle 0.0 -360.963 0.0 car $DELOREAN  //oil at bottom bottom
-return
-
-:ignitionemulatoroilcheck
-//oil temp diagnostic
-wait 300
-3FFD: rotate_car_part "oilneedle" angle 0.0 -378.152 0.0 car $DELOREAN //oil raises
-wait 30
-3FFD: rotate_car_part "oilneedle" angle 0.0 -389.611 0.0 car $DELOREAN //oil raises to main temp
-wait 30
-3FFD: rotate_car_part "oilneedle" angle 0.0 -401.07 0.0 car $DELOREAN //oil raises
-wait 30
-3FFD: rotate_car_part "oilneedle" angle 0.0 -418.259 0.0 car $DELOREAN //oil raises
-wait 30                                                         
-3FFD: rotate_car_part "oilneedle" angle 0.0 -435.448 0.0 car $DELOREAN //oil at top
-return
-
-:ignitionemulatorlightfinal
+// Warm up oil
 wait 1000
-3FFB: set_car $DELOREAN component "batterylight" visible 0  //off
-wait 1000
-3FFB: set_car $DELOREAN component "oillight" visible 0    //off
-wait 1000
-3FFB: set_car $DELOREAN component "seatbeltlight" visible 1
-wait 1000
-3FFB: set_car $DELOREAN component "seatbeltlight" visible 0
-return
+for 1@ = -30.0 to 0.0 step 5.0
+    wait 10
+    3FFD: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
+end
 
-:ignitionemulatoroilfinal
-//oil final temp  
+// Oil Temp Diagnostic (?)
+wait 500
+for 1@ = 0.0 downto -75.0 step 5.0
+    wait 10
+    3FFD: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
+end
+
+// Turn off Dashboard lights
+wait 1000
+3FFB: set_car 0@ component "batterylight" visible 0  //off
+wait 1000
+3FFB: set_car 0@ component "oillight" visible 0    //off
+wait 1000
+3FFB: set_car 0@ component "seatbeltlight" visible 1
+wait 1000
+3FFB: set_car 0@ component "seatbeltlight" visible 0
 wait 5000
-3FFD: rotate_car_part "oilneedle" angle 0.0 -418.259 0.0 car $DELOREAN //oil lowers from top 
-wait 30
-3FFD: rotate_car_part "oilneedle" angle 0.0 -401.07 0.0 car $DELOREAN //oil lowers more
-wait 30
-3FFD: rotate_car_part "oilneedle" angle 0.0 -389.611 0.0 car $DELOREAN //oil lowers to main temp
-wait 300
-3FFD: rotate_car_part "oilneedle" angle 0.0 -372.423 0.0 car $DELOREAN //oil lowers to under main temp
-wait 1
-3FFD: rotate_car_part "oilneedle" angle 0.0 -389.611 0.0 car $DELOREAN //oil raises back to main temp
-wait 1
-3FFD: rotate_car_part "oilneedle" angle 0.0 -372.423 0.0 car $DELOREAN //oil lowers to under main temp
-wait 1
-3FFD: rotate_car_part "oilneedle" angle 0.0 -389.611 0.0 car $DELOREAN //oil raises back to main temp
-return
 
-:otherignition
-thread 'IGNoth' 
+// Stabilize oil
+for 1@ = -75.0 to 30 step 5.0
+    wait 10
+    3FFD: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
+end
 
-:otherignitionStart
-wait 10 
-if 
-   Player.Defined($PLAYER_CHAR)
-else_jump @otherIgnitionStart 
+
+:IgnitionWait
+wait 10
 if and
-  $TRAVEL == 0 // integer values 
-  $FLY == 0 // integer values 
-else_jump @otherIgnitionStart 
-wait 10 
-if 
-80E0:   not player $PLAYER_CHAR driving 
-else_jump @otherIgnitionStart 
-
-:otherignitionLoadSound
-wait 10 
-if and
-  $IGNITION == 0 // integer values 
-  $TRAVEL == 0 // integer values 
-  $FLY == 0 // integer values 
-else_jump @otherIgnitionStart 
-if or 
-00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS    //BTTF1
-00DE:   player $PLAYER_CHAR driving_vehicle_type #DELUXO     //BTTF2
-00DE:   player $PLAYER_CHAR driving_vehicle_type #BANSHEE   //BTTF3
-00DE:   player $PLAYER_CHAR driving_vehicle_type #SPARROW  //Flying BTTF2
-00DE:   player $PLAYER_CHAR driving_vehicle_type #BAGGAGE //RailRoad Delorean
-else_jump @otherIgnitionLoadSound 
-040D: unload_wav 2 
-03CF: load_wav 'BURG_02' as 2 
-
-:otherignitionPlaySound
-wait 0                         
-if 
-03D0:   wav 2 loaded 
-else_jump @otherIgnitionPlaySound
-
-03D1: play_wav 2
-:otherignitionWait
-wait 10 
-if and
-80E0:   not player $PLAYER_CHAR driving 
-  $FLY == 0 // integer values 
-else_jump @otherIgnitionWait 
-jump @otherIgnitionStart 
+8119:   not car 0@ wrecked
+00DC:   player $PLAYER_CHAR driving 0@
+else_jump @IgnitionStart
+jump @IgnitionWait

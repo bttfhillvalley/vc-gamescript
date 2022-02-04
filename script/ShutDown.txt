@@ -1,123 +1,61 @@
 :Shutdown
-thread 'SHTDWN' 
+thread 'SHTDWN'
 
 :ShutdownStart
-wait 10 
-if 
-   Player.Defined($PLAYER_CHAR)
-else_jump @ShutdownStart 
-if 
-00E0:   player $PLAYER_CHAR driving 
-else_jump @ShutdownStart 
-03C1: 0@ = player $PLAYER_CHAR car  
-$OFF = 0 // integer values 
-
-:ShutdownLoadSound
-wait 10 
-if 
-   Player.Defined($PLAYER_CHAR)
-else_jump @ShutdownStart 
-if 
-00E0:   player $PLAYER_CHAR driving 
-else_jump @ShutdownStart 
-if or
-00E1:   key_pressed 0 15 
-  $TURN_OFF == 1 // integer values 
-else_jump @ShutdownLoadSound 
-02D4: car 0@ turn_off_engine  
-$TURN_OFF = 0 // integer values 
+wait 10
 if
-00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS //BTTF1 
-else_jump @ShutdownWait 
-if 
-  $IGNITION == 0 // integer values 
-else_jump @ShutdownWait 
-040D: unload_wav 2 
-03CF: load_wav 'BURG_06' as 2 
+   Player.Defined($PLAYER_CHAR)
+else_jump @ShutdownStart
+if
+00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS
+else_jump @ShutdownStart
+03C1: 0@ = player $PLAYER_CHAR car
 
-:ShutdownPlaySound
-wait 0 
-if 
-03D0:   wav 2 loaded 
-else_jump @ShutdownPlaySound 
-end_thread_named 'CC_MOD'
-3FFD: rotate_car_part "ignitionkey" angle 229.183 0.0 0.0 car 0@
-3FFD: rotate_car_part "ignition" angle 229.183 0.0 0.0 car 0@
-//down                     
-wait 40
-3FFD: rotate_car_part "voltsneedle" angle 0.0 389.611 0.0 car 0@
-wait 40
-3FFD: rotate_car_part "voltsneedle" angle 0.0 441.178 0.0 car 0@
+:ShutdownDriving
+wait 10
+if
+   Player.Defined($PLAYER_CHAR)
+else_jump @ShutdownStart
+if and
+8119:   not car 0@ wrecked
+00DC:   player $PLAYER_CHAR driving 0@
+else_jump @ShutdownStart
+if or
+    00E1:   key_pressed 0 15
+    $TURN_OFF == 1 // integer values
+else_jump @ShutdownDriving
+02D4: car 0@ turn_off_engine
+$TURN_OFF = 0 // integer values
+if
+  $IGNITION == 0 // integer values
+else_jump @ShutdownStart
+040D: unload_wav 2
+03CF: load_wav 'BURG_06' as 2
+create_thread @PlaySound 2
+3FFD: rotate_car_part "ignitionkey" angle 225.0 0.0 0.0 car 0@
+3FFD: rotate_car_part "ignition" angle 225 0.0 0.0 car 0@
+//down
+for 1@ = 30.0 to 80.0 step 5.0
+    wait 10
+    3FFD: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
+end
 3FFB: set_car 0@ component "seatbeltlight" visible 0
-3FFB: set_car 0@ component "lambdalight" visible 0 
-3FFB: set_car 0@ component "oillight" visible 0 
+3FFB: set_car 0@ component "lambdalight" visible 0
+3FFB: set_car 0@ component "oillight" visible 0
 3FFB: set_car 0@ component "doorajarlight" visible 0
 3FFB: set_car 0@ component "fuellight" visible 0
 3FFB: set_car 0@ component "brakelight" visible 0
-3FFB: set_car 0@ component "batterylight" visible 0 
-03D1: play_wav 2 
-$OFF = 1 // integer values 
+3FFB: set_car 0@ component "batterylight" visible 0
+03D1: play_wav 2
+$OFF = 1 // integer values
 
 :ShutdownWait
-wait 10 
-if 
-80E0:   not player $PLAYER_CHAR driving 
-else_jump @ShutdownWait 
-$OFF = 0 // integer values  
-jump @ShutdownStart 
-
-:otherShutdown
-thread 'SHTDoth' 
-
-:otherShutdownStart
-wait 10 
-if 
+wait 10
+if
    Player.Defined($PLAYER_CHAR)
-else_jump @otherShutdownStart 
-if 
-00E0:   player $PLAYER_CHAR driving 
-else_jump @otherShutdownStart 
-03C1: 0@ = player $PLAYER_CHAR car  
-$OFF = 0 // integer values 
-
-:otherShutdownLoadSound
-wait 10 
-if 
-   Player.Defined($PLAYER_CHAR)
-else_jump @otherShutdownStart 
-if 
-00E0:   player $PLAYER_CHAR driving 
-else_jump @otherShutdownStart 
-if or
-00E1:   key_pressed 0 15 
-  $TURN_OFF == 1 // integer values 
-else_jump @otherShutdownLoadSound 
-02D4: car 0@ turn_off_engine  
-$TURN_OFF = 0 // integer values 
-if or
-00DE:   player $PLAYER_CHAR driving_vehicle_type #DELUXO      //BTTF2
-00DE:   player $PLAYER_CHAR driving_vehicle_type #BANSHEE    //BTTF3
-00DE:   player $PLAYER_CHAR driving_vehicle_type #SPARROW   //Flying BTTF2
-00DE:   player $PLAYER_CHAR driving_vehicle_type #BAGGAGE  //RailRoad DeLorean
-else_jump @otherShutdownWait 
-if 
-  $IGNITION == 0 // integer values 
-else_jump @otherShutdownWait 
-040D: unload_wav 2 
-03CF: load_wav 'BURG_06' as 2 
-
-:otherShutdownPlaySound
-wait 0 
-if 
-03D0:   wav 2 loaded 
-else_jump @otherShutdownPlaySound 
-03D1: play_wav 2 
-$OFF = 1 // integer values 
-
-:otherShutdownWait
-wait 10 
-if 
-80E0:   not player $PLAYER_CHAR driving 
-else_jump @otherShutdownWait 
-$OFF = 0 // integer values 
-jump @otherShutdownStart 
+else_jump @ShutdownStart
+if and
+8119:   not car 0@ wrecked
+00DC:   player $PLAYER_CHAR driving 0@
+else_jump @ShutdownStart
+jump @ShutdownWait
