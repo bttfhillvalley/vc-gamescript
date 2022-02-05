@@ -1,87 +1,417 @@
+// ==================================================================================================
+:HoverConversion
+0B10: 7@ = 1@ AND $FLYING_BIT   // Is car flying?
+if or
+    not 7@ == 0
+    $CONVERSION == 1
+else_jump @HoverConversionReturn
+3FFA: set_car 0@ hover 1
+
+// Thrust
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    $CONVERSION == 0
+else_jump @HoverConversionReturn
+Car.StorePos(0@, 2@, 3@, 4@)
+if and
+    4@ < 200.0 // floating-point values
+    00E1:   key_pressed 0 6
+else_jump @HoverConversionReset
+
+02E3: 11@ = car 0@ speed
+// Various speed options
+if
+    11@ < 7.5 // floating-point values
+then
+    11@ = 10.0
+else if
+    11@ < 40.0 // floating-point values
+then
+    0087: 5@ = 11@ // floating-point values only
+    5@ *= -0.001 // floating-point values (never used in VC or GTA 3)
+    5@ += 1.25575 // floating-point values
+    0069: 11@ *= 5@ // floating-point values
+else
+    0087: 5@ = 11@ // floating-point values only
+    5@ *= -0.0005 // floating-point values (never used in VC or GTA 3)
+    5@ += 1.233 // floating-point values
+    0069: 11@ *= 5@ // floating-point values
+end
+end
+04BA: set_car 0@ speed_instantly 11@
+
+// Vent Sounds
+// Only play once
+if and
+    $VSOUND == 0 // not loaded
+    $TRAVEL == 0
+then
+    $VSOUND = 1 // loaded
+    040D: unload_wav 2
+    03CF: load_wav 'BURG_04' as 2
+end
+
+if and
+    $VSOUND == 1 // loaded
+    $TRAVEL == 0
+    03D0:   wav 2 loaded
+then
+    03D1: play_wav 2
+    $VSOUND = 2  // playing
+end
+
+// Vent Glow
+02E3: 11@ = car 0@ speed
+0087: 5@ = 11@ // floating-point values only
+5@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+5@ -= 2.345 // floating-point values
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.417 5@ 0.476
+04D5: create_corona_at 2@ 3@ 4@ radius 0.75 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@  from_car 0@ offset -0.417 5@ 0.476
+04D5: create_corona_at 2@ 3@ 4@  radius 0.75 type 1 flare 0 RGB 255 225 175
+jump @HoverConversionReturn
+
+:HoverConversionReset
+$VSOUND = 0
+
+:HoverConversionReturn
+return
+
+// =============================================================================================================================================
+
+:HoverAnimateModel
+// Move struts
+// Shocks are at a 45 degree angle so they have a weird movement,  They need to be adjusted in both the X and Z axis.
+// 8@ will adjust both X
+02F7: 8@ = sinus 45.0 // cosine swapped with sinus
+006B: 8@ *= 6@
+
+// 9@ will adjust Z. It is always negative.
+0087: 9@ = 8@ // Shock
+9@ *= -1.0
+
+// 10@ is for the piston extension
+0087: 10@ = 9@ // Piston
+
+// 11@ controls how far the piston extends based on wheel rotation.
+0087: 11@ = 7@ // Piston
+11@ *= 0.001
+
+// Extend/retract piston
+0063: 10@ -= 11@
+3FFC: move_car_part "strutrb" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "holderrb" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shockrb" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonrb" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheelrbdummy" pos 6@ 0.0 0.0 car 0@
+
+3FFC: move_car_part "strutrf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "holderrf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shockrf" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonrf" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheelrfdummy" pos 6@ 0.0 0.0 car 0@
+6@ *= -1.0
+8@ *= -1.0
+3FFC: move_car_part "strutlb" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "holderlb" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shocklb" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonlb" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheellbdummy" pos 6@ 0.0 0.0 car 0@
+
+3FFC: move_car_part "strutlf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "holderlf" pos 6@ 0.0 0.0 car 0@
+3FFC: move_car_part "shocklf" pos 8@ 0.0 9@ car 0@
+3FFC: move_car_part "shockpistonlf" pos 8@ 0.0 10@ car 0@
+3FFC: move_car_part "fxwheellfdummy" pos 6@ 0.0 0.0 car 0@
+6@ *= -1.0
+
+// Rotate wheels
+0087: 5@ = 7@ // Piston
+3FFD: rotate_car_part "holderrf" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "holderrb" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheelrfdummy" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheelrbdummy" angle 0.0 5@ 0.0 car 0@
+5@ *= -1.0
+3FFD: rotate_car_part "holderlf" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "holderlb" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheellfdummy" angle 0.0 5@ 0.0 car 0@
+3FFD: rotate_car_part "fxwheellbdummy" angle 0.0 5@ 0.0 car 0@
+return
+
+:HoverSmoke
+// Effects
+// Smoke effects on takeoff/landing
+02E3: 11@ = car 0@ speed
+if and
+    11@ < 5.0   // slow speeds only as well
+    4@ < 5.0   // Only show smoke close to the ground.
+then
+    0087: 5@ = 11@ // floating-point values only
+    5@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+    5@ += 0.8 // floating-point values
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.75 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.75 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+    5@ += -1.4 // floating-point values
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.625 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.625 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+end
+return
+
+:HoverAnimate
+$CONVERSION = 1
+0B10: 15@ = 1@ AND $FLYING_BIT   // Is car flying?
+040D: unload_wav 2
+if
+    15@ == 0
+then
+    6@ = 0.3 // Wheel retracting
+    7@ = 90.0 // Wheel rotating back
+    03CF: load_wav 'BURG_08' as 2
+else
+    create_thread @SetVariation 0@ 1@
+    6@ = 0.0 // Wheel extending
+    7@ = 0.0 // Wheel rotating out
+    03CF: load_wav 'BURG_07' as 2
+end
+create_thread @PlaySound 2
+
+:HoverAnimateStart
+wait 10
+if and
+   Player.Defined($PLAYER_CHAR)
+   $TRAVEL == 0
+else_jump @HoverAnimateStart
+if
+8119:   not car 0@ wrecked
+else_jump @HoverAnimateEnd
+Car.StorePos(0@, 2@, 3@, 4@)
+02CE: 5@ = ground_z 2@ 3@ 4@
+0063: 4@ -= 5@ // floating-point values (never used in VC or GTA 3)
+gosub @HoverAnimateModel
+gosub @HoverSmoke
+
+// Animate
+if
+    15@ == 0 // Landing
+then
+    if
+        7@ > 0.0
+    then
+        7@ -= 5.0
+    else if
+        6@ > 0.0
+    then
+        6@ -= 0.01
+    else
+        if or
+            4@ > 5.0  // If we're really high up, just disable hovering
+            81F3:   not car 0@ airborne
+        then
+            create_thread @SetVariation 0@ 1@
+            jump @HoverAnimateEnd
+        end
+    end
+    end
+else  // Flying
+    if
+        6@ < 0.3
+    then
+        6@ += 0.01
+    else if
+        7@ < 90.0
+    then
+        7@ += 5.0
+    else
+        create_thread @WheelThrust 0@
+        jump @HoverAnimateEnd
+    end
+    end
+end
+jump @HoverAnimateStart
+
+:HoverAnimateEnd
+$CONVERSION = 0
+end_thread
+
+// ==================================================================================================
+:WheelThrust
+wait 0
+if and
+    8119:   not car 0@ wrecked
+    00DC:   player $PLAYER_CHAR driving 0@
+jf @WheelThrustEnd
+// Limited amount of time to engage wheel thrusters after hover conversion
+if
+   16@ < 500 // integer values
+jf @WheelThrustEnd
+if
+00E1:   key_pressed 0 16
+jf @WheelThrust
+16@ = 0 // integer values
+040D: unload_wav 2
+03CF: load_wav 'BURG_03' as 2
+create_thread @PlaySound 2
+
+:WheelThrustCheck
+wait 10
+// Only thrust for 2 seconds max
+if  and
+    8119:   not car 0@ wrecked
+    00DC:   player $PLAYER_CHAR driving 0@
+jf @WheelThrustUnloadSound
+if
+   16@ < 2000 // integer values
+jf @WheelThrustUnloadSound
+
+// Unload if we let go of the gas
+if
+00E1:   key_pressed 0 16
+jf @WheelThrustUnloadSound
+
+// Vent thruster will override the wheel thruster
+if
+80E1:   not key_pressed 0 6
+jf @WheelThrustEnd
+
+// Thrusters
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -1.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.2 -1.339 -1.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -1.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.0
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -1.0
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.2 -1.339 -1.0
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -1.0
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -0.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -0.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.2 -1.339 -0.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -0.5
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+jump @WheelThrustCheck
+
+:WheelThrustUnloadSound
+040D: unload_wav 2
+
+:WheelThrustEnd
+end_thread
+
+// ==================================================================================================
+
+// =============================================================================
+// This is the old code.  Until we get the train converted over, we're keeping this for now
 :Fly
-if 
-00DC:   player $PLAYER_CHAR driving 0@ 
-else_jump @FlyReturn 
-if 
-  $FLY_SWITCH == 1 // integer values 
-else_jump @FlyReturn 
+if
+00DC:   player $PLAYER_CHAR driving 0@
+else_jump @FlyReturn
+if
+  $FLY_SWITCH == 1 // integer values
+else_jump @FlyReturn
 if and
     00DE:   player $PLAYER_CHAR driving_vehicle_type #DELUXO
-    13@ < 200000 
-else_jump @FlyDeloreanHover 
-jump @FlyDeloreanAnim 
+    13@ < 200000
+else_jump @FlyDeloreanHover
+jump @FlyDeloreanAnim
 
 :FlyDeloreanHover
-if 
-00DE:   player $PLAYER_CHAR driving_vehicle_type #SPARROW 
-else_jump @FlyTrain 
-jump @FlyDeloreanHoverAnim 
+if
+00DE:   player $PLAYER_CHAR driving_vehicle_type #SPARROW
+else_jump @FlyTrain
+jump @FlyDeloreanHoverAnim
 
 :FlyTrain
 if and
-    00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS 
-    13@ < 200000 
-else_jump @FlyTrainHover 
-jump @FlyTrainAnim 
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS
+    13@ < 200000
+else_jump @FlyTrainHover
+jump @FlyTrainAnim
 
 :FlyTrainHover
-if 
-00DE:   player $PLAYER_CHAR driving_vehicle_type #MAVERICK 
+if
+00DE:   player $PLAYER_CHAR driving_vehicle_type #MAVERICK
 else_jump @FlyReturn
-jump @FlyTrainHoverAnim        
+jump @FlyTrainHoverAnim
 
 :FlyDeloreanAnim
-10@ = #SPARROW // integer values 
-$LANDING = 0 // integer values 
-$MODELANIMATION = #SPARROW // integer values 
-gosub @FlyDeloreanAnimObjects 
-040D: unload_wav 2 
-03CF: load_wav 'BURG_07' as 2 
-jump @FlyLoadModels 
+10@ = #SPARROW // integer values
+$LANDING = 0 // integer values
+$MODELANIMATION = #SPARROW // integer values
+gosub @FlyDeloreanAnimObjects
+040D: unload_wav 2
+03CF: load_wav 'BURG_07' as 2
+jump @FlyLoadModels
 
 :FlyDeloreanHoverAnim
-10@ = #DELUXO // integer values 
-$LANDING = 1 // integer values 
-$MODELANIMATION = #SPARROW // integer values 
-gosub @FlyDeloreanAnimObjects 
-040D: unload_wav 2 
-03CF: load_wav 'BURG_08' as 2 
-jump @FlyLoadModels 
+10@ = #DELUXO // integer values
+$LANDING = 1 // integer values
+$MODELANIMATION = #SPARROW // integer values
+gosub @FlyDeloreanAnimObjects
+040D: unload_wav 2
+03CF: load_wav 'BURG_08' as 2
+jump @FlyLoadModels
 
 :FlyTrainAnim
-10@ = #MAVERICK // integer values 
-040D: unload_wav 2 
-$LANDING = 0 // integer values 
-gosub @FlyTrainAnimObjects 
-03CF: load_wav 'ASS_7' as 2 
-jump @FlyLoadModels 
+10@ = #MAVERICK // integer values
+040D: unload_wav 2
+$LANDING = 0 // integer values
+gosub @FlyTrainAnimObjects
+03CF: load_wav 'ASS_7' as 2
+jump @FlyLoadModels
 
 :FlyTrainHoverAnim
-10@ = #BUS // integer values 
-040D: unload_wav 2 
-$LANDING = 1 // integer values 
-gosub @FlyTrainAnimObjects 
-03CF: load_wav 'ASS_8' as 2 
-jump @FlyLoadModels 
+10@ = #BUS // integer values
+040D: unload_wav 2
+$LANDING = 1 // integer values
+gosub @FlyTrainAnimObjects
+03CF: load_wav 'ASS_8' as 2
+jump @FlyLoadModels
 
 :FlyDeloreanAnimObjects
-$LEFTWHEELMODEL = #D_WHEEL1 // integer values 
-$LEFTSTRUTMODEL = #D_STRUT1 // integer values 
-$RIGHTWHEELMODEL = #D_WHEEL2 // integer values 
-$RIGHTSTRUTMODEL = #D_STRUT2 // integer values 
-$WHEELIN = 0.85 // floating-point values 
-$WHEELOUT = 1.15 // floating-point values 
-$WHEELDISTANCE = 0.0 // floating-point values 
-$WHEELHEIGHT = -0.3 // floating-point values 
-$HEIGHTOFFSET = -0.75 // floating-point values 
+$LEFTWHEELMODEL = #D_WHEEL1 // integer values
+$LEFTSTRUTMODEL = #D_STRUT1 // integer values
+$RIGHTWHEELMODEL = #D_WHEEL2 // integer values
+$RIGHTSTRUTMODEL = #D_STRUT2 // integer values
+$WHEELIN = 0.85 // floating-point values
+$WHEELOUT = 1.15 // floating-point values
+$WHEELDISTANCE = 0.0 // floating-point values
+$WHEELHEIGHT = -0.3 // floating-point values
+$HEIGHTOFFSET = -0.75 // floating-point values
 return
 
 :FlyTrainAnimObjects
-$MODELANIMATION = #MAVERICK // integer values 
-$LEFTWHEELMODEL = #FJVT_HOVERWHEELS_L // integer values 
-$LEFTSTRUTMODEL = #FJVT_HOLDER_L // integer values 
-$RIGHTWHEELMODEL = #FJVT_HOVERWHEELS_R // integer values 
-$RIGHTSTRUTMODEL = #FJVT_HOLDER_R // integer values 
+$MODELANIMATION = #MAVERICK // integer values
+$LEFTWHEELMODEL = #FJVT_HOVERWHEELS_L // integer values
+$LEFTSTRUTMODEL = #FJVT_HOLDER_L // integer values
+$RIGHTWHEELMODEL = #FJVT_HOVERWHEELS_R // integer values
+$RIGHTSTRUTMODEL = #FJVT_HOLDER_R // integer values
 Model.Load(#FJVT_WINGDOOR_L)
 Model.Load(#FJVT_WINGDOOR_R)
 Model.Load(#JVT_PISTONROD_L)
@@ -103,10 +433,10 @@ Model.Load(#FJVT_TOPWING_2_L)
 Model.Load(#FJVT_TOPWING_2_R)
 Model.Load(#FJVT_TOPWING_3_L)
 Model.Load(#FJVT_TOPWING_3_R)
-038B: load_requested_models 
+038B: load_requested_models
 
 :FlyTrainAnimObjectsA
-wait 0 
+wait 0
 if and
    Model.Available(#FJVT_WINGDOOR_L)
    Model.Available(#FJVT_WINGDOOR_R)
@@ -115,10 +445,10 @@ if and
    Model.Available(#FJVT_MIDDLEWING_1_L)
    Model.Available(#FJVT_MIDDLEWING_1_R)
    Model.Available(#FJVT_MIDDLEWING_2_L)
-else_jump @FlyTrainAnimObjectsA 
+else_jump @FlyTrainAnimObjectsA
 
 :FlyTrainAnimObjectsB
-wait 0 
+wait 0
 if and
    Model.Available(#FJVT_MIDDLEWING_2_R)
    Model.Available(#FJVT_MIDDLEWING_3_L)
@@ -127,10 +457,10 @@ if and
    Model.Available(#FJVT_BACKWING_2)
    Model.Available(#FJVT_BACKWING_3)
    Model.Available(#FJVT_BACKWING_4)
-else_jump @FlyTrainAnimObjectsB 
+else_jump @FlyTrainAnimObjectsB
 
 :FlyTrainAnimObjectsC
-wait 0 
+wait 0
 if and
    Model.Available(#FJVT_BACKWING_5)
    Model.Available(#FJVT_TOPWING_1_L)
@@ -139,25 +469,25 @@ if and
    Model.Available(#FJVT_TOPWING_2_R)
    Model.Available(#FJVT_TOPWING_3_L)
    Model.Available(#FJVT_TOPWING_3_R)
-else_jump @FlyTrainAnimObjectsC 
-$WHEELIN = 0.77 // floating-point values 
-$WHEELOUT = 1.112 // floating-point values 
-$WHEELDISTANCE = 0.0 // floating-point values 
-$HEIGHTOFFSET = -1.35 // floating-point values 
-return 
+else_jump @FlyTrainAnimObjectsC
+$WHEELIN = 0.77 // floating-point values
+$WHEELOUT = 1.112 // floating-point values
+$WHEELDISTANCE = 0.0 // floating-point values
+$HEIGHTOFFSET = -1.35 // floating-point values
+return
 
 :FlyLoadModels
-$FLY = 1 // integer values 
+$FLY = 1 // integer values
 Model.Load(10@)
 Model.Load($LEFTWHEELMODEL)
 Model.Load($LEFTSTRUTMODEL)
 Model.Load($RIGHTWHEELMODEL)
 Model.Load($RIGHTSTRUTMODEL)
 Model.Load($MODELANIMATION)
-038B: load_requested_models 
+038B: load_requested_models
 
 :FlyLoadVariation
-wait 0 
+wait 0
 if and
    Model.Available(10@)
    Model.Available($MODELANIMATION)
@@ -165,126 +495,126 @@ if and
    Model.Available($LEFTSTRUTMODEL)
    Model.Available($RIGHTWHEELMODEL)
    Model.Available($RIGHTSTRUTMODEL)
-03D0:   wav 2 loaded 
-else_jump @FlyLoadVariation 
-if 
-  $MODELANIMATION == #MAVERICK // integer values 
-else_jump @FlyLoadVariationDelorean 
-0506: vehicle_model 10@ set_next_variation -1 0 
-jump @FlyStart 
+03D0:   wav 2 loaded
+else_jump @FlyLoadVariation
+if
+  $MODELANIMATION == #MAVERICK // integer values
+else_jump @FlyLoadVariationDelorean
+0506: vehicle_model 10@ set_next_variation -1 0
+jump @FlyStart
 
 :FlyLoadVariationDelorean
-0506: vehicle_model 10@ set_next_variation -1 -1 
+0506: vehicle_model 10@ set_next_variation -1 -1
 
 :FlyStart
-03D1: play_wav 2 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0 
-012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -5.0 0.0 
+03D1: play_wav 2
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0
+012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -5.0 0.0
 Camera.SetPosition(1@, 2@, 3@, 0.0, 0.0, 0.0)
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET 
-0460: set_camera_pointing_time 0.0 100 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET
+0460: set_camera_pointing_time 0.0 100
 Camera.PointAt(1@, 2@, 3@, 1)
 4@ = Car.Angle(0@)
-02E3: 5@ = car 0@ speed 
+02E3: 5@ = car 0@ speed
 6@ = Car.Health(0@)
 Car.Destroy(0@)
 0@ = Car.Create($MODELANIMATION, 1@, 2@, 3@)
 Car.Angle(0@) = 4@
-04BA: set_car 0@ speed_instantly 5@ 
+04BA: set_car 0@ speed_instantly 5@
 Car.Health(0@) = 6@
-wait 0 
-0369: put_player $PLAYER_CHAR in_car 0@ 
-008A: $DELOREAN = 0@ // integer values and handles 
+wait 0
+0369: put_player $PLAYER_CHAR in_car 0@
+008A: $DELOREAN = 0@ // integer values and handles
 Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
-053F: set_car $DELOREAN tires_vulnerable 0 
+053F: set_car $DELOREAN tires_vulnerable 0
 Camera.Restore
 Camera.SetBehindPlayer
-gosub @FlyAnim 
-if 
-  10@ == #MAVERICK // integer values 
-else_jump @FlyStartTrainVariation 
-008A: $TRAIN = 0@ // integer values and handles 
-0506: vehicle_model 10@ set_next_variation 1 2 
-jump @FlyCreateVehicle 
+gosub @FlyAnim
+if
+  10@ == #MAVERICK // integer values
+else_jump @FlyStartTrainVariation
+008A: $TRAIN = 0@ // integer values and handles
+0506: vehicle_model 10@ set_next_variation 1 2
+jump @FlyCreateVehicle
 
 :FlyStartTrainVariation
-if 
-  10@ == #BUS // integer values 
-else_jump @FlyStartDeloreanVariation 
-008A: $TRAIN = 0@ // integer values and handles 
-0506: vehicle_model 10@ set_next_variation 1 0 
-jump @FlyCreateVehicle 
+if
+  10@ == #BUS // integer values
+else_jump @FlyStartDeloreanVariation
+008A: $TRAIN = 0@ // integer values and handles
+0506: vehicle_model 10@ set_next_variation 1 0
+jump @FlyCreateVehicle
 
 :FlyStartDeloreanVariation
-0506: vehicle_model 10@ set_next_variation 0 -1 
+0506: vehicle_model 10@ set_next_variation 0 -1
 
 :FlyCreateVehicle
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0 
-if 
-00DC:   player $PLAYER_CHAR driving 0@ 
-else_jump @FlyNotDriving 
-012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -5.0 0.0 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 100.0
+if
+00DC:   player $PLAYER_CHAR driving 0@
+else_jump @FlyNotDriving
+012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 -5.0 0.0
 Camera.SetPosition(1@, 2@, 3@, 0.0, 0.0, 0.0)
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET 
-0460: set_camera_pointing_time 0.0 100 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET
+0460: set_camera_pointing_time 0.0 100
 Camera.PointAt(1@, 2@, 3@, 1)
 4@ = Car.Angle(0@)
-02E3: 7@ = car 0@ speed 
+02E3: 7@ = car 0@ speed
 6@ = Car.Health(0@)
 Car.Destroy(0@)
 0@ = Car.Create(10@, 1@, 2@, 3@)
 Car.Angle(0@) = 4@
-04BA: set_car 0@ speed_instantly 7@ 
+04BA: set_car 0@ speed_instantly 7@
 Car.Health(0@) = 6@
-wait 0 
-0369: put_player $PLAYER_CHAR in_car 0@ 
-jump @FlyDriving 
+wait 0
+0369: put_player $PLAYER_CHAR in_car 0@
+jump @FlyDriving
 
 :FlyNotDriving
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 $HEIGHTOFFSET
 4@ = Car.Angle(0@)
-02E3: 7@ = car 0@ speed 
+02E3: 7@ = car 0@ speed
 6@ = Car.Health(0@)
 Car.Destroy(0@)
 0@ = Car.Create(10@, 1@, 2@, 3@)
 Car.Angle(0@) = 4@
-04BA: set_car 0@ speed_instantly 7@ 
+04BA: set_car 0@ speed_instantly 7@
 Car.Health(0@) = 6@
 
 :FlyDriving
-008A: $DELOREAN = 0@ // integer values and handles 
+008A: $DELOREAN = 0@ // integer values and handles
 Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
-053F: set_car $DELOREAN tires_vulnerable 0 
-create_thread @WheelThrust 
+053F: set_car $DELOREAN tires_vulnerable 0
+create_thread @WheelThrust
 if or
    Car.Model(0@) == #BUS
    Car.Model(0@) == #MAVERICK
-else_jump @FlyCheckFried 
-008A: $TRAIN = 0@ // integer values and handles 
-create_thread @TrainConversion 0@ 
-create_thread @TrainAnim 0@ 
-if 
+else_jump @FlyCheckFried
+008A: $TRAIN = 0@ // integer values and handles
+create_thread @TrainConversion 0@
+create_thread @TrainAnim 0@
+if
    Car.Model(0@) == #BUS
-else_jump @FlyTrainHoverWheels 
-create_thread @TrainWheel 0@ 
-create_thread @Door 0@ 
-jump @FlyCheckFried 
+else_jump @FlyTrainHoverWheels
+create_thread @TrainWheel 0@
+create_thread @Door 0@
+jump @FlyCheckFried
 
 :FlyTrainHoverWheels
-create_thread @TrainHoverWheel 0@ 
+create_thread @TrainHoverWheel 0@
 
 :FlyCheckFried
-$FLY = 0 // integer values 
-if 
-  13@ >= 200000 // integer values 
-else_jump @FlyUnloadModels 
+$FLY = 0 // integer values
+if
+  13@ >= 200000 // integer values
+else_jump @FlyUnloadModels
 if or
    Car.Model(0@) == #SPARROW
    Car.Model(0@) == #MAVERICK
-else_jump @FlyUnloadModels 
-02D4: car 0@ turn_off_engine 
+else_jump @FlyUnloadModels
+02D4: car 0@ turn_off_engine
 
 :FlyUnloadModels
 Model.Destroy(10@)
@@ -315,8 +645,8 @@ Model.Destroy(#FJVT_TOPWING_3_L)
 Model.Destroy(#FJVT_TOPWING_3_R)
 Camera.Restore
 Camera.SetBehindPlayer
-5@ = 0.0 // floating-point values 
-wait 500 
+5@ = 0.0 // floating-point values
+wait 500
 
 :FlyReturn
 return

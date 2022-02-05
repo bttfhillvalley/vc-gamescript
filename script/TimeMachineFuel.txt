@@ -1,0 +1,270 @@
+// ======================================================================================================
+// Plays empty chamber sound, as well as having a short cooldown before time travel effects can start appearing again.
+
+:FuelEmpty
+$EMPTY_FLASH = 1
+$COOLDOWN = 1
+wait 5000
+// Only play sounds if driving and if its not the train
+if
+    not Car.Wrecked(0@)
+else_jump @FuelEmptyEnd
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    not Car.Model(0@) == #BUS
+    not Car.Model(0@) == #MAVERICK
+else_jump @FuelEmptyEnd
+
+0B10: 15@ = 1@ AND $REAR_BIT  // Get car variation
+if
+    15@ == 0  // Play warning sound only for plutonium variant
+then
+    040D: unload_wav 1
+    03CF: load_wav 'INLIFT' as 1
+    create_thread @PlaySound 1
+end
+
+for 1@ = 0 to 2 step 1
+  $EMPTY_FLASH = 0
+  wait 450
+  $EMPTY_FLASH = 1
+  wait 450
+end
+
+:FuelEmptyEnd
+$EMPTY_FLASH = 0
+wait 1000
+$COOLDOWN = 0
+end_thread
+
+// ======================================================================================================
+// Controls the empty light, as well as refueling
+:Fuel
+if
+00DC:   player $PLAYER_CHAR driving 0@
+jf @FuelCreateCoordinates
+if
+    $EMPTY_FLASH == 0
+then
+    05F5: call_scm_func @DrawTexture params_count 5 2 825.0 155.0 38.0 23.0
+    3FFB: set_car 0@ component "pchamberemptylight" visible 1
+else
+    05F5: call_scm_func @DrawTexture params_count 5 3 825.0 155.0 38.0 23.0
+    3FFB: set_car 0@ component "pchamberemptylight" visible 0
+end
+jump @FuelReturn
+
+:FuelCreateCoordinates
+if
+    $FUELING_CONTROL == 1 // integer values
+jf @FuelReturn
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 -3.25 0.0
+
+:FuelCheckAtCoordinates
+if or
+80E1:   not key_pressed 0 4
+80F6:   not player $PLAYER_CHAR 0 2@ 3@ 4@ radius 0.75 0.75 2.0
+jf @FuelCheckBTTF1
+jump @FuelReturn
+
+:FuelCheckBTTF1
+0B10: 7@ = 1@ AND $REAR_BIT  // Get fuel sorce
+if
+   7@ == 0  // Plutonium variation
+jf @FuelRefuel
+if
+   not 0 >= $PLUTONIUM // integer values
+jf @Plutonium
+
+:FuelRefuel
+wait 0
+5@ = Car.Angle(0@)
+01B4: set_player $PLAYER_CHAR can_move 0
+0171: set_player $PLAYER_CHAR z_angle_to 5@
+$FUELING = 1 // integer values
+008A: $DELOREAN = 0@ // integer values and handles
+if
+   7@ == 0  // Plutonium variation
+then
+    03CF: load_wav 'BAND_08' as 1
+else
+    03CF: load_wav 'LIFTRUN' as 1
+end
+create_thread @PlaySound 1
+
+if
+   7@ == 0
+jf @FuelRefuelOpenFusion
+
+// Plutonium refueling
+//preplace canister on vent
+3FFC: move_car_part "plutcanliquid" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcan" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plut" pos -0.4 -0.0 -0.02 car 0@
+3FFD: rotate_car_part "plutcaninterior" angle 0.0 0.0 -90.0 car 0@
+3FFD: rotate_car_part "plutcanliquid" angle 0.0 0.0 -90.0 car 0@
+3FFD: rotate_car_part "plutcan" angle 0.0 0.0 -90.0 car 0@
+3FFD: rotate_car_part "plut" angle 0.0 0.0 -90.0 car 0@
+//show can
+3FFB: set_car 0@ component "plutcan" visible 1
+3FFB: set_car 0@ component "plutcanliquid" visible 1
+3FFB: set_car 0@ component "plutcaninterior" visible 1
+3FFB: set_car 0@ component "plut" visible 1
+
+//open cap
+For 4@ = 0.0 To 90.0 Step 5.0
+    3FFD: rotate_car_part "reactorlidbttf1" angle 0.0 0.0 4@ car 0@
+    wait 10
+end
+//set cap on vent
+For 4@ = 0.0 To 0.05 Step 0.01
+    3FFC: move_car_part "reactorlidbttf1" pos 0.0 0.0 4@ car 0@
+    wait 10
+end
+For 2@ = 0.0 DownTo -0.4 Step 0.05
+  0087: 3@ = 2@
+  3@ *= 0.35
+  3FFC: move_car_part "reactorlidbttf1" pos 2@ 3@ 0.05 car 0@
+  wait 10
+end
+wait 250
+04F7: status_text $PLUTONIUM 0 line 2 'PLUTO'  // Plutonium:
+//set canister in reactor
+For 4@ = 0.41 DownTo -0.01 Step 0.01
+    3FFC: move_car_part "plutcanliquid" pos 0.0 0.0 4@ car 0@
+    3FFC: move_car_part "plutcan" pos 0.0 0.0 4@ car 0@
+    3FFC: move_car_part "plutcaninterior" pos 0.0 0.0 4@ car 0@
+    3FFC: move_car_part "plut" pos 0.0 0.0 4@ car 0@
+    wait 10
+end
+//turn canister
+    For 4@ = -90.0 To 0.0 Step 1.0
+    3FFD: rotate_car_part "plutcaninterior" angle 0.0 0.0 4@ car 0@
+    3FFD: rotate_car_part "plutcanliquid" angle 0.0 0.0 4@ car 0@
+    3FFD: rotate_car_part "plutcan" angle 0.0 0.0 4@ car 0@
+    3FFD: rotate_car_part "plut" angle 0.0 0.0 4@ car 0@
+    wait 10
+end
+
+//drop pellet
+For 4@ = -0.01 DownTo -0.3 Step 0.1
+    3FFC: move_car_part "plut" pos 0.0 0.0 4@ car 0@
+    wait 10
+end
+$PLUTONIUM -= 1 // integer values
+3FFB: set_car 0@ component "plut" visible 0
+wait 500
+//set canister back on vent
+3FFC: move_car_part "plutcanliquid" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcan" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
+3FFC: move_car_part "plut" pos -0.4 -0.0 -0.02 car 0@
+wait 500
+//place lid back on reactor
+For 2@ = -0.4 To 0.0 Step 0.05
+    0087: 3@ = 2@
+    3@ *= 0.35
+    3FFC: move_car_part "reactorlidbttf1" pos 2@ 3@ 0.05 car 0@
+    wait 10
+end
+3FFC: move_car_part "reactorlidbttf1" pos 0.0 0.0 0.05 car 0@
+wait 500
+For 4@ = 0.05 DownTo 0.0 Step 0.01
+    3FFC: move_car_part "reactorlidbttf1" pos 0.0 0.0 4@ car 0@
+    wait 10
+end
+// Close cap
+For 4@ = 90.0 DownTo 0.0 Step 5.0
+    3FFD: rotate_car_part "reactorlidbttf1" angle 0.0 0.0 4@ car 0@
+    wait 10
+end
+wait 1000
+{hide canister and set default height and rotation}
+3FFB: set_car 0@ component "plutcan" visible 0
+3FFB: set_car 0@ component "plutcanliquid" visible 0
+3FFB: set_car 0@ component "plutcaninterior" visible 0
+3FFC: move_car_part "plutcaninterior" pos 0.0 0.0 0.4 car 0@
+3FFC: move_car_part "plutcanliquid" pos 0.0 0.0 0.4 car 0@
+3FFC: move_car_part "plutcan" pos 0.0 0.0 0.4 car 0@
+3FFC: move_car_part "plut" pos 0.0 0.0 0.4 car 0@
+3FFD: rotate_car_part "plutcaninterior" angle 0.0 0.0 4.0 car 0@
+3FFD: rotate_car_part "plutcanliquid" angle 0.0 0.0 4.0 car 0@
+3FFD: rotate_car_part "plutcan" angle 0.0 0.0 4.0 car 0@
+3FFD: rotate_car_part "plut" angle 0.0 0.0 4.0 car 0@
+jump @FuelDoneRefueling
+
+
+// Leaving this for now, but disabling all animations until we actually get a real one since its real jank to respawn.
+:FuelRefuelOpenFusion
+//Unlatch
+For 5@ = 0.0 To 45.0 Step 5.0
+    3FFD: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
+    wait 10
+End
+
+//Open Mr. Fusion
+For 5@ = 0.0 DownTo -90.0 Step 6.0
+    3FFD: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
+    wait 10
+End
+
+
+for 5@ = 0 to 10 step 1
+    wait 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.0 -1.69 0.6
+    0437: scatter_particle 70 0.01 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.0 -1.69 -1.6
+    0437: scatter_particle 33 0.01 at 2@ 3@ 4@ 0 0 0
+end
+wait 2000
+
+//Close Mr. Fusion
+For 5@ = -90.0 To 0.1 Step 6.0
+    3FFD: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
+    wait 10
+End
+
+//Unlatch
+For 5@ = 45.0 downTo 0.0 Step 5.0
+    3FFD: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
+    wait 10
+End
+
+jump @FuelDoneRefueling
+
+:FuelRefuelWait
+wait 3500
+
+:FuelDoneRefueling
+3FFB: set_car 0@ component "pchamberemptylight" visible 0
+3FFD: rotate_car_part "pchamberneedle" angle 0.0 60.0 0.0 car 0@
+gosub @LocalToGlobal
+wait 500
+01B4: set_player $PLAYER_CHAR can_move 1
+wait 500
+040D: unload_wav 1
+0151: remove_status_text $PLUTONIUM
+0B11: 1@ = 1@ OR $FUEL_BIT
+$FUELING = 0 // integer values
+jump @FuelReturn
+
+// No plutonium?  Lets mark it on the map
+:Plutonium
+if
+  $MCOUNT == 0 // integer values
+jf @PlutoniumRadar
+$MCOUNT = 1 // integer values
+02A8: $LOC1 = create_marker 31 at -1300.5 173.85 11.45
+
+:PlutoniumRadar
+03E7: flash_hud 8
+00BC: text_highpriority 'GETMORE' 3000 ms 1  // Get More Plutonium
+04F7: status_text $PLUTONIUM 0 line 2 'PLUTO'  // Plutonium:
+wait 3000
+03E7: flash_hud -1
+0151: remove_status_text $PLUTONIUM
+jump @FuelReturn
+
+:FuelReturn
+return

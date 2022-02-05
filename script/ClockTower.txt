@@ -1,0 +1,203 @@
+// =============================================================================================================
+// Stuff related to the clocktower lightning scene.  This will have to be redone.
+/*:Wire
+// TODO: Cutscene mode for the lightning strike?
+4@ = 0 // integer values
+$WIRE = 0 // integer values
+if
+  $STRIKE == 1 // integer values
+else_jump @WireReturn
+if
+   Car.Model(0@) == #INFERNUS
+else_jump @WireReturn
+0085: 1@ = 15@ // integer values and handles
+0085: 2@ = 15@ // integer values and handles
+2@ /= 100 // integer values (never used VC or GTA 3)
+2@ *= 100 // integer values (never used in VC or GTA 3)
+005C: 1@ += 2@ // integer values (never used VC or GTA 3)
+0085: 2@ = 1@ // integer values and handles
+1@ /= 10 // integer values (never used VC or GTA 3)
+1@ *= 10 // integer values (never used in VC or GTA 3)
+0062: 2@ -= 1@ // integer values (never used VC or GTA 3)
+if
+  2@ == 2 // integer values
+else_jump @WireReturn
+02E3: 1@ = car 0@ speed
+if
+  1@ >= 48.1 // floating-point values (never used in VC or GTA 3)
+else_jump @WireReturn
+1@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+3@ = -2.795 // floating-point values
+005B: 3@ += 1@ // floating-point values (never used in VC or GTA 3)
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 3@ 2.91
+008C: 2@ = float_to_integer 2@
+008C: 3@ = float_to_integer 3@
+008C: 4@ = float_to_integer 4@
+if and
+  2@ >= -1586 // integer values
+   not 2@ > -1571 // integer values
+  3@ >= 898 // integer values
+   not 3@ > 900 // integer values
+  4@ >= 16 // integer values
+   not 4@ > 18 // integer values
+else_jump @WireReset
+4@ = 1 // integer values
+$WIRE = 1 // integer values
+if or
+80DC:   not player $PLAYER_CHAR driving 0@
+  $MODE == 0 // integer values
+else_jump @WireReturn
+Model.Load(#DELHOOK)
+038B: load_requested_models
+
+:WireLoadHook
+wait 0
+if
+   Model.Available(#DELHOOK)
+else_jump @WireLoadHook
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 -2.795 2.91
+$HOOK = Object.Create(#DELHOOK, 2@, 899.35, 13.22)
+Object.ToggleInMovingList($HOOK) = False
+Object.CollisionDetection($HOOK) = False
+create_thread @WireSparks 2@
+4@ = 1 // integer values
+$CAM_X = -1575.0 // floating-point values
+$CAM_Y = 915.0 // floating-point values
+$CAM_Z = 17.0 // floating-point values
+0407: create_coordinate $CCX $CCY $CCZ from_car 0@ offset 0.0 0.0 0.0
+Camera.SetPosition($CAM_X, $CAM_Y, $CAM_Z, 0.0, 0.0, 0.0)
+0460: set_camera_pointing_time 0.0 1000
+Camera.PointAt($CCX, $CCY, $CCZ, 2)
+jump @WireReturn
+
+:WireReset
+4@ = 0 // integer values
+$WIRE = 0 // integer values
+
+:WireReturn
+return
+
+// ===============================================================================================================
+// Wire effects after the lightning strike on the clocktower
+
+:WireSparks
+3@ = 64 // integer values
+4@ = 128 // integer values
+5@ = 255 // integer values
+
+:WireSparksStart
+wait 10
+0208: 2@ = random_float 13.22 17.77
+04D5: create_corona_at 0@ 899.35 2@ radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float 13.22 17.77
+04D5: create_corona_at 0@ 899.35 2@ radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+0208: 2@ = random_float -1585.0 -1573.0
+04D5: create_corona_at 2@ 899.35 17.77 radius 0.8 type 1 flare 0 RGB 3@ 4@ 5@
+if
+  16@ > 4950 // integer values
+else_jump @WireSparksStart
+3@ = 0 // integer values
+4@ = 0 // integer values
+5@ = 0 // integer values
+if
+  16@ > 5000 // integer values
+else_jump @WireSparksStart
+16@ = 0 // integer values
+0087: 1@ = 0@ // floating-point values only
+0087: 2@ = 0@ // floating-point values only
+wait 2000
+17@ = 0 // integer values
+
+:WireFire
+wait 10
+if
+   not 16@ >= 10000 // integer values
+else_jump @WireFireEnd
+0437: scatter_particle 27 0.4 at 1@ 899.35 17.85 0 0 0
+0437: scatter_particle 27 0.4 at 2@ 899.35 17.85 0 0 0
+gosub @WireFireDrop
+1@ -= 0.2 // floating-point values
+2@ += 0.2 // floating-point values
+if
+   not 1@ >= -1585.0 // floating-point values (never used in VC or GTA 3)
+else_jump @WireFireLength
+1@ = -1585.0 // floating-point values
+wait 20
+
+:WireFireLength
+if
+  2@ > -1573.0 // floating-point values
+else_jump @WireFire
+2@ = -1573.0 // floating-point values
+wait 20
+jump @WireFire
+
+:WireFireDrop
+if
+  17@ > 50 // integer values
+else_jump @WireFireDropReturn
+17@ = 0 // integer values
+0087: 3@ = 0@ // floating-point values only
+0087: 4@ = 0@ // floating-point values only
+
+:WireFireDropRandomSpeed
+3@ -= 0.5 // floating-point values
+0209: 5@ = random_int 0 50
+if
+  5@ == 25 // integer values
+else_jump @WireFireNoDrop
+0208: 5@ = random_float 0.0 -0.2
+jump @WireFireDropCreateFire
+
+:WireFireNoDrop
+5@ = 0 // integer values
+
+:WireFireDropCreateFire
+if
+0024:   3@ > 1@ // floating-point values only
+else_jump @WireFireDrop2
+0437: scatter_particle 27 0.4 at 3@ 899.35 17.85 0 0 5@
+jump @WireFireDropRandomSpeed
+
+:WireFireDrop2
+4@ += 0.5 // floating-point values
+0209: 5@ = random_int 0 50
+if
+  5@ == 25 // integer values
+else_jump @WireFireDrop2RandomSpeed
+0208: 5@ = random_float 0.0 -0.2
+jump @WireFireDrop2CreateFire
+
+:WireFireDrop2RandomSpeed
+5@ = 0 // integer values
+
+:WireFireDrop2CreateFire
+if
+0024:   2@ > 4@ // floating-point values only
+else_jump @WireFireDropReturn
+0437: scatter_particle 27 0.4 at 4@ 899.35 17.85 0 0 5@
+jump @WireFireDrop2
+
+:WireFireDropReturn
+return
+
+:WireFireEnd
+end_thread   */

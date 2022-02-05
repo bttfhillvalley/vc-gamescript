@@ -163,7 +163,7 @@ wait 0
 0180: set_on_mission_flag_to $ONMISSION
 set_weather $WEATHER
 if
-   not Actor.Dead($PLAYER_ACTOR)
+    not Actor.Dead($PLAYER_ACTOR)
 then
     0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER8'  //Marty Red T-Shirt
     038B: load_requested_models
@@ -171,7 +171,7 @@ then
 end
 fade 1 1000
 if
-   Player.Defined($PLAYER_CHAR)
+    Player.Defined($PLAYER_CHAR)
 then
     select_interior 0
     Player.CanMove($PLAYER_CHAR) = True
@@ -193,10 +193,12 @@ end
 {$INCLUDE script/CanOpener.txt}
 {$INCLUDE script/CarClock.txt}
 {$INCLUDE script/CarSpawn.txt}
+{$INCLUDE script/ClockTower.txt}
 {$INCLUDE script/Conversion.txt}
 {$INCLUDE script/CommonUtils.txt}
 {$INCLUDE script/CompassRotation.txt}
 {$INCLUDE script/CurrentTime.txt}
+{$INCLUDE script/DeloreanVariation.txt}
 {$INCLUDE script/DigitalSpeedometer.txt}
 {$INCLUDE script/DisplayToggle.txt}
 {$INCLUDE script/DrawText.txt}
@@ -225,6 +227,8 @@ end
 {$INCLUDE script/TimeChangingMap.txt}
 {$INCLUDE script/TimeCircuitsModel.txt}
 {$INCLUDE script/TimeCircuits.txt}
+{$INCLUDE script/TimeEffects.txt}
+{$INCLUDE script/TimeMachineFuel.txt}
 {$INCLUDE script/TimeTravel.txt}
 {$INCLUDE script/TimeTravelMode.txt}
 {$INCLUDE script/TMButtons.txt}
