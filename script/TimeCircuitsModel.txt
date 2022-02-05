@@ -1,4 +1,16 @@
 {$USE CLEO}
+// 4@ = Y1
+// 5@ = Y2
+// 6@ = Y3
+// 7@ = Y4
+// 8@ = TCD Handle
+// 9@ = H1
+// 10@ = H2
+// 11@ = M1
+// 12@ = M2
+// 13@ = MONTH
+// 14@ = D1
+// 15@ = D2
 
 :TimeCircuitsModel
 thread 'TC_MOD'  
@@ -10,6 +22,7 @@ wait 10
 if
    not Car.Wrecked($DELOREAN)
 jf @TimeCircuitsModelStart  
+008B: 0@ = $DELOREAN // integer values and handles 
 //first, hide all components / put them to base configuration                       
 gosub @TimeCircuitsModelReset
 if or
@@ -21,44 +34,39 @@ if
     8@ > 0.0
 then
     8@ -= 10.0
-    end_thread_named 'tmbut' 
+    gosub @TimeCircuitsSwitchModel
+    //end_thread_named 'tmbut' 
 end
 jump @TimeCircuitsModelStart
 
 :TimeCircuitsModelTurnOn
 //change the lights behind the tcd switch to on and fall through to handling the tcd
 //this is not necessary for the off case because it's done in @TimeCircuitsModelReset
-3FFB: set_car $DELOREAN component "tcdswitchlighton" visible 1  
-3FFB: set_car $DELOREAN component "tcdswitchlightoff" visible 0 
-3FFB: set_car $DELOREAN component "fluxcoilson" visible 1
-3FFB: set_car $DELOREAN component "gloveboxgaugeslights" visible 1
+3FFB: set_car 0@ component "tcdswitchlighton" visible 1  
+3FFB: set_car 0@ component "tcdswitchlightoff" visible 0 
+3FFB: set_car 0@ component "fluxcoilson" visible 1
+3FFB: set_car 0@ component "gloveboxgaugeslights" visible 1
 
 //rotate the components up to 1.0 units towards on position
 if
     8@ < 60.0
 then
     8@ += 10.0
-    create_thread @TMButtons
+    gosub @TimeCircuitsSwitchModel
+    //create_thread @TMButtons
 end 
-  
 
 //Destination time
 if
-  $FLASH == 0
+    $FLASH == 0  // This is controlled by the main time circuit thread
 then
-  17@ = 0
-  008B: 4@ = $YEAR // integer values and handles
-  008B: 9@ = $HOUR // integer values and handles 
-  008B: 11@ = $MINUTE // integer values and handles 
-  008B: 13@ = $MONTH // integer values and handles 
-  008B: 14@ = $DAY // integer values and handles 
-  gosub @NumbersToDate
-  gosub @TimeCircuitsModelDestinationTime 
-else if
-  17@ > 500
-then
-  $FLASH = 0
-end
+    008B: 4@ = $YEAR // integer values and handles
+    008B: 9@ = $HOUR // integer values and handles 
+    008B: 11@ = $MINUTE // integer values and handles 
+    008B: 13@ = $MONTH // integer values and handles 
+    008B: 14@ = $DAY // integer values and handles 
+    gosub @NumbersToDate
+    gosub @TimeCircuitsModelDestinationTime 
 end
 
 //Present time
@@ -73,287 +81,182 @@ gosub @TimeCircuitsModelPresentTime
 008B: 4@ = $PTIME
 if 
    not 4@ == -1 // integer values 
-//jf @TimeCircuitsModelDamage
-jf @TimeCircuitsModelStart
-008B: 13@ = $PTIME // integer values and handles
-008B: 14@ = $PTIME
-14@ /= 10000
-13@ /= 10000
-13@ *= 10000
-0062: 4@ -= 13@   
-13@ /= 1000000
-13@ *= 100
-0062: 14@ -= 13@
-13@ /= 100
-008B: 9@ = $PTIME1 // integer values and handles
-008B: 11@ = $PTIME1 // integer values and handles  
-9@ /= 100
-9@ *= 100
-0062: 11@ -= 9@
-9@ /= 100 
-gosub @NumbersToDate
-gosub @TimeCircuitsModelLastTimeDeparted
+then
+    008B: 13@ = $PTIME // integer values and handles
+    008B: 14@ = $PTIME
+    14@ /= 10000
+    13@ /= 10000
+    13@ *= 10000
+    0062: 4@ -= 13@   
+    13@ /= 1000000
+    13@ *= 100
+    0062: 14@ -= 13@
+    13@ /= 100
+    008B: 9@ = $PTIME1 // integer values and handles
+    008B: 11@ = $PTIME1 // integer values and handles  
+    9@ /= 100
+    9@ *= 100
+    0062: 11@ -= 9@
+    9@ /= 100 
+    gosub @NumbersToDate
+    gosub @TimeCircuitsModelLastTimeDeparted    
+end
 
+// Display colons
+if 
+    16@ > 999 // integer values 
+then
+    16@ = 0 // integer values
+end 
+if 
+    16@ < 500 // integer values 
+then
+    
+
+	3FFB: set_car 0@ component "dtcolon" visible 1
+	3FFB: set_car 0@ component "ptcolon" visible 1
+	3FFB: set_car 0@ component "ltdcolon" visible 1
+end
 jump @TimeCircuitsModelStart
 
 :TimeCircuitsModelDestinationTime
-3FF8: set_car $DELOREAN component "dtmonth" index 13@ visible 1
-3FF8: set_car $DELOREAN component "dtday2" index 14@ visible 1
-3FF8: set_car $DELOREAN component "dtday1" index 15@ visible 1
-3FF8: set_car $DELOREAN component "dtyear4" index 4@ visible 1
-3FF8: set_car $DELOREAN component "dtyear3" index 5@ visible 1
-3FF8: set_car $DELOREAN component "dtyear2" index 6@ visible 1
-3FF8: set_car $DELOREAN component "dtyear1" index 7@ visible 1
-gosub @TimeCircuitsModelDestinationTimeHourPeriod
-gosub @TimeCircuitsModelDestinationTimeHour
-3FF8: set_car $DELOREAN component "dtmin2" index 11@ visible 1
-3FF8: set_car $DELOREAN component "dtmin1" index 12@ visible 1
+3FF8: set_car 0@ component "dtmonth" index 13@ visible 1
+3FF8: set_car 0@ component "dtday2" index 14@ visible 1
+3FF8: set_car 0@ component "dtday1" index 15@ visible 1
+3FF8: set_car 0@ component "dtyear4" index 4@ visible 1
+3FF8: set_car 0@ component "dtyear3" index 5@ visible 1
+3FF8: set_car 0@ component "dtyear2" index 6@ visible 1
+3FF8: set_car 0@ component "dtyear1" index 7@ visible 1
+if
+    9@ < 12
+then
+    3FFB: set_car 0@ component "dtam" visible 1
+else
+    3FFB: set_car 0@ component "dtpm" visible 1
+end
+gosub @TimeCircuitsModelHourSplit
+3FF8: set_car 0@ component "dthour2" index 9@ visible 1
+3FF8: set_car 0@ component "dthour1" index 10@ visible 1    
+3FF8: set_car 0@ component "dtmin2" index 11@ visible 1
+3FF8: set_car 0@ component "dtmin1" index 12@ visible 1
 return
 
 :TimeCircuitsModelPresentTime
-3FF8: set_car $DELOREAN component "ptmonth" index 13@ visible 1
-3FF8: set_car $DELOREAN component "ptday2" index 14@ visible 1
-3FF8: set_car $DELOREAN component "ptday1" index 15@ visible 1
-3FF8: set_car $DELOREAN component "ptyear4" index 4@ visible 1
-3FF8: set_car $DELOREAN component "ptyear3" index 5@ visible 1
-3FF8: set_car $DELOREAN component "ptyear2" index 6@ visible 1
-3FF8: set_car $DELOREAN component "ptyear1" index 7@ visible 1
-gosub @TimeCircuitsModelPresentTimeHourPeriod
-gosub @TimeCircuitsModelPresentTimeHour
-3FF8: set_car $DELOREAN component "ptmin2" index 11@ visible 1
-3FF8: set_car $DELOREAN component "ptmin1" index 12@ visible 1
+3FF8: set_car 0@ component "ptmonth" index 13@ visible 1
+3FF8: set_car 0@ component "ptday2" index 14@ visible 1
+3FF8: set_car 0@ component "ptday1" index 15@ visible 1
+3FF8: set_car 0@ component "ptyear4" index 4@ visible 1
+3FF8: set_car 0@ component "ptyear3" index 5@ visible 1
+3FF8: set_car 0@ component "ptyear2" index 6@ visible 1
+3FF8: set_car 0@ component "ptyear1" index 7@ visible 1
+if
+    9@ < 12
+then
+    3FFB: set_car 0@ component "ptam" visible 1
+else
+    3FFB: set_car 0@ component "ptpm" visible 1
+end
+gosub @TimeCircuitsModelHourSplit
+3FF8: set_car 0@ component "pthour2" index 9@ visible 1
+3FF8: set_car 0@ component "pthour1" index 10@ visible 1 
+3FF8: set_car 0@ component "ptmin2" index 11@ visible 1
+3FF8: set_car 0@ component "ptmin1" index 12@ visible 1
 return
 
 :TimeCircuitsModelLastTimeDeparted
-3FF8: set_car $DELOREAN component "ltdmonth" index 13@ visible 1
-3FF8: set_car $DELOREAN component "ltdday2" index 14@ visible 1
-3FF8: set_car $DELOREAN component "ltdday1" index 15@ visible 1
-3FF8: set_car $DELOREAN component "ltdyear4" index 4@ visible 1
-3FF8: set_car $DELOREAN component "ltdyear3" index 5@ visible 1
-3FF8: set_car $DELOREAN component "ltdyear2" index 6@ visible 1
-3FF8: set_car $DELOREAN component "ltdyear1" index 7@ visible 1
-gosub @TimeCircuitsModelLastTimeDepartedHourPeriod
-gosub @TimeCircuitsModelLastTimeDepartedHour
-3FF8: set_car $DELOREAN component "ltdmin2" index 11@ visible 1
-3FF8: set_car $DELOREAN component "ltdmin1" index 12@ visible 1
+3FF8: set_car 0@ component "ltdmonth" index 13@ visible 1
+3FF8: set_car 0@ component "ltdday2" index 14@ visible 1
+3FF8: set_car 0@ component "ltdday1" index 15@ visible 1
+3FF8: set_car 0@ component "ltdyear4" index 4@ visible 1
+3FF8: set_car 0@ component "ltdyear3" index 5@ visible 1
+3FF8: set_car 0@ component "ltdyear2" index 6@ visible 1
+3FF8: set_car 0@ component "ltdyear1" index 7@ visible 1
+if
+    9@ < 12
+then
+    3FFB: set_car 0@ component "ltdam" visible 1
+else
+    3FFB: set_car 0@ component "ltdpm" visible 1
+end
+gosub @TimeCircuitsModelHourSplit
+3FF8: set_car 0@ component "ltdhour2" index 9@ visible 1
+3FF8: set_car 0@ component "ltdhour1" index 10@ visible 1 
+3FF8: set_car 0@ component "ltdmin2" index 11@ visible 1
+3FF8: set_car 0@ component "ltdmin1" index 12@ visible 1
 return
 
-:TimeCircuitsModelDestinationTimeHourPeriod
+:TimeCircuitsModelHourSplit
 if 
-  9@ == 0
+    9@ > 12
 then
-  9@ = 12
-  jump @TimeCircuitsModelDestinationTimeHourPeriodAM
+    9@ -= 12
 end
-if 
-  9@ == 12
-then
-  jump @TimeCircuitsModelDestinationTimeHourPeriodPM
-end
-if 
-  9@ > 12
-then
-  9@ -= 12
-  jump @TimeCircuitsModelDestinationTimeHourPeriodPM
-end
-jump @TimeCircuitsModelDestinationTimeHourPeriodAM
-
-:TimeCircuitsModelDestinationTimeHourPeriodAM
-3FFB: set_car $DELOREAN component "dtam" visible 1
-jump @TimeCircuitsModelDestinationTimeHourPeriodEnd
-
-:TimeCircuitsModelDestinationTimeHourPeriodPM
-3FFB: set_car $DELOREAN component "dtpm" visible 1
-jump @TimeCircuitsModelDestinationTimeHourPeriodEnd
-
-:TimeCircuitsModelDestinationTimeHourPeriodEnd
-return
-
-:TimeCircuitsModelDestinationTimeHour
 //Hour
 0085: 10@ = 9@
 9@ /= 10
 9@ *= 10
 0062: 10@ -= 9@
 9@ /= 10
-3FF8: set_car $DELOREAN component "dthour2" index 9@ visible 1
-3FF8: set_car $DELOREAN component "dthour1" index 10@ visible 1
-if 
-   not 16@ > 500 // integer values 
-then
-	3FFB: set_car $DELOREAN component "dtcolon" visible 1
-end
-if 
-  16@ > 999 // integer values 
-then
-  16@ = 0 // integer values
-end 
-return
+return  
 
-:TimeCircuitsModelPresentTimeHourPeriod
-if 
-  9@ == 0
-then
-  9@ = 12
-  jump @TimeCircuitsModelPresentTimeHourPeriodAM
-end
-if 
-  9@ == 12
-then
-  jump @TimeCircuitsModelPresentTimeHourPeriodPM
-end
-if 
-  9@ > 12
-then
-  9@ -= 12
-  jump @TimeCircuitsModelPresentTimeHourPeriodPM
-end
-jump @TimeCircuitsModelPresentTimeHourPeriodAM
 
-:TimeCircuitsModelPresentTimeHourPeriodAM
-3FFB: set_car $DELOREAN component "ptam" visible 1
-jump @TimeCircuitsModelPresentTimeHourPeriodEnd
-
-:TimeCircuitsModelPresentTimeHourPeriodPM
-3FFB: set_car $DELOREAN component "ptpm" visible 1
-jump @TimeCircuitsModelPresentTimeHourPeriodEnd
-
-:TimeCircuitsModelPresentTimeHourPeriodEnd
-return
-
-:TimeCircuitsModelPresentTimeHour
-//Hour
-0085: 10@ = 9@
-9@ /= 10
-9@ *= 10
-0062: 10@ -= 9@
-9@ /= 10
-3FF8: set_car $DELOREAN component "pthour2" index 9@ visible 1
-3FF8: set_car $DELOREAN component "pthour1" index 10@ visible 1
-jump @TimeCircuitsModelPresentTimeHourEnd
-
-:TimeCircuitsModelPresentTimeHourEnd
-if 
-   not 16@ > 500 // integer values 
-then
-	3FFB: set_car $DELOREAN component "ptcolon" visible 1
-end
-if 
-  16@ > 999 // integer values 
-then
-  16@ = 0 // integer values
-end 
-return
-
-:TimeCircuitsModelLastTimeDepartedHourPeriod
-if 
-  9@ == 0
-then
-  9@ = 12
-  jump @TimeCircuitsModelLastTimeDepartedHourPeriodAM
-end
-if 
-  9@ == 12
-then
-  jump @TimeCircuitsModelLastTimeDepartedHourPeriodPM
-end
-if 
-  9@ > 12
-then
-  9@ -= 12
-  jump @TimeCircuitsModelLastTimeDepartedHourPeriodPM
-end
-jump @TimeCircuitsModelLastTimeDepartedHourPeriodAM
-
-:TimeCircuitsModelLastTimeDepartedHourPeriodAM
-3FFB: set_car $DELOREAN component "ltdam" visible 1
-jump @TimeCircuitsModelLastTimeDepartedHourPeriodEnd
-
-:TimeCircuitsModelLastTimeDepartedHourPeriodPM
-3FFB: set_car $DELOREAN component "ltdpm" visible 1
-jump @TimeCircuitsModelLastTimeDepartedHourPeriodEnd
-
-:TimeCircuitsModelLastTimeDepartedHourPeriodEnd
-return
-
-:TimeCircuitsModelLastTimeDepartedHour
-//Hour
-0085: 10@ = 9@
-9@ /= 10
-9@ *= 10
-0062: 10@ -= 9@
-9@ /= 10
-3FF8: set_car $DELOREAN component "ltdhour2" index 9@ visible 1
-3FF8: set_car $DELOREAN component "ltdhour1" index 10@ visible 1
-jump @TimeCircuitsModelLastTimeDepartedHourEnd
-
-:TimeCircuitsModelLastTimeDepartedHourEnd
-if 
-   not 16@ > 500 // integer values 
-then
-	3FFB: set_car $DELOREAN component "ltdcolon" visible 1
-end
-if 
-  16@ > 999 // integer values 
-then
-  16@ = 0 // integer values
-end 
+//tcd switch and needles in the dash in front of the passenger seat
+//the tcd switch needs to rotate in the opposite direction
+:TimeCircuitsSwitchModel
+8@ *= -1.0
+3FFD: rotate_car_part "tcdhandle" angle 0.0 8@ 0.0 car 0@
+8@ *= -1.0    
+3FFD: rotate_car_part "ppowerneedle" angle 0.0 8@ 0.0 car 0@
+3FFD: rotate_car_part "primaryneedle" angle 0.0 8@ 0.0 car 0@
 return
 
 :TimeCircuitsModelReset
-//tcd switch and needles in the dash in front of the passenger seat
-//the tcd switch needs to rotate in the opposite direction
-8@ *= -1.0
-3FFD: rotate_car_part "tcdhandle" angle 0.0 8@ 0.0 car $DELOREAN
-8@ *= -1.0    
-3FFD: rotate_car_part "ppowerneedle" angle 0.0 8@ 0.0 car $DELOREAN
-3FFD: rotate_car_part "primaryneedle" angle 0.0 8@ 0.0 car $DELOREAN
 //lights behind the tcd switch
-3FFB: set_car $DELOREAN component "tcdswitchlighton" visible 0
-3FFB: set_car $DELOREAN component "tcdswitchlightoff" visible 1
-3FFB: set_car $DELOREAN component "fluxcoilson" visible 0
-3FFB: set_car $DELOREAN component "gloveboxgaugeslights" visible 0
+3FFB: set_car 0@ component "tcdswitchlighton" visible 0
+3FFB: set_car 0@ component "tcdswitchlightoff" visible 1
+3FFB: set_car 0@ component "fluxcoilson" visible 0
+3FFB: set_car 0@ component "gloveboxgaugeslights" visible 0
 //months
 for 4@ = 1 to 12
-	3FF8: set_car $DELOREAN component "dtmonth" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ptmonth" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ltdmonth" index 4@ visible 0
+	3FF8: set_car 0@ component "dtmonth" index 4@ visible 0
+	3FF8: set_car 0@ component "ptmonth" index 4@ visible 0
+	3FF8: set_car 0@ component "ltdmonth" index 4@ visible 0
 end
 
 //days
 for 4@ = 10 to 23
-	3FF8: set_car $DELOREAN component "dtday" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ptday" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ltdday" index 4@ visible 0
+	3FF8: set_car 0@ component "dtday" index 4@ visible 0
+	3FF8: set_car 0@ component "ptday" index 4@ visible 0
+	3FF8: set_car 0@ component "ltdday" index 4@ visible 0
 end
 //years
 for 4@ = 10 to 49
-	3FF8: set_car $DELOREAN component "dtyear" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ptyear" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ltdyear" index 4@ visible 0
+	3FF8: set_car 0@ component "dtyear" index 4@ visible 0
+	3FF8: set_car 0@ component "ptyear" index 4@ visible 0
+	3FF8: set_car 0@ component "ltdyear" index 4@ visible 0
 end
 //hours
 for 4@ = 10 to 21
-	3FF8: set_car $DELOREAN component "dthour" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "pthour" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ltdhour" index 4@ visible 0
+	3FF8: set_car 0@ component "dthour" index 4@ visible 0
+	3FF8: set_car 0@ component "pthour" index 4@ visible 0
+	3FF8: set_car 0@ component "ltdhour" index 4@ visible 0
 end
 //minutes
 for 4@ = 10 to 25
-	3FF8: set_car $DELOREAN component "dtmin" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ptmin" index 4@ visible 0
-	3FF8: set_car $DELOREAN component "ltdmin" index 4@ visible 0
+	3FF8: set_car 0@ component "dtmin" index 4@ visible 0
+	3FF8: set_car 0@ component "ptmin" index 4@ visible 0
+	3FF8: set_car 0@ component "ltdmin" index 4@ visible 0
 end
 //am indicators
-3FFB: set_car $DELOREAN component "dtam" visible 0
-3FFB: set_car $DELOREAN component "ptam" visible 0
-3FFB: set_car $DELOREAN component "ltdam" visible 0
+3FFB: set_car 0@ component "dtam" visible 0
+3FFB: set_car 0@ component "ptam" visible 0
+3FFB: set_car 0@ component "ltdam" visible 0
 //pm indicators
-3FFB: set_car $DELOREAN component "dtpm" visible 0
-3FFB: set_car $DELOREAN component "ptpm" visible 0
-3FFB: set_car $DELOREAN component "ltdpm" visible 0
+3FFB: set_car 0@ component "dtpm" visible 0
+3FFB: set_car 0@ component "ptpm" visible 0
+3FFB: set_car 0@ component "ltdpm" visible 0
 //colons between hours and minutes
-3FFB: set_car $DELOREAN component "dtcolon" visible 0
-3FFB: set_car $DELOREAN component "ptcolon" visible 0
-3FFB: set_car $DELOREAN component "ltdcolon" visible 0
+3FFB: set_car 0@ component "dtcolon" visible 0
+3FFB: set_car 0@ component "ptcolon" visible 0
+3FFB: set_car 0@ component "ltdcolon" visible 0
 return

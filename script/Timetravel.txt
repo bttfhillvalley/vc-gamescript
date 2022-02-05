@@ -4,30 +4,35 @@
 // 0@ is the car itself
 // 1@ is typically used for the speed
 // 2@, 3@, 4@ are for the car coordinates
-// 7@ for MSB bit operations
-// 8@ for LSB bit operations
-// 9@ is for spark sound tracking when not time travelling
+// 5@ - 9@ are generally three
+// 7@ is for bit operations
+// 8@ for recording health
+// 9@ is for spark sound tracking when not time travelling, car angle otherwise
 // 10@ is for the model
+// 11@ controls various time machine functions, as well as model variations
 // 12@ - 15@ are reserved for time circuits
 // 16@ - 17@ are the timers, so no touchy
 // ========================================
 // 11@ Bit flags
 // MSB
 // Byte 1
-// MFLHTTHH
-// - Memory status 0, 1
-// - Fuel status 0 - Unfueled, 1 - Fueled  1 bit
-// - Flying mode 0 - Driving, 1 - Flying 1 bit
-// - Hover circuits 0 - Not installed, 1 - Installed, 2 - Fried 2 bits
-// - Time Circuits status 0 - Off, 1 - On, 2 - Fried  2 bits
+// 12345678
+// - 1: Memory status 0, 1
+// - 2: Fuel status 0 - Unfueled, 1 - Fueled  1 bit
+// - 3: Flying mode 0 - Driving, 1 - Flying 1 bit
+// - 4: Hover circuits status 0 - OK, 1 - Fried
+// - 5: Hover circuits installed 0 - Not installed, 1 Installed
+// - 6: Time Circuits status 0 - OK, 1 Fried
+// - 7: Time Circuits switch 0 - Off, 1 On
+// - 8: Rear deck variant 0 - Plutonium, 1 - Mr Fusion
 // LSB
 // Byte 2 - model stuff
-// WWPPTRHH
-// - Delorean wheels 0 - Delorean, 1 - 50s, 2 - Train 2 bits
-// - Plate 0 - Off, 1 - Outatime, 2 - Future  2 bits
-// - Rear status 0 - Plutonium, 1 - Mr Fusion  1 bit
-// - Hoodbox status 0 - Off, 1 - On
-// - Hook 0 - No attachment, 1 - Hook Holder, 2 - Hook on side, 3 - Hook up 2 bits
+// 12334455
+// 1 - Hoodbox 0 - Not installed, 1 - Installed
+// 2 - Tow hitch 0 - Not installed, 1 - Installed
+// 3 - Wheels 0 - Delorean, 1 - 50s Whitewalls, 2 - Rail wheels
+// 4 - Plate 0 - No plate, 1 - OUTATIME plate, 2 - Future plate
+// 5 - Hook 0 - No nook, 1 - Hook holder, 2 - Hook on the side, 3 - Hook up
 // 12@ and 13@ are the destination time
 // 13@ is compounded with the status of the time circuits.
 // 14@ and 15@ are the past time
@@ -45,6 +50,7 @@ $REAR_BIT     = 0x0100 // 1 bit
 
 0B12: $FUEL_BITMASK = $FUEL_BIT XOR 0xFFFF
 0B12: $TC_BITMASK = $TC_BIT XOR 0xFFFF
+0B12: $TC_FRIED_BITMASK = $TC_FRIED_BIT XOR 0xFFFF
 
 // LSB bits
 $HOOD_BIT   = 0x0080 // 1 bit
@@ -52,10 +58,6 @@ $HITCH_BIT  = 0x0040 // 1 bit
 $WHEELS_BIT = 0x0030 // 2 bits
 $PLATE_BIT  = 0x000C // 2 bits
 $HOOK_BIT   = 0x0003 // 2 bits
-
-
-
-
 0B12: $WHEELS_BITMASK = $WHEELS_BIT XOR 0xFFFF
 $WHEELS_DELOREAN_BIT  = 0x0000
 $WHEELS_50S_BIT       = 0x0010
@@ -75,9 +77,11 @@ $HOOK_UP_BIT        = 0x0003
 thread 'TIME'
 Car.SetImmunities(0@, 0, 0, 0, 1, 1)
 053F: set_car 0@ tires_vulnerable 0
-create_thread @SetVariation 0@ 11@
+create_thread @SetVariation 0@ 1@
+10@ = Car.Model(0@)
+gosub @TimeCircuitsModelReset
+gosub @TimeEffectsModelReset
 3FFB: set_car 0@ component "pchamberemptylight" visible 0
-3ff4: set car 0@ component "fluxcoilson" alpha 0
 3FFB: set_car 0@ component "lightFL" visible 0
 3FFB: set_car 0@ component "lightFR" visible 0
 
@@ -91,17 +95,11 @@ if
 else_jump @TimeReset
 //3FF5: 1@ = car 0@ engine_state
 //045A: text_draw_1number 10.0 10.0 'DAY' 1@  // Best Result: ~1~th
-02E3: 1@ = car 0@ speed
-
-// TO_DELETE
-//0B10: 7@ = 15@ AND 0x0f  // Get car variation
-//0B10: 8@ = 15@ AND 0x30  // Get hook variation
-//0B15: 8@ = 8@ SHR 4
-
-10@ = Car.Model(0@)
+02E3: 11@ = car 0@ speed
 gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
 gosub @Hook  // Controls putting up/down the hook.  I forget the variations though.  It's in the garage thread so I can document it here as well.
 gosub @TimeResetCamera
+gosub @FluxCapacitorAnimation
 if
     00DC:   player $PLAYER_CHAR driving 0@
 else_jump @TimeFuel
@@ -109,7 +107,7 @@ gosub @TimeUnloadSparkSounds
 
 // Check Fuel
 :TimeFuel
-0B10: 7@ = 11@ AND $FUEL_BIT
+0B10: 7@ = 1@ AND $FUEL_BIT
 if and
    not 10@ == #MAVERICK  // Not Train
    not 10@ == #BUS
@@ -120,8 +118,8 @@ gosub @Fuel
 // Check To see if we're going to hover.
 // FIXME: This will be removed from this section in the future since there will be no need for model swaps that require setting everything back up since it'll be the same car instance
 :TimeFly
-0B10: 7@ = 11@ AND $FC_FRIED_BIT // Fried
-0B10: 8@ = 11@ AND $FLYING_BIT   // Is car flying?
+0B10: 7@ = 1@ AND $FC_FRIED_BIT // Fried
+0B10: 8@ = 1@ AND $FLYING_BIT   // Is car flying?
 if and
     not 7@ == 0   // Flying circuits are fried
     not 8@ == 0  // Flying
@@ -130,18 +128,18 @@ then
 end
 
 // TODO: Need to only let car go to driving if flying circuits are damaged
-0B10: 8@ = 11@ AND $FC_BIT  // Flying Circuits
+0B10: 8@ = 1@ AND $FC_BIT  // Flying Circuits
 if and
     003A:   $KEY == $KEY_HOVERCONVERSION // C
     not 8@ == 0  // Flying circuits are installed
 then
-    0B12: 11@ = 11@ XOR $FLYING_BIT  // Flip flying bit
+    0B12: 1@ = 1@ XOR $FLYING_BIT  // Flip flying bit
 end
 //gosub @Fly
 
 
 // Lightning check
-0B10: 8@ = 11@ AND $FLYING_BIT   // Is car flying?
+0B10: 8@ = 1@ AND $FLYING_BIT   // Is car flying?
 :TimeLightning
 0209: 2@ = random_int 0 1000
 if and
@@ -151,8 +149,8 @@ if and
     00DC:   player $PLAYER_CHAR driving 0@
 else_jump @TimeCircuitsCheck
 040D: unload_wav 1
-0B10: 7@ = 11@ AND $TC_FRIED_BIT // Time Circuits Fried
-0B10: 8@ = 11@ AND $TC_BIT       // Time Circuits status
+0B10: 7@ = 1@ AND $TC_FRIED_BIT // Time Circuits Fried
+0B10: 8@ = 1@ AND $TC_BIT       // Time Circuits status
 if or
   not 7@ == 0 // Time Circuits are fried
   8@ == 0     // Time Circuits are off
@@ -198,41 +196,18 @@ wait 100
 Car.Health(0@) = 300
 
 // Fry both the flying and time circuits
-0B11: 11@ = 11@ OR $FC_FRIED_BIT
-0B11: 11@ = 11@ OR $TC_FRIED_BIT
+0B11: 1@ = 1@ OR $FC_FRIED_BIT
+0B11: 1@ = 1@ OR $TC_FRIED_BIT
 
 02D4: car 0@ turn_off_engine
-
-// TO_DELETE
-/*if
-    13@ >= 300000
-else_jump @TimeCircuitsCheck
-13@ -= 100000 // Also turn off so we don't retrigger this section again.*/
-
 0407: create_coordinate $CCX $CCY $CCZ from_car 0@ offset 0.0 0.0 2.5
 jump @Time88TrackCamera
 
 // =====================================================================================
 
-:TimeCircuitsCheck
-// Check Time Circuits On for Effects
-0B10: 7@ = 11@ AND $TC_FRIED_BIT // Time Circuits Fried
-0B10: 8@ = 11@ AND $TC_BIT       // Time Circuits status
-if and
-    7@ == 0     // Time Circuits are not fried
-    not 8@ == 0 // Time Circuits are On
-    $COOLDOWN == 0
-else_jump @TimeStart
-
-:TimeEffectsCheck
+:TimeEffectsModelReset
 3FFB: set_car 0@ component "fluxcapacitorlightson" visible 0
 3FFB: set_car 0@ component "fluxcapacitorlightsoff" visible 1
-3FFB: set_car 0@ component "flux1" visible 0
-3FFB: set_car 0@ component "flux2" visible 0
-3FFB: set_car 0@ component "flux3" visible 0
-3FFB: set_car 0@ component "flux4" visible 0
-3FFB: set_car 0@ component "flux5" visible 0
-3FFB: set_car 0@ component "flux6" visible 0
 3ff4: set car 0@ component "fluxcoilson" alpha 0
 3ff4: set car 0@ component "wormhole" alpha 0
 3FFB: set_car 0@ component "sidledsstatus1" visible 0
@@ -243,27 +218,40 @@ else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus6" visible 0
 3FFB: set_car 0@ component "sidledsstatus7" visible 0
 3FFB: set_car 0@ component "sidledsstatus8" visible 0
-gosub @IdleAnims
+return
+
+:TimeCircuitsCheck
+// Check Time Circuits On for Effects
+0B10: 7@ = 1@ AND $TC_FRIED_BIT // Time Circuits Fried
+0B10: 8@ = 1@ AND $TC_BIT       // Time Circuits status
+if and
+    7@ == 0     // Time Circuits are not fried
+    not 8@ == 0 // Time Circuits are On
+    $COOLDOWN == 0
+else_jump @TimeStart
+
+:TimeEffectsCheck
+gosub @TimeEffectsModelReset
 gosub @TimeUnloadSparkSounds
 
 // Bunch of speed related stuff for SID, coils, plasma, etc.
 if
-  1@ > 30.5 // == 56 mph
+  11@ > 30.5 // == 56 mph
 else_jump @TimeStart
 
 3FFB: set_car 0@ component "sidledsstatus1" visible 1
 if
-  1@ > 36.5 // == 67 mph
+  11@ > 36.5 // == 67 mph
 else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus1" visible 0
 3FFB: set_car 0@ component "sidledsstatus2" visible 1
 if
-  1@ > 40.5 // == 74.3 mph
+  11@ > 40.5 // == 74.3 mph
 else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus2" visible 0
 3FFB: set_car 0@ component "sidledsstatus3" visible 1
 // Set alpha of coils to match speed of car
-0087: 2@ = 1@
+0087: 2@ = 11@
 2@ -= 40.5
 2@ *= 64.0
 008C: 3@ = float_to_integer 2@
@@ -275,39 +263,37 @@ then
 end
 3ff4: set car 0@ comp "fluxcoilson" alpha 3@
 if
-  1@ > 43.5 // == 79.8 mph // floating-point values
+  11@ > 43.5 // == 79.8 mph // floating-point values
 else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus3" visible 0
 3FFB: set_car 0@ component "sidledsstatus4" visible 1
 // Coils start glowing around 80 mph
 gosub @TimeCoil
 if
-  1@ > 44.5 // == 81.7 mph // floating-point values
+  11@ > 44.5 // == 81.7 mph // floating-point values
 else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus4" visible 0
 3FFB: set_car 0@ component "sidledsstatus5" visible 1
 3FFB: set_car 0@ component "fluxcapacitorlightson" visible 1
 3FFB: set_car 0@ component "fluxcapacitorlightsoff" visible 0
-3FFB: set_car 0@ component "flux1" visible 1
-3FFB: set_car 0@ component "flux2" visible 1
-3FFB: set_car 0@ component "flux3" visible 1
-3FFB: set_car 0@ component "flux4" visible 1
-3FFB: set_car 0@ component "flux5" visible 1
-3FFB: set_car 0@ component "flux6" visible 1
+for 7@ = 1 to 6 step 1
+    3FF8: set_car 0@ component "flux" index 7@ visible 1
+end
 
 // If we are fueled, go ahead and show sparks and
 // Load and play spark sounds
+0B10: 7@ = 1@ AND $HOOD_BIT // Time Circuits Fried
 if or
     03D2:   wav 1 ended
     83D0:   not wav 1 loaded
 then
     040D: unload_wav 1
     if
-       7@ >= 4
+       7@ == 0
     then
-       03CF: load_wav 'BIKEREV' as 1
+        03CF: load_wav 'BAND_07' as 1
     else
-       03CF: load_wav 'BAND_07' as 1
+        03CF: load_wav 'BIKEREV' as 1
     end
 end
 9@ = 1
@@ -317,7 +303,7 @@ end
 gosub @TimePlasma
 
 // Wormhole and sparks only pop up if fueled or if its the train
-0B10: 7@ = 11@ AND $FUEL_BIT // Time Circuits Fried
+0B10: 7@ = 1@ AND $FUEL_BIT // Time Circuits Fried
 if or
    not 7@ == 0 // Fueled
    Car.Model(0@) == #BUS
@@ -328,24 +314,24 @@ then
 end
 
 if
-  1@ > 45.0 // floating-point values
+  11@ > 45.0 // floating-point values
 else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus5" visible 0
 3FFB: set_car 0@ component "sidledsstatus6" visible 1
 if
-  1@ > 46.5 // floating-point values
+  11@ > 46.5 // floating-point values
 else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus6" visible 0
 3FFB: set_car 0@ component "sidledsstatus7" visible 1
 if
-  1@ > 47.6 // == 87.3 mph // floating-point values
+  11@ > 47.6 // == 87.3 mph // floating-point values
 else_jump @TimeStart
 3FFB: set_car 0@ component "sidledsstatus7" visible 0
 3FFB: set_car 0@ component "sidledsstatus8" visible 1
 //gosub @Wire
 
 // Prepare for temporal displacement
-0B10: 7@ = 11@ AND $FUEL_BIT // Time Circuits Fried
+0B10: 7@ = 1@ AND $FUEL_BIT // Time Circuits Fried
 if or
   not 7@ == 0 // Fueled
   Car.Model(0@) == #BUS
@@ -376,7 +362,7 @@ end
 
 // 88 MPH!!!!!!!
 if
-  1@ > 48.1 // floating-point values
+  11@ > 48.1 // floating-point values
 else_jump @TimeStart
 
 //=============================================================================================
@@ -448,12 +434,6 @@ then
     gosub @GlobalDateToLocal
 end
 
-// TO_DELETE
-/*// Get BTTF1 variation before we overwrite the Last Departed Time
-0B10: 7@ = 15@ AND 0x0f  // Get car variation
-0B10: 8@ = 15@ AND 0x30  // Get hook variation
-0B15: 8@ = 8@ SHR 4 */
-
 // Set Last Departed date
 008B: 14@ = $CMONTH // integer values and handles
 14@ *= 100 // integer values (never used in VC or GTA 3)
@@ -476,11 +456,42 @@ then
 end
 
 // Unfuel the car
-0B10: 11@ = 11@ AND $FUEL_BITMASK
+0B10: 1@ = 1@ AND $FUEL_BITMASK
 
 // Now for the actual temporal displacement
 // Record coordinates
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0
+
+// Plate stuff
+0B10: 6@ = 1@ AND $PLATE_BIT  // Get car variation
+0B10: 7@ = 1@ AND $HOOK_BIT  // Get car variation
+if
+    003B: 6@ == $PLATE_OUTATIME_BIT  // OUTATIME plate
+then
+    // Remove plate from model
+    0B10: 1@ = 1@ AND $PLATE_BITMASK
+end
+
+// Hook stuff
+0B10: 7@ = 1@ AND $HOOK_BIT  // Get car variation
+if
+    003B: 7@ == $HOOK_SIDE_BIT // Hook on side
+then
+    // Remove hook
+    0B10: 1@ = 1@ AND $HOOK_BITMASK
+    0B11: 1@ = 1@ OR $HOOK_HOLDER_BIT
+else if
+    003B: 7@ == $HOOK_UP_BIT // Hook up
+then
+    // Remove hook
+    0B10: 1@ = 1@ AND $HOOK_BITMASK
+    0B11: 1@ = 1@ OR $HOOK_HOLDER_BIT
+end
+end
+
+// Update variations
+create_thread @SetVariation 0@ 1@
+
 if and
     $MODE == 1
     00DC:   player $PLAYER_CHAR driving 0@
@@ -493,77 +504,42 @@ then
     $TRAVEL = 1 // integer values
     $INST_TRAVEL = 1 // integer values
     $FADE = 1 // integer values
-    3ff4: set car 0@ comp "fluxcoilson" alpha 0
-    3ff4: set car 0@ comp "wormhole" alpha 0
+    3FF4: set car 0@ component "fluxcoilson" alpha 0
+    3FF4: set car 0@ component "wormhole" alpha 0
     3FFB: set_car 0@ component "fluxcapacitorlightson" visible 0
     3FFB: set_car 0@ component "fluxcapacitorlightsoff" visible 1
     3FFB: set_car 0@ component "lightfl" visible 0
     3FFB: set_car 0@ component "lightfr" visible 0
-
 else
-    // Plate stuff
-    0B10: 7@ = 11@ AND $PLATE_BIT  // Get car variation
+    // Plate animation
     if
-        003B: 7@ == $PLATE_OUTATIME_BIT  // OUTATIME plate
+        003B: 6@ == $PLATE_OUTATIME_BIT  // OUTATIME plate
     then
-        // Remove plate from model
-        0B10: 11@ = 11@ AND $PLATE_BITMASK
         create_thread @Plate 0@ 2@ 3@ 4@
     end
 
-    // Detach Hook
-    0B10: 7@ = 11@ AND $HOOK_BIT  // Get car variation
+    // Hook animation
     if
         003B: 7@ == $HOOK_SIDE_BIT // Hook on side
     then
-        // Remove hook
-        0B10: 11@ = 11@ AND $HOOK_BITMASK
-        0B11: 11@ = 11@ OR $HOOK_HOLDER_BIT
         create_thread @HookSideDetach 0@ 2@ 3@ 4@ 9@
     else if
         003B: 7@ == $HOOK_UP_BIT // Hook up
     then
-        // Remove hook
-        0B10: 11@ = 11@ AND $HOOK_BITMASK
-        0B11: 11@ = 11@ OR $HOOK_HOLDER_BIT
         create_thread @HookDetach 0@ 2@ 3@ 4@ 9@
     end
     end
 
-    // TO_DELETE
-    /*if or
-        7@ == 0
-        7@ == 1
-    then
-        // Do plate animation if we have it
-        if
-            7@ == 1
-        then
-            create_thread @Plate 0@ 2@ 3@ 4@
-        end
-
-        // Detach hook
-        if
-            8@ == 2
-        then
-            create_thread @HookSideDetach 0@ 2@ 3@ 4@ 11@
-        else if
-            8@ == 3
-        then
-            create_thread @HookDetach 0@ 2@ 3@ 4@ 11@
-        end
-        end
-    end   */
-
     // Create explosion
     gosub @EntryExplosion
 
+
     // Create Firetrail
-    0B10: 7@ = 11@ AND $TC_FRIED  // Get car variation
+    0B10: 7@ = 1@ AND $TC_FRIED  // Get car variation
     if
         7@ == 0
     then
-        create_thread @FireTrail 0@ 11@
+        create_thread @FireTrail 0@ 1@
     else
         create_thread @FireTrail99 0@
     end
@@ -592,36 +568,6 @@ else
         wait 10000
     end
 end
-
-// TO_DELETE
-//13@ -= 100000 // Hide Time Circuits?
-
-// Update the variation
-/*if or
-    7@ == 0
-    7@ == 1
-then
-    // Detach plate
-    if
-        7@ == 1
-    then
-        7@ = 0
-    end
-
-    // Detach hook
-    if
-        8@ > 1
-    then
-        8@ = 1
-    end
-end
-
-// Update 15@ to include the new variations
-15@ *= 100
-0B16: 8@ = 8@ SHL 4
-005C: 15@ += 7@ // integer values (never used VC or GTA 3)
-005C: 15@ += 8@ // integer values (never used VC or GTA 3)*/
-
 if
     80DC:   not player $PLAYER_CHAR driving 0@
 else_jump @TimeReentryFadeOut
@@ -686,12 +632,12 @@ else_jump @TimePastModelVariation
 0@ = Car.Create(10@, 2@, 3@, 4@)
 Model.Destroy(10@)
 // Rotate the time machine to make it look like it braked after entry
-11@ += 120.0
+9@ += 120.0
 Car.Angle(0@) = 9@
-11@ -= 120.0
+9@ -= 120.0
 Car.Health(0@) = 8@
 13@ += 100000 // integer values
-create_thread @SetVariation 0@ 11@
+create_thread @SetVariation 0@ 1@
 
 :TimePastWait
 wait 0
@@ -738,7 +684,7 @@ jump @TimeReentryExplosion
 // =========================================================================
 
 :TimeReentryTrainAnimations
-// Set up train animations again.
+// Set up train animations again. To be removed
 if or
    Car.Model(0@) == #BUS
    Car.Model(0@) == #MAVERICK
@@ -760,7 +706,7 @@ return
 :TimeReentryFadeOut
 // Fade out only for cutscene
 if
-  $MODE == 0 // integer values
+    $MODE == 0 // integer values
 then
     wait 1000
     0169: set_fade_color 0 0 0
@@ -796,7 +742,6 @@ Player.ClearWantedLevel($PLAYER_CHAR)
 042B: clear_peds_from_cube -5000.0 -5000.0 -5000.0 5000.0 5000.0 5000.0
 0395: clear_area 1 at 2@ 3@ range 4@ 5000.0
 04E4: unknown_refresh_game_renderer_at 2@ 3@
-Model.Destroy(#KEYCARD)
 if
   $MODE == 0 // integer values
 then
@@ -822,8 +767,8 @@ else
     $FADE = 0 // integer values
 end
 
+// 3 sonic booms, or one if its instant
 :TimeReentryExplosion
-create_thread @SetVariation 0@ 11@
 gosub @ReentryExplosion
 if or
   $INST_TRAVEL == 0 // integer values
@@ -844,115 +789,96 @@ $TRAVEL = 0 // integer values
 0581: toggle_radar 1
 if
   $MODE == 0 // integer values
-else_jump @TimeReentrySetSpeed
+else_jump @TimeReentryEnd
 Car.PutAt(0@, 2@, 3@, 4@)
-Car.Angle(0@) = 9@
-wait 10  // Small delay to counteract the Train from coming back still
 jump @TimeReentrySetVehicleData
-
-:TimeReentrySetSpeed
-//13@ += 100000 // integer values
-04BA: set_car 0@ speed_instantly 1@
-jump @TimeReentrySetImmunities
 
 // Create vehicle if driver is not playing.
 :TimeReentryLoadModel
 Model.Load(10@)
-
-:TimeReentryCreateModel
-wait 10
-if
-   Model.Available(10@)
-else_jump @TimeReentryCreateModel
+while not Model.Available(10@)
+    wait 10
+end
 0@ = Car.Create(10@, 2@, 3@, 4@)
-create_thread @SetVariation 0@ 11@
+create_thread @SetVariation 0@ 1@
 Model.Destroy(10@)
 
 :TimeReentrySetVehicleData
-gosub @TimeReentryTrainAnimations
+//gosub @TimeReentryTrainAnimations
 $CUTSCENE = 0 // integer values
+$SET_TIME = 0 // integer values
+$INST_TRAVEL = 0 // integer values
+$COOLDOWN = 1
 053F: set_car 0@ tires_vulnerable 0
 Car.Health(0@) = 8@
 Car.Angle(0@) = 9@
+Car.SetImmunities(0@, 0, 0, 0, 1, 1)
+wait 10
 //13@ += 100000 // integer values
-04BA: set_car 0@ speed_instantly 1@
-
-// This is for RC mode to get it to handbrake turn
-:TimeReentryBrakes
+04BA: set_car 0@ speed_instantly 11@
 if and
-80DC:   not player $PLAYER_CHAR driving 0@
-   not Car.Model(0@) == #SPARROW
-   not Car.Model(0@) == #MAVERICK
-else_jump @TimeReentrySetImmunities
+    00DC:   player $PLAYER_CHAR driving 0@
+    $MODE == 0 // integer values
+then
+    Camera.OnVehicle(0@, 15, 1)
+end
+if
+    80DC:   not player $PLAYER_CHAR driving 0@
+then
+    // This is for RC mode to get it to handbrake turn
+    create_thread @TimeEngineOff
+end
+
+:TimeReentryEnd
+9@ = 0 // Unload sounds
+043C: set_game_sounds_disable_on_fade 1
+create_thread @TimeReentryCoil 0@ 1@
+create_thread @Cold 0@ 1@
+create_thread @Steam 0@ 1@
+create_thread @Engine 0@ 1@
+create_thread @FuelEmpty 0@ 1@
+jump @TimeStart
+
+// ===================================================================================
+:TimeReentryCoil
+0B10: 7@ = 1@ AND $TC_FRIED
+if
+    7@ == 0  // Time circuits aren't fried
+then
+    while 17@ < 999
+        wait 10
+        gosub @TimeCoil
+        gosub @TimeBodyGlow
+    end
+end
+3ff4: set car 0@ component "fluxcoilson" alpha 0
+
+end_thread
+
+
+// ===================================================================================
+
+:TimeEngineOff
 0477: set_car 0@ animation 3 250 ms
 wait 250
 02D4: car 0@ turn_off_engine
-jump @TimeReentrySetImmunities
-
-:TimeReentrySetImmunities
-Car.SetImmunities(0@, 0, 0, 0, 1, 1)
-
-:TimeReentryCold
-create_thread @Cold 0@ 11@
-17@ = 0 // integer values
-if
-00DC:   player $PLAYER_CHAR driving 0@
-else_jump @TimeReentryCoil
-if
-  $MODE == 0 // integer values
-else_jump @TimeReentryCoil
-Camera.OnVehicle(0@, 15, 1)
-
-:TimeReentryCoil
-wait 0
-if
-   not 17@ > 999 // integer values
-else_jump @TimeReentryTravelFlag
-0B10: 7@ = 11@ AND $TC_FRIED  // Get time circuits fried
-if
-   7@ == 0  // Time circuits aren't fried
-else_jump @TimeReentryCoil
-gosub @TimeCoil
-gosub @TimeBodyGlow
-jump @TimeReentryCoil
-
-:TimeReentryTravelFlag
-3ff4: set car 0@ component "fluxcoilson" alpha 0
-$SET_TIME = 0 // integer values
-$INST_TRAVEL = 0 // integer values
-043C: set_game_sounds_disable_on_fade 1
-
-:TimeReentryResetCamera
-if and
-    $MODE == 0
-    00DC:   player $PLAYER_CHAR driving 0@
-then
-    Camera.Restore
-    Camera.SetBehindPlayer
-end
-$CAMERA_CONTROL = 1
-9@ = 0
-
-create_thread @Steam 0@ 11@
-create_thread @Engine 0@ 11@
-create_thread @FuelEmpty 0@ 11@
-jump @TimeStart
-
+end_thread
 
 // ==================================================================================
 // Reset stuff related to the camera and sound effects since they can loop (vfx effects do not)
 
 :TimeResetCamera
-0B10: 7@ = 11@ AND $TC_FRIED_BIT
-0B10: 8@ = 11@ AND $TC_BIT
+0B10: 7@ = 1@ AND $TC_FRIED_BIT
+0B10: 8@ = 1@ AND $TC_BIT
 if and
     00DC:   player $PLAYER_CHAR driving 0@
     $CAMERA_CONTROL == 0
 then
     if or
-        1@ < 47.6
+        11@ < 47.6
         not 7@ == 0 // Time Circuits are fried
         8@ == 0 // Time Circuits are Off
+        $COOLDOWN == 1
     then
         Model.Destroy(#KEYCARD)
         $CAMERA_CONTROL = 1
@@ -964,13 +890,13 @@ end
 return
 
 :TimeUnloadSparkSounds
-0B10: 7@ = 11@ AND $TC_FRIED_BIT
-0B10: 8@ = 11@ AND $TC_BIT
+0B10: 7@ = 1@ AND $TC_FRIED_BIT
+0B10: 8@ = 1@ AND $TC_BIT
 if
     9@ == 1
 then
     if or
-        1@ < 44.5
+        11@ < 44.5
         not 7@ == 0 // Time Circuits are fried
         8@ == 0 // Time Circuits are Off
     then
@@ -1361,21 +1287,14 @@ $MONTH /= 1000000
 $MONTH *= 100
 0060: $DAY -= $MONTH
 $MONTH /= 100
-//008A: $TCON = 13@ // integer values and handles
+
 008A: $HOUR = 13@ // integer values and handles
 008A: $MINUTE = 13@ // integer values and handles
 $HOUR /= 100
 $HOUR *= 100
 0060: $MINUTE -= $HOUR
 $HOUR /= 100
-// TO_DELETE
-/*$TCON /= 100
-$TCON *= 100
-0060: $MINUTE -= $TCON
-$TCON /= 10000
-$TCON *= 100
-0060: $HOUR -= $TCON
-$TCON /= 1000   */
+
 0084: $HOURN = $HOUR // integer values and handles
 if
     $HOUR >= 12 // integer values
@@ -1385,18 +1304,20 @@ then
 else
     $AM = 0 // integer values
 end
-/*
+
+// Time circuits stuff
+0B10: $TCON = 1@ AND $TC_BIT
 if
-    $TCON >= 2 // integer values
+    not $TCON == 0
 then
-    $FRIED = 1 // integer values
-    $TCON = 0 // integer values
-else
-    $FRIED = 0 // integer values
+    $TCON = 1
 end
-*/
-0B10: $TCON = 11@ AND $TC_BIT
-0B15: $TCON = $TCON SHR 9
+0B10: $FRIED = 1@ AND $TC_FRIED_BIT
+if
+    not $FRIED == 0
+then
+    $FRIED = 1
+end
 gosub @GlobalDateToLocal
 return
 
@@ -1406,35 +1327,29 @@ return
 005C: 12@ += $DAY // integer values (never used VC or GTA 3)
 12@ *= 10000 // integer values (never used in VC or GTA 3)
 005C: 12@ += $YEAR // integer values (never used VC or GTA 3)
-
-/*008B: 13@ = $FRIED // integer values and handles
-13@ *= 2 // integer values (never used in VC or GTA 3)
-005C: 13@ += $TCON // integer values (never used VC or GTA 3)
-13@ *= 1000 // integer values (never used in VC or GTA 3)
-005C: 13@ += $HOUR // integer values (never used VC or GTA 3)*/
-0B10: 11@ = 11@ AND $TC_BITMASK
-if
-    $TCON == 1
-then
-    0B11: 11@ = 11@ OR $TC_BIT
-end
 008B: 13@ = $HOUR
 13@ *= 100 // integer values (never used in VC or GTA 3)
 005C: 13@ += $MINUTE // integer values (never used VC or GTA 3)
+
+// Time circuits stuff
+0B10: 1@ = 1@ AND $TC_BITMASK
+if
+    $TCON == 1
+then
+    0B11: 1@ = 1@ OR $TC_BIT
+end
+0B10: 1@ = 1@ AND $TC_FRIED_BITMASK
+if
+    $FRIED == 1
+then
+    0B11: 1@ = 1@ OR $TC_FRIED_BIT
+end
 return
 
 :LocalToGlobal
 008A: $DELOREAN = 0@ // integer values and handles
 008A: $PTIME = 14@ // integer values and handles
-/*008A: $TEMP_DRIVE = 15@ // integer values and handles
-$TEMP_DRIVE /= 1000000 // integer values
-$TEMP_DRIVE *= 1000000 // integer values*/
 008A: $PTIME1 = 15@ // integer values and handles
-/*0060: $PTIME1 -= $TEMP_DRIVE // integer values
-$PTIME1 /= 100 // integer values
-0B10: $TM_TYPE = 15@ AND 0x0f  // Get time machine variation
-0B10: $BTTF1_VARIATION = 15@ AND 0x30  // Get bttf1 variation
-0B15: $BTTF1_VARIATION = $BTTF1_VARIATION SHR 4*/
 return
 
 :MemoryHandling
@@ -1442,8 +1357,8 @@ return
 // When driving, the local variables are always being updated by global variables so the car knows its time circuits status.
 // Any time the player reenters the car, any global variables are overwritten by local ones so the last state in known by the time machine is used.  Once again, to configure the
 // Time circuits on the HUD.
-045A: text_draw_1number 10.0 10.0 'DAY' 11@  // Best Result: ~1~th
-0B10: 7@ = 11@ AND $MEMORY_BIT  // Get car variation
+//045A: text_draw_1number 10.0 10.0 'DAY' 11@  // Best Result: ~1~th
+0B10: 7@ = 1@ AND $MEMORY_BIT  // Get car variation
 if
 00DC:   player $PLAYER_CHAR driving 0@
 then
@@ -1452,8 +1367,8 @@ then
     if
         7@ == 0
     then
-        0B12: 11@ = 11@ XOR $MEMORY_BIT
-        01E5: text_1number_highpriority 'DAY' 11@ time 2000 1  // Cost: $~1~
+        0B12: 1@ = 1@ XOR $MEMORY_BIT
+        //01E5: text_1number_highpriority 'DAY' 11@ time 2000 1  // Cost: $~1~
 
         gosub @LocalDateToGlobal
     else
@@ -1463,49 +1378,9 @@ else
     if
         not 7@ == 0
     then
-        0B12: 11@ = 11@ XOR $MEMORY_BIT
+        0B12: 1@ = 1@ XOR $MEMORY_BIT
     end
 end
-// TO_DELETE
-/*jump @MemoryHandlingReturn
-if  // 0
-    15@ < 1000000 // integer values
-jf @MemoryHandlingA
-jump @MemoryHandlingB
-
-:MemoryHandlingA
-if and  // 0
-    15@ >= 10000000 // integer values
-    15@ <  11000000 // integer values
-else_jump @MemoryHandlingC
-
-:MemoryHandlingB
-15@ += 1000000 // integer values
-gosub @LocalDateToGlobal
-jump @MemoryHandlingReturn
-
-:MemoryHandlingC
-gosub @GlobalDateToLocal
-jump @MemoryHandlingReturn
-
-:MemoryHandlingD
-if and  // 1
-    15@ >= 11000000 // integer values
-    15@ <  20000000 // integer values
-else_jump @MemoryHandlingE
-jump @MemoryHandlingF
-
-:MemoryHandlingE
-if and  // 1
-    15@ >= 1000000 // integer values
-    15@ < 10000000 // integer values
-else_jump @MemoryHandlingReturn
-jump @MemoryHandlingF
-
-:MemoryHandlingF
-15@ -= 1000000 // integer values
-
-:MemoryHandlingReturn        */
 return
 
 // ==================================================================================================
@@ -2010,31 +1885,53 @@ if
 80DC:   not player $PLAYER_CHAR driving 0@
 else_jump @HookReturn
 
-0B10: 7@ = 11@ AND $HOOK_BIT
+0B10: 7@ = 1@ AND $HOOK_BIT
 // Hook check
 if or
     003B: 7@ == $HOOK_SIDE_BIT
     003B: 7@ == $HOOK_UP_BIT
 else_jump @HookReturn
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 1.5 0.0 0.0
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.5 0.0 0.0
 if and
     00E1:   key_pressed 0 4
-    00F6:   player $PLAYER_CHAR 0 1@ 2@ 3@ radius 1.0 1.0 2.0
+    00F6:   player $PLAYER_CHAR 0 2@ 3@ 4@ radius 1.0 1.0 2.0
 else_jump @HookReturn
 
 // Put hook up or down
-0B10: 11@ = 11@ AND $HOOK_BITMASK
+0B10: 1@ = 1@ AND $HOOK_BITMASK
 if
     003B: 7@ == $HOOK_SIDE_BIT
 then
-    0B11: 11@ = 11@ OR $HOOK_UP_BIT
+    0B11: 1@ = 1@ OR $HOOK_UP_BIT
 else
-    0B11: 11@ = 11@ OR $HOOK_SIDE_BIT
+    0B11: 1@ = 1@ OR $HOOK_SIDE_BIT
 end
-create_thread @SetVariation 0@ 11@
+create_thread @SetVariation 0@ 1@
 wait 250
 
 :HookReturn
+return
+
+:FluxCapacitorAnimation
+for 7@ = 0 to 6 step 1
+    3FF8: set_car 0@ component "flux" index 7@ visible 0
+end
+0B10: 7@ = 1@ AND $TC_BIT
+0B10: 8@ = 1@ AND $TC_FRIED_BIT
+if and
+    not 7@ == 0    // Time circuits on
+    8@ == 0  // Time circuits ok
+then
+    if
+        16@ >= 540
+    then
+        16@ = 0
+    end
+    0085: 7@ = 16@
+    7@ /= 90
+    7@ += 1
+    3FF8: set_car 0@ component "flux" index 7@ visible 1
+end
 return
 
 // =============================================================================================================
@@ -2245,8 +2142,8 @@ end_thread   */
 // Plays empty chamber sound, as well as having a short cooldown before time travel effects can start appearing again.
 
 :FuelEmpty
-$COOLDOWN = 1
 $EMPTY_FLASH = 1
+$COOLDOWN = 1
 wait 5000
 // Only play sounds if driving and if its not the train
 if
@@ -2276,7 +2173,7 @@ end
 
 :FuelEmptyEnd
 $EMPTY_FLASH = 0
-wait 2000
+wait 1000
 $COOLDOWN = 0
 end_thread
 
@@ -2311,7 +2208,7 @@ jf @FuelCheckBTTF1
 jump @FuelReturn
 
 :FuelCheckBTTF1
-0B10: 7@ = 11@ AND $REAR_BIT  // Get fuel sorce
+0B10: 7@ = 1@ AND $REAR_BIT  // Get fuel sorce
 if
    7@ == 0  // Plutonium variation
 jf @FuelRefuel
@@ -2441,14 +2338,14 @@ jump @FuelDoneRefueling
 // Leaving this for now, but disabling all animations until we actually get a real one since its real jank to respawn.
 :FuelRefuelOpenFusion
 //Unlatch
-For 1@ = 0.0 To 45.0 Step 5.0
-    3FFD: rotate_car_part "fusionlatch" angle 1@ 0.0 0.0 car 0@
+For 5@ = 0.0 To 45.0 Step 5.0
+    3FFD: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
 //Open Mr. Fusion
-For 1@ = 0.0 DownTo -90.0 Step 6.0
-    3FFD: rotate_car_part "fusion" angle 1@ 0.0 0.0 car 0@
+For 5@ = 0.0 DownTo -90.0 Step 6.0
+    3FFD: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
@@ -2463,14 +2360,14 @@ end
 wait 2000
 
 //Close Mr. Fusion
-For 1@ = -90.0 To 0.1 Step 6.0
-    3FFD: rotate_car_part "fusion" angle 1@ 0.0 0.0 car 0@
+For 5@ = -90.0 To 0.1 Step 6.0
+    3FFD: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
 //Unlatch
-For 1@ = 45.0 downTo 0.0 Step 5.0
-    3FFD: rotate_car_part "fusionlatch" angle 1@ 0.0 0.0 car 0@
+For 5@ = 45.0 downTo 0.0 Step 5.0
+    3FFD: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
@@ -2488,7 +2385,7 @@ wait 500
 wait 500
 040D: unload_wav 1
 0151: remove_status_text $PLUTONIUM
-0B11: 11@ = 11@ OR $FUEL_BIT
+0B11: 1@ = 1@ OR $FUEL_BIT
 $FUELING = 0 // integer values
 jump @FuelReturn
 
@@ -2697,7 +2594,7 @@ end_thread
 return
 
 :TimePlasma
-0B10: 7@ = 11@ AND $FLYING_BIT // Are we flying?
+0B10: 7@ = 1@ AND $FLYING_BIT // Are we flying?
 if
    7@ == 0  // Driving
 then
@@ -2728,7 +2625,7 @@ then
     0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
 
     // Wheel sparks animations for BTTF3
-    0B10: 7@ = 11@ AND $HOOD_BIT // Hoodbox variation
+    0B10: 7@ = 1@ AND $HOOD_BIT // Hoodbox variation
     if
        not 7@ == 0 // Has hoodbox
     then
@@ -2741,7 +2638,7 @@ return
 // Spark effects
 :TimeSparks
 if
-  17@ > 100 // integer values
+  17@ > 50 // integer values
 then
   17@ = 0
   create_thread @Sparks 0@
@@ -2752,7 +2649,7 @@ return
 // Wormhole Effect
 :TimeWormhole
 // Adjust the size of the wormhole based on speed
-0087: 5@ = 1@
+0087: 5@ = 11@
 5@ -= 44.9 // floating-point values
 5@ /= 1.6 // floating-point values (never used in VC or GTA 3)
 5@ *= 1.25 // floating-point values (never used in VC or GTA 3)
@@ -2766,7 +2663,7 @@ then
 else
     // Delorean Wormhole
     0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 7.0 0.15
-    0B10: 7@ = 11@ AND $HOOD_BIT // Hoodbox variation
+    0B10: 7@ = 1@ AND $HOOD_BIT // Hoodbox variation
     if
        7@ == 0 // No hoodbox
     then
@@ -2793,32 +2690,32 @@ if and
    not Car.Model(0@) == #BUS
    not Car.Model(0@) == #MAVERICK
 else_jump @TimeCoilTrain
-0B10: 7@ = 11@ AND $HOOD_BIT // Hoodbox variation
+0B10: 7@ = 1@ AND $HOOD_BIT // Hoodbox variation
 
 // Hoodbox effects
 if
    not 7@ == 0  // Has Hoodbox
 then
-    02E3: 1@ = car 0@ speed
-    1@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+    02E3: 11@ = car 0@ speed
+    11@ /= 30.0 // floating-point values (never used in VC or GTA 3)
     0208: 3@ = random_float 1.425 1.825
     0208: 2@ = random_float -0.2 0.2
-    005D: 3@ += 1@ // floating-point values (never used in VC or GTA 3)
+    005D: 3@ += 11@ // floating-point values (never used in VC or GTA 3)
     0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 2@ 3@ 0.35
     0437: scatter_particle 2 0.1 at 2@ 3@ 4@ 0 0 0
     0208: 3@ = random_float 1.425 1.825
     0208: 2@ = random_float -0.2 0.2
-    005D: 3@ += 1@ // floating-point values (never used in VC or GTA 3)
+    005D: 3@ += 11@ // floating-point values (never used in VC or GTA 3)
     0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 2@ 3@ 0.35
     0437: scatter_particle 11 0.1 at 2@ 3@ 4@ 0 0 0
 end
 
 :TimeCoilOn
-02E3: 1@ = car 0@ speed
+02E3: 11@ = car 0@ speed
 0209: $RAND = random_int 0 3
 if or
     7@ == 0 // Non-hoodbox version
-    1@ > 47.0 // floating-point values
+    11@ > 47.0 // floating-point values
     $RAND == 0 // integer values
 then
     // All on
@@ -3147,30 +3044,16 @@ return
 
 // ======================================================================================================
 :Sparks
-if
-   not 1@ == 1 // integer values
-else_jump @SparksFirst
 0209: 10@ = random_int 0 10
-jump @SparksNotFirst
-
-:SparksFirst
-10@ = 0 // integer values
-jump @SparksDeloreanCheck
 
 :SparksNotFirst
-if
-003C:   $REPEAT == 10@ // integer values (never used VC or GTA 3)
-else_jump @SparksDeloreanCheck
-0209: 10@ = random_int 0 10
-jump @SparksNotFirst
+while  003C:   $REPEAT == 10@ // integer values (never used VC or GTA 3)
+    0209: 10@ = random_int 0 10
+end
 
 :SparksDeloreanCheck
-if or
+if
    Car.Model(0@) == #INFERNUS
-   Car.Model(0@) == #DELUXO
-   Car.Model(0@) == #SPARROW
-   Car.Model(0@) == #BANSHEE
-   Car.Model(0@) == #BAGGAGE
 else_jump @SparksTrain
 if
   10@ == 0 // integer values
@@ -3345,12 +3228,11 @@ if and
    not Car.Model(0@) == #MAVERICK
    not Car.Model(0@) == #BANSHEE
    not Car.Model(0@) == #BAGGAGE
-else_jump @SparksCreateBlue
-0437: scatter_particle 2 1.0 at 7@ 8@ 9@ 0 0 0
-jump @SparksSpeed
-
-:SparksCreateBlue
-0437: scatter_particle 11 1.0 at 7@ 8@ 9@ 0 0 0
+then
+    0437: scatter_particle 2 1.0 at 7@ 8@ 9@ 0 0 0
+else
+    0437: scatter_particle 11 1.0 at 7@ 8@ 9@ 0 0 0
+end
 
 :SparksSpeed
 wait 10
@@ -3590,6 +3472,11 @@ return
 
 // ==========================================================================================================
 :SetVariation
+if
+0119:   car 0@ wrecked
+then
+    end_thread
+end
 gosub @HideFuel 0@
 
 // Wheel
@@ -3669,8 +3556,8 @@ then
 else if
     003B: 15@ == $PLATE_FUTURE_BIT
 then
-    3FFB: set_car 0@ component "plate" visible 1
-    3FFB: set_car 0@ component "platebttf2" visible 0
+    3FFB: set_car 0@ component "plate" visible 0
+    3FFB: set_car 0@ component "platebttf2" visible 1
 else
     3FFB: set_car 0@ component "plate" visible 0
     3FFB: set_car 0@ component "platebttf2" visible 0

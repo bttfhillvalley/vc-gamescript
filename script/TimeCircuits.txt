@@ -137,44 +137,34 @@ gosub @TextDrawRight
 gosub @TextDrawRight 
 045A: text_draw_1number 565.0 8@ 'YEAR' 6@  // ~1~
 gosub @TextDrawRight              
-045A: text_draw_1number 575.0 8@ 'YEAR' 7@  // ~1~
-if 9@ == 0
-then
-  9@ = 12
-  jump @TimeCircuitsAMColon
-end
-if 9@ == 12
-then
-  jump @TimeCircuitsPMColon
-end
-if 9@ > 12
-then
-  9@ -= 12
-  jump @TimeCircuitsPMColon
-end
-jump @TimeCircuitsAMColon
-
-:TimeCircuitsPMColon
-gosub @TimeCircuitsHourDraw 
+045A: text_draw_1number 575.0 8@ 'YEAR' 7@  // ~1~   
 gosub @TextDraw 
-if 
-   not 16@ > 500 // integer values 
+if
+    9@ < 12
 then
-033E: text_draw 581.5 8@ 'PM'  // .    :
+    033E: text_draw 580.0 8@ 'AM1'  // ?
 else
-033E: text_draw 581.5 8@ 'PM1'  // .
+    033E: text_draw 580.0 8@ 'PM1'  // . 
 end
-jump @TimeCircuitsDisplayEnd 
-
-:TimeCircuitsAMColon
-gosub @TimeCircuitsHourDraw 
-gosub @TextDraw 
 if 
-   not 16@ > 500 // integer values 
+    9@ > 12
 then
-033E: text_draw 581.5 8@ 'AM'  // ?    :
-else
-033E: text_draw 581.5 8@ 'AM1'  // ? 
+    9@ -= 12
+end
+gosub @TimeCircuitsHourDraw 
+
+// Flash Colon 
+if 
+    16@ > 999 // integer values 
+then
+    16@ = 0 // integer values
+end 
+
+if 
+    16@ < 500 // integer values 
+then
+    gosub @TextDrawRight 
+    033E: text_draw 614.0 8@ 'COLON'  // .    :
 end
 jump @TimeCircuitsDisplayEnd 
 
@@ -189,18 +179,10 @@ gosub @TextDrawRight
 045A: text_draw_1number 599.5 8@ 'HOUR1' 9@  // ~1~
 gosub @TextDrawRight 
 045A: text_draw_1number 610.5 8@ 'HOUR1' 10@  // ~1~
-if 
-  16@ > 999 // integer values 
-then
-  16@ = 0 // integer values
-end 
 gosub @TextDrawRight 
 045A: text_draw_1number 624.5 8@ 'MINUTE' 11@  // ~1~
 gosub @TextDrawRight 
 045A: text_draw_1number 634.5 8@ 'MINUTE' 12@  // ~1~
-
-:TimeCircuitsPointer
-//033E: text_draw $POSX $POSY 'POINTER'  // .
 return 
 
 :TimeCircuitsMonth
@@ -211,90 +193,89 @@ if
   13@ == 1 // integer values 
 jf @TimeCircuitsFeb 
 033E: text_draw 476.0 8@ 'MONTH01'  // Jan
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsFeb
 if 
   13@ == 2 // integer values 
 jf @TimeCircuitsMar 
 033E: text_draw 476.0 8@ 'MONTH02'  // feb
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsMar
 if 
   13@ == 3 // integer values 
 jf @TimeCircuitsApr 
 033E: text_draw 476.0 8@ 'MONTH03'  // mar
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsApr
 if 
   13@ == 4 // integer values 
 jf @TimeCircuitsMay 
 033E: text_draw 476.0 8@ 'MONTH04'  // apr
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsMay
 if 
   13@ == 5 // integer values 
 jf @TimeCircuitsJun 
 033E: text_draw 476.0 8@ 'MONTH05'  // may
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsJun
 if 
   13@ == 6 // integer values 
 jf @TimeCircuitsJul 
 033E: text_draw 476.0 8@ 'MONTH06'  // Jun
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsJul
 if 
   13@ == 7 // integer values 
 jf @TimeCircuitsAug 
 033E: text_draw 476.0 8@ 'MONTH07'  // Jul
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsAug
 if 
   13@ == 8 // integer values 
 jf @TimeCircuitsSep 
 033E: text_draw 476.0 8@ 'MONTH08'  // aug
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsSep
 if 
   13@ == 9 // integer values 
 jf @TimeCircuitsOct 
 033E: text_draw 476.0 8@ 'MONTH09'  // sep
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsOct
 if 
   13@ == 10 // integer values 
 jf @TimeCircuitsNov 
 033E: text_draw 476.0 8@ 'MONTH10'  // oct
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsNov
 if 
   13@ == 11 // integer values 
 jf @TimeCircuitsDec 
 033E: text_draw 476.0 8@ 'MONTH11'  // nov
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsDec
 if 
   13@ == 12 // integer values 
 jf @TimeCircuitsErr
 033E: text_draw 476.0 8@ 'MONTH12'  // dec
-jump @TimeCircuitsMonthEnd 
+return
 
 :TimeCircuitsErr
-033E: text_draw 486.0 8@ 'ERR'  // dec
+033E: text_draw 476.0 8@ 'ERR'  // dec
 
-:TimeCircuitsMonthEnd
-gosub @TextDraw 
+:TimeCircuitsMonthEnd 
 return 
 
 :TimeCircuitsDisplayEnd

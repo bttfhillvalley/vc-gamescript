@@ -19,7 +19,7 @@ else_jump @CarSpawnStart
 //0506: vehicle_model #INFERNUS set_next_variation -1 -1
 0@ = Car.Create(10@, 1@, 2@, 3@)
 0175: set_car 0@ z_angle_to 4@
-create_thread @Time 0@ 0 0 0 0 0 0 0 0 0 10@ 0x4108 10261985 1000 -1 -1
+create_thread @Time 0@ 0x4004 0 0 0 0 0 0 0 0 0 0 10261985 1000 -1 -1
 /*wait 1000
 3FF3: set car 0@ suspension
 wait 1000
