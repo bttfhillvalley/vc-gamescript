@@ -1,30 +1,30 @@
-:55tv
-thread '55tv'
+:55TV
+thread '55TV'
 wait 0
 if
-Player.Defined($PLAYER_CHAR) 
-jf @55tv
-if 
-00E1:   key_pressed 0 4 
-jf @55tv
+Player.Defined($PLAYER_CHAR)
+jf @55TV
+if
+00E1:   key_pressed 0 4
+jf @55TV
 end_thread_named 'tvoff'
 7AAC: play_audio_stream_2channel "CLEO/CLEO_AUDIO/howdy.wav" loop 0 volume 0.5
 wait 85000
 0AAD: stop_audio_stream
-end_thread_named '55tvon'
-create_thread @55tvoff
-jump @55tv
+end_thread_named '55TVon'
+create_thread @55TVoff
+jump @55TV
 
-:55tvon
-thread '55tvon'
+:55TVOn
+thread '55TVOn'
 wait 0
-05F5: call_scm_func @ATSETFRAME params 2         OBJID 6  FRAME 2 //set starting frame  to play the animation from the beginning.
-jump @55tvon
+05F5: call_scm_func @AtSetFrame params 2 OBJID 6 FRAME 2 //set starting frame to play the animation from the beginning.
+jump @55TVOn
 
 
-:55tvoff
-thread 'tvoff'
-05F5: call_scm_func @atSETFRAME params 2         OBJID 6  FRAME -1 //pause
-05F5: call_scm_func @atSETFRAME params 2         OBJID 6  FRAME 0 //set frame 
+:55TVOff
+thread '55TVOff'
+05F5: call_scm_func @AtSetFrame params 2 OBJID 6 FRAME -1 //pause
+05F5: call_scm_func @AtSetFrame params 2 OBJID 6 FRAME 0 //set frame
 wait 0
-jump @55tvoff
+jump @55TVOff

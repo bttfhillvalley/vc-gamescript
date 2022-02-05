@@ -1,18 +1,17 @@
-:parkingbrake
-{$USE CLEO}
+:ParkingBrake
 thread 'parkbrk'
-wait 10 
-008B: 0@ = $DELOREAN // integer values and handles 
+wait 10
+008B: 0@ = $DELOREAN // integer values and handles
 if or
    not Car.Wrecked(0@)
-00DC:   player $PLAYER_CHAR driving 0@ 
-else_jump @parkingbrake      
-3FFD: rotate_car_part "ebrake" angle 0.0 0.0 0.0 car 0@ //off   
-3FFB: set_car 0@ component "brakelight" visible 0  //off                                  
-if 
+00DC:   player $PLAYER_CHAR driving 0@
+else_jump @ParkingBrake
+3FFD: rotate_car_part "ebrake" angle 0.0 0.0 0.0 car 0@ //off
+3FFB: set_car 0@ component "brakelight" visible 0  //off
+if
 00E1:   player 0 pressed_button 6
-THEN                       
-3FFD: rotate_car_part "ebrake" angle 401.07 0.0 0.0 car 0@ //on 
+THEN
+3FFD: rotate_car_part "ebrake" angle 401.07 0.0 0.0 car 0@ //on
 3FFB: set_car 0@ component "brakelight" visible 1  //on
 end
-jump @parkingbrake
+jump @ParkingBrake

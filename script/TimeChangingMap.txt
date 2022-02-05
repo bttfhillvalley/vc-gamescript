@@ -1,53 +1,53 @@
-:date_check_start
+:DateCheckStart
 wait 0
-3FFF: remove_build "55lyon" amnt 4 
+3FFF: remove_build "55lyon" amnt 4
 3FFF: remove_build "farm" amnt 17
 3FFF: remove_build "1985" amnt 7
 3FFF: remove_build "2015" amnt 7
 3FFF: remove_build "85mall" amnt 90
 
-:date_check
-if 
+:DateCheck
+if
    $CYEAR < 1980
 then
 3FFE: add_build "55lyon" amnt 4
-3FFE: add_build "farm" amnt 17 
-   jump @wait_to_leave_1955
-else if 
+3FFE: add_build "farm" amnt 17
+   jump @WaitToLeave1955
+else if
    $CYEAR >= 2010
 then
-   3FFE: add_build "2015" amnt 7   
-   jump @wait_to_leave_2015
+   3FFE: add_build "2015" amnt 7
+   jump @WaitToLeave2015
 else
    3FFE: add_build "1985" amnt 7
    3FFE: add_build "85mall" amnt 90
    create_thread @canopener
-   jump @wait_to_leave_1985
+   jump @WaitToLeave1985
 end
 end
- 
-:wait_to_leave_1955
+
+:WaitToLeave1955
 wait 0
-if 
+if
   $CYEAR >= 1980 // We traveled to the present/future
-jf @wait_to_leave_1955
-3FFF: remove_build "55lyon" amnt 4 
+jf @WaitToLeave1955
+3FFF: remove_build "55lyon" amnt 4
 3FFF: remove_build "farm" amnt 17
-jump @date_check
- 
-:wait_to_leave_1985
+jump @DateCheck
+
+:WaitToLeave1985
 wait 0
 if or
   $CYEAR < 1980 // We traveled back to the past
   $CYEAR >= 2010 // We traveled to the future
-jf @wait_to_leave_1985
+jf @WaitToLeave1985
 3FFF: remove_build "1985" amnt 7
 3FFF: remove_build "85mall" amnt 90
 end_thread_named 'canopn'
 0108: destroy_object $dogfoodbase
 0108: destroy_object $dogfoodarm
 0108: destroy_object $dogfoodclaw
-0108: destroy_object $dogfoodcan 
+0108: destroy_object $dogfoodcan
 0108: destroy_object $dogfoodcan1
 0108: destroy_object $dogfoodcan2
 0108: destroy_object $garagetoast1
@@ -60,14 +60,14 @@ end_thread_named 'canopn'
 0108: destroy_object $dogfoodpile
 0108: destroy_object $dogemptycan
 0108: destroy_object $dogfoodfull
-0108: destroy_object $dogfoodspin                                                    
+0108: destroy_object $dogfoodspin
 0215: destroy_pickup $docscamera
-jump @date_check
- 
-:wait_to_leave_2015
+jump @DateCheck
+
+:WaitToLeave2015
 wait 0
-if 
+if
   $CYEAR < 2010 // We traveled to the past/present
-jf @wait_to_leave_2015
+jf @WaitToLeave2015
 3FFF: remove_build "2015" amnt 7
-jump @date_check  
+jump @DateCheck

@@ -1,4 +1,4 @@
-:Time
+
 //{$INCLUDE TimeEffects.txt}
 // ========================================
 // 0@ is the car itself
@@ -36,9 +36,8 @@
 // 12@ and 13@ are the destination time
 // 13@ is compounded with the status of the time circuits.
 // 14@ and 15@ are the past time
-{$USE bitwise}
-
-// MSB bits
+// MSB bits                    
+:Time
 $MEMORY_BIT   = 0x8000 // 1 bit
 $FUEL_BIT     = 0x4000 // 1 bit
 $FLYING_BIT   = 0x2000 // 1 bit
@@ -118,6 +117,7 @@ gosub @Fuel
 // Check To see if we're going to hover.
 // FIXME: This will be removed from this section in the future since there will be no need for model swaps that require setting everything back up since it'll be the same car instance
 :TimeFly
+0B10: 6@ = 1@ AND $FC_BIT  // Flying Circuits
 0B10: 7@ = 1@ AND $FC_FRIED_BIT // Fried
 0B10: 8@ = 1@ AND $FLYING_BIT   // Is car flying?
 if and
@@ -128,18 +128,45 @@ then
 end
 
 // TODO: Need to only let car go to driving if flying circuits are damaged
-0B10: 8@ = 1@ AND $FC_BIT  // Flying Circuits
+
 if and
+    00DC:   player $PLAYER_CHAR driving 0@
     003A:   $KEY == $KEY_HOVERCONVERSION // C
-    not 8@ == 0  // Flying circuits are installed
+    not 6@ == 0  // Flying circuits are installed
+    $CONVERSION == 0  // Not animating
+else_jump @TimeFlyEngineOff
+jump @TimeFlyConvert
+
+:TimeFlyEngineOff
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    00E1:   key_pressed 0 15
+    not 8@ == 0 // Flying
+    $CONVERSION ==0
+else_jump @TimeFlyNotDriving
+jump @TimeFlyConvert
+
+:TimeFlyNotDriving
+if and
+    80DC:   not player $PLAYER_CHAR driving 0@
+    not 8@ == 0 // Flying
+    $CONVERSION ==0
+else_jump @TimeFlyHover
+
+:TimeFlyConvert
+if or
+    7@ == 0 // not Fried
+    not 8@ == 0 // Flying
 then
     0B12: 1@ = 1@ XOR $FLYING_BIT  // Flip flying bit
+    create_thread @HoverAnimate 0@ 1@
 end
-//gosub @Fly
 
+:TimeFlyHover
+gosub @HoverConversion
 
 // Lightning check
-0B10: 8@ = 1@ AND $FLYING_BIT   // Is car flying?
+
 :TimeLightning
 0209: 2@ = random_int 0 1000
 if and
@@ -463,9 +490,11 @@ end
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0
 
 // Plate stuff
+0B10: 5@ = 1@ AND $FLYING_BIT  // Get car variation
 0B10: 6@ = 1@ AND $PLATE_BIT  // Get car variation
 0B10: 7@ = 1@ AND $HOOK_BIT  // Get car variation
-if
+if and
+    5@ == 0 // Not flying
     003B: 6@ == $PLATE_OUTATIME_BIT  // OUTATIME plate
 then
     // Remove plate from model
@@ -512,7 +541,8 @@ then
     3FFB: set_car 0@ component "lightfr" visible 0
 else
     // Plate animation
-    if
+    if and
+        5@ == 0 // Not flying
         003B: 6@ == $PLATE_OUTATIME_BIT  // OUTATIME plate
     then
         create_thread @Plate 0@ 2@ 3@ 4@
@@ -832,6 +862,7 @@ end
 :TimeReentryEnd
 9@ = 0 // Unload sounds
 043C: set_game_sounds_disable_on_fade 1
+gosub @TimeEffectsModelReset
 create_thread @TimeReentryCoil 0@ 1@
 create_thread @Cold 0@ 1@
 create_thread @Steam 0@ 1@
@@ -1151,7 +1182,7 @@ end
 if
 
 // TODO: Make this random again
-1@ = 10000
+0209: 1@ = random_int_in_ranges 30000 300000
 16@ = 0 // integer values
 
 :EngineStart
@@ -1203,8 +1234,8 @@ if
 00E1:   key_pressed 0 16
 else_jump @EngineOn
 05F5: call_scm_func @DrawTexture params_count 5 4 782.0 155.0 45.0 23.0 // battery light off
-  3FFB: set_car 0@ component "lightfl" visible 1
-  3FFB: set_car 0@ component "lightfr" visible 1
+3FFB: set_car 0@ component "lightfl" visible 1
+3FFB: set_car 0@ component "lightfr" visible 1
 0209: 1@ = random_int 1 100
 if and
    not 1@ == 50 // integer values
@@ -1357,7 +1388,6 @@ return
 // When driving, the local variables are always being updated by global variables so the car knows its time circuits status.
 // Any time the player reenters the car, any global variables are overwritten by local ones so the last state in known by the time machine is used.  Once again, to configure the
 // Time circuits on the HUD.
-//045A: text_draw_1number 10.0 10.0 'DAY' 11@  // Best Result: ~1~th
 0B10: 7@ = 1@ AND $MEMORY_BIT  // Get car variation
 if
 00DC:   player $PLAYER_CHAR driving 0@
@@ -1368,8 +1398,6 @@ then
         7@ == 0
     then
         0B12: 1@ = 1@ XOR $MEMORY_BIT
-        //01E5: text_1number_highpriority 'DAY' 11@ time 2000 1  // Cost: $~1~
-
         gosub @LocalDateToGlobal
     else
         gosub @GlobalDateToLocal
@@ -1384,62 +1412,88 @@ end
 return
 
 // ==================================================================================================
-:ShowWheels
-3FFB: set_car 0@ component "wheel_rf" visible 1@
-3FFB: set_car 0@ component "wheel_lf" visible 1@
-3FFB: set_car 0@ component "wheel_rb" visible 1@
-3FFB: set_car 0@ component "wheel_lb" visible 1@
-3FFB: set_car 0@ component "wheelbttf1rf" visible 1@
-3FFB: set_car 0@ component "tirebttf1rf" visible 1@
-3FFB: set_car 0@ component "thrusterbttf2rf" visible 1@
-3FFB: set_car 0@ component "wheelbttf1lf" visible 1@
-3FFB: set_car 0@ component "tirebttf1lf" visible 1@
-3FFB: set_car 0@ component "thrusterbttf2lf" visible 1@
-3FFB: set_car 0@ component "wheelbttf1rb" visible 1@
-3FFB: set_car 0@ component "tirebttf1rb" visible 1@
-3FFB: set_car 0@ component "thrusterbttf2rb" visible 1@
-3FFB: set_car 0@ component "wheelbttf1lb" visible 1@
-3FFB: set_car 0@ component "tirebttf1lb" visible 1@
-3FFB: set_car 0@ component "thrusterbttf2lb" visible 1@
-end_thread
-
-// TODO: This really needs to be redone, and I don't know how to best fit everything.  Probably will make this specific to the Delorean/Train and have a separate thread for other flying vehicles to keep track of them.
 // Will probably create this as a separate thread
 :HoverConversion
-thread 'HOVER'
-// 1@ is reserved for speed
-// 2@, 3@, and 4@ are reserved for positioning
-// 5@ is for temporary variables, like ground z
-6@ = 0.0 // Wheel extending
-7@ = 0.0 // Wheel rotating
+0B10: 7@ = 1@ AND $FLYING_BIT   // Is car flying?
+if or
+    not 7@ == 0
+    $CONVERSION == 1
+else_jump @HoverConversionReturn
+3FFA: set_car 0@ hover 1
 
-// Hover control
-// 0 = landed
-// 1 = taking off
-// 2 = flying
-// 3 = landing
-15@ = 0
-
-:HoverConversionstart
-wait 10
+// Thrust
 if and
-   Player.Defined($PLAYER_CHAR)
-   $TRAVEL == 0
-else_jump @HoverConversionstart
-// Only works for the Delorean....for now
-if
-    00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS
-then
-    03C1: 0@ = player $PLAYER_CHAR car
-end
-if
-8119:   not car 0@ wrecked
-else_jump @HoverConversionstart
+    00DC:   player $PLAYER_CHAR driving 0@
+    $CONVERSION == 0
+else_jump @HoverConversionReturn
 Car.StorePos(0@, 2@, 3@, 4@)
-02E3: 1@ = car 0@ speed
-02CE: 5@ = ground_z 2@ 3@ 4@
-0063: 4@ -= 5@ // floating-point values (never used in VC or GTA 3)
+if and
+    4@ < 200.0 // floating-point values
+    00E1:   key_pressed 0 6
+else_jump @HoverConversionReset
 
+02E3: 11@ = car 0@ speed
+// Various speed options
+if
+    11@ < 7.5 // floating-point values
+then
+    11@ = 10.0
+else if
+    11@ < 40.0 // floating-point values
+then
+    0087: 5@ = 11@ // floating-point values only
+    5@ *= -0.001 // floating-point values (never used in VC or GTA 3)
+    5@ += 1.25575 // floating-point values
+    0069: 11@ *= 5@ // floating-point values
+else
+    0087: 5@ = 11@ // floating-point values only
+    5@ *= -0.0005 // floating-point values (never used in VC or GTA 3)
+    5@ += 1.233 // floating-point values
+    0069: 11@ *= 5@ // floating-point values
+end
+end
+04BA: set_car 0@ speed_instantly 11@
+
+// Vent Sounds
+// Only play once
+if and
+    $VSOUND == 0 // not loaded
+    $TRAVEL == 0
+then
+    $VSOUND = 1 // loaded
+    040D: unload_wav 2
+    03CF: load_wav 'BURG_04' as 2
+end
+
+if and
+    $VSOUND == 1 // loaded
+    $TRAVEL == 0
+    03D0:   wav 2 loaded
+then
+    03D1: play_wav 2
+    $VSOUND = 2  // playing
+end
+
+// Vent Glow
+02E3: 11@ = car 0@ speed
+0087: 5@ = 11@ // floating-point values only
+5@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+5@ -= 2.345 // floating-point values
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.417 5@ 0.476
+04D5: create_corona_at 2@ 3@ 4@ radius 0.75 type 1 flare 0 RGB 255 225 175
+0407: create_coordinate 2@ 3@ 4@  from_car 0@ offset -0.417 5@ 0.476
+04D5: create_corona_at 2@ 3@ 4@  radius 0.75 type 1 flare 0 RGB 255 225 175
+jump @HoverConversionReturn
+
+:HoverConversionReset
+$VSOUND = 0
+
+:HoverConversionReturn
+return
+
+// =============================================================================================================================================
+
+:HoverAnimateModel
 // Move struts
 // Shocks are at a 45 degree angle so they have a weird movement,  They need to be adjusted in both the X and Z axis.
 // 8@ will adjust both X
@@ -1483,6 +1537,7 @@ Car.StorePos(0@, 2@, 3@, 4@)
 3FFC: move_car_part "shocklf" pos 8@ 0.0 9@ car 0@
 3FFC: move_car_part "shockpistonlf" pos 8@ 0.0 10@ car 0@
 3FFC: move_car_part "fxwheellfdummy" pos 6@ 0.0 0.0 car 0@
+6@ *= -1.0
 
 // Rotate wheels
 0087: 5@ = 7@ // Piston
@@ -1495,11 +1550,69 @@ Car.StorePos(0@, 2@, 3@, 4@)
 3FFD: rotate_car_part "holderlb" angle 0.0 5@ 0.0 car 0@
 3FFD: rotate_car_part "fxwheellfdummy" angle 0.0 5@ 0.0 car 0@
 3FFD: rotate_car_part "fxwheellbdummy" angle 0.0 5@ 0.0 car 0@
+return
+
+:HoverSmoke
+// Effects
+// Smoke effects on takeoff/landing
+02E3: 11@ = car 0@ speed
+if and
+    11@ < 5.0   // slow speeds only as well
+    4@ < 5.0   // Only show smoke close to the ground.
+then
+    0087: 5@ = 11@ // floating-point values only
+    5@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+    5@ += 0.8 // floating-point values
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.75 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.75 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+    5@ += -1.4 // floating-point values
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.625 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.625 5@ -0.425
+    0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.1
+end
+return
+
+:HoverAnimate
+$CONVERSION = 1
+
+
+0B10: 15@ = 1@ AND $FLYING_BIT   // Is car flying?
+040D: unload_wav 2
+if
+    15@ == 0
+then
+    6@ = 0.3 // Wheel retracting
+    7@ = 90.0 // Wheel rotating back
+    03CF: load_wav 'BURG_08' as 2
+else
+    create_thread @SetVariation 0@ 1@
+    6@ = 0.0 // Wheel extending
+    7@ = 0.0 // Wheel rotating out
+    03CF: load_wav 'BURG_07' as 2
+end
+create_thread @PlaySound 2
+
+:HoverAnimateStart
+wait 10
+if and
+   Player.Defined($PLAYER_CHAR)
+   $TRAVEL == 0
+else_jump @HoverAnimateStart
+if
+8119:   not car 0@ wrecked
+else_jump @HoverAnimateEnd
+Car.StorePos(0@, 2@, 3@, 4@)
+02CE: 5@ = ground_z 2@ 3@ 4@
+0063: 4@ -= 5@ // floating-point values (never used in VC or GTA 3)
+gosub @HoverAnimateModel
+gosub @HoverSmoke
 
 // Animate
-6@ *= -1.0
 if
-    $TM_TYPE == 2 // Driving Delorean
+    15@ == 0 // Landing
 then
     if
         7@ > 0.0
@@ -1509,11 +1622,17 @@ then
         6@ > 0.0
     then
         6@ -= 0.01
+    else
+        if or
+            4@ > 5.0  // If we're really high up, just disable hovering
+            81F3:   not car 0@ airborne
+        then
+            create_thread @SetVariation 0@ 1@
+            jump @HoverAnimateEnd
+        end
     end
     end
-else if
-    $TM_TYPE == 3 // Flying Delorean
-then
+else  // Flying
     if
         6@ < 0.3
     then
@@ -1522,168 +1641,17 @@ then
         7@ < 90.0
     then
         7@ += 5.0
-    end
-    end
-end
-end
-
-
-// Set take off flag
-if
-    $TM_TYPE == 3
-then
-    if or
-        15@ == 0
-        15@ == 3
-    then
-        15@ = 1
-        create_thread @ShowDeloreanWheels 0@ 0
-        create_thread @ShowDeloreanHoverWheels 0@ 1
-        040D: unload_wav 2
-        03CF: load_wav 'BURG_07' as 2
-        create_thread @PlaySound 2
-
-    end
-    if and
-        15@ == 1
-        7@ >= 90.0  // Wheels are fully extended
-    then
-        15@ = 2
+    else
         create_thread @WheelThrust 0@
+        jump @HoverAnimateEnd
+    end
     end
 end
+jump @HoverAnimateStart
 
-
-if
-    $TM_TYPE == 2
-then
-    if or
-        15@ == 1
-        15@ == 2
-    then
-        15@ = 3
-        040D: unload_wav 2
-        03CF: load_wav 'BURG_08' as 2
-        create_thread @PlaySound 2
-    end
-    if
-        6@ <= 0.0  // Wheels are fully retracted
-    then
-        if or
-            4@ > 5.0  // If we're really high up, just disable hovering
-            81F3:   not car 0@ airborne
-        then
-            15@ = 0
-            create_thread @ShowDeloreanWheels 0@ 1
-            create_thread @ShowDeloreanHoverWheels 0@ 0
-        end
-    end
-end
-
-if or
-    $TM_TYPE == 3  // Flying Delorean
-    15@ == 3       // Landing
-else_jump @HoverConversionstart
-3FFA: set_car 0@ hover 1
-// Effects
-// Smoke effects on takeoff/landing
-if and
-    1@ < 5.0   // slow speeds only as well
-    4@ < 5.0   // Only show smoke close to the ground.
-then
-    if or
-        15@ == 1
-        15@ == 3
-    then
-        0087: 5@ = 1@ // floating-point values only
-        5@ /= 30.0 // floating-point values (never used in VC or GTA 3)
-        5@ += 0.8 // floating-point values
-        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.75 5@ -0.425
-        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02
-        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.75 5@ -0.425
-        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02
-        5@ += -1.4 // floating-point values
-        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.625 5@ -0.425
-        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02
-        0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.625 5@ -0.425
-        0437: scatter_particle 33 0.1 at 2@ 3@ 4@ 0 0 -0.02
-    end
-end
-
-// Thrust
-if and
-    00DC:   player $PLAYER_CHAR driving 0@
-    $TM_TYPE == 3  // Flying Delorean
-else_jump @HoverConversionstart
-Car.StorePos(0@, 2@, 3@, 4@)
-if and
-    4@ < 200.0 // floating-point values
-    00E1:   key_pressed 0 6
-else_jump @HoverConversionReset
-
-02E3: 1@ = car 0@ speed
-// Various speed options
-if
-    1@ < 7.5 // floating-point values
-then
-    1@ = 10.0
-else if
-    1@ < 40.0 // floating-point values
-then
-    0087: 5@ = 1@ // floating-point values only
-    5@ *= -0.001 // floating-point values (never used in VC or GTA 3)
-    5@ += 1.25575 // floating-point values
-    0069: 1@ *= 5@ // floating-point values
-else
-    0087: 5@ = 1@ // floating-point values only
-    5@ *= -0.0005 // floating-point values (never used in VC or GTA 3)
-    5@ += 1.233 // floating-point values
-    0069: 1@ *= 5@ // floating-point values
-end
-end
-04BA: set_car 0@ speed_instantly 1@
-02E3: 1@ = car 0@ speed
-
-// Vent Glow
-if and
-    $VSOUND == 0 // not loaded
-    $TRAVEL == 0
-then
-    $VSOUND = 1 // loaded
-    040D: unload_wav 2
-    03CF: load_wav 'BURG_04' as 2
-end
-
-if and
-    $VSOUND == 1 // loaded
-    $TRAVEL == 0
-    03D0:   wav 2 loaded
-then
-    03D1: play_wav 2
-    $VSOUND = 2 // playing
-    17@ = 0 // integer values
-end
-
-if and
-    $VSOUND == 2
-    $TRAVEL == 0
-    17@ > 2999 // integer values
-    17@ < 3050
-then
-    040D: unload_wav 2
-end
-0087: 5@ = 1@ // floating-point values only
-5@ /= 30.0 // floating-point values (never used in VC or GTA 3)
-5@ -= 2.345 // floating-point values
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.417 5@ 0.476
-04D5: create_corona_at 2@ 3@ 4@ radius 0.75 type 1 flare 0 RGB 255 225 175
-0407: create_coordinate 2@ 3@ 4@  from_car 0@ offset -0.417 5@ 0.476
-04D5: create_corona_at 2@ 3@ 4@  radius 0.75 type 1 flare 0 RGB 255 225 175
-jump @HoverConversionStart
-
-:HoverConversionReset
-$VSOUND = 0
-jump @HoverConversionStart
+:HoverAnimateEnd
+$CONVERSION = 0
+end_thread
 
 // ==================================================================================================
 :WheelThrust
@@ -1820,11 +1788,8 @@ if
     $WIRE == 0 // integer values
 then
     040D: unload_wav 1
-    wait 0
     03CF: load_wav 'ASS_14' as 1
     create_thread @PlaySound 1
-    wait 500
-    040D: unload_wav 1
 end
 
 :PlateDestroy
@@ -1836,6 +1801,7 @@ if or
     14@ > 100.0 // floating-point values
 jf @PlateDestroy
 Object.Destroy(10@)
+Model.Destroy(#KEYCARD)
 end_thread
 
 // ======================================================================================================
@@ -3480,28 +3446,42 @@ end
 gosub @HideFuel 0@
 
 // Wheel
+0B10: 13@ = 1@ AND $FC_BIT
 0B10: 14@ = 1@ AND $WHEELS_BIT
 0B10: 15@ = 1@ AND $FLYING_BIT
 if
     15@ == 0
 then
     gosub @ShowBrakes
+    gosub @HideHoverBrakes
+    gosub @HideHoverThrusters
     gosub @HideDeloreanHoverWheels
     gosub @Hide50sHoverWheels
     gosub @HideTrainHoverWheels
+    if or
+        13@ == 0
+        003B: 14@ == $WHEELS_TRAIN_BIT
+    then
+        gosub @HideThrusters
+    else
+        gosub @ShowThrusters
+    end
     if
         003B: 14@ == $WHEELS_50S_BIT
     then
+        gosub @ShowThrusters
         gosub @HideDeloreanWheels
         gosub @Show50sWheels
         gosub @HideTrainWheels
     else if
         003B: 14@ == $WHEELS_TRAIN_BIT
     then
+        gosub @HideThrusters
         gosub @HideDeloreanWheels
         gosub @Hide50sWheels
         gosub @ShowTrainWheels
     else
+        gosub @ShowThrusters
         gosub @ShowDeloreanWheels
         gosub @Hide50sWheels
         gosub @HideTrainWheels
@@ -3509,22 +3489,27 @@ then
     end
 else
     gosub @HideBrakes
+    gosub @ShowHoverBrakes
+    gosub @HideThrusters
     gosub @HideDeloreanWheels
     gosub @Hide50sWheels
     gosub @HideTrainWheels
     if
         003B: 14@ == $WHEELS_50S_BIT
     then
+        gosub @ShowHoverThrusters
         gosub @HideDeloreanHoverWheels
         gosub @Show50sHoverWheels
         gosub @HideTrainHoverWheels
     else if
         003B: 14@ == $WHEELS_TRAIN_BIT
     then
+        gosub @HideHoverThrusters
         gosub @HideDeloreanHoverWheels
         gosub @Hide50sHoverWheels
         gosub @ShowTrainHoverWheels
     else
+        gosub @ShowHoverThrusters
         gosub @ShowDeloreanHoverWheels
         gosub @Hide50sHoverWheels
         gosub @HideTrainHoverWheels
@@ -3646,6 +3631,48 @@ jump @DisplayBrakes
 3FFB: set_car 0@ component "wheel_lf" visible 2@
 return
 
+:ShowHoverBrakes
+2@ = 1
+jump @DisplayHoverBrakes
+
+:HideHoverBrakes
+2@ = 0
+
+:DisplayHoverBrakes
+3FFB: set_car 0@ component "fxwheelrb" visible 2@
+3FFB: set_car 0@ component "fxwheellb" visible 2@
+3FFB: set_car 0@ component "fxwheelrf" visible 2@
+3FFB: set_car 0@ component "fxwheellf" visible 2@
+return
+
+:ShowThrusters
+2@ = 1
+jump @DisplayThrusters
+
+:HideThrusters
+2@ = 0
+
+:DisplayThrusters
+3FFB: set_car 0@ component "thrusterbttf2rb" visible 2@
+3FFB: set_car 0@ component "thrusterbttf2lb" visible 2@
+3FFB: set_car 0@ component "thrusterbttf2rf" visible 2@
+3FFB: set_car 0@ component "thrusterbttf2lf" visible 2@
+return
+
+:ShowHoverThrusters
+2@ = 1
+jump @DisplayHoverThrusters
+
+:HideHoverThrusters
+2@ = 0
+
+:DisplayHoverThrusters
+3FFB: set_car 0@ component "fxthrusterbttf2rb" visible 2@
+3FFB: set_car 0@ component "fxthrusterbttf2lb" visible 2@
+3FFB: set_car 0@ component "fxthrusterbttf2rf" visible 2@
+3FFB: set_car 0@ component "fxthrusterbttf2lf" visible 2@
+return
+
 :ShowDeloreanHoverWheels
 2@ = 1
 jump @DisplayDeloreanHoverWheels
@@ -3654,25 +3681,17 @@ jump @DisplayDeloreanHoverWheels
 2@ = 0
 
 :DisplayDeloreanHoverWheels
-3FFB: set_car 0@ component "fxwheelrb" visible 2@
 3FFB: set_car 0@ component "fxwheelbttf1rb" visible 2@
 3FFB: set_car 0@ component "fxtirebttf1rb" visible 2@
-3FFB: set_car 0@ component "fxthrusterbttf2rb" visible 2@
 
-3FFB: set_car 0@ component "fxwheellb" visible 2@
 3FFB: set_car 0@ component "fxwheelbttf1lb" visible 2@
 3FFB: set_car 0@ component "fxtirebttf1lb" visible 2@
-3FFB: set_car 0@ component "fxthrusterbttf2lb" visible 2@
 
-3FFB: set_car 0@ component "fxwheelrf" visible 2@
 3FFB: set_car 0@ component "fxwheelbttf1rf" visible 2@
 3FFB: set_car 0@ component "fxtirebttf1rf" visible 2@
-3FFB: set_car 0@ component "fxthrusterbttf2rf" visible 2@
 
-3FFB: set_car 0@ component "fxwheellf" visible 2@
 3FFB: set_car 0@ component "fxwheelbttf1lf" visible 2@
 3FFB: set_car 0@ component "fxtirebttf1lf" visible 2@
-3FFB: set_car 0@ component "fxthrusterbttf2lf" visible 2@
 return
 
 :Show50sHoverWheels
@@ -3747,6 +3766,7 @@ jump @DisplayClock
 2@ = 0
 
 :DisplayClock
+3FFB: set_car 0@ component "hourhand" visible 2@
 3FFB: set_car 0@ component "minutehand" visible 2@
 3FFB: set_car 0@ component "clockhammer" visible 2@
 3FFB: set_car 0@ component "clockhammer" visible 2@
@@ -3808,6 +3828,7 @@ jump @DisplayBTTF2
 3FFB: set_car 0@ component "shocklf" visible 2@
 return
 
+
 :ShowDeloreanWheels
 2@ = 1
 jump @DisplayDeloreanWheels
@@ -3818,19 +3839,16 @@ jump @DisplayDeloreanWheels
 :DisplayDeloreanWheels
 3FFB: set_car 0@ component "wheelbttf1rb" visible 2@
 3FFB: set_car 0@ component "tirebttf1rb" visible 2@
-3FFB: set_car 0@ component "thrusterbttf2rb" visible 2@
+
 
 3FFB: set_car 0@ component "wheelbttf1lb" visible 2@
 3FFB: set_car 0@ component "tirebttf1lb" visible 2@
-3FFB: set_car 0@ component "thrusterbttf2lb" visible 2@
 
 3FFB: set_car 0@ component "wheelbttf1rf" visible 2@
 3FFB: set_car 0@ component "tirebttf1rf" visible 2@
-3FFB: set_car 0@ component "thrusterbttf2rf" visible 2@
 
 3FFB: set_car 0@ component "wheelbttf1lf" visible 2@
 3FFB: set_car 0@ component "tirebttf1lf" visible 2@
-3FFB: set_car 0@ component "thrusterbttf2lf" visible 2@
 return
 
 :Show50sWheels
