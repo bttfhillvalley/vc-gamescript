@@ -138,12 +138,10 @@ end
 if
     003B: 15@ == $HOOK_NONE_BIT
 then
-    gosub @HideClock
     3FFB: set_car 0@ component "hookbttf1" visible 0
     3FFB: set_car 0@ component "hookandholderbttf1" visible 0
     3FFB: set_car 0@ component "holderbttf1" visible 0
 else
-    gosub @ShowClock
     if
         003B: 15@ == $HOOK_SIDE_BIT
     then
@@ -175,6 +173,28 @@ then
 else
     gosub @HideBTTF1
     gosub @ShowBTTF2
+end
+
+// Alarm Clock
+0B10: 15@ = 1@ AND $CLOCK_BIT
+if
+    15@ == 0
+then
+    gosub @HideClock
+
+else
+    gosub @ShowClock
+end
+
+// Boiler Gauge
+0B10: 15@ = 1@ AND $BOILER_BIT
+if
+    15@ == 0
+then
+    gosub @HideBoiler
+
+else
+    gosub @ShowBoiler
 end
 end_thread
 
@@ -335,6 +355,18 @@ jump @DisplayClock
 3FFB: set_car 0@ component "clock" visible 2@
 return
 
+:ShowBoiler
+2@ = 1
+jump @DisplayBoiler
+
+:HideBoiler
+2@ = 0
+
+:DisplayBoiler
+3FFB: set_car 0@ component "fireboxgauge" visible 2@
+3FFB: set_car 0@ component "fireboxgaugeneedle" visible 2@
+return
+
 :ShowBTTF1
 2@ = 1
 jump @DisplayBTTF1
@@ -450,10 +482,6 @@ jump @DisplayTrainWheels
 3FFB: set_car 0@ component "wheelbttf3rrlb" visible 2@
 3FFB: set_car 0@ component "wheelbttf3rrrf" visible 2@
 3FFB: set_car 0@ component "wheelbttf3rrlf" visible 2@
-
-// Firebox Gauge
-3FFB: set_car 0@ component "fireboxgauge" visible 2@
-3FFB: set_car 0@ component "fireboxgaugeneedle" visible 2@
 return
 
 
