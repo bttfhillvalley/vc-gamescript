@@ -181,8 +181,7 @@ create_thread @PlaySound 2
 
 :HoverAnimateStart
 wait 10
-if and
-   Player.Defined($PLAYER_CHAR)
+if
    $TRAVEL == 0
 else_jump @HoverAnimateStart
 if
@@ -191,8 +190,6 @@ else_jump @HoverAnimateEnd
 Car.StorePos(0@, 2@, 3@, 4@)
 02CE: 5@ = ground_z 2@ 3@ 4@
 0063: 4@ -= 5@ // floating-point values (never used in VC or GTA 3)
-gosub @HoverAnimateModel
-gosub @HoverSmoke
 
 // Animate
 if
@@ -209,6 +206,7 @@ then
     else
         if or
             4@ > 5.0  // If we're really high up, just disable hovering
+            80DC:   not player $PLAYER_CHAR driving 0@
             81F3:   not car 0@ airborne
         then
             create_thread @SetVariation 0@ 1@
@@ -231,6 +229,9 @@ else  // Flying
     end
     end
 end
+
+gosub @HoverAnimateModel
+gosub @HoverSmoke
 jump @HoverAnimateStart
 
 :HoverAnimateEnd

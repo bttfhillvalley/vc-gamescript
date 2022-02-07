@@ -36,7 +36,6 @@
 // 12@ and 13@ are the destination time
 // 13@ is compounded with the status of the time circuits.
 // 14@ and 15@ are the past time
-// MSB bits
 :Time
 $MEMORY_BIT   = 0x8000 // 1 bit
 $FUEL_BIT     = 0x4000 // 1 bit
@@ -142,7 +141,7 @@ if and
     00DC:   player $PLAYER_CHAR driving 0@
     00E1:   key_pressed 0 15
     not 8@ == 0 // Flying
-    $CONVERSION ==0
+    $CONVERSION == 0
 else_jump @TimeFlyNotDriving
 jump @TimeFlyConvert
 
@@ -150,7 +149,7 @@ jump @TimeFlyConvert
 if and
     80DC:   not player $PLAYER_CHAR driving 0@
     not 8@ == 0 // Flying
-    $CONVERSION ==0
+    $CONVERSION == 0
 else_jump @TimeFlyHover
 
 :TimeFlyConvert
@@ -166,7 +165,6 @@ end
 gosub @HoverConversion
 
 // Lightning check
-
 :TimeLightning
 0209: 2@ = random_int 0 1000
 if and
@@ -1059,7 +1057,7 @@ else_jump @ColdSteam
 02E3: 11@ = car 0@ speed
 if
   11@ < 10.0
-jf @ColdUnloadSound
+jf @ColdStart
 if and
    not Car.Model(0@) == #BUS
    not Car.Model(0@) == #MAVERICK
