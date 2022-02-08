@@ -154,10 +154,7 @@ create_thread @HillValley          // Real Time Clock and courthouse spawner
 create_thread @Conversion          // Flying DeLorean and Train hover conversion animations
 create_thread @Radio               // Copies the current radio station information for time travel/hover converion transitions
 create_thread @FlyPolice           // Flying 2015 police car conversion
-create_thread @carclockhr          // Bulova Alarm Clock hour hand and digital console clock hour
-create_thread @carclockmin         // Bulova Alarm Clock minute hand and digital console clock minute
-create_thread @Compass_rotation    // In Car Compass
-create_thread @Shifter             // Transmission, RPM, and Parking Brake animations
+create_thread @CarInterior         // Delorean Interior lights and animations
 create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugMove helps us move objects/particles
 //create_thread @55TV
@@ -196,6 +193,7 @@ end
 {$INCLUDE script/Audiotex.txt}
 {$INCLUDE script/CanOpener.txt}
 {$INCLUDE script/CarClock.txt}
+{$INCLUDE script/CarInterior.txt}
 {$INCLUDE script/CarSpawn.txt}
 {$INCLUDE script/ClockTower.txt}
 {$INCLUDE script/Conversion.txt}
@@ -219,14 +217,13 @@ end
 {$INCLUDE script/HoverConversion.txt}
 {$INCLUDE script/Ignition.txt}
 {$INCLUDE script/MemoryManipulation.txt}
-{$INCLUDE script/Taxi.txt}
-{$INCLUDE script/Train.txt}
-{$INCLUDE script/Truck.txt}
+{$INCLUDE script/ParkingBrake.txt}
 {$INCLUDE script/Radio.txt}
 {$INCLUDE script/RadioControl.txt}
 {$INCLUDE script/Rogers.txt}
 {$INCLUDE script/Shifter.txt}
 {$INCLUDE script/ShutDown.txt}
+{$INCLUDE script/Taxi.txt}
 {$INCLUDE script/TimeChangingMap.txt}
 {$INCLUDE script/TimeCircuitsModel.txt}
 {$INCLUDE script/TimeCircuits.txt}
@@ -234,6 +231,8 @@ end
 {$INCLUDE script/TimeMachineFuel.txt}
 {$INCLUDE script/TimeTravel.txt}
 {$INCLUDE script/TimeTravelMode.txt}
+{$INCLUDE script/Train.txt}
 {$INCLUDE script/TrainEffects.txt}
+{$INCLUDE script/Truck.txt}
 //-------------Mission 0---------------
 // put missions here

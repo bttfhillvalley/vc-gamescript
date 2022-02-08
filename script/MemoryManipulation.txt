@@ -1,6 +1,4 @@
 :MemoryManipulation
-{$OPCODE 0124=2,write_memory_address %1d% value %2d%}
-{$OPCODE 0125=2,%2d% = read_memory_address %1d%}
 thread 'KEYS'
 $2072 = -1995422835 // integer values
 $2073 = 1342335705 // integer values

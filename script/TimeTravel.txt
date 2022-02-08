@@ -102,7 +102,7 @@ else_jump @TimeReset
 //045A: text_draw_1number 10.0 10.0 'DAY' 1@  // Best Result: ~1~th
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0
 008C: 4@ = float_to_integer 4@
-045A: text_draw_1number 10.0 10.0 'DAY' $FLASH  // Best Result: ~1~th
+//045A: text_draw_1number 10.0 10.0 'DAY' $FLASH  // Best Result: ~1~th
 02E3: 11@ = car 0@ speed
 gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
 gosub @Hook  // Controls putting up/down the hook.  I forget the variations though.  It's in the garage thread so I can document it here as well.

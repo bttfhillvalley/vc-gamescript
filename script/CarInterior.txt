@@ -1,0 +1,13 @@
+// 14@ Reserved for RPM
+// 15@ Reserved for Parking Brake
+:CarInterior
+wait 10
+if
+     00E0:   player $PLAYER_CHAR in_any_car
+else_jump @CarInterior
+03C1: 0@ = player $PLAYER_CHAR car
+gosub @CarClock
+gosub @Shifter
+gosub @ParkingBrake
+gosub @CompassRotation
+jump @CarInterior

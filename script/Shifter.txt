@@ -1,17 +1,4 @@
 :Shifter
-// 1@ - 4@ Reserved for shifter
-// 5@ reserved for RPM needle
-// 6@ reserved for parking brake
-thread 'shifter'
-5@ = 0.0
-6@ = 0.0
-
-:ShifterSet
-wait 10
-008B: 0@ = $DELOREAN // integer values and handles
-if
-   not Car.Wrecked(0@)
-else_jump @ShifterSet
 02E3: 1@ = car 0@ speed
 3F10: set_car 0@ component "shiftern" visible 0 //Neutral Gear off
 3F10: set_car 0@ component "shifterr" visible 0 //Reverse Gear off
@@ -81,9 +68,9 @@ end
 :RPMNeedle
 // This will make the needle animate without snapping when changing gears
 0087: 3@ = 1@
-0063: 3@ -= 5@
+0063: 3@ -= 14@
 if
-    0025: 5@ > 1@
+    0025: 14@ > 1@
 then
     4@ = -5.0
     if
@@ -99,34 +86,8 @@ else
         0087: 4@ = 3@
     end
 end
-005B: 5@ += 4@
-3F16: rotate_car_part "rpmneedle" angle 0.0 5@ 0.0 car 0@
-
-:ParkingBrake
-// This checks the parking break.
-if
-    00E1:   player 0 pressed_button 6
-then
-    if
-        6@ < 40.0
-    then
-        6@ += 10.0
-    end
-
-else
-    if
-        6@ > 0.0
-    then
-        6@ -= 10.0
-    end
-end
-
-if
-    6@ > 0.0
-then
-    3F10: set_car 0@ component "brakelight" visible 1
-end
-3F16: rotate_car_part "ebrake" angle 6@ 0.0 0.0 car 0@
-jump @ShifterSet
+005B: 14@ += 4@
+3F16: rotate_car_part "rpmneedle" angle 0.0 14@ 0.0 car 0@
+return
 
 
