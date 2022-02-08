@@ -133,23 +133,23 @@ while true
 	then
         //first hide all components to reset		
 		for 1@ = 10 to 29
-			3FF8: set_car 0@ component "digitalspeedodigit" index 1@ visible 0
+			3F11: set_car 0@ component "digitalspeedodigit" index 1@ visible 0
 		end
-		3FFB: set_car 0@ component "digitalspeedodigit20bttf3" visible 0 
+		3F10: set_car 0@ component "digitalspeedodigit20bttf3" visible 0 
         //now show the relevant digits		
-		3FF8: set_car 0@ component "digitalspeedodigit1" index 5@ visible 1
+		3F11: set_car 0@ component "digitalspeedodigit1" index 5@ visible 1
 		if
 		  	6@ == 0
 		then		    
             if 
                 $TM_TYPE <= 3
             then
-                3FFB: set_car 0@ component "digitalspeedodigit20" visible 1 
+                3F10: set_car 0@ component "digitalspeedodigit20" visible 1 
             else
-                3FFB: set_car 0@ component "digitalspeedodigit20bttf3" visible 1 
+                3F10: set_car 0@ component "digitalspeedodigit20bttf3" visible 1 
             end
 		else
-			3FF8: set_car 0@ component "digitalspeedodigit2" index 6@ visible 1
+			3F11: set_car 0@ component "digitalspeedodigit2" index 6@ visible 1
 		end		
 	end
 end

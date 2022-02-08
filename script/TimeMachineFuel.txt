@@ -47,10 +47,10 @@ if
     $EMPTY_FLASH == 0
 then
     05F5: call_scm_func @DrawTexture params_count 5 2 825.0 155.0 38.0 23.0
-    3FFB: set_car 0@ component "pchamberemptylight" visible 1
+    3F10: set_car 0@ component "pchamberemptylight" visible 1
 else
     05F5: call_scm_func @DrawTexture params_count 5 3 825.0 155.0 38.0 23.0
-    3FFB: set_car 0@ component "pchamberemptylight" visible 0
+    3F10: set_car 0@ component "pchamberemptylight" visible 0
 end
 jump @FuelReturn
 
@@ -98,100 +98,100 @@ jf @FuelRefuelOpenFusion
 
 // Plutonium refueling
 //preplace canister on vent
-3FFC: move_car_part "plutcanliquid" pos -0.4 -0.0 -0.02 car 0@
-3FFC: move_car_part "plutcan" pos -0.4 -0.0 -0.02 car 0@
-3FFC: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
-3FFC: move_car_part "plut" pos -0.4 -0.0 -0.02 car 0@
-3FFD: rotate_car_part "plutcaninterior" angle 0.0 0.0 -90.0 car 0@
-3FFD: rotate_car_part "plutcanliquid" angle 0.0 0.0 -90.0 car 0@
-3FFD: rotate_car_part "plutcan" angle 0.0 0.0 -90.0 car 0@
-3FFD: rotate_car_part "plut" angle 0.0 0.0 -90.0 car 0@
+3F14: move_car_part "plutcanliquid" pos -0.4 -0.0 -0.02 car 0@
+3F14: move_car_part "plutcan" pos -0.4 -0.0 -0.02 car 0@
+3F14: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
+3F14: move_car_part "plut" pos -0.4 -0.0 -0.02 car 0@
+3F16: rotate_car_part "plutcaninterior" angle 0.0 0.0 -90.0 car 0@
+3F16: rotate_car_part "plutcanliquid" angle 0.0 0.0 -90.0 car 0@
+3F16: rotate_car_part "plutcan" angle 0.0 0.0 -90.0 car 0@
+3F16: rotate_car_part "plut" angle 0.0 0.0 -90.0 car 0@
 //show can
-3FFB: set_car 0@ component "plutcan" visible 1
-3FFB: set_car 0@ component "plutcanliquid" visible 1
-3FFB: set_car 0@ component "plutcaninterior" visible 1
-3FFB: set_car 0@ component "plut" visible 1
+3F10: set_car 0@ component "plutcan" visible 1
+3F10: set_car 0@ component "plutcanliquid" visible 1
+3F10: set_car 0@ component "plutcaninterior" visible 1
+3F10: set_car 0@ component "plut" visible 1
 
 //open cap
 For 4@ = 0.0 To 90.0 Step 5.0
-    3FFD: rotate_car_part "reactorlidbttf1" angle 0.0 0.0 4@ car 0@
+    3F16: rotate_car_part "reactorlidbttf1" angle 0.0 0.0 4@ car 0@
     wait 10
 end
 //set cap on vent
 For 4@ = 0.0 To 0.05 Step 0.01
-    3FFC: move_car_part "reactorlidbttf1" pos 0.0 0.0 4@ car 0@
+    3F14: move_car_part "reactorlidbttf1" pos 0.0 0.0 4@ car 0@
     wait 10
 end
 For 2@ = 0.0 DownTo -0.4 Step 0.05
   0087: 3@ = 2@
   3@ *= 0.35
-  3FFC: move_car_part "reactorlidbttf1" pos 2@ 3@ 0.05 car 0@
+  3F14: move_car_part "reactorlidbttf1" pos 2@ 3@ 0.05 car 0@
   wait 10
 end
 wait 250
 04F7: status_text $PLUTONIUM 0 line 2 'PLUTO'  // Plutonium:
 //set canister in reactor
 For 4@ = 0.41 DownTo -0.01 Step 0.01
-    3FFC: move_car_part "plutcanliquid" pos 0.0 0.0 4@ car 0@
-    3FFC: move_car_part "plutcan" pos 0.0 0.0 4@ car 0@
-    3FFC: move_car_part "plutcaninterior" pos 0.0 0.0 4@ car 0@
-    3FFC: move_car_part "plut" pos 0.0 0.0 4@ car 0@
+    3F14: move_car_part "plutcanliquid" pos 0.0 0.0 4@ car 0@
+    3F14: move_car_part "plutcan" pos 0.0 0.0 4@ car 0@
+    3F14: move_car_part "plutcaninterior" pos 0.0 0.0 4@ car 0@
+    3F14: move_car_part "plut" pos 0.0 0.0 4@ car 0@
     wait 10
 end
 //turn canister
     For 4@ = -90.0 To 0.0 Step 1.0
-    3FFD: rotate_car_part "plutcaninterior" angle 0.0 0.0 4@ car 0@
-    3FFD: rotate_car_part "plutcanliquid" angle 0.0 0.0 4@ car 0@
-    3FFD: rotate_car_part "plutcan" angle 0.0 0.0 4@ car 0@
-    3FFD: rotate_car_part "plut" angle 0.0 0.0 4@ car 0@
+    3F16: rotate_car_part "plutcaninterior" angle 0.0 0.0 4@ car 0@
+    3F16: rotate_car_part "plutcanliquid" angle 0.0 0.0 4@ car 0@
+    3F16: rotate_car_part "plutcan" angle 0.0 0.0 4@ car 0@
+    3F16: rotate_car_part "plut" angle 0.0 0.0 4@ car 0@
     wait 10
 end
 
 //drop pellet
 For 4@ = -0.01 DownTo -0.3 Step 0.1
-    3FFC: move_car_part "plut" pos 0.0 0.0 4@ car 0@
+    3F14: move_car_part "plut" pos 0.0 0.0 4@ car 0@
     wait 10
 end
 $PLUTONIUM -= 1 // integer values
-3FFB: set_car 0@ component "plut" visible 0
+3F10: set_car 0@ component "plut" visible 0
 wait 500
 //set canister back on vent
-3FFC: move_car_part "plutcanliquid" pos -0.4 -0.0 -0.02 car 0@
-3FFC: move_car_part "plutcan" pos -0.4 -0.0 -0.02 car 0@
-3FFC: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
-3FFC: move_car_part "plut" pos -0.4 -0.0 -0.02 car 0@
+3F14: move_car_part "plutcanliquid" pos -0.4 -0.0 -0.02 car 0@
+3F14: move_car_part "plutcan" pos -0.4 -0.0 -0.02 car 0@
+3F14: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
+3F14: move_car_part "plut" pos -0.4 -0.0 -0.02 car 0@
 wait 500
 //place lid back on reactor
 For 2@ = -0.4 To 0.0 Step 0.05
     0087: 3@ = 2@
     3@ *= 0.35
-    3FFC: move_car_part "reactorlidbttf1" pos 2@ 3@ 0.05 car 0@
+    3F14: move_car_part "reactorlidbttf1" pos 2@ 3@ 0.05 car 0@
     wait 10
 end
-3FFC: move_car_part "reactorlidbttf1" pos 0.0 0.0 0.05 car 0@
+3F14: move_car_part "reactorlidbttf1" pos 0.0 0.0 0.05 car 0@
 wait 500
 For 4@ = 0.05 DownTo 0.0 Step 0.01
-    3FFC: move_car_part "reactorlidbttf1" pos 0.0 0.0 4@ car 0@
+    3F14: move_car_part "reactorlidbttf1" pos 0.0 0.0 4@ car 0@
     wait 10
 end
 // Close cap
 For 4@ = 90.0 DownTo 0.0 Step 5.0
-    3FFD: rotate_car_part "reactorlidbttf1" angle 0.0 0.0 4@ car 0@
+    3F16: rotate_car_part "reactorlidbttf1" angle 0.0 0.0 4@ car 0@
     wait 10
 end
 wait 1000
 {hide canister and set default height and rotation}
-3FFB: set_car 0@ component "plutcan" visible 0
-3FFB: set_car 0@ component "plutcanliquid" visible 0
-3FFB: set_car 0@ component "plutcaninterior" visible 0
-3FFC: move_car_part "plutcaninterior" pos 0.0 0.0 0.4 car 0@
-3FFC: move_car_part "plutcanliquid" pos 0.0 0.0 0.4 car 0@
-3FFC: move_car_part "plutcan" pos 0.0 0.0 0.4 car 0@
-3FFC: move_car_part "plut" pos 0.0 0.0 0.4 car 0@
-3FFD: rotate_car_part "plutcaninterior" angle 0.0 0.0 4.0 car 0@
-3FFD: rotate_car_part "plutcanliquid" angle 0.0 0.0 4.0 car 0@
-3FFD: rotate_car_part "plutcan" angle 0.0 0.0 4.0 car 0@
-3FFD: rotate_car_part "plut" angle 0.0 0.0 4.0 car 0@
+3F10: set_car 0@ component "plutcan" visible 0
+3F10: set_car 0@ component "plutcanliquid" visible 0
+3F10: set_car 0@ component "plutcaninterior" visible 0
+3F14: move_car_part "plutcaninterior" pos 0.0 0.0 0.4 car 0@
+3F14: move_car_part "plutcanliquid" pos 0.0 0.0 0.4 car 0@
+3F14: move_car_part "plutcan" pos 0.0 0.0 0.4 car 0@
+3F14: move_car_part "plut" pos 0.0 0.0 0.4 car 0@
+3F16: rotate_car_part "plutcaninterior" angle 0.0 0.0 4.0 car 0@
+3F16: rotate_car_part "plutcanliquid" angle 0.0 0.0 4.0 car 0@
+3F16: rotate_car_part "plutcan" angle 0.0 0.0 4.0 car 0@
+3F16: rotate_car_part "plut" angle 0.0 0.0 4.0 car 0@
 jump @FuelDoneRefueling
 
 
@@ -199,13 +199,13 @@ jump @FuelDoneRefueling
 :FuelRefuelOpenFusion
 //Unlatch
 For 5@ = 0.0 To 45.0 Step 5.0
-    3FFD: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
+    3F16: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
 //Open Mr. Fusion
 For 5@ = 0.0 DownTo -90.0 Step 6.0
-    3FFD: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
+    3F16: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
@@ -221,13 +221,13 @@ wait 2000
 
 //Close Mr. Fusion
 For 5@ = -90.0 To 0.1 Step 6.0
-    3FFD: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
+    3F16: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
 //Unlatch
 For 5@ = 45.0 downTo 0.0 Step 5.0
-    3FFD: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
+    3F16: rotate_car_part "fusionlatch" angle 5@ 0.0 0.0 car 0@
     wait 10
 End
 
@@ -237,8 +237,8 @@ jump @FuelDoneRefueling
 wait 3500
 
 :FuelDoneRefueling
-3FFB: set_car 0@ component "pchamberemptylight" visible 0
-3FFD: rotate_car_part "pchamberneedle" angle 0.0 60.0 0.0 car 0@
+3F10: set_car 0@ component "pchamberemptylight" visible 0
+3F16: rotate_car_part "pchamberneedle" angle 0.0 60.0 0.0 car 0@
 gosub @LocalToGlobal
 wait 500
 01B4: set_player $PLAYER_CHAR can_move 1

@@ -26,6 +26,6 @@ else_jump @HeadlightsShow
 if
     not Car.Wrecked(0@)
 else_jump @HeadlightsStart
-3FFB: set_car 0@ component "lightFL" visible 1@
-3FFB: set_car 0@ component "lightFR" visible 1@
+3F10: set_car 0@ component "lightFL" visible 1@
+3F10: set_car 0@ component "lightFR" visible 1@
 jump @HeadlightsStart

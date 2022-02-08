@@ -514,25 +514,25 @@ $DELOREAN = Car.Create(#INFERNUS, 1@, 2@, 3@)
 Car.SetImmunities($DELOREAN, 1, 1, 1, 1, 1)
 Car.Angle($DELOREAN) = 4@
 0477: set_car $DELOREAN animation 6 2000 ms 
-  3FFB: set_car $DELOREAN component "lightfl" visible 0
-  3FFB: set_car $DELOREAN component "lightfr" visible 0
-  3FFB: set_car $DELOREAN component "fluxcapacitorlightson" visible 0 
-3FFB: set_car $DELOREAN component "fluxcapacitorlightsoff" visible 1  
-3FFB: set_car $DELOREAN component "flux1" visible 0
-3FFB: set_car $DELOREAN component "flux2" visible 0 
-3FFB: set_car $DELOREAN component "flux3" visible 0 
-3FFB: set_car $DELOREAN component "flux4" visible 0
-3FFB: set_car $DELOREAN component "flux5" visible 0 
-3FFB: set_car $DELOREAN component "flux6" visible 0
-3ff4: set car $DELOREAN comp "fluxcoilson" alpha 0
-3FFB: set_car $DELOREAN component "sidledsstatus1" visible 0
-3FFB: set_car $DELOREAN component "sidledsstatus2" visible 0 
-3FFB: set_car $DELOREAN component "sidledsstatus3" visible 0 
-3FFB: set_car $DELOREAN component "sidledsstatus4" visible 0
-3FFB: set_car $DELOREAN component "sidledsstatus5" visible 0 
-3FFB: set_car $DELOREAN component "sidledsstatus6" visible 0
-3FFB: set_car $DELOREAN component "sidledsstatus7" visible 0 
-3FFB: set_car $DELOREAN component "sidledsstatus8" visible 0  
+  3F10: set_car $DELOREAN component "lightfl" visible 0
+  3F10: set_car $DELOREAN component "lightfr" visible 0
+  3F10: set_car $DELOREAN component "fluxcapacitorlightson" visible 0 
+3F10: set_car $DELOREAN component "fluxcapacitorlightsoff" visible 1  
+3F10: set_car $DELOREAN component "flux1" visible 0
+3F10: set_car $DELOREAN component "flux2" visible 0 
+3F10: set_car $DELOREAN component "flux3" visible 0 
+3F10: set_car $DELOREAN component "flux4" visible 0
+3F10: set_car $DELOREAN component "flux5" visible 0 
+3F10: set_car $DELOREAN component "flux6" visible 0
+3F12: set car $DELOREAN comp "fluxcoilson" alpha 0
+3F10: set_car $DELOREAN component "sidledsstatus1" visible 0
+3F10: set_car $DELOREAN component "sidledsstatus2" visible 0 
+3F10: set_car $DELOREAN component "sidledsstatus3" visible 0 
+3F10: set_car $DELOREAN component "sidledsstatus4" visible 0
+3F10: set_car $DELOREAN component "sidledsstatus5" visible 0 
+3F10: set_car $DELOREAN component "sidledsstatus6" visible 0
+3F10: set_car $DELOREAN component "sidledsstatus7" visible 0 
+3F10: set_car $DELOREAN component "sidledsstatus8" visible 0  
 create_thread @TIME $DELOREAN 0 0 0 0 0 0 -5000.0 $CTIME $CTIME1 0 0 $CTIME $CTIME1 $TRKPTIME $TRKPTIME1 
 02E3: 1@ = car 0@ speed
 04BA: set_car $DELOREAN speed_instantly 1@ 

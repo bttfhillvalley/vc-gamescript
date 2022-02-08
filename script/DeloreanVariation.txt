@@ -97,16 +97,16 @@ end
 if
     003B: 15@ == $PLATE_OUTATIME_BIT
 then
-    3FFB: set_car 0@ component "plate" visible 1
-    3FFB: set_car 0@ component "platebttf2" visible 0
+    3F10: set_car 0@ component "plate" visible 1
+    3F10: set_car 0@ component "platebttf2" visible 0
 else if
     003B: 15@ == $PLATE_FUTURE_BIT
 then
-    3FFB: set_car 0@ component "plate" visible 0
-    3FFB: set_car 0@ component "platebttf2" visible 1
+    3F10: set_car 0@ component "plate" visible 0
+    3F10: set_car 0@ component "platebttf2" visible 1
 else
-    3FFB: set_car 0@ component "plate" visible 0
-    3FFB: set_car 0@ component "platebttf2" visible 0
+    3F10: set_car 0@ component "plate" visible 0
+    3F10: set_car 0@ component "platebttf2" visible 0
 end
 end
 
@@ -115,11 +115,11 @@ end
 if
     15@ == 0
 then
-    3FFB: set_car 0@ component "bonnetbttf1" visible 1
-    3FFB: set_car 0@ component "bonnetbttf3" visible 0
+    3F10: set_car 0@ component "bonnetbttf1" visible 1
+    3F10: set_car 0@ component "bonnetbttf3" visible 0
 else
-    3FFB: set_car 0@ component "bonnetbttf1" visible 0
-    3FFB: set_car 0@ component "bonnetbttf3" visible 1
+    3F10: set_car 0@ component "bonnetbttf1" visible 0
+    3F10: set_car 0@ component "bonnetbttf3" visible 1
 end
 
 // Hitch
@@ -127,9 +127,9 @@ end
 if
     15@ == 0
 then
-    3FFB: set_car 0@ component "hitch" visible 0
+    3F10: set_car 0@ component "hitch" visible 0
 else
-    3FFB: set_car 0@ component "hitch" visible 1
+    3F10: set_car 0@ component "hitch" visible 1
 end
 
 
@@ -138,26 +138,26 @@ end
 if
     003B: 15@ == $HOOK_NONE_BIT
 then
-    3FFB: set_car 0@ component "hookbttf1" visible 0
-    3FFB: set_car 0@ component "hookandholderbttf1" visible 0
-    3FFB: set_car 0@ component "holderbttf1" visible 0
+    3F10: set_car 0@ component "hookbttf1" visible 0
+    3F10: set_car 0@ component "hookandholderbttf1" visible 0
+    3F10: set_car 0@ component "holderbttf1" visible 0
 else
     if
         003B: 15@ == $HOOK_SIDE_BIT
     then
-        3FFB: set_car 0@ component "hookbttf1" visible 1
-        3FFB: set_car 0@ component "hookandholderbttf1" visible 0
-        3FFB: set_car 0@ component "holderbttf1" visible 1
+        3F10: set_car 0@ component "hookbttf1" visible 1
+        3F10: set_car 0@ component "hookandholderbttf1" visible 0
+        3F10: set_car 0@ component "holderbttf1" visible 1
     else if
         003B: 15@ == $HOOK_UP_BIT
     then
-        3FFB: set_car 0@ component "hookbttf1" visible 0
-        3FFB: set_car 0@ component "hookandholderbttf1" visible 1
-        3FFB: set_car 0@ component "holderbttf1" visible 0
+        3F10: set_car 0@ component "hookbttf1" visible 0
+        3F10: set_car 0@ component "hookandholderbttf1" visible 1
+        3F10: set_car 0@ component "holderbttf1" visible 0
     else
-        3FFB: set_car 0@ component "hookbttf1" visible 0
-        3FFB: set_car 0@ component "hookandholderbttf1" visible 0
-        3FFB: set_car 0@ component "holderbttf1" visible 1
+        3F10: set_car 0@ component "hookbttf1" visible 0
+        3F10: set_car 0@ component "hookandholderbttf1" visible 0
+        3F10: set_car 0@ component "holderbttf1" visible 1
     end
     end
 end
@@ -206,10 +206,10 @@ jump @DisplayBrakes
 2@ = 0
 
 :DisplayBrakes
-3FFB: set_car 0@ component "wheel_rb" visible 2@
-3FFB: set_car 0@ component "wheel_lb" visible 2@
-3FFB: set_car 0@ component "wheel_rf" visible 2@
-3FFB: set_car 0@ component "wheel_lf" visible 2@
+3F10: set_car 0@ component "wheel_rb" visible 2@
+3F10: set_car 0@ component "wheel_lb" visible 2@
+3F10: set_car 0@ component "wheel_rf" visible 2@
+3F10: set_car 0@ component "wheel_lf" visible 2@
 return
 
 :ShowHoverBrakes
@@ -220,10 +220,10 @@ jump @DisplayHoverBrakes
 2@ = 0
 
 :DisplayHoverBrakes
-3FFB: set_car 0@ component "fxwheelrb" visible 2@
-3FFB: set_car 0@ component "fxwheellb" visible 2@
-3FFB: set_car 0@ component "fxwheelrf" visible 2@
-3FFB: set_car 0@ component "fxwheellf" visible 2@
+3F10: set_car 0@ component "fxwheelrb" visible 2@
+3F10: set_car 0@ component "fxwheellb" visible 2@
+3F10: set_car 0@ component "fxwheelrf" visible 2@
+3F10: set_car 0@ component "fxwheellf" visible 2@
 return
 
 :ShowThrusters
@@ -234,10 +234,10 @@ jump @DisplayThrusters
 2@ = 0
 
 :DisplayThrusters
-3FFB: set_car 0@ component "thrusterbttf2rb" visible 2@
-3FFB: set_car 0@ component "thrusterbttf2lb" visible 2@
-3FFB: set_car 0@ component "thrusterbttf2rf" visible 2@
-3FFB: set_car 0@ component "thrusterbttf2lf" visible 2@
+3F10: set_car 0@ component "thrusterbttf2rb" visible 2@
+3F10: set_car 0@ component "thrusterbttf2lb" visible 2@
+3F10: set_car 0@ component "thrusterbttf2rf" visible 2@
+3F10: set_car 0@ component "thrusterbttf2lf" visible 2@
 return
 
 :ShowHoverThrusters
@@ -248,10 +248,10 @@ jump @DisplayHoverThrusters
 2@ = 0
 
 :DisplayHoverThrusters
-3FFB: set_car 0@ component "fxthrusterbttf2rb" visible 2@
-3FFB: set_car 0@ component "fxthrusterbttf2lb" visible 2@
-3FFB: set_car 0@ component "fxthrusterbttf2rf" visible 2@
-3FFB: set_car 0@ component "fxthrusterbttf2lf" visible 2@
+3F10: set_car 0@ component "fxthrusterbttf2rb" visible 2@
+3F10: set_car 0@ component "fxthrusterbttf2lb" visible 2@
+3F10: set_car 0@ component "fxthrusterbttf2rf" visible 2@
+3F10: set_car 0@ component "fxthrusterbttf2lf" visible 2@
 return
 
 :ShowDeloreanHoverWheels
@@ -262,17 +262,17 @@ jump @DisplayDeloreanHoverWheels
 2@ = 0
 
 :DisplayDeloreanHoverWheels
-3FFB: set_car 0@ component "fxwheelbttf1rb" visible 2@
-3FFB: set_car 0@ component "fxtirebttf1rb" visible 2@
+3F10: set_car 0@ component "fxwheelbttf1rb" visible 2@
+3F10: set_car 0@ component "fxtirebttf1rb" visible 2@
 
-3FFB: set_car 0@ component "fxwheelbttf1lb" visible 2@
-3FFB: set_car 0@ component "fxtirebttf1lb" visible 2@
+3F10: set_car 0@ component "fxwheelbttf1lb" visible 2@
+3F10: set_car 0@ component "fxtirebttf1lb" visible 2@
 
-3FFB: set_car 0@ component "fxwheelbttf1rf" visible 2@
-3FFB: set_car 0@ component "fxtirebttf1rf" visible 2@
+3F10: set_car 0@ component "fxwheelbttf1rf" visible 2@
+3F10: set_car 0@ component "fxtirebttf1rf" visible 2@
 
-3FFB: set_car 0@ component "fxwheelbttf1lf" visible 2@
-3FFB: set_car 0@ component "fxtirebttf1lf" visible 2@
+3F10: set_car 0@ component "fxwheelbttf1lf" visible 2@
+3F10: set_car 0@ component "fxtirebttf1lf" visible 2@
 return
 
 :Show50sHoverWheels
@@ -283,21 +283,21 @@ jump @Display50sHoverWheels
 2@ = 0
 
 :Display50sHoverWheels
-3FFB: set_car 0@ component "fxwheelbttf3rb" visible 2@
-3FFB: set_car 0@ component "fxtirebttf3rb" visible 2@
-3FFB: set_car 0@ component "fxhubcapbttf3rb" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3rb" visible 2@
+3F10: set_car 0@ component "fxtirebttf3rb" visible 2@
+3F10: set_car 0@ component "fxhubcapbttf3rb" visible 2@
 
-3FFB: set_car 0@ component "fxwheelbttf3lb" visible 2@
-3FFB: set_car 0@ component "fxtirebttf3lb" visible 2@
-3FFB: set_car 0@ component "fxhubcapbttf3lb" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3lb" visible 2@
+3F10: set_car 0@ component "fxtirebttf3lb" visible 2@
+3F10: set_car 0@ component "fxhubcapbttf3lb" visible 2@
 
-3FFB: set_car 0@ component "fxwheelbttf3rf" visible 2@
-3FFB: set_car 0@ component "fxtirebttf3rf" visible 2@
-3FFB: set_car 0@ component "fxhubcapbttf3rf" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3rf" visible 2@
+3F10: set_car 0@ component "fxtirebttf3rf" visible 2@
+3F10: set_car 0@ component "fxhubcapbttf3rf" visible 2@
 
-3FFB: set_car 0@ component "fxwheelbttf3lf" visible 2@
-3FFB: set_car 0@ component "fxtirebttf3lf" visible 2@
-3FFB: set_car 0@ component "fxhubcapbttf3lf" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3lf" visible 2@
+3F10: set_car 0@ component "fxtirebttf3lf" visible 2@
+3F10: set_car 0@ component "fxhubcapbttf3lf" visible 2@
 return
 
 :ShowTrainHoverWheels
@@ -308,10 +308,10 @@ jump @DisplayTrainHoverWheels
 2@ = 0
 
 :DisplayTrainHoverWheels
-3FFB: set_car 0@ component "fxwheelbttf3rrrb" visible 2@
-3FFB: set_car 0@ component "fxwheelbttf3rrlb" visible 2@
-3FFB: set_car 0@ component "fxwheelbttf3rrrf" visible 2@
-3FFB: set_car 0@ component "fxwheelbttf3rrlf" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3rrrb" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3rrlb" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3rrrf" visible 2@
+3F10: set_car 0@ component "fxwheelbttf3rrlf" visible 2@
 return
 
 :ShowPlutoniumChamber
@@ -322,8 +322,8 @@ jump @DisplayPlutoniumChamber
 2@ = 0
 
 :DisplayPlutoniumChamber
-3FFB: set_car 0@ component "bttf1" visible 2@
-3FFB: set_car 0@ component "reactorlidbttf1" visible 2@
+3F10: set_car 0@ component "bttf1" visible 2@
+3F10: set_car 0@ component "reactorlidbttf1" visible 2@
 return
 
 :ShowMrFusion
@@ -334,9 +334,9 @@ jump @DisplayMrFusion
 2@ = 0
 
 :DisplayMrFusion
-3FFB: set_car 0@ component "bttf2" visible 2@
-3FFB: set_car 0@ component "mrfusion" visible 2@
-3FFB: set_car 0@ component "fusionlatch" visible 2@
+3F10: set_car 0@ component "bttf2" visible 2@
+3F10: set_car 0@ component "mrfusion" visible 2@
+3F10: set_car 0@ component "fusionlatch" visible 2@
 return
 
 :ShowClock
@@ -347,12 +347,12 @@ jump @DisplayClock
 2@ = 0
 
 :DisplayClock
-3FFB: set_car 0@ component "hourhand" visible 2@
-3FFB: set_car 0@ component "minutehand" visible 2@
-3FFB: set_car 0@ component "clockhammer" visible 2@
-3FFB: set_car 0@ component "clockhammer" visible 2@
-3FFB: set_car 0@ component "alarmhand" visible 2@
-3FFB: set_car 0@ component "clock" visible 2@
+3F10: set_car 0@ component "hourhand" visible 2@
+3F10: set_car 0@ component "minutehand" visible 2@
+3F10: set_car 0@ component "clockhammer" visible 2@
+3F10: set_car 0@ component "clockhammer" visible 2@
+3F10: set_car 0@ component "alarmhand" visible 2@
+3F10: set_car 0@ component "clock" visible 2@
 return
 
 :ShowBoiler
@@ -363,8 +363,8 @@ jump @DisplayBoiler
 2@ = 0
 
 :DisplayBoiler
-3FFB: set_car 0@ component "fireboxgauge" visible 2@
-3FFB: set_car 0@ component "fireboxgaugeneedle" visible 2@
+3F10: set_car 0@ component "fireboxgauge" visible 2@
+3F10: set_car 0@ component "fireboxgaugeneedle" visible 2@
 return
 
 :ShowBTTF1
@@ -376,15 +376,15 @@ jump @DisplayBTTF1
 
 :DisplayBTTF1
 // BTTF1 parts
-3FFB: set_car 0@ component "xchassis" visible 2@
-3FFB: set_car 0@ component "underbody" visible 2@
-3FFB: set_car 0@ component "engine" visible 2@
+3F10: set_car 0@ component "xchassis" visible 2@
+3F10: set_car 0@ component "underbody" visible 2@
+3F10: set_car 0@ component "engine" visible 2@
 
 // Suspension
-3FFB: set_car 0@ component "brakerf" visible 2@
-3FFB: set_car 0@ component "brakelf" visible 2@
-3FFB: set_car 0@ component "brakerb" visible 2@
-3FFB: set_car 0@ component "brakelb" visible 2@
+3F10: set_car 0@ component "brakerf" visible 2@
+3F10: set_car 0@ component "brakelf" visible 2@
+3F10: set_car 0@ component "brakerb" visible 2@
+3F10: set_car 0@ component "brakelb" visible 2@
 return
 
 :ShowBTTF2
@@ -396,29 +396,29 @@ jump @DisplayBTTF2
 
 :DisplayBTTF2
 // BTTF2 parts
-3FFB: set_car 0@ component "xchassisbttf2" visible 2@
-3FFB: set_car 0@ component "underbodybttf2" visible 2@
+3F10: set_car 0@ component "xchassisbttf2" visible 2@
+3F10: set_car 0@ component "underbodybttf2" visible 2@
 
 // Suspension
-3FFB: set_car 0@ component "strutrb" visible 2@
-3FFB: set_car 0@ component "holderrb" visible 2@
-3FFB: set_car 0@ component "shockpistonrb" visible 2@
-3FFB: set_car 0@ component "shocklb" visible 2@
+3F10: set_car 0@ component "strutrb" visible 2@
+3F10: set_car 0@ component "holderrb" visible 2@
+3F10: set_car 0@ component "shockpistonrb" visible 2@
+3F10: set_car 0@ component "shocklb" visible 2@
 
-3FFB: set_car 0@ component "strutlb" visible 2@
-3FFB: set_car 0@ component "holderlb" visible 2@
-3FFB: set_car 0@ component "shockpistonlb" visible 2@
-3FFB: set_car 0@ component "shocklb" visible 2@
+3F10: set_car 0@ component "strutlb" visible 2@
+3F10: set_car 0@ component "holderlb" visible 2@
+3F10: set_car 0@ component "shockpistonlb" visible 2@
+3F10: set_car 0@ component "shocklb" visible 2@
 
-3FFB: set_car 0@ component "strutrf" visible 2@
-3FFB: set_car 0@ component "holderrf" visible 2@
-3FFB: set_car 0@ component "shockpistonrf" visible 2@
-3FFB: set_car 0@ component "shockrf" visible 2@
+3F10: set_car 0@ component "strutrf" visible 2@
+3F10: set_car 0@ component "holderrf" visible 2@
+3F10: set_car 0@ component "shockpistonrf" visible 2@
+3F10: set_car 0@ component "shockrf" visible 2@
 
-3FFB: set_car 0@ component "strutlf" visible 2@
-3FFB: set_car 0@ component "holderlf" visible 2@
-3FFB: set_car 0@ component "shockpistonlf" visible 2@
-3FFB: set_car 0@ component "shocklf" visible 2@
+3F10: set_car 0@ component "strutlf" visible 2@
+3F10: set_car 0@ component "holderlf" visible 2@
+3F10: set_car 0@ component "shockpistonlf" visible 2@
+3F10: set_car 0@ component "shocklf" visible 2@
 return
 
 
@@ -430,18 +430,18 @@ jump @DisplayDeloreanWheels
 2@ = 0
 
 :DisplayDeloreanWheels
-3FFB: set_car 0@ component "wheelbttf1rb" visible 2@
-3FFB: set_car 0@ component "tirebttf1rb" visible 2@
+3F10: set_car 0@ component "wheelbttf1rb" visible 2@
+3F10: set_car 0@ component "tirebttf1rb" visible 2@
 
 
-3FFB: set_car 0@ component "wheelbttf1lb" visible 2@
-3FFB: set_car 0@ component "tirebttf1lb" visible 2@
+3F10: set_car 0@ component "wheelbttf1lb" visible 2@
+3F10: set_car 0@ component "tirebttf1lb" visible 2@
 
-3FFB: set_car 0@ component "wheelbttf1rf" visible 2@
-3FFB: set_car 0@ component "tirebttf1rf" visible 2@
+3F10: set_car 0@ component "wheelbttf1rf" visible 2@
+3F10: set_car 0@ component "tirebttf1rf" visible 2@
 
-3FFB: set_car 0@ component "wheelbttf1lf" visible 2@
-3FFB: set_car 0@ component "tirebttf1lf" visible 2@
+3F10: set_car 0@ component "wheelbttf1lf" visible 2@
+3F10: set_car 0@ component "tirebttf1lf" visible 2@
 return
 
 :Show50sWheels
@@ -452,21 +452,21 @@ jump @Display50sWheels
 2@ = 0
 
 :Display50sWheels
-3FFB: set_car 0@ component "wheelbttf3rb" visible 2@
-3FFB: set_car 0@ component "tirebttf3rb" visible 2@
-3FFB: set_car 0@ component "hubcapbttf3rb" visible 2@
+3F10: set_car 0@ component "wheelbttf3rb" visible 2@
+3F10: set_car 0@ component "tirebttf3rb" visible 2@
+3F10: set_car 0@ component "hubcapbttf3rb" visible 2@
 
-3FFB: set_car 0@ component "wheelbttf3lb" visible 2@
-3FFB: set_car 0@ component "tirebttf3lb" visible 2@
-3FFB: set_car 0@ component "hubcapbttf3lb" visible 2@
+3F10: set_car 0@ component "wheelbttf3lb" visible 2@
+3F10: set_car 0@ component "tirebttf3lb" visible 2@
+3F10: set_car 0@ component "hubcapbttf3lb" visible 2@
 
-3FFB: set_car 0@ component "wheelbttf3rf" visible 2@
-3FFB: set_car 0@ component "tirebttf3rf" visible 2@
-3FFB: set_car 0@ component "hubcapbttf3rf" visible 2@
+3F10: set_car 0@ component "wheelbttf3rf" visible 2@
+3F10: set_car 0@ component "tirebttf3rf" visible 2@
+3F10: set_car 0@ component "hubcapbttf3rf" visible 2@
 
-3FFB: set_car 0@ component "wheelbttf3lf" visible 2@
-3FFB: set_car 0@ component "tirebttf3lf" visible 2@
-3FFB: set_car 0@ component "hubcapbttf3lf" visible 2@
+3F10: set_car 0@ component "wheelbttf3lf" visible 2@
+3F10: set_car 0@ component "tirebttf3lf" visible 2@
+3F10: set_car 0@ component "hubcapbttf3lf" visible 2@
 return
 
 :ShowTrainWheels
@@ -478,30 +478,30 @@ jump @DisplayTrainWheels
 2@ = 0
 
 :DisplayTrainWheels
-3FFB: set_car 0@ component "wheelbttf3rrrb" visible 2@
-3FFB: set_car 0@ component "wheelbttf3rrlb" visible 2@
-3FFB: set_car 0@ component "wheelbttf3rrrf" visible 2@
-3FFB: set_car 0@ component "wheelbttf3rrlf" visible 2@
+3F10: set_car 0@ component "wheelbttf3rrrb" visible 2@
+3F10: set_car 0@ component "wheelbttf3rrlb" visible 2@
+3F10: set_car 0@ component "wheelbttf3rrrf" visible 2@
+3F10: set_car 0@ component "wheelbttf3rrlf" visible 2@
 return
 
 
 :HideFuel
 // Hide canister used for fueling
-3FFB: set_car 0@ component "plutcan" visible 0
-3FFB: set_car 0@ component "plutcanliquid" visible 0
-3FFB: set_car 0@ component "plutcaninterior" visible 0
-3FFB: set_car 0@ component "plut" visible 0
+3F10: set_car 0@ component "plutcan" visible 0
+3F10: set_car 0@ component "plutcanliquid" visible 0
+3F10: set_car 0@ component "plutcaninterior" visible 0
+3F10: set_car 0@ component "plut" visible 0
 
 // Hide Plutonium box
-3FFB: set_car 0@ component "pluttop" visible 0
-3FFB: set_car 0@ component "plutbox" visible 0
+3F10: set_car 0@ component "pluttop" visible 0
+3F10: set_car 0@ component "plutbox" visible 0
 
 // Hide 12 plutonium canisters
 
 for 2@ = 1 to 12 step 1
-3FF8: set_car 0@ component "plutcan" index 2@ visible 0
-3FF8: set_car 0@ component "plutcanliquid" index 2@ visible 0
-3FF8: set_car 0@ component "plutcaninterior" index 2@ visible 0
-3FF8: set_car 0@ component "plut" index 2@ visible 0
+3F11: set_car 0@ component "plutcan" index 2@ visible 0
+3F11: set_car 0@ component "plutcanliquid" index 2@ visible 0
+3F11: set_car 0@ component "plutcaninterior" index 2@ visible 0
+3F11: set_car 0@ component "plut" index 2@ visible 0
 end
 return

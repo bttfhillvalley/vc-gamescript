@@ -13,21 +13,20 @@
 // 15@ = D2
 
 :TimeCircuitsModel
-thread 'TC_MOD'  
+thread 'TC_MOD'
 8@ = 0.0 //tcd switch and needles in the dash in front of the passenger seat
 
-
 :TimeCircuitsModelStart
-wait 10      
+wait 10
 if
    not Car.Wrecked($DELOREAN)
-jf @TimeCircuitsModelStart  
-008B: 0@ = $DELOREAN // integer values and handles 
-//first, hide all components / put them to base configuration                       
+jf @TimeCircuitsModelStart
+008B: 0@ = $DELOREAN // integer values and handles
+//first, hide all components / put them to base configuration
 gosub @TimeCircuitsModelReset
 if or
-  $TCON == 0 // integer values 
-  $FRIED == 1 // integer values 
+  $TCON == 0 // integer values
+  $FRIED == 1 // integer values
 jf @TimeCircuitsModelTurnOn
 
 if
@@ -35,17 +34,17 @@ if
 then
     8@ -= 10.0
     gosub @TimeCircuitsSwitchModel
-    //end_thread_named 'tmbut' 
+    //end_thread_named 'tmbut'
 end
 jump @TimeCircuitsModelStart
 
 :TimeCircuitsModelTurnOn
 //change the lights behind the tcd switch to on and fall through to handling the tcd
 //this is not necessary for the off case because it's done in @TimeCircuitsModelReset
-3FFB: set_car 0@ component "tcdswitchlighton" visible 1  
-3FFB: set_car 0@ component "tcdswitchlightoff" visible 0 
-3FFB: set_car 0@ component "fluxcoilson" visible 1
-3FFB: set_car 0@ component "gloveboxgaugeslights" visible 1
+3F10: set_car 0@ component "tcdswitchlighton" visible 1
+3F10: set_car 0@ component "tcdswitchlightoff" visible 0
+3F10: set_car 0@ component "fluxcoilson" visible 1
+3F10: set_car 0@ component "gloveboxgaugeslights" visible 1
 
 //rotate the components up to 1.0 units towards on position
 if
@@ -54,139 +53,173 @@ then
     8@ += 10.0
     gosub @TimeCircuitsSwitchModel
     //create_thread @TMButtons
-end 
-
-//Destination time
-if
-    $FLASH == 0  // This is controlled by the main time circuit thread
-then
-    008B: 4@ = $YEAR // integer values and handles
-    008B: 9@ = $HOUR // integer values and handles 
-    008B: 11@ = $MINUTE // integer values and handles 
-    008B: 13@ = $MONTH // integer values and handles 
-    008B: 14@ = $DAY // integer values and handles 
-    gosub @NumbersToDate
-    gosub @TimeCircuitsModelDestinationTime 
 end
 
-//Present time
-008B: 4@ = $CYEAR // integer values and handles 
-00BF: 9@ = current_time_hours, 11@ = current_time_minutes 
-008B: 13@ = $CMONTH // integer values and handles 
-008B: 14@ = $CDAY // integer values and handles 
+//Destination time
+008B: 4@ = $YEAR // integer values and handles
+008B: 9@ = $HOUR // integer values and handles
+008B: 11@ = $MINUTE // integer values and handles
+008B: 13@ = $MONTH // integer values and handles
+008B: 14@ = $DAY // integer values and handles
 gosub @NumbersToDate
-gosub @TimeCircuitsModelPresentTime 
+gosub @TimeCircuitsModelDestinationTime
+
+//Present time
+008B: 4@ = $CYEAR // integer values and handles
+00BF: 9@ = current_time_hours, 11@ = current_time_minutes
+008B: 13@ = $CMONTH // integer values and handles
+008B: 14@ = $CDAY // integer values and handles
+gosub @NumbersToDate
+gosub @TimeCircuitsModelPresentTime
 
 //Last Time Departed
 008B: 4@ = $PTIME
-if 
-   not 4@ == -1 // integer values 
+if
+   not 4@ == -1 // integer values
 then
     008B: 13@ = $PTIME // integer values and handles
     008B: 14@ = $PTIME
     14@ /= 10000
     13@ /= 10000
     13@ *= 10000
-    0062: 4@ -= 13@   
+    0062: 4@ -= 13@
     13@ /= 1000000
     13@ *= 100
     0062: 14@ -= 13@
     13@ /= 100
     008B: 9@ = $PTIME1 // integer values and handles
-    008B: 11@ = $PTIME1 // integer values and handles  
+    008B: 11@ = $PTIME1 // integer values and handles
     9@ /= 100
     9@ *= 100
     0062: 11@ -= 9@
-    9@ /= 100 
+    9@ /= 100
     gosub @NumbersToDate
-    gosub @TimeCircuitsModelLastTimeDeparted    
+    gosub @TimeCircuitsModelLastTimeDeparted
 end
 
 // Display colons
-if 
-    16@ > 999 // integer values 
+if
+    16@ > 999 // integer values
 then
     16@ = 0 // integer values
-end 
-if 
-    16@ < 500 // integer values 
+end
+if
+    16@ < 500 // integer values
 then
-    
+	3F10: set_car 0@ component "dtcolon" visible 1
+	3F10: set_car 0@ component "ptcolon" visible 1
+	3F10: set_car 0@ component "ltdcolon" visible 1
+end
 
-	3FFB: set_car 0@ component "dtcolon" visible 1
-	3FFB: set_car 0@ component "ptcolon" visible 1
-	3FFB: set_car 0@ component "ltdcolon" visible 1
+// Keypad stuff
+for 1@ = 0 to 9 step 1
+    0B11: 2@ = 1@ OR 0x30
+    0B11: 3@ = 1@ OR 0x60
+    if or
+        0AB0: key_pressed 2@
+        0AB0: key_pressed 3@
+    then
+        create_thread @TimeCircuitsModelKeypad 0@ 1@
+    end
+end
+if
+if or
+    0AB0: key_pressed 0x6D
+    0AB0: key_pressed 0xBD
+then
+    create_thread @TimeCircuitsModelKeypadConfirm 0@
 end
 jump @TimeCircuitsModelStart
 
+
 :TimeCircuitsModelDestinationTime
-3FF8: set_car 0@ component "dtmonth" index 13@ visible 1
-3FF8: set_car 0@ component "dtday2" index 14@ visible 1
-3FF8: set_car 0@ component "dtday1" index 15@ visible 1
-3FF8: set_car 0@ component "dtyear4" index 4@ visible 1
-3FF8: set_car 0@ component "dtyear3" index 5@ visible 1
-3FF8: set_car 0@ component "dtyear2" index 6@ visible 1
-3FF8: set_car 0@ component "dtyear1" index 7@ visible 1
+0B10: 1@ = $FLASH AND 0x8
 if
-    9@ < 12
+    1@ == 0
 then
-    3FFB: set_car 0@ component "dtam" visible 1
-else
-    3FFB: set_car 0@ component "dtpm" visible 1
+    3F11: set_car 0@ component "dtmonth" index 13@ visible 1
 end
-gosub @TimeCircuitsModelHourSplit
-3FF8: set_car 0@ component "dthour2" index 9@ visible 1
-3FF8: set_car 0@ component "dthour1" index 10@ visible 1    
-3FF8: set_car 0@ component "dtmin2" index 11@ visible 1
-3FF8: set_car 0@ component "dtmin1" index 12@ visible 1
+0B10: 1@ = $FLASH AND 0x4
+if
+    1@ == 0
+then
+    3F11: set_car 0@ component "dtday2" index 14@ visible 1
+    3F11: set_car 0@ component "dtday1" index 15@ visible 1
+end
+0B10: 1@ = $FLASH AND 0x2
+if
+    1@ == 0
+then
+    3F11: set_car 0@ component "dtyear4" index 4@ visible 1
+    3F11: set_car 0@ component "dtyear3" index 5@ visible 1
+    3F11: set_car 0@ component "dtyear2" index 6@ visible 1
+    3F11: set_car 0@ component "dtyear1" index 7@ visible 1
+end
+0B10: 1@ = $FLASH AND 0x1
+if
+    1@ == 0
+then
+    if
+        9@ < 12
+    then
+        3F10: set_car 0@ component "dtam" visible 1
+    else
+        3F10: set_car 0@ component "dtpm" visible 1
+    end
+    gosub @TimeCircuitsModelHourSplit
+    3F11: set_car 0@ component "dthour2" index 9@ visible 1
+    3F11: set_car 0@ component "dthour1" index 10@ visible 1
+    3F11: set_car 0@ component "dtmin2" index 11@ visible 1
+    3F11: set_car 0@ component "dtmin1" index 12@ visible 1
+end
 return
 
 :TimeCircuitsModelPresentTime
-3FF8: set_car 0@ component "ptmonth" index 13@ visible 1
-3FF8: set_car 0@ component "ptday2" index 14@ visible 1
-3FF8: set_car 0@ component "ptday1" index 15@ visible 1
-3FF8: set_car 0@ component "ptyear4" index 4@ visible 1
-3FF8: set_car 0@ component "ptyear3" index 5@ visible 1
-3FF8: set_car 0@ component "ptyear2" index 6@ visible 1
-3FF8: set_car 0@ component "ptyear1" index 7@ visible 1
+3F11: set_car 0@ component "ptmonth" index 13@ visible 1
+3F11: set_car 0@ component "ptday2" index 14@ visible 1
+3F11: set_car 0@ component "ptday1" index 15@ visible 1
+3F11: set_car 0@ component "ptyear4" index 4@ visible 1
+3F11: set_car 0@ component "ptyear3" index 5@ visible 1
+3F11: set_car 0@ component "ptyear2" index 6@ visible 1
+3F11: set_car 0@ component "ptyear1" index 7@ visible 1
 if
     9@ < 12
 then
-    3FFB: set_car 0@ component "ptam" visible 1
+    3F10: set_car 0@ component "ptam" visible 1
 else
-    3FFB: set_car 0@ component "ptpm" visible 1
+    3F10: set_car 0@ component "ptpm" visible 1
 end
 gosub @TimeCircuitsModelHourSplit
-3FF8: set_car 0@ component "pthour2" index 9@ visible 1
-3FF8: set_car 0@ component "pthour1" index 10@ visible 1 
-3FF8: set_car 0@ component "ptmin2" index 11@ visible 1
-3FF8: set_car 0@ component "ptmin1" index 12@ visible 1
+3F11: set_car 0@ component "pthour2" index 9@ visible 1
+3F11: set_car 0@ component "pthour1" index 10@ visible 1
+3F11: set_car 0@ component "ptmin2" index 11@ visible 1
+3F11: set_car 0@ component "ptmin1" index 12@ visible 1
 return
 
 :TimeCircuitsModelLastTimeDeparted
-3FF8: set_car 0@ component "ltdmonth" index 13@ visible 1
-3FF8: set_car 0@ component "ltdday2" index 14@ visible 1
-3FF8: set_car 0@ component "ltdday1" index 15@ visible 1
-3FF8: set_car 0@ component "ltdyear4" index 4@ visible 1
-3FF8: set_car 0@ component "ltdyear3" index 5@ visible 1
-3FF8: set_car 0@ component "ltdyear2" index 6@ visible 1
-3FF8: set_car 0@ component "ltdyear1" index 7@ visible 1
+3F11: set_car 0@ component "ltdmonth" index 13@ visible 1
+3F11: set_car 0@ component "ltdday2" index 14@ visible 1
+3F11: set_car 0@ component "ltdday1" index 15@ visible 1
+3F11: set_car 0@ component "ltdyear4" index 4@ visible 1
+3F11: set_car 0@ component "ltdyear3" index 5@ visible 1
+3F11: set_car 0@ component "ltdyear2" index 6@ visible 1
+3F11: set_car 0@ component "ltdyear1" index 7@ visible 1
 if
     9@ < 12
 then
-    3FFB: set_car 0@ component "ltdam" visible 1
+    3F10: set_car 0@ component "ltdam" visible 1
 else
-    3FFB: set_car 0@ component "ltdpm" visible 1
+    3F10: set_car 0@ component "ltdpm" visible 1
 end
 gosub @TimeCircuitsModelHourSplit
-3FF8: set_car 0@ component "ltdhour2" index 9@ visible 1
-3FF8: set_car 0@ component "ltdhour1" index 10@ visible 1 
-3FF8: set_car 0@ component "ltdmin2" index 11@ visible 1
-3FF8: set_car 0@ component "ltdmin1" index 12@ visible 1
+3F11: set_car 0@ component "ltdhour2" index 9@ visible 1
+3F11: set_car 0@ component "ltdhour1" index 10@ visible 1
+3F11: set_car 0@ component "ltdmin2" index 11@ visible 1
+3F11: set_car 0@ component "ltdmin1" index 12@ visible 1
 return
 
 :TimeCircuitsModelHourSplit
-if 
+if
     9@ > 12
 then
     9@ -= 12
@@ -197,66 +230,78 @@ end
 9@ *= 10
 0062: 10@ -= 9@
 9@ /= 10
-return  
+return
 
 
 //tcd switch and needles in the dash in front of the passenger seat
 //the tcd switch needs to rotate in the opposite direction
 :TimeCircuitsSwitchModel
 8@ *= -1.0
-3FFD: rotate_car_part "tcdhandle" angle 0.0 8@ 0.0 car 0@
-8@ *= -1.0    
-3FFD: rotate_car_part "ppowerneedle" angle 0.0 8@ 0.0 car 0@
-3FFD: rotate_car_part "primaryneedle" angle 0.0 8@ 0.0 car 0@
+3F16: rotate_car_part "tcdhandle" angle 0.0 8@ 0.0 car 0@
+8@ *= -1.0
+3F16: rotate_car_part "ppowerneedle" angle 0.0 8@ 0.0 car 0@
+3F16: rotate_car_part "primaryneedle" angle 0.0 8@ 0.0 car 0@
 return
 
 :TimeCircuitsModelReset
 //lights behind the tcd switch
-3FFB: set_car 0@ component "tcdswitchlighton" visible 0
-3FFB: set_car 0@ component "tcdswitchlightoff" visible 1
-3FFB: set_car 0@ component "fluxcoilson" visible 0
-3FFB: set_car 0@ component "gloveboxgaugeslights" visible 0
+3F10: set_car 0@ component "tcdswitchlighton" visible 0
+3F10: set_car 0@ component "tcdswitchlightoff" visible 1
+3F10: set_car 0@ component "fluxcoilson" visible 0
+3F10: set_car 0@ component "gloveboxgaugeslights" visible 0
 //months
 for 4@ = 1 to 12
-	3FF8: set_car 0@ component "dtmonth" index 4@ visible 0
-	3FF8: set_car 0@ component "ptmonth" index 4@ visible 0
-	3FF8: set_car 0@ component "ltdmonth" index 4@ visible 0
+	3F11: set_car 0@ component "dtmonth" index 4@ visible 0
+	3F11: set_car 0@ component "ptmonth" index 4@ visible 0
+	3F11: set_car 0@ component "ltdmonth" index 4@ visible 0
 end
 
 //days
 for 4@ = 10 to 23
-	3FF8: set_car 0@ component "dtday" index 4@ visible 0
-	3FF8: set_car 0@ component "ptday" index 4@ visible 0
-	3FF8: set_car 0@ component "ltdday" index 4@ visible 0
+	3F11: set_car 0@ component "dtday" index 4@ visible 0
+	3F11: set_car 0@ component "ptday" index 4@ visible 0
+	3F11: set_car 0@ component "ltdday" index 4@ visible 0
 end
 //years
 for 4@ = 10 to 49
-	3FF8: set_car 0@ component "dtyear" index 4@ visible 0
-	3FF8: set_car 0@ component "ptyear" index 4@ visible 0
-	3FF8: set_car 0@ component "ltdyear" index 4@ visible 0
+	3F11: set_car 0@ component "dtyear" index 4@ visible 0
+	3F11: set_car 0@ component "ptyear" index 4@ visible 0
+	3F11: set_car 0@ component "ltdyear" index 4@ visible 0
 end
 //hours
 for 4@ = 10 to 21
-	3FF8: set_car 0@ component "dthour" index 4@ visible 0
-	3FF8: set_car 0@ component "pthour" index 4@ visible 0
-	3FF8: set_car 0@ component "ltdhour" index 4@ visible 0
+	3F11: set_car 0@ component "dthour" index 4@ visible 0
+	3F11: set_car 0@ component "pthour" index 4@ visible 0
+	3F11: set_car 0@ component "ltdhour" index 4@ visible 0
 end
 //minutes
 for 4@ = 10 to 25
-	3FF8: set_car 0@ component "dtmin" index 4@ visible 0
-	3FF8: set_car 0@ component "ptmin" index 4@ visible 0
-	3FF8: set_car 0@ component "ltdmin" index 4@ visible 0
+	3F11: set_car 0@ component "dtmin" index 4@ visible 0
+	3F11: set_car 0@ component "ptmin" index 4@ visible 0
+	3F11: set_car 0@ component "ltdmin" index 4@ visible 0
 end
 //am indicators
-3FFB: set_car 0@ component "dtam" visible 0
-3FFB: set_car 0@ component "ptam" visible 0
-3FFB: set_car 0@ component "ltdam" visible 0
+3F10: set_car 0@ component "dtam" visible 0
+3F10: set_car 0@ component "ptam" visible 0
+3F10: set_car 0@ component "ltdam" visible 0
 //pm indicators
-3FFB: set_car 0@ component "dtpm" visible 0
-3FFB: set_car 0@ component "ptpm" visible 0
-3FFB: set_car 0@ component "ltdpm" visible 0
+3F10: set_car 0@ component "dtpm" visible 0
+3F10: set_car 0@ component "ptpm" visible 0
+3F10: set_car 0@ component "ltdpm" visible 0
 //colons between hours and minutes
-3FFB: set_car 0@ component "dtcolon" visible 0
-3FFB: set_car 0@ component "ptcolon" visible 0
-3FFB: set_car 0@ component "ltdcolon" visible 0
+3F10: set_car 0@ component "dtcolon" visible 0
+3F10: set_car 0@ component "ptcolon" visible 0
+3F10: set_car 0@ component "ltdcolon" visible 0
 return
+
+:TimeCircuitsModelKeypad
+3F15: move_car_part "tcdkeypadbutton" index 1@ pos 0.0 0.005 0.0 car 0@
+wait 50
+3F15: move_car_part "tcdkeypadbutton" index 1@ pos 0.0 0.0 0.0 car 0@
+end_thread
+
+:TimeCircuitsModelKeypadConfirm
+3F10: set_car 0@ component "tcdkeypadenterlighton" visible 1
+wait 350
+3F10: set_car 0@ component "tcdkeypadenterlighton" visible 0
+end_thread

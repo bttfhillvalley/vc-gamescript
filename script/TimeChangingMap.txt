@@ -1,26 +1,26 @@
 :DateCheckStart
 wait 0
-3FFF: remove_build "55lyon" amnt 4
-3FFF: remove_build "farm" amnt 17
-3FFF: remove_build "1985" amnt 7
-3FFF: remove_build "2015" amnt 7
-3FFF: remove_build "85mall" amnt 90
+3F09: remove_build "55lyon" amnt 4
+3F09: remove_build "farm" amnt 17
+3F09: remove_build "1985" amnt 7
+3F09: remove_build "2015" amnt 7
+3F09: remove_build "85mall" amnt 90
 
 :DateCheck
 if
    $CYEAR < 1980
 then
-3FFE: add_build "55lyon" amnt 4
-3FFE: add_build "farm" amnt 17
+3F08: add_build "55lyon" amnt 4
+3F08: add_build "farm" amnt 17
    jump @WaitToLeave1955
 else if
    $CYEAR >= 2010
 then
-   3FFE: add_build "2015" amnt 7
+   3F08: add_build "2015" amnt 7
    jump @WaitToLeave2015
 else
-   3FFE: add_build "1985" amnt 7
-   3FFE: add_build "85mall" amnt 90
+   3F08: add_build "1985" amnt 7
+   3F08: add_build "85mall" amnt 90
    create_thread @canopener
    jump @WaitToLeave1985
 end
@@ -31,8 +31,8 @@ wait 0
 if
   $CYEAR >= 1980 // We traveled to the present/future
 jf @WaitToLeave1955
-3FFF: remove_build "55lyon" amnt 4
-3FFF: remove_build "farm" amnt 17
+3F09: remove_build "55lyon" amnt 4
+3F09: remove_build "farm" amnt 17
 jump @DateCheck
 
 :WaitToLeave1985
@@ -41,8 +41,8 @@ if or
   $CYEAR < 1980 // We traveled back to the past
   $CYEAR >= 2010 // We traveled to the future
 jf @WaitToLeave1985
-3FFF: remove_build "1985" amnt 7
-3FFF: remove_build "85mall" amnt 90
+3F09: remove_build "1985" amnt 7
+3F09: remove_build "85mall" amnt 90
 end_thread_named 'canopn'
 0108: destroy_object $dogfoodbase
 0108: destroy_object $dogfoodarm
@@ -69,5 +69,5 @@ wait 0
 if
   $CYEAR < 2010 // We traveled to the past/present
 jf @WaitToLeave2015
-3FFF: remove_build "2015" amnt 7
+3F09: remove_build "2015" amnt 7
 jump @DateCheck

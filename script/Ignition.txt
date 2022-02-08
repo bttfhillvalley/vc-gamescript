@@ -21,61 +21,61 @@ create_thread @PlaySound 2
 //turn key
 wait 0
 // Initialize dashboard
-3FFD: rotate_car_part "ignitionkey" angle 135.0 0.0 0.0 car 0@
-3FFD: rotate_car_part "ignition" angle 135.0 0.0 0.0 car 0@
-3FFD: rotate_car_part "oilneedle" angle 0.0 -30.0 0.0 car 0@  //warm main temp
-3FFB: set_car 0@ component "lambdalight" visible 0 //keep off
-3FFB: set_car 0@ component "fuellight" visible 0   //keep off
-//3FFB: set_car 0@ component "doorajarlight" visible 1 //activate
-3FFB: set_car 0@ component "oillight" visible 1     //activate
-3FFB: set_car 0@ component "brakelight" visible 1    //activate
-3FFB: set_car 0@ component "batterylight" visible 1  //activate
+3F16: rotate_car_part "ignitionkey" angle 135.0 0.0 0.0 car 0@
+3F16: rotate_car_part "ignition" angle 135.0 0.0 0.0 car 0@
+3F16: rotate_car_part "oilneedle" angle 0.0 -30.0 0.0 car 0@  //warm main temp
+3F10: set_car 0@ component "lambdalight" visible 0 //keep off
+3F10: set_car 0@ component "fuellight" visible 0   //keep off
+//3F10: set_car 0@ component "doorajarlight" visible 1 //activate
+3F10: set_car 0@ component "oillight" visible 1     //activate
+3F10: set_car 0@ component "brakelight" visible 1    //activate
+3F10: set_car 0@ component "batterylight" visible 1  //activate
 
 // Wiggle volts needle
 for 2@ = 0 to 3 step 1
     for 1@ = 80.0 downto 0.0 step 20.0
         wait 10
-        3FFD: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
+        3F16: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
     end
     // Down
     for 1@ = 0.0 to 80.0 step 20.0
         wait 10
-        3FFD: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
+        3F16: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
     end
 end
 
 // Center Volts
-3FFD: rotate_car_part "voltsneedle" angle 0.0 40.0 0.0 car 0@
+3F16: rotate_car_part "voltsneedle" angle 0.0 40.0 0.0 car 0@
 
 // Warm up oil
 wait 1000
 for 1@ = -30.0 to 0.0 step 5.0
     wait 10
-    3FFD: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
+    3F16: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
 end
 
 // Oil Temp Diagnostic (?)
 wait 500
 for 1@ = 0.0 downto -75.0 step 5.0
     wait 10
-    3FFD: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
+    3F16: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
 end
 
 // Turn off Dashboard lights
 wait 1000
-3FFB: set_car 0@ component "batterylight" visible 0  //off
+3F10: set_car 0@ component "batterylight" visible 0  //off
 wait 1000
-3FFB: set_car 0@ component "oillight" visible 0    //off
+3F10: set_car 0@ component "oillight" visible 0    //off
 wait 1000
-3FFB: set_car 0@ component "seatbeltlight" visible 1
+3F10: set_car 0@ component "seatbeltlight" visible 1
 wait 1000
-3FFB: set_car 0@ component "seatbeltlight" visible 0
+3F10: set_car 0@ component "seatbeltlight" visible 0
 wait 5000
 
 // Stabilize oil
 for 1@ = -75.0 to 30 step 5.0
     wait 10
-    3FFD: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
+    3F16: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
 end
 
 

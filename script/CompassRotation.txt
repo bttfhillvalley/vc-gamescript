@@ -10,5 +10,5 @@ else_jump @Compass_rotation
 wait 0
 0174: 1@ = car 0@ z_angle
 1@ *= -1.0      
-3FFD: rotate_car_part "compass" angle 0.0 0.0 1@ car 0@ 
+3F16: rotate_car_part "compass" angle 0.0 0.0 1@ car 0@ 
 jump @Compass_rotation_start 

@@ -89,14 +89,14 @@ Car.Health($DELOREAN) = 8@
 Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
 053F: set_car $DELOREAN tires_vulnerable 0 
 048A: enable_rc_vehicle_detonation 0
-3FFB: set_car $DELOREAN component "shifterr" visible 0 
-3FFB: set_car $DELOREAN component "shifter1" visible 0 
-3FFB: set_car $DELOREAN component "shifter2" visible 0 
-3FFB: set_car $DELOREAN component "shifter3" visible 0
-3FFB: set_car $DELOREAN component "shifter4" visible 0 
-3FFB: set_car $DELOREAN component "shifter5" visible 0
-  3FFB: set_car $DELOREAN component "lightfl" visible 0
-  3FFB: set_car $DELOREAN component "lightfr" visible 0 
+3F10: set_car $DELOREAN component "shifterr" visible 0 
+3F10: set_car $DELOREAN component "shifter1" visible 0 
+3F10: set_car $DELOREAN component "shifter2" visible 0 
+3F10: set_car $DELOREAN component "shifter3" visible 0
+3F10: set_car $DELOREAN component "shifter4" visible 0 
+3F10: set_car $DELOREAN component "shifter5" visible 0
+  3F10: set_car $DELOREAN component "lightfl" visible 0
+  3F10: set_car $DELOREAN component "lightfr" visible 0 
 wait 250 
 jump @RadioControlMode 
 02D4: car $DELOREAN turn_off_engine 
@@ -133,14 +133,14 @@ Car.Health($DELOREAN) = 8@
 Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
 053F: set_car $DELOREAN tires_vulnerable 0 
 048A: enable_rc_vehicle_detonation 0 
-3FFB: set_car $DELOREAN component "shifterr" visible 0 
-3FFB: set_car $DELOREAN component "shifter1" visible 0 
-3FFB: set_car $DELOREAN component "shifter2" visible 0 
-3FFB: set_car $DELOREAN component "shifter3" visible 0
-3FFB: set_car $DELOREAN component "shifter4" visible 0 
-3FFB: set_car $DELOREAN component "shifter5" visible 0
-  3FFB: set_car $DELOREAN component "lightfl" visible 0
-  3FFB: set_car $DELOREAN component "lightfr" visible 0
+3F10: set_car $DELOREAN component "shifterr" visible 0 
+3F10: set_car $DELOREAN component "shifter1" visible 0 
+3F10: set_car $DELOREAN component "shifter2" visible 0 
+3F10: set_car $DELOREAN component "shifter3" visible 0
+3F10: set_car $DELOREAN component "shifter4" visible 0 
+3F10: set_car $DELOREAN component "shifter5" visible 0
+  3F10: set_car $DELOREAN component "lightfl" visible 0
+  3F10: set_car $DELOREAN component "lightfr" visible 0
 wait 250 
 jump @RadioControlTrack 
 
@@ -150,14 +150,14 @@ if
 jf @RadioControlTrack 
 10@ = 0 // integer values 
 wait 250 
-3FFB: set_car $DELOREAN component "shifterr" visible 0 
-3FFB: set_car $DELOREAN component "shifter1" visible 0 
-3FFB: set_car $DELOREAN component "shifter2" visible 0 
-3FFB: set_car $DELOREAN component "shifter3" visible 0
-3FFB: set_car $DELOREAN component "shifter4" visible 0 
-3FFB: set_car $DELOREAN component "shifter5" visible 0
-  3FFB: set_car $DELOREAN component "lightfl" visible 0
-  3FFB: set_car $DELOREAN component "lightfr" visible 0
+3F10: set_car $DELOREAN component "shifterr" visible 0 
+3F10: set_car $DELOREAN component "shifter1" visible 0 
+3F10: set_car $DELOREAN component "shifter2" visible 0 
+3F10: set_car $DELOREAN component "shifter3" visible 0
+3F10: set_car $DELOREAN component "shifter4" visible 0 
+3F10: set_car $DELOREAN component "shifter5" visible 0
+  3F10: set_car $DELOREAN component "lightfl" visible 0
+  3F10: set_car $DELOREAN component "lightfr" visible 0
 jump @RadioControlTrack 
 
 :RadioControlAICheck
@@ -208,14 +208,14 @@ Car.Angle($DELOREAN) = 6@
 Car.Health($DELOREAN) = 8@
 Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
 053F: set_car $DELOREAN tires_vulnerable 0  
-3FFB: set_car $DELOREAN component "shifterr" visible 0 
-3FFB: set_car $DELOREAN component "shifter1" visible 0 
-3FFB: set_car $DELOREAN component "shifter2" visible 0 
-3FFB: set_car $DELOREAN component "shifter3" visible 0
-3FFB: set_car $DELOREAN component "shifter4" visible 0 
-3FFB: set_car $DELOREAN component "shifter5" visible 0
-  3FFB: set_car $DELOREAN component "lightfl" visible 0
-  3FFB: set_car $DELOREAN component "lightfr" visible 0 
+3F10: set_car $DELOREAN component "shifterr" visible 0 
+3F10: set_car $DELOREAN component "shifter1" visible 0 
+3F10: set_car $DELOREAN component "shifter2" visible 0 
+3F10: set_car $DELOREAN component "shifter3" visible 0
+3F10: set_car $DELOREAN component "shifter4" visible 0 
+3F10: set_car $DELOREAN component "shifter5" visible 0
+  3F10: set_car $DELOREAN component "lightfl" visible 0
+  3F10: set_car $DELOREAN component "lightfr" visible 0 
 jump @RadioControlReset 
 
 :RadioControlExitTT   

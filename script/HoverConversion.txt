@@ -3,9 +3,9 @@
 0B10: 7@ = 1@ AND $FLYING_BIT   // Is car flying?
 if or
     not 7@ == 0
-    $CONVERSION == 1
+    $LANDING == 1
 else_jump @HoverConversionReturn
-3FFA: set_car 0@ hover 1
+3F05: set_car 0@ hover 1
 
 // Thrust
 if and
@@ -99,43 +99,43 @@ return
 
 // Extend/retract piston
 0063: 10@ -= 11@
-3FFC: move_car_part "strutrb" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "holderrb" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "shockrb" pos 8@ 0.0 9@ car 0@
-3FFC: move_car_part "shockpistonrb" pos 8@ 0.0 10@ car 0@
-3FFC: move_car_part "fxwheelrbdummy" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "strutrb" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "holderrb" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "shockrb" pos 8@ 0.0 9@ car 0@
+3F14: move_car_part "shockpistonrb" pos 8@ 0.0 10@ car 0@
+3F14: move_car_part "fxwheelrbdummy" pos 6@ 0.0 0.0 car 0@
 
-3FFC: move_car_part "strutrf" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "holderrf" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "shockrf" pos 8@ 0.0 9@ car 0@
-3FFC: move_car_part "shockpistonrf" pos 8@ 0.0 10@ car 0@
-3FFC: move_car_part "fxwheelrfdummy" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "strutrf" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "holderrf" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "shockrf" pos 8@ 0.0 9@ car 0@
+3F14: move_car_part "shockpistonrf" pos 8@ 0.0 10@ car 0@
+3F14: move_car_part "fxwheelrfdummy" pos 6@ 0.0 0.0 car 0@
 6@ *= -1.0
 8@ *= -1.0
-3FFC: move_car_part "strutlb" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "holderlb" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "shocklb" pos 8@ 0.0 9@ car 0@
-3FFC: move_car_part "shockpistonlb" pos 8@ 0.0 10@ car 0@
-3FFC: move_car_part "fxwheellbdummy" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "strutlb" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "holderlb" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "shocklb" pos 8@ 0.0 9@ car 0@
+3F14: move_car_part "shockpistonlb" pos 8@ 0.0 10@ car 0@
+3F14: move_car_part "fxwheellbdummy" pos 6@ 0.0 0.0 car 0@
 
-3FFC: move_car_part "strutlf" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "holderlf" pos 6@ 0.0 0.0 car 0@
-3FFC: move_car_part "shocklf" pos 8@ 0.0 9@ car 0@
-3FFC: move_car_part "shockpistonlf" pos 8@ 0.0 10@ car 0@
-3FFC: move_car_part "fxwheellfdummy" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "strutlf" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "holderlf" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "shocklf" pos 8@ 0.0 9@ car 0@
+3F14: move_car_part "shockpistonlf" pos 8@ 0.0 10@ car 0@
+3F14: move_car_part "fxwheellfdummy" pos 6@ 0.0 0.0 car 0@
 6@ *= -1.0
 
 // Rotate wheels
 0087: 5@ = 7@ // Piston
-3FFD: rotate_car_part "holderrf" angle 0.0 5@ 0.0 car 0@
-3FFD: rotate_car_part "holderrb" angle 0.0 5@ 0.0 car 0@
-3FFD: rotate_car_part "fxwheelrfdummy" angle 0.0 5@ 0.0 car 0@
-3FFD: rotate_car_part "fxwheelrbdummy" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "holderrf" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "holderrb" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "fxwheelrfdummy" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "fxwheelrbdummy" angle 0.0 5@ 0.0 car 0@
 5@ *= -1.0
-3FFD: rotate_car_part "holderlf" angle 0.0 5@ 0.0 car 0@
-3FFD: rotate_car_part "holderlb" angle 0.0 5@ 0.0 car 0@
-3FFD: rotate_car_part "fxwheellfdummy" angle 0.0 5@ 0.0 car 0@
-3FFD: rotate_car_part "fxwheellbdummy" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "holderlf" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "holderlb" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "fxwheellfdummy" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "fxwheellbdummy" angle 0.0 5@ 0.0 car 0@
 return
 
 :HoverSmoke
@@ -170,6 +170,7 @@ if
 then
     6@ = 0.3 // Wheel retracting
     7@ = 90.0 // Wheel rotating back
+    $LANDING = 1
     03CF: load_wav 'BURG_08' as 2
 else
     create_thread @SetVariation 0@ 1@
@@ -195,6 +196,11 @@ Car.StorePos(0@, 2@, 3@, 4@)
 if
     15@ == 0 // Landing
 then
+    if
+        81F3:   not car 0@ airborne
+    then
+        $LANDING = 0
+    end
     if
         7@ > 0.0
     then
@@ -236,6 +242,7 @@ jump @HoverAnimateStart
 
 :HoverAnimateEnd
 $CONVERSION = 0
+$LANDING = 0
 end_thread
 
 // ==================================================================================================

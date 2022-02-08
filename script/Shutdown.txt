@@ -32,20 +32,20 @@ else_jump @ShutdownStart
 040D: unload_wav 2
 03CF: load_wav 'BURG_06' as 2
 create_thread @PlaySound 2
-3FFD: rotate_car_part "ignitionkey" angle 225.0 0.0 0.0 car 0@
-3FFD: rotate_car_part "ignition" angle 225 0.0 0.0 car 0@
+3F16: rotate_car_part "ignitionkey" angle 225.0 0.0 0.0 car 0@
+3F16: rotate_car_part "ignition" angle 225 0.0 0.0 car 0@
 //down
 for 1@ = 30.0 to 80.0 step 5.0
     wait 10
-    3FFD: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
+    3F16: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
 end
-3FFB: set_car 0@ component "seatbeltlight" visible 0
-3FFB: set_car 0@ component "lambdalight" visible 0
-3FFB: set_car 0@ component "oillight" visible 0
-3FFB: set_car 0@ component "doorajarlight" visible 0
-3FFB: set_car 0@ component "fuellight" visible 0
-3FFB: set_car 0@ component "brakelight" visible 0
-3FFB: set_car 0@ component "batterylight" visible 0
+3F10: set_car 0@ component "seatbeltlight" visible 0
+3F10: set_car 0@ component "lambdalight" visible 0
+3F10: set_car 0@ component "oillight" visible 0
+3F10: set_car 0@ component "doorajarlight" visible 0
+3F10: set_car 0@ component "fuellight" visible 0
+3F10: set_car 0@ component "brakelight" visible 0
+3F10: set_car 0@ component "batterylight" visible 0
 03D1: play_wav 2
 $OFF = 1 // integer values
 

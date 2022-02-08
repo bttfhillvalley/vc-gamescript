@@ -382,42 +382,42 @@ if
 00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS //BTTF1 
 else_jump @GarageWaitUntilGone
 //set car parts to show and hide on spawn
-3FFB: set_car 0@ component "lightfl" visible 0  //left heaflight off
-3FFB: set_car 0@ component "lightfr" visible 0 //right heaflight off
-3FFB: set_car 0@ component "fluxcapacitorlightson" visible 0   //flux capacitor box lit model off
-3FFB: set_car 0@ component "fluxcapacitorlightsoff" visible 1 //flux capacitor box unlit model on  
-3FFB: set_car 0@ component "flux1" visible 0       //flux capacitor animation part 1-6 off
-3FFB: set_car 0@ component "flux2" visible 0      //flux capacitor animation part 2-6 off
-3FFB: set_car 0@ component "flux3" visible 0     //flux capacitor animation part 3-6 off
-3FFB: set_car 0@ component "flux4" visible 0    //flux capacitor animation part 4-6 off
-3FFB: set_car 0@ component "flux5" visible 0   //flux capacitor animation part 5-6 off
-3FFB: set_car 0@ component "flux6" visible 0  //flux capacitor animation part 6-6 off
-3ff4: set car 0@ comp "fluxcoilson" alpha 0  //coil model completely invisible
-3ff4: set car 0@ comp "wormhole" alpha 0    //wormhole model completely invisible (permanent until new wormhole is done)
-3FFB: set_car 0@ component "sidledsstatus1" visible 0         //Status Indicator Display animation part 1-8 off
-3FFB: set_car 0@ component "sidledsstatus2" visible 0        //Status Indicator Display animation part 2-8 off
-3FFB: set_car 0@ component "sidledsstatus3" visible 0       //Status Indicator Display animation part 3-8 off
-3FFB: set_car 0@ component "sidledsstatus4" visible 0      //Status Indicator Display animation part 4-8 off
-3FFB: set_car 0@ component "sidledsstatus5" visible 0     //Status Indicator Display animation part 5-8 off
-3FFB: set_car 0@ component "sidledsstatus6" visible 0    //Status Indicator Display animation part 6-8 off
-3FFB: set_car 0@ component "sidledsstatus7" visible 0   //Status Indicator Display animation part 7-8 off
-3FFB: set_car 0@ component "sidledsstatus8" visible 0  //Status Indicator Display animation part 8-8 off
-3FFB: set_car 0@ component "clock" visible 0                 //Bulova Alarm Clock off
-3FFB: set_car 0@ component "MINUTEHAND" visible 0           //Bulova Alarm Clock Minute Hand off
-3FFB: set_car 0@ component "HOURHAND" visible 0            //Bulova Alarm Clock Hour Hand off
-3FFB: set_car 0@ component "clockhammer" visible 0        //Bulova Alarm Clock Bell Hammer off
-3FFB: set_car 0@ component "plutcan" visible 0           //Plutonium Canister off
-3FFB: set_car 0@ component "plutcanliquid" visible 0    //Plutonium Canister Liquid off
-3FFB: set_car 0@ component "plutcaninterior" visible 0 //Plutonium Canister Inside off 
-3FFB: set_car 0@ component "plut" visible 0           //Plutonium Canister Core off
+3F10: set_car 0@ component "lightfl" visible 0  //left heaflight off
+3F10: set_car 0@ component "lightfr" visible 0 //right heaflight off
+3F10: set_car 0@ component "fluxcapacitorlightson" visible 0   //flux capacitor box lit model off
+3F10: set_car 0@ component "fluxcapacitorlightsoff" visible 1 //flux capacitor box unlit model on  
+3F10: set_car 0@ component "flux1" visible 0       //flux capacitor animation part 1-6 off
+3F10: set_car 0@ component "flux2" visible 0      //flux capacitor animation part 2-6 off
+3F10: set_car 0@ component "flux3" visible 0     //flux capacitor animation part 3-6 off
+3F10: set_car 0@ component "flux4" visible 0    //flux capacitor animation part 4-6 off
+3F10: set_car 0@ component "flux5" visible 0   //flux capacitor animation part 5-6 off
+3F10: set_car 0@ component "flux6" visible 0  //flux capacitor animation part 6-6 off
+3F12: set car 0@ comp "fluxcoilson" alpha 0  //coil model completely invisible
+3F12: set car 0@ comp "wormhole" alpha 0    //wormhole model completely invisible (permanent until new wormhole is done)
+3F10: set_car 0@ component "sidledsstatus1" visible 0         //Status Indicator Display animation part 1-8 off
+3F10: set_car 0@ component "sidledsstatus2" visible 0        //Status Indicator Display animation part 2-8 off
+3F10: set_car 0@ component "sidledsstatus3" visible 0       //Status Indicator Display animation part 3-8 off
+3F10: set_car 0@ component "sidledsstatus4" visible 0      //Status Indicator Display animation part 4-8 off
+3F10: set_car 0@ component "sidledsstatus5" visible 0     //Status Indicator Display animation part 5-8 off
+3F10: set_car 0@ component "sidledsstatus6" visible 0    //Status Indicator Display animation part 6-8 off
+3F10: set_car 0@ component "sidledsstatus7" visible 0   //Status Indicator Display animation part 7-8 off
+3F10: set_car 0@ component "sidledsstatus8" visible 0  //Status Indicator Display animation part 8-8 off
+3F10: set_car 0@ component "clock" visible 0                 //Bulova Alarm Clock off
+3F10: set_car 0@ component "MINUTEHAND" visible 0           //Bulova Alarm Clock Minute Hand off
+3F10: set_car 0@ component "HOURHAND" visible 0            //Bulova Alarm Clock Hour Hand off
+3F10: set_car 0@ component "clockhammer" visible 0        //Bulova Alarm Clock Bell Hammer off
+3F10: set_car 0@ component "plutcan" visible 0           //Plutonium Canister off
+3F10: set_car 0@ component "plutcanliquid" visible 0    //Plutonium Canister Liquid off
+3F10: set_car 0@ component "plutcaninterior" visible 0 //Plutonium Canister Inside off 
+3F10: set_car 0@ component "plut" visible 0           //Plutonium Canister Core off
 if or
   $VARIATION == 1  // hook holder or
   $VARIATION == 3 //hook on side
 else_jump @GarageWaitUntilGone  
-3FFB: set_car 0@ component "clock" visible 1          //Bulova Alarm Clock on
-3FFB: set_car 0@ component "MINUTEHAND" visible 1    //Bulova Alarm Clock Minute Hand on    
-3FFB: set_car 0@ component "HOURHAND" visible 1     //Bulova Alarm Clock Hour Hand on
-3FFB: set_car 0@ component "clockhammer" visible 1 //Bulova Alarm Clock Bell Hammer on
+3F10: set_car 0@ component "clock" visible 1          //Bulova Alarm Clock on
+3F10: set_car 0@ component "MINUTEHAND" visible 1    //Bulova Alarm Clock Minute Hand on    
+3F10: set_car 0@ component "HOURHAND" visible 1     //Bulova Alarm Clock Hour Hand on
+3F10: set_car 0@ component "clockhammer" visible 1 //Bulova Alarm Clock Bell Hammer on
 if and
 $HOOK_TUT == 0 // integer values 
 $VARIATION == 3 // integer values //hook on side

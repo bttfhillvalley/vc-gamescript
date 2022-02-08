@@ -5,22 +5,27 @@ DEFINE MISSIONS 0
 //These are the New Opcodes originally written by Ilufir rewritten by Kyonko Yuuki, defining them here means no nasty setup for sanny builder.
 {$USE bitwise}
 {$USE CLEO}
-{$OPCODE 0124=2,write_memory_address %1d% value %2d%}                //used for writing a temporary address
-{$OPCODE 0125=2,%2d% = read_memory_address %1d%}                     //used for reading a temporary address
-{$OPCODE 3FF3=1,set car %1d% suspension}                             //sets a car part's alpha from 0-255 instead of hiding or showing it completely
-{$OPCODE 3FF4=3,set car %1d% comp %2d% alpha %3d%}                   //sets a car part's alpha from 0-255 instead of hiding or showing it completely
-{$OPCODE 3FF5=2,%1d% = car %2d% engine_state}
-{$OPCODE 3FF6=1,car %1d% turn_on_engine}
-{$OPCODE 3FF7=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
-{$OPCODE 3FF8=4,set_car %3d% component %1d% index %4d% visible %2d%} //show or hide a multiple of car parts
-{$OPCODE 3FF9=4,play_anim %1d% grp %2d% blend %3d% on char %4d%}     //plays an animation (currently unused)
-{$OPCODE 3FFA=2,set_car %1d% hover %2d%}                             //this turns a vehicle into a helicopter (currently unused)
-{$OPCODE 3FFB=3,set_car %3d% component %1d% visible %2d%}            //show or hide a car part by name
-{$OPCODE 3FFC=5,move_car_part %1d% pos %2d% %3d% %4d% car %5d%}      //moves a car part by its frame
-{$OPCODE 3FFD=5,rotate_car_part %1d% angle %2d% %3d% %4d% car %5d%}  //rotates a car part by its frame
-{$OPCODE 3FFE=2,add_build %1p% amnt %2p%}                            //adds all buildings and objects in a .dat file
-{$OPCODE 3FFF=2,remove_build %1p% amnt %2p%}                         //removes all buildings and objects in a .dat file
-{$OPCODE 3FF2=2,%2d% = get_car %1d% gear}
+{$OPCODE 0124=2,write_memory_address %1d% value %2d%}                // used for writing a temporary address
+{$OPCODE 0125=2,%2d% = read_memory_address %1d%}                     // used for reading a temporary address
+
+{$OPCODE 3F01=1,set car %1d% suspension}                                        // set suspension
+{$OPCODE 3F02=2,%2d% = car %1d% engine_state}                                   // get engine state
+{$OPCODE 3F03=1,car %1d% turn_on_engine}                                        // turn on engine
+{$OPCODE 3F04=2,%2d% = get_car %1d% gear}                                       // get current gear
+{$OPCODE 3F05=2,set_car %1d% hover %2d%}                                        // this turns a vehicle into a helicopter (currently unused)
+{$OPCODE 3F06=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
+{$OPCODE 3F07=4,play_anim %1d% grp %2d% blend %3d% on char %4d%}                // plays an animation (currently unused)
+{$OPCODE 3F08=2,add_build %1p% amnt %2p%}                                       // adds all buildings and objects in a .dat file
+{$OPCODE 3F09=2,remove_build %1p% amnt %2p%}                                    // removes all buildings and objects in a .dat file
+{$OPCODE 3F10=3,set_car %1d% component %2d% visible %3d%}                       // show or hide a car part by name
+{$OPCODE 3F11=4,set_car %1d% component %2d% index %4d% visible %3d%}            // show or hide a car part with index
+{$OPCODE 3F12=3,set car %1d% comp %2d% alpha %3d%}                              // sets a car part's alpha from 0-255 instead of hiding or showing it completely
+{$OPCODE 3F13=3,set car %1d% comp %2d% alpha %3d%}                              // sets a car part with index alpha from 0-255 instead of hiding or showing it completely
+{$OPCODE 3F14=5,move_car_part %1d% pos %2d% %3d% %4d% car %5d%}                 // moves a car part by its frame
+{$OPCODE 3F15=6,move_car_part %1d% index %6d% pos %2d% %3d% %4d% car %5d%}      // moves a car part with index by its frame
+{$OPCODE 3F16=5,rotate_car_part %1d% angle %2d% %3d% %4d% car %5d%}             // rotates a car part by its frame
+{$OPCODE 3F17=6,rotate_car_part %1d% index %6d% angle %2d% %3d% %4d% car %5d%}  // rotates a car part with index by its frame
+
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
 {$OPCODE 0AAC=3,play_audio_stream_1channel %1d% loop %2d% volume %3d%}
@@ -231,7 +236,6 @@ end
 {$INCLUDE script/TimeMachineFuel.txt}
 {$INCLUDE script/TimeTravel.txt}
 {$INCLUDE script/TimeTravelMode.txt}
-{$INCLUDE script/TMButtons.txt}
 {$INCLUDE script/TrainEffects.txt}
 //-------------Mission 0---------------
 // put missions here
