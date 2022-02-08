@@ -157,8 +157,7 @@ create_thread @FlyPolice           // Flying 2015 police car conversion
 create_thread @carclockhr          // Bulova Alarm Clock hour hand and digital console clock hour
 create_thread @carclockmin         // Bulova Alarm Clock minute hand and digital console clock minute
 create_thread @Compass_rotation    // In Car Compass
-create_thread @ShifterSet          // Transmission and RPM animations
-create_thread @ParkingBrake        // Parking brake when pressing ebrake button
+create_thread @Shifter             // Transmission, RPM, and Parking Brake animations
 create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugMove helps us move objects/particles
 //create_thread @55TV
@@ -220,7 +219,6 @@ end
 {$INCLUDE script/HoverConversion.txt}
 {$INCLUDE script/Ignition.txt}
 {$INCLUDE script/MemoryManipulation.txt}
-{$INCLUDE script/ParkingBrake.txt}
 {$INCLUDE script/Taxi.txt}
 {$INCLUDE script/Train.txt}
 {$INCLUDE script/Truck.txt}
