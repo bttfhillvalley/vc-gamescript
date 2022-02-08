@@ -1,8 +1,8 @@
 :Swirl
-thread 'SWIRL' 
-wait 0 
+thread 'SWIRL'
+wait 0
 $SWIRL = Object.Init(#SWIRL,  -1587.4, 895.722, 16.365)
-wait 250 
+wait 250
 Object.Angle($SWIRL) = 0.0
 Object.CollisionDetection($SWIRL) = False
 

@@ -1,391 +1,391 @@
 
 :Garage
-thread 'GARAGE' 
-021B: set_garage $DELOREAN_GARAGE to_accept_car #DEADDODO 
+thread 'GARAGE'
+021B: set_garage $DELOREAN_GARAGE to_accept_car #DEADDODO
 $TYPE = #SABRE //DMC-12
 
 :GarageStart
-wait 250 
-if 
+wait 250
+if
    Player.Defined($PLAYER_CHAR)
-else_jump @GarageStart 
-if 
-  $GARAGE_CONTROL == 1 // can use garage 
-else_jump @GarageStart 
-if 
-0056:   player $PLAYER_CHAR 0 -965.8 -840.9 -984.5 -833.9 
-else_jump @GarageStart 
+else_jump @GarageStart
+if
+  $GARAGE_CONTROL == 1 // can use garage
+else_jump @GarageStart
+if
+0056:   player $PLAYER_CHAR 0 -965.8 -840.9 -984.5 -833.9
+else_jump @GarageStart
 if or
-00DE:   player $PLAYER_CHAR driving_vehicle_type #SABRE         //DMC-12 
-00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS     //BTTF1 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #SABRE         //DMC-12
+00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS     //BTTF1
 00DE:   player $PLAYER_CHAR driving_vehicle_type #DELUXO      //BTTF2
 00DE:   player $PLAYER_CHAR driving_vehicle_type #SPARROW    //Flying BTTF2
 00DE:   player $PLAYER_CHAR driving_vehicle_type #BANSHEE   //BTTF3
 00DE:   player $PLAYER_CHAR driving_vehicle_type #BAGGAGE  //RailRoad DeLorean
 else_jump @GarageStart
-if 
-  5@ > 4 // integer values 
-else_jump @GarageOpen 
-5@ = 0 // integer values 
-jump @GarageOpen 
+if
+  5@ > 4 // integer values
+else_jump @GarageOpen
+5@ = 0 // integer values
+jump @GarageOpen
 
 :GarageOpen
-03C1: 0@ = player $PLAYER_CHAR car 
+03C1: 0@ = player $PLAYER_CHAR car
 10@ = Car.Model(0@)
-021B: set_garage $DELOREAN_GARAGE to_accept_car 0@ 
-wait 1000 
+021B: set_garage $DELOREAN_GARAGE to_accept_car 0@
+wait 1000
 
 :GarageInsideYet
-wait 250 
+wait 250
 if and
    Player.Defined($PLAYER_CHAR)
    not Car.Wrecked(0@)
-else_jump @GarageReset 
-if 
-00B1:   car 0@ 0 -965.8 -861.1 5.0 -978.1 -833.9 10.0 
-else_jump @GarageReset 
-if and
-80B1:   not car 0@ 0 -965.8 -844.9 5.0 -978.1 -833.9 10.0 
-01C1:   car 0@ stopped 
-else_jump @GarageInsideYet 
-$IN_GARAGE = 1 // integer values 
-$NEW = 1 // integer values 
+else_jump @GarageReset
 if
-80DE:   not player $PLAYER_CHAR driving_vehicle_type #SABRE //DMC-12 
-else_jump @GarageClose 
-$NEW = 0 // integer values 
+00B1:   car 0@ 0 -965.8 -861.1 5.0 -978.1 -833.9 10.0
+else_jump @GarageReset
+if and
+80B1:   not car 0@ 0 -965.8 -844.9 5.0 -978.1 -833.9 10.0
+01C1:   car 0@ stopped
+else_jump @GarageInsideYet
+$IN_GARAGE = 1 // integer values
+$NEW = 1 // integer values
+if
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #SABRE //DMC-12
+else_jump @GarageClose
+$NEW = 0 // integer values
 
 :GarageClose
 Player.CanMove($PLAYER_CHAR) = False
-0361: close_garage $DELOREAN_GARAGE 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 0.0 
+0361: close_garage $DELOREAN_GARAGE
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 0.0
 4@ = Car.Angle(0@)
-012A: put_player $PLAYER_CHAR at 1@ 2@ 50.0 and_remove_from_car 
+012A: put_player $PLAYER_CHAR at 1@ 2@ 50.0 and_remove_from_car
 Camera.PointAt(1@, 2@, 3@, 1)
-if 
-  $VARIATION == 0 // integer values 
-else_jump @GarageVariationLoad 
+if
+  $VARIATION == 0 // integer values
+else_jump @GarageVariationLoad
 $VARIATION = -1 //no licence plate
 
 :GarageVariationLoad
-if 
-  $VARIATION == 3 // integer values 
-else_jump @GarageMenu 
-$VARIATION = 2 // integer values 
+if
+  $VARIATION == 3 // integer values
+else_jump @GarageMenu
+$VARIATION = 2 // integer values
 
 :GarageMenu
-wait 10 
-0055: put_player $PLAYER_CHAR at 1@ 2@ 50.0 
-if 
-80E1:   not key_pressed 0 17 
-else_jump @GarageConfirm 
-if 
-80E1:   not key_pressed 0 10 
+wait 10
+0055: put_player $PLAYER_CHAR at 1@ 2@ 50.0
+if
+80E1:   not key_pressed 0 17
+else_jump @GarageConfirm
+if
+80E1:   not key_pressed 0 10
 else_jump @GarageLeft
-if 
-80E1:   not key_pressed 0 11 
-else_jump @GarageRight 
+if
+80E1:   not key_pressed 0 11
+else_jump @GarageRight
 if or
-80E1:   not key_pressed 0 8 
-   not 5@ == 1 // integer values 
+80E1:   not key_pressed 0 8
+   not 5@ == 1 // integer values
 else_jump @GarageUp
 if or
-80E1:   not key_pressed 0 9 
-   not 5@ == 1 // integer values 
-else_jump @GarageDown 
+80E1:   not key_pressed 0 9
+   not 5@ == 1 // integer values
+else_jump @GarageDown
 
 :GarageDelorean
-if 
-  5@ == 0 //Garage menu selection 0 
-else_jump @GarageBTTF1 
+if
+  5@ == 0 //Garage menu selection 0
+else_jump @GarageBTTF1
 if or
   $CYEAR >= 1981 //Garage checks if its atleast the year 1981 or
-  10@ == #SABRE //if you are driving a DMC-12 DeLorean 
-else_jump @GarageMenuEnd 
+  10@ == #SABRE //if you are driving a DMC-12 DeLorean
+else_jump @GarageMenuEnd
 00BC: text_highpriority 'DEL0' 10 ms 1  // dmc12 deLoRean
-$TYPE = #SABRE // DMC-12 
-jump @GarageMenu 
+$TYPE = #SABRE // DMC-12
+jump @GarageMenu
 
 :GarageBTTF1
 if and
   5@ == 1 // Garage menu selection 1
   $VARIATION == -1 //no licence plate
-else_jump @GarageBTTF1Holder 
+else_jump @GarageBTTF1Holder
 if or
   $CYEAR >= 1985 //Garage checks if its atleast the year 1985 or
   10@ == #INFERNUS //if you are driving a BTTF1 DeLorean
-else_jump @GarageMenuEnd 
+else_jump @GarageMenuEnd
 00BC: text_highpriority 'DEL1A' 10 ms 1  // BTTF1 deLoRean
-$TYPE = #INFERNUS //BTTF1 
-jump @GarageMenu 
+$TYPE = #INFERNUS //BTTF1
+jump @GarageMenu
 
 :GarageBTTF1Holder
 if and
   5@ == 1 // Garage menu selection 1
-  $VARIATION == 1 //hook holder 
-else_jump @GarageBTTF1Hook 
+  $VARIATION == 1 //hook holder
+else_jump @GarageBTTF1Hook
 if or
-  $CYEAR >= 1985 //Garage checks if its atleast the year 1985 or 
+  $CYEAR >= 1985 //Garage checks if its atleast the year 1985 or
   10@ == #INFERNUS //if you are driving a BTTF1 DeLorean
-else_jump @GarageMenuEnd 
+else_jump @GarageMenuEnd
 00BC: text_highpriority 'DEL1B' 10 ms 1  // BTTF1 deLoRean w/o hook
-$TYPE = #INFERNUS //BTTF1 
-jump @GarageMenu 
+$TYPE = #INFERNUS //BTTF1
+jump @GarageMenu
 
 :GarageBTTF1Hook
 if and
   5@ == 1 // Garage menu selection 1
   $VARIATION == 2 //hook on the side
-else_jump @GarageBTTF2 
+else_jump @GarageBTTF2
 if or
-  $CYEAR >= 1985 // Garage checks if its atleast the year 1985 or 
-  10@ == #INFERNUS //if you are driving a BTTF1 DeLorean 
-else_jump @GarageMenuEnd 
+  $CYEAR >= 1985 // Garage checks if its atleast the year 1985 or
+  10@ == #INFERNUS //if you are driving a BTTF1 DeLorean
+else_jump @GarageMenuEnd
 00BC: text_highpriority 'DEL1C' 10 ms 1  // BTTF1 deLoRean w/ hook
-$TYPE = #INFERNUS //BTTF1 
-jump @GarageMenu 
+$TYPE = #INFERNUS //BTTF1
+jump @GarageMenu
 
 :GarageBTTF2
-if 
+if
   5@ == 2 // Garage menu selection 2
-else_jump @GarageBTTF3 
-if 
-  $CYEAR >= 2010 //Garage checks if its atleast the year 2010 
-else_jump @GarageBTTF2FriedCheck 
-jump @GarageBTTF2Display 
+else_jump @GarageBTTF3
+if
+  $CYEAR >= 2010 //Garage checks if its atleast the year 2010
+else_jump @GarageBTTF2FriedCheck
+jump @GarageBTTF2Display
 
 :GarageBTTF2FriedCheck
 if and
   10@ == #DELUXO //Garage checks if you are driving a BTTF2 DeLorean and
   $FRIED == 0 // if the time circuit control microchip is not damaged
-else_jump @GarageMenuEnd 
+else_jump @GarageMenuEnd
 
 :GarageBTTF2Display
 00BC: text_highpriority 'DEL2' 10 ms 1  // BTTF2 deLoRean
-$TYPE = #DELUXO //BTTF2 
-jump @GarageMenu 
+$TYPE = #DELUXO //BTTF2
+jump @GarageMenu
 
 :GarageBTTF3
-if 
+if
   5@ == 3 // Garage menu selection 3
-else_jump @GarageBTTF3RR 
+else_jump @GarageBTTF3RR
 if or
   $CYEAR >= 2010 //Garage checks if its atleast the year 2010 or
   10@ == #BANSHEE //if you are driving a BTTF3 DeLorean
-else_jump @GarageBTTF3Early 
+else_jump @GarageBTTF3Early
 00BC: text_highpriority 'DEL3' 10 ms 1  // BTTF3 deLoRean
-$TYPE = #BANSHEE //BTTF3 
-jump @GarageMenu 
+$TYPE = #BANSHEE //BTTF3
+jump @GarageMenu
 
 :GarageBTTF3Early
 if or
   10@ == #DELUXO //Garage checks if you are driving a BTTF2,
-  10@ == #BANSHEE //BTTF3, or 
+  10@ == #BANSHEE //BTTF3, or
   10@ == #BAGGAGE //a RailRoad DeLorean
-else_jump @GarageMenuEnd 
-if 
+else_jump @GarageMenuEnd
+if
   $CYEAR >= 1945 //Garage checks if its atleast the year 1945
-else_jump @GarageMenuEnd 
+else_jump @GarageMenuEnd
 00BC: text_highpriority 'DEL3' 10 ms 1  // BTTF3 deLoRean
-$TYPE = #BANSHEE //BTTF3 
-jump @GarageMenu 
+$TYPE = #BANSHEE //BTTF3
+jump @GarageMenu
 
 :GarageBTTF3RR
-if 
+if
   5@ == 4 // Garage menu selection 4
 else_jump @GarageMenu
 if or
   $CYEAR >= 2010 //Garage checks if its atleast the year 2010 or
   10@ == #BAGGAGE //if you are driving a RailRoad DeLorean
-else_jump @GarageBTTF3RREarly 
+else_jump @GarageBTTF3RREarly
 00BC: text_highpriority 'DEL4' 10 ms 1  // BTTF3 RaiLRoad deLoRean
-$TYPE = #BAGGAGE //RailRoad DeLorean 
-jump @GarageMenu 
+$TYPE = #BAGGAGE //RailRoad DeLorean
+jump @GarageMenu
 
 :GarageBTTF3RREarly
 if or
   10@ == #DELUXO //Garage checks if you are driving a BTTF2,
-  10@ == #BANSHEE //BTTF3, or 
+  10@ == #BANSHEE //BTTF3, or
   10@ == #BAGGAGE //a RailRoad DeLorean
-else_jump @GarageMenuEnd 
-if 
-  $CYEAR >= 1870 //Garage checks if its atleast the year 1870 
-else_jump @GarageMenuEnd 
+else_jump @GarageMenuEnd
+if
+  $CYEAR >= 1870 //Garage checks if its atleast the year 1870
+else_jump @GarageMenuEnd
 00BC: text_highpriority 'DEL4' 10 ms 1  // BTTF3 RaiLRoad deLoRean
 $TYPE = #BAGGAGE //RailRoad DeLorean
-jump @GarageMenu 
+jump @GarageMenu
 
 //garage menu controls go here
 
 :GarageMenuEnd
-if 
-  6@ == 0 // integer values 
-else_jump @GarageGoRight 
-jump @GarageGoLeft 
+if
+  6@ == 0 // integer values
+else_jump @GarageGoRight
+jump @GarageGoLeft
 
 :GarageLeft
-6@ = 0 // integer values 
-gosub @CursorLoadSound 
+6@ = 0 // integer values
+gosub @CursorLoadSound
 
 :GarageGoLeft
-5@ -= 1 //go back 1 Garage menu selection 
-if 
-  0 > 5@ // integer values 
-else_jump @GarageDelorean 
+5@ -= 1 //go back 1 Garage menu selection
+if
+  0 > 5@ // integer values
+else_jump @GarageDelorean
 5@ = 4 // Garage menu selection 4
-jump @GarageDelorean 
+jump @GarageDelorean
 
 :GarageRight
-6@ = 1 // integer values 
-gosub @CursorLoadSound 
+6@ = 1 // integer values
+gosub @CursorLoadSound
 
 :GarageGoRight
 5@ += 1 // go forward 1 Garage menu selection
-if 
-  5@ > 4 // integer values 
-else_jump @GarageDelorean 
-5@ = 0 // integer values 
-jump @GarageDelorean 
+if
+  5@ > 4 // integer values
+else_jump @GarageDelorean
+5@ = 0 // integer values
+jump @GarageDelorean
 
 :GarageDown
-$VARIATION -= 1 // go down 1 variation menu selection 
-gosub @CursorLoadSound 
-if 
+$VARIATION -= 1 // go down 1 variation menu selection
+gosub @CursorLoadSound
+if
   $VARIATION == 0 // hook holder
-else_jump @GarageDownEnd 
+else_jump @GarageDownEnd
 $VARIATION = -1 //no licence plate
-jump @GarageDelorean 
+jump @GarageDelorean
 
 :GarageDownEnd
-if 
+if
   -1 > $VARIATION
-else_jump @GarageDelorean 
-$VARIATION = 2 // hook on side 
-jump @GarageDelorean 
+else_jump @GarageDelorean
+$VARIATION = 2 // hook on side
+jump @GarageDelorean
 
 :GarageUp
 $VARIATION += 1 // go up 1 variation menu selection
-gosub @CursorLoadSound 
-if 
+gosub @CursorLoadSound
+if
   $VARIATION == 0 // licence plate
-else_jump @GarageUpEnd 
-$VARIATION = 1 // hook holder 
-jump @GarageDelorean 
+else_jump @GarageUpEnd
+$VARIATION = 1 // hook holder
+jump @GarageDelorean
 
 :GarageUpEnd
-if 
-  $VARIATION > 2 
-else_jump @GarageDelorean 
+if
+  $VARIATION > 2
+else_jump @GarageDelorean
 $VARIATION = -1 //no licence plate
-jump @GarageDelorean 
+jump @GarageDelorean
 
 :GarageDisabled
 00BC: text_highpriority 'DISABLE' 2000 ms 1  // disabLed
-wait 2000 
-jump @GarageDelorean 
+wait 2000
+jump @GarageDelorean
 
 :GarageConfirm
 if or
-  $CHOOSE == -1 // integer values 
+  $CHOOSE == -1 // integer values
 003A:   $CHOOSE == $TYPE
-else_jump @GarageDisabled 
-gosub @ConfirmLoadSound 
+else_jump @GarageDisabled
+gosub @ConfirmLoadSound
 if and
-  $CYEAR >= 1980 //Garage checks if its between the year 1980  
+  $CYEAR >= 1980 //Garage checks if its between the year 1980
    not $CYEAR >= 2010 // and 2010
-else_jump @GarageVariation 
+else_jump @GarageVariation
 $PLATE = 0 // no licence plate
 
 :GarageVariation
-if 
+if
   $VARIATION == 0 // licence plate
-else_jump @GarageVariationHook 
+else_jump @GarageVariationHook
 $VARIATION = -1 //no licence plate
 
 :GarageVariationHook
-if 
-  $VARIATION == 2 // hook on side 
-else_jump @GarageLoadModel 
-$VARIATION = 3 // hook on back 
+if
+  $VARIATION == 2 // hook on side
+else_jump @GarageLoadModel
+$VARIATION = 3 // hook on back
 
 :GarageLoadModel
 Model.Load($TYPE)
-wait 1000 
+wait 1000
 
 :GarageDestroyOldCar
-wait 10 
-if 
+wait 10
+if
    Model.Available($TYPE)
-else_jump @GarageDestroyOldCar 
-if 
+else_jump @GarageDestroyOldCar
+if
    not Car.Wrecked(0@)
-else_jump @GarageNewCarVariationA 
+else_jump @GarageNewCarVariationA
 Car.Destroy(0@)
 
 :GarageNewCarVariationA
-018C: play_sound 1 at 0.0 0.0 0.0 
-0360: open_garage $DELOREAN_GARAGE 
-if 
+018C: play_sound 1 at 0.0 0.0 0.0
+0360: open_garage $DELOREAN_GARAGE
+if
   $TYPE == #INFERNUS // BTTF1
-else_jump @GarageNewCarVariationB 
-0506: vehicle_model #INFERNUS set_next_variation $PLATE $VARIATION 
-008B: 7@ = $PLATE // integer values and handles 
-7@ += 1 // integer values 
-7@ *= 10 // integer values (never used in VC or GTA 3) 
-if 
-   not $VARIATION == -1 //no licence plate 
-else_jump @GarageNewCarVariationB 
-005C: 7@ += $VARIATION // integer values (never used VC or GTA 3) 
-jump @GarageCreateNewCar 
+else_jump @GarageNewCarVariationB
+0506: vehicle_model #INFERNUS set_next_variation $PLATE $VARIATION
+008B: 7@ = $PLATE // integer values and handles
+7@ += 1 // integer values
+7@ *= 10 // integer values (never used in VC or GTA 3)
+if
+   not $VARIATION == -1 //no licence plate
+else_jump @GarageNewCarVariationB
+005C: 7@ += $VARIATION // integer values (never used VC or GTA 3)
+jump @GarageCreateNewCar
 
 :GarageNewCarVariationB
-if 
+if
   $TYPE == #BANSHEE //BTTF3
-else_jump @GarageCreateNewCar 
-0506: vehicle_model #BANSHEE set_next_variation -1 -1 
+else_jump @GarageCreateNewCar
+0506: vehicle_model #BANSHEE set_next_variation -1 -1
 
 :GarageCreateNewCar
 0@ = Car.Create($TYPE, 1@, 2@, 3@)
 Car.Angle(0@) = 4@
-wait 100 
-0369: put_player $PLAYER_CHAR in_car 0@ 
+wait 100
+0369: put_player $PLAYER_CHAR in_car 0@
 if
 80DE:   not player $PLAYER_CHAR driving_vehicle_type #SABRE //DMC-12
-else_jump @GarageReleaseCar 
-03C1: $DELOREAN = player $PLAYER_CHAR car 
+else_jump @GarageReleaseCar
+03C1: $DELOREAN = player $PLAYER_CHAR car
 Car.SetImmunities(0@, 0, 0, 0, 1, 1)
-053F: set_car 0@ tires_vulnerable 0 
-if 
-  $NEW == 1 // integer values 
-else_jump @GarageUpgradeTT 
-create_thread @Time 0@ 0 0 0 0 0 0 -5000.0 $CTIME $CTIME1 0 0 $CTIME $CTIME1 -1 7@ 
-jump @GarageReleaseModel 
+053F: set_car 0@ tires_vulnerable 0
+if
+  $NEW == 1 // integer values
+else_jump @GarageUpgradeTT
+create_thread @Time 0@ 0 0 0 0 0 0 -5000.0 $CTIME $CTIME1 0 0 $CTIME $CTIME1 -1 7@
+jump @GarageReleaseModel
 
 :GarageUpgradeTT
-gosub @GarageNewCircuits 
-008B: 15@ = $PTIME1 // integer values and handles 
-15@ *= 100 // integer values (never used in VC or GTA 3) 
-005A: 15@ += 7@ // integer values (never used VC or GTA 3) 
-create_thread @Time 0@ 0 0 0 0 0 0 -5000.0 $CTIME $CTIME1 0 0 $DTIME $DTIME1 $PTIME 15@ 
-jump @GarageReleaseModel 
+gosub @GarageNewCircuits
+008B: 15@ = $PTIME1 // integer values and handles
+15@ *= 100 // integer values (never used in VC or GTA 3)
+005A: 15@ += 7@ // integer values (never used VC or GTA 3)
+create_thread @Time 0@ 0 0 0 0 0 0 -5000.0 $CTIME $CTIME1 0 0 $DTIME $DTIME1 $PTIME 15@
+jump @GarageReleaseModel
 
 :GarageReleaseCar
 Car.RemoveReferences(0@)
 
 :GarageReleaseModel
 Model.Destroy($TYPE)
-021B: set_garage $DELOREAN_GARAGE to_accept_car 0@ 
+021B: set_garage $DELOREAN_GARAGE to_accept_car 0@
 Player.CanMove($PLAYER_CHAR) = True
-$IN_GARAGE = 0 // integer values 
+$IN_GARAGE = 0 // integer values
 Camera.Restore
 if
-00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS //BTTF1 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS //BTTF1
 else_jump @GarageWaitUntilGone
 //set car parts to show and hide on spawn
 3F10: set_car 0@ component "lightfl" visible 0  //left heaflight off
 3F10: set_car 0@ component "lightfr" visible 0 //right heaflight off
 3F10: set_car 0@ component "fluxcapacitorlightson" visible 0   //flux capacitor box lit model off
-3F10: set_car 0@ component "fluxcapacitorlightsoff" visible 1 //flux capacitor box unlit model on  
+3F10: set_car 0@ component "fluxcapacitorlightsoff" visible 1 //flux capacitor box unlit model on
 3F10: set_car 0@ component "flux1" visible 0       //flux capacitor animation part 1-6 off
 3F10: set_car 0@ component "flux2" visible 0      //flux capacitor animation part 2-6 off
 3F10: set_car 0@ component "flux3" visible 0     //flux capacitor animation part 3-6 off
@@ -408,82 +408,82 @@ else_jump @GarageWaitUntilGone
 3F10: set_car 0@ component "clockhammer" visible 0        //Bulova Alarm Clock Bell Hammer off
 3F10: set_car 0@ component "plutcan" visible 0           //Plutonium Canister off
 3F10: set_car 0@ component "plutcanliquid" visible 0    //Plutonium Canister Liquid off
-3F10: set_car 0@ component "plutcaninterior" visible 0 //Plutonium Canister Inside off 
+3F10: set_car 0@ component "plutcaninterior" visible 0 //Plutonium Canister Inside off
 3F10: set_car 0@ component "plut" visible 0           //Plutonium Canister Core off
 if or
   $VARIATION == 1  // hook holder or
   $VARIATION == 3 //hook on side
-else_jump @GarageWaitUntilGone  
+else_jump @GarageWaitUntilGone
 3F10: set_car 0@ component "clock" visible 1          //Bulova Alarm Clock on
-3F10: set_car 0@ component "MINUTEHAND" visible 1    //Bulova Alarm Clock Minute Hand on    
+3F10: set_car 0@ component "MINUTEHAND" visible 1    //Bulova Alarm Clock Minute Hand on
 3F10: set_car 0@ component "HOURHAND" visible 1     //Bulova Alarm Clock Hour Hand on
 3F10: set_car 0@ component "clockhammer" visible 1 //Bulova Alarm Clock Bell Hammer on
 if and
-$HOOK_TUT == 0 // integer values 
+$HOOK_TUT == 0 // integer values
 $VARIATION == 3 // integer values //hook on side
-else_jump @GarageWaitUntilGone  
-$HOOK_TUT = 1 // integer values 
+else_jump @GarageWaitUntilGone
+$HOOK_TUT = 1 // integer values
 03E5: text_box 'HOOK'  // go to the passengeR side and pRess the ~h~~k~~PED_ANSWER_PHONE~~w~ button to put up/put down the hook.
 
 :GarageWaitUntilGone
-wait 250 
-if 
+wait 250
+if
    Player.Defined($PLAYER_CHAR)
-else_jump @GarageStart 
-if                               
+else_jump @GarageStart
+if
    not Car.Wrecked(0@)
-else_jump @GarageReset 
-if 
-80B0:   not car 0@ 0 -965.8 -840.9 -984.5 -836.9 
-else_jump @GarageWaitUntilGone 
+else_jump @GarageReset
+if
+80B0:   not car 0@ 0 -965.8 -840.9 -984.5 -836.9
+else_jump @GarageWaitUntilGone
 
 :GarageReset
-021B: set_garage $DELOREAN_GARAGE to_accept_car #DEADDODO 
+021B: set_garage $DELOREAN_GARAGE to_accept_car #DEADDODO
 jump @GarageStart
 
 :GarageNewCircuits
-0084: $DTIME = $MONTH // integer values and handles 
-$DTIME *= 100 // integer values 
-0058: $DTIME += $DAY // integer values 
-$DTIME *= 10000 // integer values 
-0058: $DTIME += $YEAR // integer values 
-$FRIED = 0 // integer values 
-if 
+0084: $DTIME = $MONTH // integer values and handles
+$DTIME *= 100 // integer values
+0058: $DTIME += $DAY // integer values
+$DTIME *= 10000 // integer values
+0058: $DTIME += $YEAR // integer values
+$FRIED = 0 // integer values
+if
   $TCON > 1
 then
   $TCON = 1
 end
-0084: $DTIME1 = $TCON // integer values and handles 
-$DTIME1 *= 1000 // integer values 
-0058: $DTIME1 += $HOUR // integer values 
-$DTIME1 *= 100 // integer values 
-0058: $DTIME1 += $MINUTE // integer values 
-return  
+0084: $DTIME1 = $TCON // integer values and handles
+$DTIME1 *= 1000 // integer values
+0058: $DTIME1 += $HOUR // integer values
+$DTIME1 *= 100 // integer values
+0058: $DTIME1 += $MINUTE // integer values
+return
 
 :ConfirmLoadSound
-040D: unload_wav 2 
-03CF: load_wav 'BAND_03' as 2 
+040D: unload_wav 2
+03CF: load_wav 'BAND_03' as 2
 
 :ConfirmPlaySound
-wait 0 
-if 
-03D0:   wav 2 loaded 
-jf @ConfirmPlaySound 
-03D1: play_wav 2 
+wait 0
+if
+03D0:   wav 2 loaded
+jf @ConfirmPlaySound
+03D1: play_wav 2
 wait 1000
-040D: unload_wav 2 
-return 
+040D: unload_wav 2
+return
 
 :CursorLoadSound
-040D: unload_wav 2 
-03CF: load_wav 'BAND_05' as 2 
+040D: unload_wav 2
+03CF: load_wav 'BAND_05' as 2
 
 :CursorPlaySound
-wait 0 
-if 
-03D0:   wav 2 loaded 
-jf @CursorPlaySound 
-03D1: play_wav 2 
-wait 100 
-040D: unload_wav 2 
+wait 0
+if
+03D0:   wav 2 loaded
+jf @CursorPlaySound
+03D1: play_wav 2
+wait 100
+040D: unload_wav 2
 return

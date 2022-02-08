@@ -8,9 +8,9 @@ while true
 		continue
 	end
 	if or
-		80E0:   not player $PLAYER_CHAR driving 
-		00DE:   player $PLAYER_CHAR driving_vehicle_type #FAGGIO 
-		00DE:   player $PLAYER_CHAR driving_vehicle_type #PIZZABOY 
+		80E0:   not player $PLAYER_CHAR driving
+		00DE:   player $PLAYER_CHAR driving_vehicle_type #FAGGIO
+		00DE:   player $PLAYER_CHAR driving_vehicle_type #PIZZABOY
 	then
 		continue
 	end
@@ -19,14 +19,14 @@ while true
 	then
 		0@ = Player.RC_car($PLAYER_CHAR)
 	else
-		03C1: 0@ = player $PLAYER_CHAR car 
+		03C1: 0@ = player $PLAYER_CHAR car
 	end
 	02E3: 8@ = car 0@ speed
-    
-    //check if the 
+
+    //check if the
     if and
        Player.InRemoteMode($PLAYER_CHAR)
-        00E1:   player 0 pressed_button 16 //gas/forward  
+        00E1:   player 0 pressed_button 16 //gas/forward
         00E1:   player 0 pressed_button 14 //brake/reverse
         8@ < 1.0 //when the real car's speed is almost 0
     then
@@ -34,122 +34,122 @@ while true
         if
             //max virtual speed limit chosen at random
             7@ < 35.15 // 64.5mph
-        then 
+        then
             //increase the virtual speed
             7@ += 0.1
-        end	
+        end
     else
         if
             9@ == 1 //car is stopped
         then
             //release the stop and launch the car
             04BA: set_car 0@ speed_instantly 7@
-            9@ = 0 // reset the stop so we only once set the speed from the burnout 
+            9@ = 0 // reset the stop so we only once set the speed from the burnout
         else
             //the speed to display is the real value
             0087: 7@ = 8@ //floating-point values
-        end    
+        end
     end
-    
 
-    0087: 4@ = 7@ // @ = @ (float)    
-	4@ *= 18.35 // 1.835 * 10 to also get the decimal place	
+
+    0087: 4@ = 7@ // @ = @ (float)
+	4@ *= 18.35 // 1.835 * 10 to also get the decimal place
     008C: 4@ = float_to_integer 4@
-    if 
+    if
         4@ > 880
     then
         4@ = 880
-    end             
-    
+    end
+
     //Extract the hundreds digit
     0085: 6@ = 4@
 	0016: 6@ /= 100 //Integer division - cuts off the ones digit
 	0012: 6@ *= 100
 	0062: 4@ -= 6@ //Remove the tens digit
 	0016: 6@ /= 100 //Integer division - now we have the tens and ones digit in 4@ and hundreds digit in 6@
-	
+
 	//Extract the tens digit
     0085: 5@ = 4@
 	0016: 5@ /= 10 //Integer division - cuts off the ones digit
 	0012: 5@ *= 10
 	0062: 4@ -= 5@ //Remove the tens digit
-	0016: 5@ /= 10 //Integer division - now we have the ones digit in 4@, the tens digit in 5@ and hundreds digit in 6@	
-	
+	0016: 5@ /= 10 //Integer division - now we have the ones digit in 4@, the tens digit in 5@ and hundreds digit in 6@
+
     if and
    		$SPEED_DISP == 1
 		$TRAVEL == 0
 		$CUTSCENE == 0
-    then  
+    then
         if
             $IN_RC == 0
         then
-            1@ = 255 // integer values 
-            2@ = 50 // integer values 
-            3@ = 50 // integer values   
-            
+            1@ = 255 // integer values
+            2@ = 50 // integer values
+            3@ = 50 // integer values
+
             //only show the tens digit if it's not a 0
             if
                 6@ > 0
             then
                 //tens digit
-                gosub @TextDraw 
-                033F: set_text_draw_letter_width_height 2.0 8.0 
-            	03E4: set_text_draw_align_right 1 
+                gosub @TextDraw
+                033F: set_text_draw_letter_width_height 2.0 8.0
+            	03E4: set_text_draw_align_right 1
                 045A: text_draw_1number 585.0 375.0 'SPEED1' 6@  // ~1~
-            end 
-                  
-            //ones digit with decimal point
-            gosub @TextDraw 
-            033F: set_text_draw_letter_width_height 2.0 8.0 
-        	03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 630.0 375.0 'SPEED' 5@  // 0~1~.         
-        else
-            1@ = 255 // integer values 
-            2@ = 165 // integer values 
-            3@ = 0 // integer values
-            
-            //tens digit
-            gosub @TextDraw 
-            033F: set_text_draw_letter_width_height 2.0 8.0 
-        	03E4: set_text_draw_align_right 1 
-            045A: text_draw_1number 540.0 375.0 'SPEED1' 6@  // ~1~
-            
+            end
+
             //ones digit with decimal point
             gosub @TextDraw
-            033F: set_text_draw_letter_width_height 2.0 8.0 
-            03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 585.0 375.0 'SPEED' 5@  // ~1~. 
+            033F: set_text_draw_letter_width_height 2.0 8.0
+        	03E4: set_text_draw_align_right 1
+            045A: text_draw_1number 630.0 375.0 'SPEED' 5@  // 0~1~.
+        else
+            1@ = 255 // integer values
+            2@ = 165 // integer values
+            3@ = 0 // integer values
 
-            //decimal digit            
-            gosub @TextDraw 
-            033F: set_text_draw_letter_width_height 2.0 8.0 
-        	03E4: set_text_draw_align_right 1 
-            045A: text_draw_1number 630.0 375.0 'SPEED1' 4@  // ~1~    
-            
+            //tens digit
+            gosub @TextDraw
+            033F: set_text_draw_letter_width_height 2.0 8.0
+        	03E4: set_text_draw_align_right 1
+            045A: text_draw_1number 540.0 375.0 'SPEED1' 6@  // ~1~
+
+            //ones digit with decimal point
+            gosub @TextDraw
+            033F: set_text_draw_letter_width_height 2.0 8.0
+            03E4: set_text_draw_align_right 1
+            045A: text_draw_1number 585.0 375.0 'SPEED' 5@  // ~1~.
+
+            //decimal digit
+            gosub @TextDraw
+            033F: set_text_draw_letter_width_height 2.0 8.0
+        	03E4: set_text_draw_align_right 1
+            045A: text_draw_1number 630.0 375.0 'SPEED1' 4@  // ~1~
+
         end
-    end  
+    end
    	if
 		00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS
 	then
-        //first hide all components to reset		
+        //first hide all components to reset
 		for 1@ = 10 to 29
 			3F11: set_car 0@ component "digitalspeedodigit" index 1@ visible 0
 		end
-		3F10: set_car 0@ component "digitalspeedodigit20bttf3" visible 0 
-        //now show the relevant digits		
+		3F10: set_car 0@ component "digitalspeedodigit20bttf3" visible 0
+        //now show the relevant digits
 		3F11: set_car 0@ component "digitalspeedodigit1" index 5@ visible 1
 		if
 		  	6@ == 0
-		then		    
-            if 
+		then
+            if
                 $TM_TYPE <= 3
             then
-                3F10: set_car 0@ component "digitalspeedodigit20" visible 1 
+                3F10: set_car 0@ component "digitalspeedodigit20" visible 1
             else
-                3F10: set_car 0@ component "digitalspeedodigit20bttf3" visible 1 
+                3F10: set_car 0@ component "digitalspeedodigit20bttf3" visible 1
             end
 		else
 			3F11: set_car 0@ component "digitalspeedodigit2" index 6@ visible 1
-		end		
+		end
 	end
 end

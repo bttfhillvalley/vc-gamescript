@@ -16,5 +16,5 @@ if
 then
   $TIME_DISP *= -1
   $TIME_DISP += 1
-end      
+end
 jump @DisplayStart

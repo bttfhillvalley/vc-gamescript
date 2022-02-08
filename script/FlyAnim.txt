@@ -1,69 +1,69 @@
 :FlyAnim
 if and
-  13@ >= 200000 // integer values 
-8185:   not car 0@ health >= 400 
-else_jump @FlyAnimSetup 
-02D4: car 0@ turn_off_engine 
+  13@ >= 200000 // integer values
+8185:   not car 0@ health >= 400
+else_jump @FlyAnimSetup
+02D4: car 0@ turn_off_engine
 
 :FlyAnimSetup
 4@ = Car.Angle(0@)
-11@ = 0.0 // floating-point values 
-0089: 6@ = $WHEELIN // floating-point values only 
-if 
-  $LANDING == 1 // integer values 
-else_jump @FlyAnimTrain 
-11@ = 90.0 // floating-point values 
-0089: 6@ = $WHEELOUT // floating-point values only 
+11@ = 0.0 // floating-point values
+0089: 6@ = $WHEELIN // floating-point values only
+if
+  $LANDING == 1 // integer values
+else_jump @FlyAnimTrain
+11@ = 90.0 // floating-point values
+0089: 6@ = $WHEELOUT // floating-point values only
 
 :FlyAnimTrain
-if 
-  $MODELANIMATION == #MAVERICK // integer values 
-else_jump @FlyAnimDelorean 
-03C1: $TRAIN = player $PLAYER_CHAR car 
-create_thread @TrainConversion 0@ 
-create_thread @TrainAnim 0@ 
-if 
-  $LANDING == 1 // integer values 
-else_jump @FlyAnimTrainTakeoff 
-$MIDDLEWING_X = -1.31 // floating-point values 
-$MIDDLEWING_Y = 4.159 // floating-point values 
-$MIDDLEWING_ANGLE1 = 0.0 // floating-point values 
-$MIDDLEWING_ANGLE2 = -10.3 // floating-point values 
-$MIDDLEWING_ANGLE3 = -25.2 // floating-point values 
-$BACKWING_ANGLE1 = -90.0 // floating-point values 
-$BACKWING_ANGLE2 = -72.0 // floating-point values 
-$BACKWING_ANGLE3 = -54.0 // floating-point values 
-$BACKWING_ANGLE4 = -36.0 // floating-point values 
-$BACKWING_ANGLE5 = -18.0 // floating-point values 
-$TOPWING_ANGLEX1 = -39.742 // floating-point values 
-$TOPWING_ANGLEZ1 = -28.663 // floating-point values 
-$TOPWING_ANGLEX2 = -26.495 // floating-point values 
-$TOPWING_ANGLEZ2 = -19.109 // floating-point values 
-$TOPWING_ANGLEX3 = -13.247 // floating-point values 
-$TOPWING_ANGLEZ3 = -9.554 // floating-point values 
-$MIDDLEWING_TIMER = 39.0 // floating-point values 
-$MIDDLEWING_ROTATE_BACK = 2 // integer values 
-jump @FlyAnimTrainBegin 
+if
+  $MODELANIMATION == #MAVERICK // integer values
+else_jump @FlyAnimDelorean
+03C1: $TRAIN = player $PLAYER_CHAR car
+create_thread @TrainConversion 0@
+create_thread @TrainAnim 0@
+if
+  $LANDING == 1 // integer values
+else_jump @FlyAnimTrainTakeoff
+$MIDDLEWING_X = -1.31 // floating-point values
+$MIDDLEWING_Y = 4.159 // floating-point values
+$MIDDLEWING_ANGLE1 = 0.0 // floating-point values
+$MIDDLEWING_ANGLE2 = -10.3 // floating-point values
+$MIDDLEWING_ANGLE3 = -25.2 // floating-point values
+$BACKWING_ANGLE1 = -90.0 // floating-point values
+$BACKWING_ANGLE2 = -72.0 // floating-point values
+$BACKWING_ANGLE3 = -54.0 // floating-point values
+$BACKWING_ANGLE4 = -36.0 // floating-point values
+$BACKWING_ANGLE5 = -18.0 // floating-point values
+$TOPWING_ANGLEX1 = -39.742 // floating-point values
+$TOPWING_ANGLEZ1 = -28.663 // floating-point values
+$TOPWING_ANGLEX2 = -26.495 // floating-point values
+$TOPWING_ANGLEZ2 = -19.109 // floating-point values
+$TOPWING_ANGLEX3 = -13.247 // floating-point values
+$TOPWING_ANGLEZ3 = -9.554 // floating-point values
+$MIDDLEWING_TIMER = 39.0 // floating-point values
+$MIDDLEWING_ROTATE_BACK = 2 // integer values
+jump @FlyAnimTrainBegin
 
 :FlyAnimTrainTakeoff
-$MIDDLEWING_X = -0.002 // floating-point values 
-$MIDDLEWING_Y = 5.685 // floating-point values 
-$MIDDLEWING_ANGLE1 = 9.5 // floating-point values 
-$MIDDLEWING_ANGLE2 = 9.5 // floating-point values 
-$MIDDLEWING_ANGLE3 = 9.5 // floating-point values 
-$BACKWING_ANGLE1 = 0.0 // floating-point values 
-$BACKWING_ANGLE2 = 0.0 // floating-point values 
-$BACKWING_ANGLE3 = 0.0 // floating-point values 
-$BACKWING_ANGLE4 = 0.0 // floating-point values 
-$BACKWING_ANGLE5 = 0.0 // floating-point values 
-$TOPWING_ANGLEX1 = 0.0 // floating-point values 
-$TOPWING_ANGLEZ1 = 0.0 // floating-point values 
-$TOPWING_ANGLEX2 = 0.0 // floating-point values 
-$TOPWING_ANGLEZ2 = 0.0 // floating-point values 
-$TOPWING_ANGLEX3 = 0.0 // floating-point values 
-$TOPWING_ANGLEZ3 = 0.0 // floating-point values 
-$MIDDLEWING_ROTATE_BACK = 0 // integer values 
-$MIDDLEWING_TIMER = 1.0 // floating-point values 
+$MIDDLEWING_X = -0.002 // floating-point values
+$MIDDLEWING_Y = 5.685 // floating-point values
+$MIDDLEWING_ANGLE1 = 9.5 // floating-point values
+$MIDDLEWING_ANGLE2 = 9.5 // floating-point values
+$MIDDLEWING_ANGLE3 = 9.5 // floating-point values
+$BACKWING_ANGLE1 = 0.0 // floating-point values
+$BACKWING_ANGLE2 = 0.0 // floating-point values
+$BACKWING_ANGLE3 = 0.0 // floating-point values
+$BACKWING_ANGLE4 = 0.0 // floating-point values
+$BACKWING_ANGLE5 = 0.0 // floating-point values
+$TOPWING_ANGLEX1 = 0.0 // floating-point values
+$TOPWING_ANGLEZ1 = 0.0 // floating-point values
+$TOPWING_ANGLEX2 = 0.0 // floating-point values
+$TOPWING_ANGLEZ2 = 0.0 // floating-point values
+$TOPWING_ANGLEX3 = 0.0 // floating-point values
+$TOPWING_ANGLEZ3 = 0.0 // floating-point values
+$MIDDLEWING_ROTATE_BACK = 0 // integer values
+$MIDDLEWING_TIMER = 1.0 // floating-point values
 
 :FlyAnimTrainBegin
 $LEFTWHEEL = Object.Create(#FJVT_HOVERWHEELS_L, 0.0, 0.0, 1000.0)
@@ -91,470 +91,470 @@ $LEFTTOPWING3 = Object.Create(#FJVT_TOPWING_3_L, 0.0, 0.0, 1000.0)
 $RIGHTTOPWING1 = Object.Create(#FJVT_TOPWING_1_R, 0.0, 0.0, 1000.0)
 $RIGHTTOPWING2 = Object.Create(#FJVT_TOPWING_2_R, 0.0, 0.0, 1000.0)
 $RIGHTTOPWING3 = Object.Create(#FJVT_TOPWING_3_R, 0.0, 0.0, 1000.0)
-jump @FlyAnimTrainStart 
+jump @FlyAnimTrainStart
 
 :FlyAnimTrainSetup
-wait 10 
+wait 10
 
 :FlyAnimTrainStart
-if 
-  $LANDING == 0 // integer values 
-else_jump @FlyAnimTrainAfterEffects 
-02E3: 4@ = car 0@ speed 
-4@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
-4@ += 0.2 // floating-point values 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 4@ -1.0 
-0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01 
-4@ += -3.4 // floating-point values 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 4@ -1.0 
-0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01 
-4@ += -3.7 // floating-point values 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 4@ -1.0 
-0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01 
+if
+  $LANDING == 0 // integer values
+else_jump @FlyAnimTrainAfterEffects
+02E3: 4@ = car 0@ speed
+4@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+4@ += 0.2 // floating-point values
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 4@ -1.0
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01
+4@ += -3.4 // floating-point values
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 4@ -1.0
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01
+4@ += -3.7 // floating-point values
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 4@ -1.0
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01
 
 :FlyAnimTrainAfterEffects
-gosub @ObjectAngle 
-02F7: 2@ = sinus 11@ // cosine swapped with sinus 
-2@ *= 0.378 // floating-point values (never used in VC or GTA 3) 
-2@ += 0.77 // floating-point values 
-02F6: 3@ = cosine 11@ // sinus swapped with cosine 
-3@ *= -0.378 // floating-point values (never used in VC or GTA 3) 
-3@ -= 0.632 // floating-point values 
-if 
-  11@ >= 90.0 // floating-point values (never used in VC or GTA 3) 
-else_jump @FlyAnimTrainConvert 
-0087: 2@ = 6@ // floating-point values only 
+gosub @ObjectAngle
+02F7: 2@ = sinus 11@ // cosine swapped with sinus
+2@ *= 0.378 // floating-point values (never used in VC or GTA 3)
+2@ += 0.77 // floating-point values
+02F6: 3@ = cosine 11@ // sinus swapped with cosine
+3@ *= -0.378 // floating-point values (never used in VC or GTA 3)
+3@ -= 0.632 // floating-point values
+if
+  11@ >= 90.0 // floating-point values (never used in VC or GTA 3)
+else_jump @FlyAnimTrainConvert
+0087: 2@ = 6@ // floating-point values only
 
 :FlyAnimTrainConvert
-0088: $RODX1 = 11@ // floating-point values only 
-0069: $RODX1 *= 11@ // floating-point values 
-$RODX1 *= -5.6947E-06 // floating-point values 
-0088: $RODX = 11@ // floating-point values only 
-$RODX *= -0.0002798973 // floating-point values 
-0059: $RODX += $RODX1 // floating-point values 
-$RODX += 0.1735065 // floating-point values 
-0069: $RODX *= 11@ // floating-point values 
-$RODX += -0.01543038 // floating-point values 
-0088: $RODZ1 = 11@ // floating-point values only 
-0069: $RODZ1 *= 11@ // floating-point values 
-$RODZ1 *= -6.4898E-06 // floating-point values 
-0088: $RODZ = 11@ // floating-point values only 
-$RODZ *= 0.001818237 // floating-point values 
-0059: $RODZ += $RODZ1 // floating-point values 
-$RODZ += 0.002552664 // floating-point values 
-0069: $RODZ *= 11@ // floating-point values 
-$RODZ += 0.02524534 // floating-point values 
-0088: $RODOFFSET = 6@ // floating-point values only 
-$RODOFFSET -= 0.77 // floating-point values 
-$RODOFFSET *= -14.62 // floating-point values 
-0059: $RODZ += $RODOFFSET // floating-point values 
-11@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-6@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-6@ += 0.77 // floating-point values 
-0088: $X_POS_TT = 6@ // floating-point values only 
-$Y_POS_TT = 0.0 // floating-point values 
-$Z_POS_TT = 0.0 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $LEFTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0453: object $LEFTSTRUT set_rotation 7@ 8@ 4@ 
-6@ -= 0.77 // floating-point values 
-005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3) 
-0088: $X_POS_TT = 6@ // floating-point values only 
-$Y_POS_TT = 2.677 // floating-point values 
-$Z_POS_TT = -0.632 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $LEFTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-035C: place_object $LEFTWHEEL relative_to_car 0@ offset 6@ 2.677 -0.632 
-0453: object $LEFTWHEEL set_rotation 7@ 8@ 4@ 
-2@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-0088: $X_POS_TT = 2@ // floating-point values only 
-$Y_POS_TT = 2.305 // floating-point values 
-0088: $Z_POS_TT = 3@ // floating-point values only 
-gosub @TrainConversionOffset 
-01BC: put_object $LEFTROD at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-005D: 7@ += $RODX // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $RODZ // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTROD set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $RODX // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $RODZ // floating-point values (never used in VC or GTA 3) 
-0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3) 
-2@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-$X_POS_TT = -1.155 // floating-point values 
-$Y_POS_TT = 0.0 // floating-point values 
-$Z_POS_TT = 0.3 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $LEFTWINGDOOR at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0087: 1@ = 6@ // floating-point values only 
-1@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-1@ -= 0.77 // floating-point values 
-1@ *= 231.87 // floating-point values (never used in VC or GTA 3) 
-005B: 8@ += 1@ // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTWINGDOOR set_rotation 7@ 8@ 4@ 
-0063: 8@ -= 1@ // floating-point values (never used in VC or GTA 3) 
-11@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-6@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-6@ -= 0.77 // floating-point values 
-0088: $X_POS_TT = 6@ // floating-point values only 
-$Y_POS_TT = 0.0 // floating-point values 
-$Z_POS_TT = 0.0 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $RIGHTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-035C: place_object $RIGHTSTRUT relative_to_car 0@ offset 6@ 0.0 0.0 
-0453: object $RIGHTSTRUT set_rotation 7@ 8@ 4@ 
-6@ += 0.77 // floating-point values 
-005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3) 
-0088: $X_POS_TT = 6@ // floating-point values only 
-$Y_POS_TT = 2.677 // floating-point values 
-$Z_POS_TT = -0.632 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $RIGHTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0453: object $RIGHTWHEEL set_rotation 7@ 8@ 4@ 
-0088: $X_POS_TT = 2@ // floating-point values only 
-$Y_POS_TT = 2.305 // floating-point values 
-0088: $Z_POS_TT = 3@ // floating-point values only 
-gosub @TrainConversionOffset 
-01BC: put_object $RIGHTROD at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-005D: 7@ += $RODX // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $RODZ // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTROD set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $RODX // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $RODZ // floating-point values (never used in VC or GTA 3) 
-0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3) 
-$X_POS_TT = 1.155 // floating-point values 
-$Y_POS_TT = 0.0 // floating-point values 
-$Z_POS_TT = 0.3 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $RIGHTWINGDOOR at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0063: 8@ -= 1@ // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTWINGDOOR set_rotation 7@ 8@ 4@ 
-005B: 8@ += 1@ // floating-point values (never used in VC or GTA 3) 
-0086: $X_POS_TT = $MIDDLEWING_X // floating-point values only 
-0086: $Y_POS_TT = $MIDDLEWING_Y // floating-point values only 
-$Z_POS_TT = 0.0 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $LEFTMIDDLEWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $LEFTMIDDLEWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $LEFTMIDDLEWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-005D: 4@ += $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTMIDDLEWING1 set_rotation 7@ 8@ 4@ 
-0065: 4@ -= $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTMIDDLEWING2 set_rotation 7@ 8@ 4@ 
-0065: 4@ -= $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTMIDDLEWING3 set_rotation 7@ 8@ 4@ 
-0065: 4@ -= $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3) 
-$MIDDLEWING_X *= -1.0 // floating-point values 
-0086: $X_POS_TT = $MIDDLEWING_X // floating-point values only 
-0086: $Y_POS_TT = $MIDDLEWING_Y // floating-point values only 
-$Z_POS_TT = 0.0 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $RIGHTMIDDLEWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $RIGHTMIDDLEWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $RIGHTMIDDLEWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0065: 4@ -= $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTMIDDLEWING1 set_rotation 7@ 8@ 4@ 
-005D: 4@ += $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTMIDDLEWING2 set_rotation 7@ 8@ 4@ 
-005D: 4@ += $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTMIDDLEWING3 set_rotation 7@ 8@ 4@ 
-005D: 4@ += $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3) 
-$MIDDLEWING_X *= -1.0 // floating-point values 
-$X_POS_TT = 0.0 // floating-point values 
-$Y_POS_TT = -8.607 // floating-point values 
-$Z_POS_TT = 1.658 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $BACKWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $BACKWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $BACKWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $BACKWING4 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $BACKWING5 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-005D: 7@ += $BACKWING_ANGLE5 // floating-point values (never used in VC or GTA 3) 
-0453: object $BACKWING1 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $BACKWING_ANGLE5 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $BACKWING_ANGLE4 // floating-point values (never used in VC or GTA 3) 
-0453: object $BACKWING2 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $BACKWING_ANGLE4 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $BACKWING_ANGLE3 // floating-point values (never used in VC or GTA 3) 
-0453: object $BACKWING3 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $BACKWING_ANGLE3 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $BACKWING_ANGLE2 // floating-point values (never used in VC or GTA 3) 
-0453: object $BACKWING4 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $BACKWING_ANGLE2 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $BACKWING_ANGLE1 // floating-point values (never used in VC or GTA 3) 
-0453: object $BACKWING5 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $BACKWING_ANGLE1 // floating-point values (never used in VC or GTA 3) 
-$X_POS_TT = -1.179 // floating-point values 
-$Y_POS_TT = 0.424 // floating-point values 
-$Z_POS_TT = 2.393 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $LEFTTOPWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $LEFTTOPWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $LEFTTOPWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-8@ -= 35.8 // floating-point values 
-005D: 7@ += $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTTOPWING1 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTTOPWING2 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTTOPWING3 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3) 
-8@ += 35.8 // floating-point values 
-$X_POS_TT = 1.179 // floating-point values 
-$Y_POS_TT = 0.424 // floating-point values 
-$Z_POS_TT = 2.393 // floating-point values 
-gosub @TrainConversionOffset 
-01BC: put_object $RIGHTTOPWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $RIGHTTOPWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $RIGHTTOPWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-8@ += 35.8 // floating-point values 
-005D: 7@ += $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTTOPWING1 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTTOPWING2 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3) 
-005D: 7@ += $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3) 
-0065: 4@ -= $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTTOPWING3 set_rotation 7@ 8@ 4@ 
-0065: 7@ -= $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3) 
-005D: 4@ += $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3) 
-8@ -= 35.8 // floating-point values 
-if 
-  $LANDING == 0 // integer values 
-else_jump @FlyAnimTrainLandingWing 
-if 
-   not 11@ >= 90.0 // floating-point values (never used in VC or GTA 3) 
-else_jump @FlyAnimTrainTakeoffStrut 
-11@ += 2.0 // floating-point values 
-jump @FlyAnimTrainSetup 
+0088: $RODX1 = 11@ // floating-point values only
+0069: $RODX1 *= 11@ // floating-point values
+$RODX1 *= -5.6947E-06 // floating-point values
+0088: $RODX = 11@ // floating-point values only
+$RODX *= -0.0002798973 // floating-point values
+0059: $RODX += $RODX1 // floating-point values
+$RODX += 0.1735065 // floating-point values
+0069: $RODX *= 11@ // floating-point values
+$RODX += -0.01543038 // floating-point values
+0088: $RODZ1 = 11@ // floating-point values only
+0069: $RODZ1 *= 11@ // floating-point values
+$RODZ1 *= -6.4898E-06 // floating-point values
+0088: $RODZ = 11@ // floating-point values only
+$RODZ *= 0.001818237 // floating-point values
+0059: $RODZ += $RODZ1 // floating-point values
+$RODZ += 0.002552664 // floating-point values
+0069: $RODZ *= 11@ // floating-point values
+$RODZ += 0.02524534 // floating-point values
+0088: $RODOFFSET = 6@ // floating-point values only
+$RODOFFSET -= 0.77 // floating-point values
+$RODOFFSET *= -14.62 // floating-point values
+0059: $RODZ += $RODOFFSET // floating-point values
+11@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+6@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+6@ += 0.77 // floating-point values
+0088: $X_POS_TT = 6@ // floating-point values only
+$Y_POS_TT = 0.0 // floating-point values
+$Z_POS_TT = 0.0 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $LEFTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT
+0453: object $LEFTSTRUT set_rotation 7@ 8@ 4@
+6@ -= 0.77 // floating-point values
+005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3)
+0088: $X_POS_TT = 6@ // floating-point values only
+$Y_POS_TT = 2.677 // floating-point values
+$Z_POS_TT = -0.632 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $LEFTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT
+035C: place_object $LEFTWHEEL relative_to_car 0@ offset 6@ 2.677 -0.632
+0453: object $LEFTWHEEL set_rotation 7@ 8@ 4@
+2@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+0088: $X_POS_TT = 2@ // floating-point values only
+$Y_POS_TT = 2.305 // floating-point values
+0088: $Z_POS_TT = 3@ // floating-point values only
+gosub @TrainConversionOffset
+01BC: put_object $LEFTROD at $X_POS_TT $Y_POS_TT $Z_POS_TT
+005D: 7@ += $RODX // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $RODZ // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTROD set_rotation 7@ 8@ 4@
+0065: 7@ -= $RODX // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $RODZ // floating-point values (never used in VC or GTA 3)
+0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3)
+2@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+$X_POS_TT = -1.155 // floating-point values
+$Y_POS_TT = 0.0 // floating-point values
+$Z_POS_TT = 0.3 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $LEFTWINGDOOR at $X_POS_TT $Y_POS_TT $Z_POS_TT
+0087: 1@ = 6@ // floating-point values only
+1@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+1@ -= 0.77 // floating-point values
+1@ *= 231.87 // floating-point values (never used in VC or GTA 3)
+005B: 8@ += 1@ // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTWINGDOOR set_rotation 7@ 8@ 4@
+0063: 8@ -= 1@ // floating-point values (never used in VC or GTA 3)
+11@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+6@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+6@ -= 0.77 // floating-point values
+0088: $X_POS_TT = 6@ // floating-point values only
+$Y_POS_TT = 0.0 // floating-point values
+$Z_POS_TT = 0.0 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $RIGHTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT
+035C: place_object $RIGHTSTRUT relative_to_car 0@ offset 6@ 0.0 0.0
+0453: object $RIGHTSTRUT set_rotation 7@ 8@ 4@
+6@ += 0.77 // floating-point values
+005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3)
+0088: $X_POS_TT = 6@ // floating-point values only
+$Y_POS_TT = 2.677 // floating-point values
+$Z_POS_TT = -0.632 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $RIGHTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT
+0453: object $RIGHTWHEEL set_rotation 7@ 8@ 4@
+0088: $X_POS_TT = 2@ // floating-point values only
+$Y_POS_TT = 2.305 // floating-point values
+0088: $Z_POS_TT = 3@ // floating-point values only
+gosub @TrainConversionOffset
+01BC: put_object $RIGHTROD at $X_POS_TT $Y_POS_TT $Z_POS_TT
+005D: 7@ += $RODX // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $RODZ // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTROD set_rotation 7@ 8@ 4@
+0065: 7@ -= $RODX // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $RODZ // floating-point values (never used in VC or GTA 3)
+0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3)
+$X_POS_TT = 1.155 // floating-point values
+$Y_POS_TT = 0.0 // floating-point values
+$Z_POS_TT = 0.3 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $RIGHTWINGDOOR at $X_POS_TT $Y_POS_TT $Z_POS_TT
+0063: 8@ -= 1@ // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTWINGDOOR set_rotation 7@ 8@ 4@
+005B: 8@ += 1@ // floating-point values (never used in VC or GTA 3)
+0086: $X_POS_TT = $MIDDLEWING_X // floating-point values only
+0086: $Y_POS_TT = $MIDDLEWING_Y // floating-point values only
+$Z_POS_TT = 0.0 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $LEFTMIDDLEWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $LEFTMIDDLEWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $LEFTMIDDLEWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+005D: 4@ += $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTMIDDLEWING1 set_rotation 7@ 8@ 4@
+0065: 4@ -= $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTMIDDLEWING2 set_rotation 7@ 8@ 4@
+0065: 4@ -= $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTMIDDLEWING3 set_rotation 7@ 8@ 4@
+0065: 4@ -= $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3)
+$MIDDLEWING_X *= -1.0 // floating-point values
+0086: $X_POS_TT = $MIDDLEWING_X // floating-point values only
+0086: $Y_POS_TT = $MIDDLEWING_Y // floating-point values only
+$Z_POS_TT = 0.0 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $RIGHTMIDDLEWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $RIGHTMIDDLEWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $RIGHTMIDDLEWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+0065: 4@ -= $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTMIDDLEWING1 set_rotation 7@ 8@ 4@
+005D: 4@ += $MIDDLEWING_ANGLE1 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTMIDDLEWING2 set_rotation 7@ 8@ 4@
+005D: 4@ += $MIDDLEWING_ANGLE2 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTMIDDLEWING3 set_rotation 7@ 8@ 4@
+005D: 4@ += $MIDDLEWING_ANGLE3 // floating-point values (never used in VC or GTA 3)
+$MIDDLEWING_X *= -1.0 // floating-point values
+$X_POS_TT = 0.0 // floating-point values
+$Y_POS_TT = -8.607 // floating-point values
+$Z_POS_TT = 1.658 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $BACKWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $BACKWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $BACKWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $BACKWING4 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $BACKWING5 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+005D: 7@ += $BACKWING_ANGLE5 // floating-point values (never used in VC or GTA 3)
+0453: object $BACKWING1 set_rotation 7@ 8@ 4@
+0065: 7@ -= $BACKWING_ANGLE5 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $BACKWING_ANGLE4 // floating-point values (never used in VC or GTA 3)
+0453: object $BACKWING2 set_rotation 7@ 8@ 4@
+0065: 7@ -= $BACKWING_ANGLE4 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $BACKWING_ANGLE3 // floating-point values (never used in VC or GTA 3)
+0453: object $BACKWING3 set_rotation 7@ 8@ 4@
+0065: 7@ -= $BACKWING_ANGLE3 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $BACKWING_ANGLE2 // floating-point values (never used in VC or GTA 3)
+0453: object $BACKWING4 set_rotation 7@ 8@ 4@
+0065: 7@ -= $BACKWING_ANGLE2 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $BACKWING_ANGLE1 // floating-point values (never used in VC or GTA 3)
+0453: object $BACKWING5 set_rotation 7@ 8@ 4@
+0065: 7@ -= $BACKWING_ANGLE1 // floating-point values (never used in VC or GTA 3)
+$X_POS_TT = -1.179 // floating-point values
+$Y_POS_TT = 0.424 // floating-point values
+$Z_POS_TT = 2.393 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $LEFTTOPWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $LEFTTOPWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $LEFTTOPWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+8@ -= 35.8 // floating-point values
+005D: 7@ += $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTTOPWING1 set_rotation 7@ 8@ 4@
+0065: 7@ -= $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTTOPWING2 set_rotation 7@ 8@ 4@
+0065: 7@ -= $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTTOPWING3 set_rotation 7@ 8@ 4@
+0065: 7@ -= $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3)
+8@ += 35.8 // floating-point values
+$X_POS_TT = 1.179 // floating-point values
+$Y_POS_TT = 0.424 // floating-point values
+$Z_POS_TT = 2.393 // floating-point values
+gosub @TrainConversionOffset
+01BC: put_object $RIGHTTOPWING1 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $RIGHTTOPWING2 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $RIGHTTOPWING3 at $X_POS_TT $Y_POS_TT $Z_POS_TT
+8@ += 35.8 // floating-point values
+005D: 7@ += $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTTOPWING1 set_rotation 7@ 8@ 4@
+0065: 7@ -= $TOPWING_ANGLEX1 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $TOPWING_ANGLEZ1 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTTOPWING2 set_rotation 7@ 8@ 4@
+0065: 7@ -= $TOPWING_ANGLEX2 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $TOPWING_ANGLEZ2 // floating-point values (never used in VC or GTA 3)
+005D: 7@ += $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3)
+0065: 4@ -= $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTTOPWING3 set_rotation 7@ 8@ 4@
+0065: 7@ -= $TOPWING_ANGLEX3 // floating-point values (never used in VC or GTA 3)
+005D: 4@ += $TOPWING_ANGLEZ3 // floating-point values (never used in VC or GTA 3)
+8@ -= 35.8 // floating-point values
+if
+  $LANDING == 0 // integer values
+else_jump @FlyAnimTrainLandingWing
+if
+   not 11@ >= 90.0 // floating-point values (never used in VC or GTA 3)
+else_jump @FlyAnimTrainTakeoffStrut
+11@ += 2.0 // floating-point values
+jump @FlyAnimTrainSetup
 
 :FlyAnimTrainTakeoffStrut
-if 
-8037:   not  6@ >= $WHEELOUT // floating-point values (never used in VC or GTA 3) 
-else_jump @FlyAnimTrainTakeoffWing 
-6@ += 0.02 // floating-point values 
-jump @FlyAnimTrainTakeoffBackWing 
+if
+8037:   not  6@ >= $WHEELOUT // floating-point values (never used in VC or GTA 3)
+else_jump @FlyAnimTrainTakeoffWing
+6@ += 0.02 // floating-point values
+jump @FlyAnimTrainTakeoffBackWing
 
 :FlyAnimTrainTakeoffWing
-if 
-  $MIDDLEWING_ROTATE_BACK == 0 // integer values 
-else_jump @FlyAnimTrainTakeoffWingTimer 
-if 
-  $MIDDLEWING_ANGLE1 > -17.0 // floating-point values 
-else_jump @FlyAnimTrainTakeoffWingA 
-$MIDDLEWING_ANGLE1 += -1.06 // floating-point values 
-$MIDDLEWING_ANGLE2 += -1.06 // floating-point values 
-$MIDDLEWING_ANGLE3 += -1.06 // floating-point values 
-if 
-   not $MIDDLEWING_ANGLE1 > -6.4 // floating-point values 
-else_jump @FlyAnimTrainTakeoffBackWing 
-$MIDDLEWING_Y += -0.0115 // floating-point values 
-jump @FlyAnimTrainTakeoffBackWing 
+if
+  $MIDDLEWING_ROTATE_BACK == 0 // integer values
+else_jump @FlyAnimTrainTakeoffWingTimer
+if
+  $MIDDLEWING_ANGLE1 > -17.0 // floating-point values
+else_jump @FlyAnimTrainTakeoffWingA
+$MIDDLEWING_ANGLE1 += -1.06 // floating-point values
+$MIDDLEWING_ANGLE2 += -1.06 // floating-point values
+$MIDDLEWING_ANGLE3 += -1.06 // floating-point values
+if
+   not $MIDDLEWING_ANGLE1 > -6.4 // floating-point values
+else_jump @FlyAnimTrainTakeoffBackWing
+$MIDDLEWING_Y += -0.0115 // floating-point values
+jump @FlyAnimTrainTakeoffBackWing
 
 :FlyAnimTrainTakeoffWingA
-if 
-  $MIDDLEWING_Y > 5.21 // floating-point values 
-else_jump @FlyAnimTrainTakeoffWingB 
-$MIDDLEWING_Y += -0.036 // floating-point values 
-$MIDDLEWING_ANGLE1 += -0.3665 // floating-point values 
-$MIDDLEWING_ANGLE2 += -0.3665 // floating-point values 
-$MIDDLEWING_ANGLE3 += -0.3665 // floating-point values 
-jump @FlyAnimTrainTakeoffBackWing 
+if
+  $MIDDLEWING_Y > 5.21 // floating-point values
+else_jump @FlyAnimTrainTakeoffWingB
+$MIDDLEWING_Y += -0.036 // floating-point values
+$MIDDLEWING_ANGLE1 += -0.3665 // floating-point values
+$MIDDLEWING_ANGLE2 += -0.3665 // floating-point values
+$MIDDLEWING_ANGLE3 += -0.3665 // floating-point values
+jump @FlyAnimTrainTakeoffBackWing
 
 :FlyAnimTrainTakeoffWingB
-if 
-  $MIDDLEWING_Y > 4.92 // floating-point values 
-else_jump @FlyAnimTrainTakeoffWingDone 
-$MIDDLEWING_Y += -0.0725 // floating-point values 
-0086: $MIDDLEWING_X = $MIDDLEWING_Y // floating-point values only 
-$MIDDLEWING_X *= -1.494135 // floating-point values 
-$MIDDLEWING_X += 15.61315 // floating-point values 
-0069: $MIDDLEWING_X *= $MIDDLEWING_Y // floating-point values 
-$MIDDLEWING_X += -40.78827 // floating-point values 
-$MIDDLEWING_ANGLE1 += -0.0375 // floating-point values 
-$MIDDLEWING_ANGLE2 += -0.0375 // floating-point values 
-$MIDDLEWING_ANGLE3 += -0.0375 // floating-point values 
-jump @FlyAnimTrainTakeoffBackWing 
+if
+  $MIDDLEWING_Y > 4.92 // floating-point values
+else_jump @FlyAnimTrainTakeoffWingDone
+$MIDDLEWING_Y += -0.0725 // floating-point values
+0086: $MIDDLEWING_X = $MIDDLEWING_Y // floating-point values only
+$MIDDLEWING_X *= -1.494135 // floating-point values
+$MIDDLEWING_X += 15.61315 // floating-point values
+0069: $MIDDLEWING_X *= $MIDDLEWING_Y // floating-point values
+$MIDDLEWING_X += -40.78827 // floating-point values
+$MIDDLEWING_ANGLE1 += -0.0375 // floating-point values
+$MIDDLEWING_ANGLE2 += -0.0375 // floating-point values
+$MIDDLEWING_ANGLE3 += -0.0375 // floating-point values
+jump @FlyAnimTrainTakeoffBackWing
 
 :FlyAnimTrainTakeoffWingDone
-$MIDDLEWING_ROTATE_BACK = 1 // integer values 
+$MIDDLEWING_ROTATE_BACK = 1 // integer values
 
 :FlyAnimTrainTakeoffWingTimer
-if 
-   not $MIDDLEWING_TIMER > 39.0 // floating-point values 
-else_jump @FlyAnimTrainTakeoffWingAngle 
-gosub @FlyAnimTrainMiddleWing 
-$MIDDLEWING_TIMER += 2.0 // floating-point values 
-jump @FlyAnimTrainTakeoffBackWing 
+if
+   not $MIDDLEWING_TIMER > 39.0 // floating-point values
+else_jump @FlyAnimTrainTakeoffWingAngle
+gosub @FlyAnimTrainMiddleWing
+$MIDDLEWING_TIMER += 2.0 // floating-point values
+jump @FlyAnimTrainTakeoffBackWing
 
 :FlyAnimTrainTakeoffWingAngle
-if 
-  $MIDDLEWING_ANGLE3 > -25.2 // floating-point values 
-else_jump @FlyAnimTrainLandingCheck 
-$MIDDLEWING_ANGLE2 += -0.515 // floating-point values 
-$MIDDLEWING_ANGLE3 += -1.26 // floating-point values 
-jump @FlyAnimTrainTakeoffBackWing 
+if
+  $MIDDLEWING_ANGLE3 > -25.2 // floating-point values
+else_jump @FlyAnimTrainLandingCheck
+$MIDDLEWING_ANGLE2 += -0.515 // floating-point values
+$MIDDLEWING_ANGLE3 += -1.26 // floating-point values
+jump @FlyAnimTrainTakeoffBackWing
 
 :FlyAnimTrainTakeoffBackWing
-if 
-  $BACKWING_ANGLE1 > -90.0 // floating-point values 
-else_jump @FlyAnimTrainTakeoffTopWing 
-$BACKWING_ANGLE1 += -1.8 // floating-point values 
-$BACKWING_ANGLE2 += -1.44 // floating-point values 
-$BACKWING_ANGLE3 += -1.08 // floating-point values 
-$BACKWING_ANGLE4 += -0.72 // floating-point values 
-$BACKWING_ANGLE5 += -0.36 // floating-point values 
-jump @FlyAnimTrainTakeoffTopWing 
+if
+  $BACKWING_ANGLE1 > -90.0 // floating-point values
+else_jump @FlyAnimTrainTakeoffTopWing
+$BACKWING_ANGLE1 += -1.8 // floating-point values
+$BACKWING_ANGLE2 += -1.44 // floating-point values
+$BACKWING_ANGLE3 += -1.08 // floating-point values
+$BACKWING_ANGLE4 += -0.72 // floating-point values
+$BACKWING_ANGLE5 += -0.36 // floating-point values
+jump @FlyAnimTrainTakeoffTopWing
 
 :FlyAnimTrainTakeoffTopWing
-if 
-  $TOPWING_ANGLEX1 > -39.742 // floating-point values 
-else_jump @FlyAnimTrainSetup 
-$TOPWING_ANGLEX1 += -0.75484 // floating-point values 
-$TOPWING_ANGLEZ1 += -0.57326 // floating-point values 
-$TOPWING_ANGLEX2 += -0.5299 // floating-point values 
-$TOPWING_ANGLEZ2 += -0.38218 // floating-point values 
-$TOPWING_ANGLEX3 += -0.26494 // floating-point values 
-$TOPWING_ANGLEZ3 += -0.19108 // floating-point values 
-jump @FlyAnimTrainSetup 
+if
+  $TOPWING_ANGLEX1 > -39.742 // floating-point values
+else_jump @FlyAnimTrainSetup
+$TOPWING_ANGLEX1 += -0.75484 // floating-point values
+$TOPWING_ANGLEZ1 += -0.57326 // floating-point values
+$TOPWING_ANGLEX2 += -0.5299 // floating-point values
+$TOPWING_ANGLEZ2 += -0.38218 // floating-point values
+$TOPWING_ANGLEX3 += -0.26494 // floating-point values
+$TOPWING_ANGLEZ3 += -0.19108 // floating-point values
+jump @FlyAnimTrainSetup
 
 :FlyAnimTrainLandingWing
-if 
-  $MIDDLEWING_ROTATE_BACK == 2 // integer values 
-else_jump @FlyAnimTrainLandingWingB 
-if 
-   not $MIDDLEWING_ANGLE3 >= 0.0 // floating-point values 
-else_jump @FlyAnimTrainLandingWingA 
-$MIDDLEWING_ANGLE2 += 0.515 // floating-point values 
-$MIDDLEWING_ANGLE3 += 1.26 // floating-point values 
-jump @FlyAnimTrainLandingBackWing 
+if
+  $MIDDLEWING_ROTATE_BACK == 2 // integer values
+else_jump @FlyAnimTrainLandingWingB
+if
+   not $MIDDLEWING_ANGLE3 >= 0.0 // floating-point values
+else_jump @FlyAnimTrainLandingWingA
+$MIDDLEWING_ANGLE2 += 0.515 // floating-point values
+$MIDDLEWING_ANGLE3 += 1.26 // floating-point values
+jump @FlyAnimTrainLandingBackWing
 
 :FlyAnimTrainLandingWingA
-$MIDDLEWING_ROTATE_BACK = 1 // integer values 
+$MIDDLEWING_ROTATE_BACK = 1 // integer values
 
 :FlyAnimTrainLandingWingB
-if 
-  $MIDDLEWING_ROTATE_BACK == 1 // integer values 
-else_jump @FlyAnimTrainLandingWingD 
-if 
-  $MIDDLEWING_TIMER >= 1.0 // floating-point values 
-else_jump @FlyAnimTrainLandingWingC 
-gosub @FlyAnimTrainMiddleWing 
-$MIDDLEWING_TIMER += -2.0 // floating-point values 
-jump @FlyAnimTrainLandingBackWing 
+if
+  $MIDDLEWING_ROTATE_BACK == 1 // integer values
+else_jump @FlyAnimTrainLandingWingD
+if
+  $MIDDLEWING_TIMER >= 1.0 // floating-point values
+else_jump @FlyAnimTrainLandingWingC
+gosub @FlyAnimTrainMiddleWing
+$MIDDLEWING_TIMER += -2.0 // floating-point values
+jump @FlyAnimTrainLandingBackWing
 
 :FlyAnimTrainLandingWingC
-$MIDDLEWING_ROTATE_BACK = 0 // integer values 
+$MIDDLEWING_ROTATE_BACK = 0 // integer values
 
 :FlyAnimTrainLandingWingD
-if 
-   not $MIDDLEWING_Y >= 5.21 // floating-point values 
-else_jump @FlyAnimTrainLandingWingE 
-$MIDDLEWING_Y += 0.0725 // floating-point values 
-0086: $MIDDLEWING_X = $MIDDLEWING_Y // floating-point values only 
-$MIDDLEWING_X *= -1.494135 // floating-point values 
-$MIDDLEWING_X += 15.61315 // floating-point values 
-0069: $MIDDLEWING_X *= $MIDDLEWING_Y // floating-point values 
-$MIDDLEWING_X += -40.78827 // floating-point values 
-$MIDDLEWING_ANGLE1 += 0.0375 // floating-point values 
-$MIDDLEWING_ANGLE2 += 0.0375 // floating-point values 
-$MIDDLEWING_ANGLE3 += 0.0375 // floating-point values 
-jump @FlyAnimTrainLandingBackWing 
+if
+   not $MIDDLEWING_Y >= 5.21 // floating-point values
+else_jump @FlyAnimTrainLandingWingE
+$MIDDLEWING_Y += 0.0725 // floating-point values
+0086: $MIDDLEWING_X = $MIDDLEWING_Y // floating-point values only
+$MIDDLEWING_X *= -1.494135 // floating-point values
+$MIDDLEWING_X += 15.61315 // floating-point values
+0069: $MIDDLEWING_X *= $MIDDLEWING_Y // floating-point values
+$MIDDLEWING_X += -40.78827 // floating-point values
+$MIDDLEWING_ANGLE1 += 0.0375 // floating-point values
+$MIDDLEWING_ANGLE2 += 0.0375 // floating-point values
+$MIDDLEWING_ANGLE3 += 0.0375 // floating-point values
+jump @FlyAnimTrainLandingBackWing
 
 :FlyAnimTrainLandingWingE
-if 
-   not $MIDDLEWING_Y >= 5.57 // floating-point values 
-else_jump @FlyAnimTrainLandingWingF 
-$MIDDLEWING_Y += 0.036 // floating-point values 
-$MIDDLEWING_ANGLE1 += 0.3665 // floating-point values 
-$MIDDLEWING_ANGLE2 += 0.3665 // floating-point values 
-$MIDDLEWING_ANGLE3 += 0.3665 // floating-point values 
-jump @FlyAnimTrainLandingBackWing 
+if
+   not $MIDDLEWING_Y >= 5.57 // floating-point values
+else_jump @FlyAnimTrainLandingWingF
+$MIDDLEWING_Y += 0.036 // floating-point values
+$MIDDLEWING_ANGLE1 += 0.3665 // floating-point values
+$MIDDLEWING_ANGLE2 += 0.3665 // floating-point values
+$MIDDLEWING_ANGLE3 += 0.3665 // floating-point values
+jump @FlyAnimTrainLandingBackWing
 
 :FlyAnimTrainLandingWingF
-if 
-   not $MIDDLEWING_ANGLE1 >= 9.5 // floating-point values 
-else_jump @FlyAnimTrainLandingBackStrut 
-$MIDDLEWING_ANGLE1 += 1.06 // floating-point values 
-$MIDDLEWING_ANGLE2 += 1.06 // floating-point values 
-$MIDDLEWING_ANGLE3 += 1.06 // floating-point values 
-if 
-   not $MIDDLEWING_ANGLE1 > -6.4 // floating-point values 
-else_jump @FlyAnimTrainLandingBackWing 
-$MIDDLEWING_Y += 0.0115 // floating-point values 
-jump @FlyAnimTrainLandingBackWing 
+if
+   not $MIDDLEWING_ANGLE1 >= 9.5 // floating-point values
+else_jump @FlyAnimTrainLandingBackStrut
+$MIDDLEWING_ANGLE1 += 1.06 // floating-point values
+$MIDDLEWING_ANGLE2 += 1.06 // floating-point values
+$MIDDLEWING_ANGLE3 += 1.06 // floating-point values
+if
+   not $MIDDLEWING_ANGLE1 > -6.4 // floating-point values
+else_jump @FlyAnimTrainLandingBackWing
+$MIDDLEWING_Y += 0.0115 // floating-point values
+jump @FlyAnimTrainLandingBackWing
 
 :FlyAnimTrainLandingBackWing
-if 
-   not $BACKWING_ANGLE1 >= 0.0 // floating-point values 
-else_jump @FlyAnimTrainLandingBackTopWing 
-$BACKWING_ANGLE1 += 1.8 // floating-point values 
-$BACKWING_ANGLE2 += 1.44 // floating-point values 
-$BACKWING_ANGLE3 += 1.08 // floating-point values 
-$BACKWING_ANGLE4 += 0.72 // floating-point values 
-$BACKWING_ANGLE5 += 0.36 // floating-point values 
-jump @FlyAnimTrainLandingBackTopWing 
+if
+   not $BACKWING_ANGLE1 >= 0.0 // floating-point values
+else_jump @FlyAnimTrainLandingBackTopWing
+$BACKWING_ANGLE1 += 1.8 // floating-point values
+$BACKWING_ANGLE2 += 1.44 // floating-point values
+$BACKWING_ANGLE3 += 1.08 // floating-point values
+$BACKWING_ANGLE4 += 0.72 // floating-point values
+$BACKWING_ANGLE5 += 0.36 // floating-point values
+jump @FlyAnimTrainLandingBackTopWing
 
 :FlyAnimTrainLandingBackTopWing
-if 
-   not $TOPWING_ANGLEX1 >= 0.0 // floating-point values 
-else_jump @FlyAnimTrainSetup 
-$TOPWING_ANGLEX1 += 0.75484 // floating-point values 
-$TOPWING_ANGLEZ1 += 0.57326 // floating-point values 
-$TOPWING_ANGLEX2 += 0.5299 // floating-point values 
-$TOPWING_ANGLEZ2 += 0.38218 // floating-point values 
-$TOPWING_ANGLEX3 += 0.26494 // floating-point values 
-$TOPWING_ANGLEZ3 += 0.19108 // floating-point values 
-jump @FlyAnimTrainSetup 
+if
+   not $TOPWING_ANGLEX1 >= 0.0 // floating-point values
+else_jump @FlyAnimTrainSetup
+$TOPWING_ANGLEX1 += 0.75484 // floating-point values
+$TOPWING_ANGLEZ1 += 0.57326 // floating-point values
+$TOPWING_ANGLEX2 += 0.5299 // floating-point values
+$TOPWING_ANGLEZ2 += 0.38218 // floating-point values
+$TOPWING_ANGLEX3 += 0.26494 // floating-point values
+$TOPWING_ANGLEZ3 += 0.19108 // floating-point values
+jump @FlyAnimTrainSetup
 
 :FlyAnimTrainLandingBackStrut
-if 
-0027:   6@ > $WHEELIN // floating-point values only 
-else_jump @FlyAnimTrainLandingStep 
-6@ += -0.02 // floating-point values 
-jump @FlyAnimTrainSetup 
+if
+0027:   6@ > $WHEELIN // floating-point values only
+else_jump @FlyAnimTrainLandingStep
+6@ += -0.02 // floating-point values
+jump @FlyAnimTrainSetup
 
 :FlyAnimTrainLandingStep
-if 
-  11@ > 0.0 // floating-point values 
-else_jump @FlyAnimTrainLandingCheck 
-11@ += -2.0 // floating-point values 
-jump @FlyAnimTrainSetup 
+if
+  11@ > 0.0 // floating-point values
+else_jump @FlyAnimTrainLandingCheck
+11@ += -2.0 // floating-point values
+jump @FlyAnimTrainSetup
 
 :FlyAnimTrainLandingCheck
-if 
-  $LANDING == 0 // integer values 
-else_jump @FlyAnimTrainLandingAltitude 
-jump @FlyAnimTrainDestroy 
+if
+  $LANDING == 0 // integer values
+else_jump @FlyAnimTrainLandingAltitude
+jump @FlyAnimTrainDestroy
 
 :FlyAnimTrainLandingAltitude
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 0.0 
-02CE: 4@ = ground_z 1@ 2@ 3@ 
-0063: 3@ -= 4@ // floating-point values (never used in VC or GTA 3) 
-if 
-   not 3@ > 5.0 // floating-point values 
-else_jump @FlyAnimTrainDestroy 
-if 
-81F3:   not car 0@ airborne 
-else_jump @FlyAnimTrainSetup 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 0.0
+02CE: 4@ = ground_z 1@ 2@ 3@
+0063: 3@ -= 4@ // floating-point values (never used in VC or GTA 3)
+if
+   not 3@ > 5.0 // floating-point values
+else_jump @FlyAnimTrainDestroy
+if
+81F3:   not car 0@ airborne
+else_jump @FlyAnimTrainSetup
 
 :FlyAnimTrainDestroy
-$MIDDLEWING_ROTATE_BACK = 0 // integer values 
+$MIDDLEWING_ROTATE_BACK = 0 // integer values
 Object.Destroy($LEFTWHEEL)
 Object.Destroy($LEFTSTRUT)
 Object.Destroy($LEFTWINGDOOR)
@@ -580,183 +580,183 @@ Object.Destroy($LEFTTOPWING3)
 Object.Destroy($RIGHTTOPWING1)
 Object.Destroy($RIGHTTOPWING2)
 Object.Destroy($RIGHTTOPWING3)
-return 
+return
 
 :FlyAnimTrainMiddleWing
-0086: $MIDDLEWING_X = $MIDDLEWING_TIMER // floating-point values only 
-$MIDDLEWING_X *= 2.09888E-05 // floating-point values 
-$MIDDLEWING_X += -0.0009456733 // floating-point values 
-0069: $MIDDLEWING_X *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_X += -0.02509198 // floating-point values 
-0069: $MIDDLEWING_X *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_X += -0.1379266 // floating-point values 
-0086: $MIDDLEWING_Y = $MIDDLEWING_TIMER // floating-point values only 
-$MIDDLEWING_Y *= 6.4025E-06 // floating-point values 
-$MIDDLEWING_Y += 8.592E-07 // floating-point values 
-0069: $MIDDLEWING_Y *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_Y += -0.02928919 // floating-point values 
-0069: $MIDDLEWING_Y *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_Y += 4.920224 // floating-point values 
-if 
-   not $MIDDLEWING_TIMER >= 39.0 // floating-point values 
-else_jump @FlyAnimTrainMiddleWingB 
-if 
-  $MIDDLEWING_TIMER > 19.0 // floating-point values 
-else_jump @FlyAnimTrainMiddleWingA 
-0086: $MIDDLEWING_ANGLE1 = $MIDDLEWING_TIMER // floating-point values only 
-$MIDDLEWING_ANGLE1 *= -0.001519528 // floating-point values 
-$MIDDLEWING_ANGLE1 += 0.1089485 // floating-point values 
-0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_ANGLE1 += -1.79962 // floating-point values 
-0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_ANGLE1 += -5.547737 // floating-point values 
-jump @FlyAnimTrainMiddleWingC 
+0086: $MIDDLEWING_X = $MIDDLEWING_TIMER // floating-point values only
+$MIDDLEWING_X *= 2.09888E-05 // floating-point values
+$MIDDLEWING_X += -0.0009456733 // floating-point values
+0069: $MIDDLEWING_X *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_X += -0.02509198 // floating-point values
+0069: $MIDDLEWING_X *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_X += -0.1379266 // floating-point values
+0086: $MIDDLEWING_Y = $MIDDLEWING_TIMER // floating-point values only
+$MIDDLEWING_Y *= 6.4025E-06 // floating-point values
+$MIDDLEWING_Y += 8.592E-07 // floating-point values
+0069: $MIDDLEWING_Y *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_Y += -0.02928919 // floating-point values
+0069: $MIDDLEWING_Y *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_Y += 4.920224 // floating-point values
+if
+   not $MIDDLEWING_TIMER >= 39.0 // floating-point values
+else_jump @FlyAnimTrainMiddleWingB
+if
+  $MIDDLEWING_TIMER > 19.0 // floating-point values
+else_jump @FlyAnimTrainMiddleWingA
+0086: $MIDDLEWING_ANGLE1 = $MIDDLEWING_TIMER // floating-point values only
+$MIDDLEWING_ANGLE1 *= -0.001519528 // floating-point values
+$MIDDLEWING_ANGLE1 += 0.1089485 // floating-point values
+0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_ANGLE1 += -1.79962 // floating-point values
+0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_ANGLE1 += -5.547737 // floating-point values
+jump @FlyAnimTrainMiddleWingC
 
 :FlyAnimTrainMiddleWingA
-0086: $MIDDLEWING_ANGLE1 = $MIDDLEWING_TIMER // floating-point values only 
-$MIDDLEWING_ANGLE1 *= -0.0006994204 // floating-point values 
-$MIDDLEWING_ANGLE1 += 0.04098213 // floating-point values 
-0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_ANGLE1 += 0.002020355 // floating-point values 
-0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values 
-$MIDDLEWING_ANGLE1 += -20.84815 // floating-point values 
-jump @FlyAnimTrainMiddleWingC 
+0086: $MIDDLEWING_ANGLE1 = $MIDDLEWING_TIMER // floating-point values only
+$MIDDLEWING_ANGLE1 *= -0.0006994204 // floating-point values
+$MIDDLEWING_ANGLE1 += 0.04098213 // floating-point values
+0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_ANGLE1 += 0.002020355 // floating-point values
+0069: $MIDDLEWING_ANGLE1 *= $MIDDLEWING_TIMER // floating-point values
+$MIDDLEWING_ANGLE1 += -20.84815 // floating-point values
+jump @FlyAnimTrainMiddleWingC
 
 :FlyAnimTrainMiddleWingB
-$MIDDLEWING_ANGLE1 = 0.0 // floating-point values 
+$MIDDLEWING_ANGLE1 = 0.0 // floating-point values
 
 :FlyAnimTrainMiddleWingC
-0086: $MIDDLEWING_ANGLE2 = $MIDDLEWING_ANGLE1 // floating-point values only 
-0086: $MIDDLEWING_ANGLE3 = $MIDDLEWING_ANGLE1 // floating-point values only 
-return 
+0086: $MIDDLEWING_ANGLE2 = $MIDDLEWING_ANGLE1 // floating-point values only
+0086: $MIDDLEWING_ANGLE3 = $MIDDLEWING_ANGLE1 // floating-point values only
+return
 
 :FlyAnimDelorean
-gosub @ObjectAngle 
-6@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 6@ 0.0 $WHEELHEIGHT 
+gosub @ObjectAngle
+6@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 6@ 0.0 $WHEELHEIGHT
 $LEFTWHEEL = Object.Create($LEFTWHEELMODEL, 1@, 2@, 3@)
 $LEFTSTRUT = Object.Create($LEFTSTRUTMODEL, 1@, 2@, 3@)
-0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTWHEEL set_rotation 7@ 8@ 4@ 
-005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3) 
+0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTWHEEL set_rotation 7@ 8@ 4@
+005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3)
 Object.CollisionDetection($LEFTWHEEL) = False
 Object.ToggleInMovingList($LEFTWHEEL) = False
 Object.CollisionDetection($LEFTSTRUT) = False
 Object.ToggleInMovingList($LEFTSTRUT) = False
-6@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 6@ 0.0 $WHEELHEIGHT 
+6@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 6@ 0.0 $WHEELHEIGHT
 $RIGHTWHEEL = Object.Create($RIGHTWHEELMODEL, 1@, 2@, 3@)
-005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTWHEEL set_rotation 7@ 8@ 4@ 
-0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3) 
+005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTWHEEL set_rotation 7@ 8@ 4@
+0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3)
 $RIGHTSTRUT = Object.Create($RIGHTSTRUTMODEL, 1@, 2@, 3@)
 Object.CollisionDetection($RIGHTWHEEL) = False
 Object.ToggleInMovingList($RIGHTWHEEL) = False
 Object.CollisionDetection($RIGHTSTRUT) = False
 Object.ToggleInMovingList($RIGHTSTRUT) = False
-jump @FlyAnimDeloreanStart 
+jump @FlyAnimDeloreanStart
 
 :FlyAnimDeloreanOffset
-0407: create_coordinate $X_POS_TT $Y_POS_TT $Z_POS_TT from_car 0@ offset $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0059: $X_POS_TT += $X_OFF // floating-point values 
-0059: $Y_POS_TT += $Y_OFF // floating-point values 
-0059: $Z_POS_TT += $Z_OFF // floating-point values 
-return 
+0407: create_coordinate $X_POS_TT $Y_POS_TT $Z_POS_TT from_car 0@ offset $X_POS_TT $Y_POS_TT $Z_POS_TT
+0059: $X_POS_TT += $X_OFF // floating-point values
+0059: $Y_POS_TT += $Y_OFF // floating-point values
+0059: $Z_POS_TT += $Z_OFF // floating-point values
+return
 
 :FlyAnimDeloreanSetup
-wait 10 
+wait 10
 
 :FlyAnimDeloreanStart
-if 
-  $LANDING == 0 // integer values 
-else_jump @FlyAnimDeloreanAfterEffects 
-02E3: 4@ = car 0@ speed 
-4@ /= 30.0 // floating-point values (never used in VC or GTA 3) 
-4@ += 0.8 // floating-point values 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.75 4@ -0.425 
-0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -0.75 4@ -0.425 
-0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01 
-4@ += -1.4 // floating-point values 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.625 4@ -0.425 
-0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01 
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -0.625 4@ -0.425 
-0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01 
+if
+  $LANDING == 0 // integer values
+else_jump @FlyAnimDeloreanAfterEffects
+02E3: 4@ = car 0@ speed
+4@ /= 30.0 // floating-point values (never used in VC or GTA 3)
+4@ += 0.8 // floating-point values
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.75 4@ -0.425
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -0.75 4@ -0.425
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01
+4@ += -1.4 // floating-point values
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.625 4@ -0.425
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -0.625 4@ -0.425
+0437: scatter_particle 33 0.1 at 1@ 2@ 3@ 0 0 -0.01
 
 :FlyAnimDeloreanAfterEffects
-gosub @ObjectAngle 
-11@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-6@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-0088: $X_POS_TT = 6@ // floating-point values only 
-0086: $Y_POS_TT = $WHEELDISTANCE // floating-point values only 
-0086: $Z_POS_TT = $WHEELHEIGHT // floating-point values only 
-gosub @FlyAnimDeloreanOffset 
-01BC: put_object $LEFTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $LEFTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0453: object $LEFTSTRUT set_rotation 7@ 8@ 4@ 
-005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3) 
-0453: object $LEFTWHEEL set_rotation 7@ 8@ 4@ 
-0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3) 
-11@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-6@ *= -1.0 // floating-point values (never used in VC or GTA 3) 
-0088: $X_POS_TT = 6@ // floating-point values only 
-0086: $Y_POS_TT = $WHEELDISTANCE // floating-point values only 
-0086: $Z_POS_TT = $WHEELHEIGHT // floating-point values only 
-gosub @FlyAnimDeloreanOffset 
-01BC: put_object $RIGHTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-01BC: put_object $RIGHTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT 
-0453: object $RIGHTSTRUT set_rotation 7@ 8@ 4@ 
-005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3) 
-0453: object $RIGHTWHEEL set_rotation 7@ 8@ 4@ 
-0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3)  
+gosub @ObjectAngle
+11@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+6@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+0088: $X_POS_TT = 6@ // floating-point values only
+0086: $Y_POS_TT = $WHEELDISTANCE // floating-point values only
+0086: $Z_POS_TT = $WHEELHEIGHT // floating-point values only
+gosub @FlyAnimDeloreanOffset
+01BC: put_object $LEFTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $LEFTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT
+0453: object $LEFTSTRUT set_rotation 7@ 8@ 4@
+005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3)
+0453: object $LEFTWHEEL set_rotation 7@ 8@ 4@
+0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3)
+11@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+6@ *= -1.0 // floating-point values (never used in VC or GTA 3)
+0088: $X_POS_TT = 6@ // floating-point values only
+0086: $Y_POS_TT = $WHEELDISTANCE // floating-point values only
+0086: $Z_POS_TT = $WHEELHEIGHT // floating-point values only
+gosub @FlyAnimDeloreanOffset
+01BC: put_object $RIGHTSTRUT at $X_POS_TT $Y_POS_TT $Z_POS_TT
+01BC: put_object $RIGHTWHEEL at $X_POS_TT $Y_POS_TT $Z_POS_TT
+0453: object $RIGHTSTRUT set_rotation 7@ 8@ 4@
+005B: 8@ += 11@ // floating-point values (never used in VC or GTA 3)
+0453: object $RIGHTWHEEL set_rotation 7@ 8@ 4@
+0063: 8@ -= 11@ // floating-point values (never used in VC or GTA 3)
 
 :FlyAnimDeloreanTakeoffStrut
-if 
-  $LANDING == 0 // integer values 
-else_jump @FlyAnimDeloreanLandingWheel    
-if 
-8037:   not  6@ >= $WHEELOUT // floating-point values (never used in VC or GTA 3) 
-else_jump @FlyAnimDeloreanTakeoffWheel 
-6@ += 0.02 // floating-point values 
-jump @FlyAnimDeloreanSetup 
+if
+  $LANDING == 0 // integer values
+else_jump @FlyAnimDeloreanLandingWheel
+if
+8037:   not  6@ >= $WHEELOUT // floating-point values (never used in VC or GTA 3)
+else_jump @FlyAnimDeloreanTakeoffWheel
+6@ += 0.02 // floating-point values
+jump @FlyAnimDeloreanSetup
 
-:FlyAnimDeloreanTakeoffWheel   
-if 
-   not 11@ >= 90.0 // floating-point values (never used in VC or GTA 3) 
-else_jump @FlyAnimDeloreanLandingCheck 
-11@ += 5.0 // floating-point values     
-jump @FlyAnimDeloreanSetup 
+:FlyAnimDeloreanTakeoffWheel
+if
+   not 11@ >= 90.0 // floating-point values (never used in VC or GTA 3)
+else_jump @FlyAnimDeloreanLandingCheck
+11@ += 5.0 // floating-point values
+jump @FlyAnimDeloreanSetup
 
 :FlyAnimDeloreanLandingWheel
-if 
-  11@ > 0.0 // floating-point values 
-else_jump @FlyAnimDeloreanLandingStrut 
-11@ += -5.0 // floating-point values 
-jump @FlyAnimDeloreanSetup 
+if
+  11@ > 0.0 // floating-point values
+else_jump @FlyAnimDeloreanLandingStrut
+11@ += -5.0 // floating-point values
+jump @FlyAnimDeloreanSetup
 
-:FlyAnimDeloreanLandingStrut  
-if 
-0027:   6@ > $WHEELIN // floating-point values only         
-else_jump @FlyAnimDeloreanLandingCheck 
-6@ += -0.02 // floating-point values    
-jump @FlyAnimDeloreanSetup 
+:FlyAnimDeloreanLandingStrut
+if
+0027:   6@ > $WHEELIN // floating-point values only
+else_jump @FlyAnimDeloreanLandingCheck
+6@ += -0.02 // floating-point values
+jump @FlyAnimDeloreanSetup
 
 :FlyAnimDeloreanLandingCheck
-if 
-  $LANDING == 0 // integer values 
-else_jump @FlyAnimDeloreanLandingAltitude 
-jump @FlyAnimDeloreanLandingDestroy 
+if
+  $LANDING == 0 // integer values
+else_jump @FlyAnimDeloreanLandingAltitude
+jump @FlyAnimDeloreanLandingDestroy
 
 :FlyAnimDeloreanLandingAltitude
-0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 0.0 
-02CE: 4@ = ground_z 1@ 2@ 3@ 
-0063: 3@ -= 4@ // floating-point values (never used in VC or GTA 3) 
-if 
-   not 3@ > 5.0 // floating-point values 
-else_jump @FlyAnimDeloreanLandingDestroy 
-if 
-81F3:   not car 0@ airborne 
-else_jump @FlyAnimDeloreanSetup 
+0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.0 0.0 0.0
+02CE: 4@ = ground_z 1@ 2@ 3@
+0063: 3@ -= 4@ // floating-point values (never used in VC or GTA 3)
+if
+   not 3@ > 5.0 // floating-point values
+else_jump @FlyAnimDeloreanLandingDestroy
+if
+81F3:   not car 0@ airborne
+else_jump @FlyAnimDeloreanSetup
 
 :FlyAnimDeloreanLandingDestroy
 Object.Destroy($LEFTWHEEL)
