@@ -10,7 +10,6 @@ then
     1@ -= 12
 end
 1@ += 10
-045A: text_draw_1number 10.0 10.0 'DAY' 1@  // Best Result: ~1~th
 3F11: set_car 0@ component "consoleclockdigithour" index 1@ visible 1
 
 // Minutes
@@ -23,8 +22,6 @@ end
 2@ *= 10
 0062: 1@ -= 2@
 2@ /= 10
-045A: text_draw_1number 10.0 20.0 'DAY' 2@  // Best Result: ~1~th
-045A: text_draw_1number 10.0 30.0 'DAY' 1@  // Best Result: ~1~th
 3F11: set_car 0@ component "consoleclockdigitmin2" index 2@ visible 1
 3F11: set_car 0@ component "consoleclockdigitmin1" index 1@ visible 1
 
