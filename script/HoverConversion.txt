@@ -185,7 +185,6 @@ return
 :HoverAnimate
 $CONVERSION = 1
 0B10: 15@ = 1@ AND $FLYING_BIT   // Is car flying?
-gosub @ThrusterLightsOff
 040D: unload_wav 2
 if
     15@ == 0
@@ -200,6 +199,7 @@ else
     7@ = 0.0 // Wheel rotating out
     03CF: load_wav 'BURG_07' as 2
 end
+gosub @ThrusterLightsOff
 create_thread @PlaySound 2
 
 :HoverAnimateStart

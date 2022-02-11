@@ -179,6 +179,7 @@ if or
     not 8@ == 0 // Flying
 then
     0B12: 1@ = 1@ XOR $FLYING_BIT  // Flip flying bit
+    $CONVERSION = 1
     create_thread @HoverAnimate 0@ 1@
 end
 
