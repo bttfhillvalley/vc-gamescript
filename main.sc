@@ -13,18 +13,21 @@ DEFINE MISSIONS 0
 {$OPCODE 3F03=1,car %1d% turn_on_engine}                                        // turn on engine
 {$OPCODE 3F04=2,%2d% = get_car %1d% gear}                                       // get current gear
 {$OPCODE 3F05=2,set_car %1d% hover %2d%}                                        // this turns a vehicle into a helicopter (currently unused)
-{$OPCODE 3F06=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
+//{$OPCODE 3F06=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
+{$OPCODE 3F06=3,%3d% = get_car %1d% door %2d% status} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
 {$OPCODE 3F07=4,play_anim %1d% grp %2d% blend %3d% on char %4d%}                // plays an animation (currently unused)
 {$OPCODE 3F08=2,add_build %1p% amnt %2p%}                                       // adds all buildings and objects in a .dat file
 {$OPCODE 3F09=2,remove_build %1p% amnt %2p%}                                    // removes all buildings and objects in a .dat file
 {$OPCODE 3F10=3,set_car %1d% component %2d% visible %3d%}                       // show or hide a car part by name
 {$OPCODE 3F11=4,set_car %1d% component %2d% index %4d% visible %3d%}            // show or hide a car part with index
-{$OPCODE 3F12=3,set car %1d% comp %2d% alpha %3d%}                              // sets a car part's alpha from 0-255 instead of hiding or showing it completely
-{$OPCODE 3F13=3,set car %1d% comp %2d% alpha %3d%}                              // sets a car part with index alpha from 0-255 instead of hiding or showing it completely
+{$OPCODE 3F12=3,set car %1d% component %2d% alpha %3d%}                              // sets a car part's alpha from 0-255 instead of hiding or showing it completely
+{$OPCODE 3F13=3,set car %1d% component %2d% alpha %3d%}                              // sets a car part with index alpha from 0-255 instead of hiding or showing it completely
 {$OPCODE 3F14=5,move_car_part %1d% pos %2d% %3d% %4d% car %5d%}                 // moves a car part by its frame
 {$OPCODE 3F15=6,move_car_part %1d% index %6d% pos %2d% %3d% %4d% car %5d%}      // moves a car part with index by its frame
 {$OPCODE 3F16=5,rotate_car_part %1d% angle %2d% %3d% %4d% car %5d%}             // rotates a car part by its frame
 {$OPCODE 3F17=6,rotate_car_part %1d% index %6d% angle %2d% %3d% %4d% car %5d%}  // rotates a car part with index by its frame
+{$OPCODE 3F18=3,set_car %1d% component %2d% glow %3d%}  // rotates a car part with index by its frame
+{$OPCODE 3F19=4,set_car %1d% component %2d% index %4d% glow %3d%}  // rotates a car part with index by its frame
 
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
@@ -203,6 +206,7 @@ end
 {$INCLUDE script/DeloreanVariation.txt}
 {$INCLUDE script/DigitalSpeedometer.txt}
 {$INCLUDE script/DisplayToggle.txt}
+{$INCLUDE script/DoorCheck.txt}
 {$INCLUDE script/DrawText.txt}
 {$INCLUDE script/DrawTexture.txt}
 {$INCLUDE script/DebugCoords.txt}

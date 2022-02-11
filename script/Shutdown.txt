@@ -42,7 +42,6 @@ end
 3F10: set_car 0@ component "seatbeltlight" visible 0
 3F10: set_car 0@ component "lambdalight" visible 0
 3F10: set_car 0@ component "oillight" visible 0
-3F10: set_car 0@ component "doorajarlight" visible 0
 3F10: set_car 0@ component "fuellight" visible 0
 3F10: set_car 0@ component "brakelight" visible 0
 3F10: set_car 0@ component "batterylight" visible 0

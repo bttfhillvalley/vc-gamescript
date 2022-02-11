@@ -2,6 +2,7 @@
 // Hours
 for 1@ = 10 to 21 step 1
     3F11: set_car 0@ component "consoleclockdigithour" index 1@ visible 0
+    3F19: set_car 0@ component "consoleclockdigithour" index 1@ glow 1
 end
 0085: 1@ = $CHOUR
 if
@@ -15,6 +16,7 @@ end
 // Minutes
 for 1@ = 10 to 25
 	3F11: set_car 0@ component "consoleclockdigitmin" index 1@ visible 0
+	3F19: set_car 0@ component "consoleclockdigitmin" index 1@ glow 1
 end
 0085: 1@ = $CMINUTE
 0085: 2@ = $CMINUTE

@@ -4,7 +4,8 @@ if
 then
     end_thread
 end
-gosub @HideFuel 0@
+gosub @ThrusterLightsOff
+gosub @HideFuel
 
 // Wheel
 0B10: 13@ = 1@ AND $FC_BIT
@@ -197,6 +198,43 @@ else
     gosub @ShowBoiler
 end
 end_thread
+
+:LightsOff
+3F10: set_car 0@ component "seatbeltlight" visible 0
+3F10: set_car 0@ component "lambdalight" visible 0
+3F10: set_car 0@ component "oillight" visible 0
+3F10: set_car 0@ component "doorajarlight" visible 0
+3F10: set_car 0@ component "fuellight" visible 0
+3F10: set_car 0@ component "brakelight" visible 0
+3F10: set_car 0@ component "batterylight" visible 0
+3F10: set_car 0@ component "pchamberemptylight" visible 0
+3F10: set_car 0@ component "tcdkeypadenterlighton" visible 0
+3F10: set_car 0@ component "lightFL" visible 0
+3F10: set_car 0@ component "lightFR" visible 0
+return
+
+:ThrusterLightsOff
+3F10: set_car 0@ component "fxthrusterbttf2rbon" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2rbth" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2rfon" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2rfth" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2lbon" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2lbth" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2lfon" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2lfth" visible 0
+
+3F18: set_car 0@ component "fxthrusterbttf2rbon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2rbth" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2rfon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2rfth" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lbon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lbth" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lfon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lfth" glow 1
+return
+
+:BoosterLightsOn
+
 
 :ShowBrakes
 2@ = 1

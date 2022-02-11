@@ -3,11 +3,12 @@
 :CarInterior
 wait 10
 if
-     00E0:   player $PLAYER_CHAR in_any_car
-else_jump @CarInterior
-03C1: 0@ = player $PLAYER_CHAR car
+   not Car.Wrecked($DELOREAN)
+jf @CarInterior
+008B: 0@ = $DELOREAN // integer values and handles
 gosub @CarClock
 gosub @Shifter
 gosub @ParkingBrake
 gosub @CompassRotation
+gosub @DoorCheck
 jump @CarInterior

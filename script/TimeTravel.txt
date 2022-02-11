@@ -85,10 +85,8 @@ create_thread @SetVariation 0@ 1@
 10@ = Car.Model(0@)
 gosub @TimeCircuitsModelReset
 gosub @TimeEffectsModelReset
-3F10: set_car 0@ component "pchamberemptylight" visible 0
-3F10: set_car 0@ component "tcdkeypadenterlighton" visible 0
-3F10: set_car 0@ component "lightFL" visible 0
-3F10: set_car 0@ component "lightFR" visible 0
+gosub @LightsOff
+gosub @GlowInit
 
 :TimeStart
 wait 10
@@ -104,6 +102,11 @@ else_jump @TimeReset
 008C: 4@ = float_to_integer 4@
 //045A: text_draw_1number 10.0 10.0 'DAY' $FLASH  // Best Result: ~1~th
 02E3: 11@ = car 0@ speed
+
+3F10: set_car 0@ component "inner_vents" visible 0
+
+//045A: text_draw_1number 10.0 10.0 'DAY' 7@  // Best Result: ~1~th
+
 gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
 gosub @Hook  // Controls putting up/down the hook.  I forget the variations though.  It's in the garage thread so I can document it here as well.
 gosub @TimeResetCamera
@@ -252,16 +255,13 @@ jump @Time88TrackCamera
 :TimeEffectsModelReset
 3F10: set_car 0@ component "fluxcapacitorlightson" visible 0
 3F10: set_car 0@ component "fluxcapacitorlightsoff" visible 1
+3F18: set_car 0@ component "fluxcoilson" glow 0
 3F12: set car 0@ component "fluxcoilson" alpha 0
+3F10: set_car 0@ component "fluxcoilson" visible 0
 3F12: set car 0@ component "wormhole" alpha 0
-3F10: set_car 0@ component "sidledsstatus1" visible 0
-3F10: set_car 0@ component "sidledsstatus2" visible 0
-3F10: set_car 0@ component "sidledsstatus3" visible 0
-3F10: set_car 0@ component "sidledsstatus4" visible 0
-3F10: set_car 0@ component "sidledsstatus5" visible 0
-3F10: set_car 0@ component "sidledsstatus6" visible 0
-3F10: set_car 0@ component "sidledsstatus7" visible 0
-3F10: set_car 0@ component "sidledsstatus8" visible 0
+for 7@ = 1 to 8 step 1
+    3F11: set_car 0@ component "sidledsstatus" index 7@ visible 0
+end
 return
 
 :TimeCircuitsCheck
@@ -304,7 +304,9 @@ if
   3@ > 255
 then
   3@ = 255
+  3F18: set_car 0@ component "fluxcoilson" glow 1
 end
+3F10: set_car 0@ component "fluxcoilson" visible 1
 3F12: set car 0@ comp "fluxcoilson" alpha 3@
 if
   11@ > 43.5 // == 79.8 mph // floating-point values
@@ -1243,7 +1245,6 @@ else_jump @EngineOn
 3F10: set_car 0@ component "seatbeltlight" visible 0
 3F10: set_car 0@ component "lambdalight" visible 0
 3F10: set_car 0@ component "oillight" visible 1
-3F10: set_car 0@ component "doorajarlight" visible 0
 3F10: set_car 0@ component "fuellight" visible 0
 3F10: set_car 0@ component "brakelight" visible 1
 3F10: set_car 0@ component "batterylight" visible 1
@@ -1301,7 +1302,6 @@ if
 while 83D0:   wav 2 loaded
     wait 0
 end
-3F10: set_car 0@ component "doorajarlight" visible 1
 3F10: set_car 0@ component "oillight" visible 1
 3F10: set_car 0@ component "brakelight" visible 1
 3F10: set_car 0@ component "batterylight" visible 1

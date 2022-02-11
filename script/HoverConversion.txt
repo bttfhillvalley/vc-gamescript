@@ -6,17 +6,38 @@ if or
     $LANDING == 1
 else_jump @HoverConversionReturn
 3F05: set_car 0@ hover 1
-
-// Thrust
 if and
     00DC:   player $PLAYER_CHAR driving 0@
     $CONVERSION == 0
 else_jump @HoverConversionReturn
+
+// Wheel Lights
+if or
+    $CTIME1 >= 2020 // integer values
+    $CTIME1 < 650 // integer values
+    $WEATHER == 2 // integer values
+    $WEATHER == 3 // integer values
+    $WEATHER == 5 // integer values
+    $WEATHER == 9 // integer values
+    $WEATHER == 10 // integer values
+then
+    7@ = 1
+else
+    7@ = 0
+end
+
+3F10: set_car 0@ component "fxthrusterbttf2rbon" visible 7@
+3F10: set_car 0@ component "fxthrusterbttf2rfon" visible 7@
+3F10: set_car 0@ component "fxthrusterbttf2lbon" visible 7@
+3F10: set_car 0@ component "fxthrusterbttf2lfon" visible 7@
+
+// Thrust
 Car.StorePos(0@, 2@, 3@, 4@)
 if and
     4@ < 200.0 // floating-point values
     00E1:   key_pressed 0 6
 else_jump @HoverConversionReset
+3F10: set_car 0@ component "inner_vents" visible 1
 
 02E3: 11@ = car 0@ speed
 // Various speed options
@@ -65,10 +86,10 @@ end
 0087: 5@ = 11@ // floating-point values only
 5@ /= 30.0 // floating-point values (never used in VC or GTA 3)
 5@ -= 2.345 // floating-point values
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.417 5@ 0.476
+/*0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.417 5@ 0.476
 04D5: create_corona_at 2@ 3@ 4@ radius 0.75 type 1 flare 0 RGB 255 225 175
 0407: create_coordinate 2@ 3@ 4@  from_car 0@ offset -0.417 5@ 0.476
-04D5: create_corona_at 2@ 3@ 4@  radius 0.75 type 1 flare 0 RGB 255 225 175
+04D5: create_corona_at 2@ 3@ 4@  radius 0.75 type 1 flare 0 RGB 255 225 175*/
 jump @HoverConversionReturn
 
 :HoverConversionReset
@@ -164,6 +185,7 @@ return
 :HoverAnimate
 $CONVERSION = 1
 0B10: 15@ = 1@ AND $FLYING_BIT   // Is car flying?
+gosub @ThrusterLightsOff
 040D: unload_wav 2
 if
     15@ == 0
@@ -284,9 +306,13 @@ jf @WheelThrustUnloadSound
 if
 80E1:   not key_pressed 0 6
 jf @WheelThrustEnd
+3F10: set_car 0@ component "fxthrusterbttf2rbth" visible 1
+3F10: set_car 0@ component "fxthrusterbttf2rfth" visible 1
+3F10: set_car 0@ component "fxthrusterbttf2lbth" visible 1
+3F10: set_car 0@ component "fxthrusterbttf2lfth" visible 1
 
 // Thrusters
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.5
+/*0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.5
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -1.5
@@ -323,13 +349,17 @@ gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -0.5
 gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175     */
 jump @WheelThrustCheck
 
 :WheelThrustUnloadSound
 040D: unload_wav 2
 
 :WheelThrustEnd
+3F10: set_car 0@ component "fxthrusterbttf2rbth" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2rfth" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2lbth" visible 0
+3F10: set_car 0@ component "fxthrusterbttf2lfth" visible 0
 end_thread
 
 // ==================================================================================================

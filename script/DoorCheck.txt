@@ -1,0 +1,12 @@
+:DoorCheck
+3F06: 2@ = get_car 0@ door 2 status // Left Door
+3F06: 3@ = get_car 0@ door 3 status // Right Door
+if or
+    2@ == 0
+    3@ == 0
+then
+    3F10: set_car 0@ component "doorajarlight" visible 1
+else
+    3F10: set_car 0@ component "doorajarlight" visible 0
+end
+return

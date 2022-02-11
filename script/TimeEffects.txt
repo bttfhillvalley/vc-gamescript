@@ -1,3 +1,86 @@
+:GlowInit
+3F18: set_car 0@ component "inner_vents" glow 1
+for 2@ = 1 to 6 step 1
+    3F19: set_car 0@ component "flux" index 2@ glow 1
+end
+for 2@ = 1 to 8 step 1
+    3F19: set_car 0@ component "sidledsstatus" index 2@ glow 1
+end
+3F18: set_car 0@ component "fluxcapacitorlightson" glow 1
+3F18: set_car 0@ component "lightfl" glow 1
+3F18: set_car 0@ component "lightfr" glow 1
+
+3F18: set_car 0@ component "seatbeltlight" glow 1
+3F18: set_car 0@ component "lambdalight" glow 1
+3F18: set_car 0@ component "oillight" glow 1
+3F18: set_car 0@ component "doorajarlight" glow 1
+3F18: set_car 0@ component "fuellight" glow 1
+3F18: set_car 0@ component "brakelight" glow 1
+3F18: set_car 0@ component "batterylight" glow 1
+
+3F18: set_car 0@ component "pchamberemptylight" glow 1
+3F18: set_car 0@ component "steeringwheellights" glow 1
+3F18: set_car 0@ component "overheadconsolelights" glow 1
+3F18: set_car 0@ component "rpmneedle" glow 1
+3F18: set_car 0@ component "voltsneedle" glow 1
+3F18: set_car 0@ component "oilneedle" glow 1
+3F18: set_car 0@ component "fuelneedle" glow 1
+3F18: set_car 0@ component "tempneedle" glow 1
+3F18: set_car 0@ component "speedoneedle" glow 1
+
+
+//lights behind the tcd switch
+3F18: set_car 0@ component "tcdswitchlighton" glow 1
+3F18: set_car 0@ component "tcdswitchlightoff" glow 1
+3F18: set_car 0@ component "tcdkeypadlightson" glow 1
+3F18: set_car 0@ component "tcdkeypadenterlighton" glow 1
+3F18: set_car 0@ component "gloveboxgaugeslights" glow 1
+//months
+for 4@ = 1 to 12
+    3F19: set_car 0@ component "dtmonth" index 4@ glow 1
+	3F19: set_car 0@ component "ptmonth" index 4@ glow 1
+	3F19: set_car 0@ component "ltdmonth" index 4@ glow 1
+end
+
+//days
+for 4@ = 10 to 23
+	3F19: set_car 0@ component "dtday" index 4@ glow 1
+	3F19: set_car 0@ component "ptday" index 4@ glow 1
+	3F19: set_car 0@ component "ltdday" index 4@ glow 1
+end
+//years
+for 4@ = 10 to 49
+	3F19: set_car 0@ component "dtyear" index 4@ glow 1
+	3F19: set_car 0@ component "ptyear" index 4@ glow 1
+	3F19: set_car 0@ component "ltdyear" index 4@ glow 1
+end
+//hours
+for 4@ = 10 to 21
+	3F19: set_car 0@ component "dthour" index 4@ glow 1
+	3F19: set_car 0@ component "pthour" index 4@ glow 1
+	3F19: set_car 0@ component "ltdhour" index 4@ glow 1
+end
+//minutes
+for 4@ = 10 to 25
+	3F19: set_car 0@ component "dtmin" index 4@ glow 1
+	3F19: set_car 0@ component "ptmin" index 4@ glow 1
+	3F19: set_car 0@ component "ltdmin" index 4@ glow 1
+end
+//am indicators
+3F18: set_car 0@ component "dtam" glow 1
+3F18: set_car 0@ component "ptam" glow 1
+3F18: set_car 0@ component "ltdam" glow 1
+
+//pm indicators
+3F18: set_car 0@ component "dtpm" glow 1
+3F18: set_car 0@ component "ptpm" glow 1
+3F18: set_car 0@ component "ltdpm" glow 1
+//colons between hours and minutes
+3F18: set_car 0@ component "dtcolon" glow 1
+3F18: set_car 0@ component "ptcolon" glow 1
+3F18: set_car 0@ component "ltdcolon" glow 1
+return
+
 :FireTrailCheckDriving
 if
     00DC:   player $PLAYER_CHAR driving 0@

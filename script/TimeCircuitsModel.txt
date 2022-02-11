@@ -43,7 +43,7 @@ jump @TimeCircuitsModelStart
 //this is not necessary for the off case because it's done in @TimeCircuitsModelReset
 3F10: set_car 0@ component "tcdswitchlighton" visible 1
 3F10: set_car 0@ component "tcdswitchlightoff" visible 0
-3F10: set_car 0@ component "fluxcoilson" visible 1
+3F10: set_car 0@ component "tcdkeypadlightson" visible 1
 3F10: set_car 0@ component "gloveboxgaugeslights" visible 1
 
 //rotate the components up to 1.0 units towards on position
@@ -247,8 +247,11 @@ return
 //lights behind the tcd switch
 3F10: set_car 0@ component "tcdswitchlighton" visible 0
 3F10: set_car 0@ component "tcdswitchlightoff" visible 1
-3F10: set_car 0@ component "fluxcoilson" visible 0
 3F10: set_car 0@ component "gloveboxgaugeslights" visible 0
+3F10: set_car 0@ component "tcdkeypadlightson" visible 0
+// Temp fix.  These need to be moved out
+3F14: move_car_part "tcdkeypadlightson" pos 0.0 -0.001 0.0 car 0@
+3F14: move_car_part "tcdkeypadenterlighton" pos 0.0 -0.001 0.0 car 0@
 //months
 for 4@ = 1 to 12
 	3F11: set_car 0@ component "dtmonth" index 4@ visible 0
@@ -284,6 +287,7 @@ end
 3F10: set_car 0@ component "dtam" visible 0
 3F10: set_car 0@ component "ptam" visible 0
 3F10: set_car 0@ component "ltdam" visible 0
+
 //pm indicators
 3F10: set_car 0@ component "dtpm" visible 0
 3F10: set_car 0@ component "ptpm" visible 0
@@ -302,6 +306,9 @@ end_thread
 
 :TimeCircuitsModelKeypadConfirm
 3F10: set_car 0@ component "tcdkeypadenterlighton" visible 1
-wait 350
+3F14: move_car_part "tcdkeypadbuttonenter" pos 0.0 0.002 0.0 car 0@
+wait 50
+3F14: move_car_part "tcdkeypadbuttonenter" pos 0.0 0.0 0.0 car 0@
+wait 450
 3F10: set_car 0@ component "tcdkeypadenterlighton" visible 0
 end_thread
