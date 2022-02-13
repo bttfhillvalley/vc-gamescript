@@ -3,12 +3,23 @@
 for 2@ = 1 to 6 step 1
     3F19: set_car 0@ component "flux" index 2@ glow 1
 end
-for 2@ = 1 to 8 step 1
-    3F19: set_car 0@ component "sidledsstatus" index 2@ glow 1
+for 2@ = 1 to 10 step 1
+    for 3@ = 0 to 20 step 1
+        0085: 4@ = 3@
+        if
+            2@ == 10
+        then
+            4@ *= 10
+        end
+        4@ *= 10
+        0058: 4@ += 2@
+        3F11: set_car 0@ component "sidledsline" index 4@ visible 0
+        3F19: set_car 0@ component "sidledsline" index 4@ glow 1
+    end
 end
 3F18: set_car 0@ component "fluxcapacitorlightson" glow 1
-3F18: set_car 0@ component "lightfl" glow 1
-3F18: set_car 0@ component "lightfr" glow 1
+3F18: set_car 0@ component "lightFL" glow 1
+3F18: set_car 0@ component "lightFR" glow 1
 
 3F18: set_car 0@ component "seatbeltlight" glow 1
 3F18: set_car 0@ component "lambdalight" glow 1
@@ -19,7 +30,7 @@ end
 3F18: set_car 0@ component "batterylight" glow 1
 
 3F18: set_car 0@ component "pchamberemptylight" glow 1
-3F18: set_car 0@ component "steeringwheellights" glow 1
+3F18: set_car 0@ component "stwheelbuttonslights" glow 1
 3F18: set_car 0@ component "overheadconsolelights" glow 1
 3F18: set_car 0@ component "rpmneedle" glow 1
 3F18: set_car 0@ component "voltsneedle" glow 1
@@ -29,56 +40,64 @@ end
 3F18: set_car 0@ component "speedoneedle" glow 1
 
 
-//lights behind the tcd switch
+// lights behind the tcd switch
 3F18: set_car 0@ component "tcdswitchlighton" glow 1
 3F18: set_car 0@ component "tcdswitchlightoff" glow 1
 3F18: set_car 0@ component "tcdkeypadlightson" glow 1
 3F18: set_car 0@ component "tcdkeypadenterlighton" glow 1
 3F18: set_car 0@ component "gloveboxgaugeslights" glow 1
-//months
+// months
 for 4@ = 1 to 12
     3F19: set_car 0@ component "dtmonth" index 4@ glow 1
 	3F19: set_car 0@ component "ptmonth" index 4@ glow 1
 	3F19: set_car 0@ component "ltdmonth" index 4@ glow 1
 end
 
-//days
+// days
 for 4@ = 10 to 23
 	3F19: set_car 0@ component "dtday" index 4@ glow 1
 	3F19: set_car 0@ component "ptday" index 4@ glow 1
 	3F19: set_car 0@ component "ltdday" index 4@ glow 1
 end
-//years
+// years
 for 4@ = 10 to 49
 	3F19: set_car 0@ component "dtyear" index 4@ glow 1
 	3F19: set_car 0@ component "ptyear" index 4@ glow 1
 	3F19: set_car 0@ component "ltdyear" index 4@ glow 1
 end
-//hours
+// hours
 for 4@ = 10 to 21
 	3F19: set_car 0@ component "dthour" index 4@ glow 1
 	3F19: set_car 0@ component "pthour" index 4@ glow 1
 	3F19: set_car 0@ component "ltdhour" index 4@ glow 1
 end
-//minutes
+// minutes
 for 4@ = 10 to 25
 	3F19: set_car 0@ component "dtmin" index 4@ glow 1
 	3F19: set_car 0@ component "ptmin" index 4@ glow 1
 	3F19: set_car 0@ component "ltdmin" index 4@ glow 1
 end
-//am indicators
+// am indicators
 3F18: set_car 0@ component "dtam" glow 1
 3F18: set_car 0@ component "ptam" glow 1
 3F18: set_car 0@ component "ltdam" glow 1
 
-//pm indicators
+// pm indicators
 3F18: set_car 0@ component "dtpm" glow 1
 3F18: set_car 0@ component "ptpm" glow 1
 3F18: set_car 0@ component "ltdpm" glow 1
-//colons between hours and minutes
+// colons between hours and minutes
 3F18: set_car 0@ component "dtcolon" glow 1
 3F18: set_car 0@ component "ptcolon" glow 1
 3F18: set_car 0@ component "ltdcolon" glow 1
+return
+
+:TimeEffectsModelReset
+3F10: set_car 0@ component "fluxcapacitorlightson" visible 0
+3F18: set_car 0@ component "fluxcoilson" glow 0
+3F12: set car 0@ component "fluxcoilson" alpha 0
+3F10: set_car 0@ component "fluxcoilson" visible 0
+3F12: set car 0@ component "wormhole" alpha 0
 return
 
 :FireTrailCheckDriving
@@ -227,9 +246,35 @@ jump @FireTrailDisplay
 
 // ================================================================
 :FireTrail99
-wait 10
-for 7@ = 0.0 to 6.0 step 0.04
-    0087: 8@ = 7@
+4@ = 0.0    // Y
+if or
+    Car.Model(0@) == #BUS
+    Car.Model(0@) == #MAVERICK
+then
+    5@ = -1.315
+else
+    5@ =  -0.75 // Z
+end
+
+8@ = 0.0    // Angle
+9@ = 0.0    // Delta angle
+02E3: 11@ = car 0@ speed
+11@ *= -0.0051975
+11@ += 0.25
+if
+    11@ < 0.0
+then
+    11@ = 0.0
+end
+for 15@ = 0.0 to 100.0 step 1.0
+    02F7: 6@ = cosine 8@
+    02F6: 7@ = sinus 8@
+    6@ *= 0.5
+    7@ *= 0.5
+    005B: 4@ += 6@
+    005B: 5@ += 7@
+
+    /*0087: 8@ = 7@
     8@ *= 65.0
     02F6: 5@ = cosine 8@ // sinus swapped with cosine
     02F7: 6@ = sinus 8@ // cosine swapped with sinus
@@ -244,11 +289,14 @@ for 7@ = 0.0 to 6.0 step 0.04
         6@ += 1.685 // floating-point values
     else
         6@ += 2.25 // floating-point values
-    end
-    0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -0.98 5@ 6@
+    end*/
+    0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset -0.98 4@ 5@
     0437: scatter_particle 27 0.4 at 1@ 2@ 3@ 0 0 0
-    0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.98 5@ 6@
+    0407: create_coordinate 1@ 2@ 3@ from_car 0@ offset 0.98 4@ 5@
     0437: scatter_particle 27 0.4 at 1@ 2@ 3@ 0 0 0
+    0087: 9@ = 15@
+    006B: 9@ *= 11@
+    005B: 8@ += 9@
 end
 gosub @FireTrailCheckDriving
 
@@ -270,29 +318,66 @@ if
 then
     // Show Wheel Plasma effects on appropriate vehicles.
     // Might need special ones for the non-canon Time Machines
-    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 -1.8 -0.75 //Back right
-    gosub @TimeAddSpeedOffset
-    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
 
-    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 -1.8 -0.75 //back Left
+    // Rear Right
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 -1.7 -0.35
     gosub @TimeAddSpeedOffset
-    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 -1.8 -0.45
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 -1.9 -0.55
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 -2.1 -0.55
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
 
-    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 1.0 -0.75 //front right
+    // Rear Left
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 -1.7 -0.35
     gosub @TimeAddSpeedOffset
-    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 -1.8 -0.45
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 -1.9 -0.55
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 -2.1 -0.55
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
 
-    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 1.0 -0.75 //front right
+    // Front Right
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 1.0 -0.35
     gosub @TimeAddSpeedOffset
-    04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 175 128
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
-    0437: scatter_particle 13 0.4 at 2@ 3@ 4@ 0 0 0
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 0.9 -0.45
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 0.8 -0.55
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.80 0.6 -0.55
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+
+    // Front Left
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 1.0 -0.35
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 0.9 -0.45
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 0.8 -0.55
+    gosub @TimeAddSpeedOffset
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
+    0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.80 0.6 -0.55
+    gosub @TimeAddSpeedOffset
+    04D5: create_corona_at 2@ 3@ 4@ radius 0.5 type 1 flare 0 RGB 255 175 128
+    0437: scatter_particle 13 0.2 at 2@ 3@ 4@ 0 0 0
 
     // Wheel sparks animations for BTTF3
     0B10: 7@ = 1@ AND $HOOD_BIT // Hoodbox variation
@@ -360,9 +445,11 @@ if and
    not Car.Model(0@) == #BUS
    not Car.Model(0@) == #MAVERICK
 else_jump @TimeCoilTrain
-0B10: 7@ = 1@ AND $HOOD_BIT // Hoodbox variation
+3F18: set_car 0@ component "fluxcoilson" glow 1
+3F10: set_car 0@ component "fluxcoilson" visible 1
 
 // Hoodbox effects
+0B10: 7@ = 1@ AND $HOOD_BIT // Hoodbox variation
 if
    not 7@ == 0  // Has Hoodbox
 then
@@ -418,135 +505,147 @@ end
 
 :TimeCoilDelorean
 // Front Coils
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.9 2.25 -0.125
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.96 2.1 -0.12
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.9 2.25 -0.125
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.95 2.3 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.8 2.34 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.6 2.35 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.4 2.355 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.2 2.36 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 2.365 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.2 2.36 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.4 2.355 -0.12
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.8 2.35 -0.125
-gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.6 2.35 -0.125
-gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.4 2.35 -0.125
-gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.2 2.35 -0.125
-gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 2.35 -0.125
-gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.2 2.35 -0.125
-gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.4 2.35 -0.125
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.6 2.35 -0.12
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.6 2.35 -0.125
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.8 2.34 -0.12
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.8 2.35 -0.125
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.95 2.3 -0.12
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.96 2.1 -0.12
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
 
 // Side Coils
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.4 -0.9 0.6
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.4 -0.8 0.65
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.6 -0.9 0.6
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.4 -0.8 0.65
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.4 -0.9 0.6
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.6 -0.805 0.63
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.6 -0.9 0.6
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.6 -0.805 0.63
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.7 -0.915 0.5
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.7 -0.81 0.59
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.7 -0.915 0.5
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.7 -0.81 0.59
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.8 -0.93 0.4
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.8 -0.815 0.49
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.8 -0.93 0.4
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.8 -0.815 0.49
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.9 -0.945 0.3
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.9 -0.82 0.37
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.9 -0.945 0.3
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.9 -0.82 0.37
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R1 $G1 $B1
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.0 -0.96 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.0 -0.91 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.0 -0.96 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.0 -0.91 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.995 -1.16 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.985 -1.11 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.995 -1.16 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.985 -1.11 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.99 -1.36 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.96 -1.31 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.99 -1.36 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.96 -1.31 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.985 -1.56 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.93 -1.51 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.985 -1.56 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.93 -1.51 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -1.76 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.915 -1.71 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -1.76 0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.915 -1.71 0.23
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -1.86 0.1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.94 -1.8 0.19
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -1.86 0.1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.94 -1.8 0.19
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -1.955 0.0
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.97 -1.865 0.1
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -1.955 0.0
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.97 -1.865 0.1
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -2.045 -0.1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.985 -1.92 0.0
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -2.045 -0.1
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.985 -1.92 0.0
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.98 -2.13 -0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.97 -1.97 -0.1
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.98 -2.13 -0.2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.97 -1.97 -0.1
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.88 -2.21 -0.3
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.94 -2.02 -0.2
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.88 -2.21 -0.3
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.94 -2.02 -0.2
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.78 -2.21 -0.3
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.89 -2.07 -0.3
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.78 -2.21 -0.3
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.89 -2.07 -0.3
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -0.79 -2.1 -0.375
+gosub @TimeAddSpeedOffset
+04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.79 -2.1 -0.375
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 0.25 type 1 flare 0 RGB $R2 $G2 $B2
 return

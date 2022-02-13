@@ -106,7 +106,6 @@ else_jump @TimeReset
 3F10: set_car 0@ component "inner_vents" visible 0
 
 //045A: text_draw_1number 10.0 10.0 'DAY' 7@  // Best Result: ~1~th
-
 gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
 gosub @Hook  // Controls putting up/down the hook.  I forget the variations though.  It's in the garage thread so I can document it here as well.
 gosub @TimeResetCamera
@@ -187,60 +186,22 @@ end
 gosub @HoverConversion
 
 // Lightning check
-:TimeLightning
 0209: 2@ = random_int 0 1000
 if and
+    $LIGHTNING == 0
     $WEATHER == 2 // integer values
     2@ == 500     // integer values
     not 8@ == 0   // Flying
     00DC:   player $PLAYER_CHAR driving 0@
+else_jump @TimeLightningCheck
+$LIGHTNING = 1
+create_thread @Lightning 0@ 1@
+
+// =====================================================================================
+:TimeLightningCheck
+if
+    $LIGHTNING == 2
 else_jump @TimeCircuitsCheck
-040D: unload_wav 1
-0B10: 7@ = 1@ AND $TC_FRIED_BIT // Time Circuits Fried
-0B10: 8@ = 1@ AND $TC_BIT       // Time Circuits status
-if or
-  not 7@ == 0 // Time Circuits are fried
-  8@ == 0     // Time Circuits are off
-then
-    03CF: load_wav 'BURG_12' as 1 // Load standard sound
-else if
-    $MODE == 0 // integer values
-then
-    03CF: load_wav 'BURG_10' as 1 // Cutscene sound
-else
-    03CF: load_wav 'BURG_11' as 1 // Instant sound
-end
-end
-create_thread @PlaySound 1
-0169: set_fade_color 255 255 255
-
-// Set camera if we have functional time circuits for cutscene mode
-if and
-    $MODE == 0
-    7@ == 0     // Time Circuits are not fried
-    not 8@ == 0 // Time Circuits are on
-then
-    $CAMERA_CONTROL = 0
-    0407: create_coordinate $CAM_X $CAM_Y $CAM_Z from_car 0@ offset -15.0 10.0 7.5
-    Camera.SetPosition($CAM_X, $CAM_Y, $CAM_Z, 0.0, 0.0, 0.0)
-    Camera.OnVehicle(0@, 15, 1)
-end
-
-:LightningFlash
-for 7@ = 0 to 3 step 1
-    fade 0 100
-    wait 100
-    fade 1 100
-    if
-        7@ < 3
-    then
-        wait 500
-    end
-end
-jump @LightningFlash
-
-:LightningFryCircuits
-wait 100
 Car.Health(0@) = 300
 
 // Fry both the flying and time circuits
@@ -250,20 +211,6 @@ Car.Health(0@) = 300
 02D4: car 0@ turn_off_engine
 0407: create_coordinate $CCX $CCY $CCZ from_car 0@ offset 0.0 0.0 2.5
 jump @Time88TrackCamera
-
-// =====================================================================================
-
-:TimeEffectsModelReset
-3F10: set_car 0@ component "fluxcapacitorlightson" visible 0
-3F10: set_car 0@ component "fluxcapacitorlightsoff" visible 1
-3F18: set_car 0@ component "fluxcoilson" glow 0
-3F12: set car 0@ component "fluxcoilson" alpha 0
-3F10: set_car 0@ component "fluxcoilson" visible 0
-3F12: set car 0@ component "wormhole" alpha 0
-for 7@ = 1 to 8 step 1
-    3F11: set_car 0@ component "sidledsstatus" index 7@ visible 0
-end
-return
 
 :TimeCircuitsCheck
 // Check Time Circuits On for Effects
@@ -281,20 +228,8 @@ gosub @TimeUnloadSparkSounds
 
 // Bunch of speed related stuff for SID, coils, plasma, etc.
 if
-  11@ > 30.5 // == 56 mph
-else_jump @TimeStart
-
-3F10: set_car 0@ component "sidledsstatus1" visible 1
-if
-  11@ > 36.5 // == 67 mph
-else_jump @TimeStart
-3F10: set_car 0@ component "sidledsstatus1" visible 0
-3F10: set_car 0@ component "sidledsstatus2" visible 1
-if
   11@ > 40.5 // == 74.3 mph
 else_jump @TimeStart
-3F10: set_car 0@ component "sidledsstatus2" visible 0
-3F10: set_car 0@ component "sidledsstatus3" visible 1
 // Set alpha of coils to match speed of car
 0087: 2@ = 11@
 2@ -= 40.5
@@ -305,24 +240,17 @@ if
   3@ > 255
 then
   3@ = 255
-  3F18: set_car 0@ component "fluxcoilson" glow 1
 end
-3F10: set_car 0@ component "fluxcoilson" visible 1
 3F12: set car 0@ comp "fluxcoilson" alpha 3@
 if
   11@ > 43.5 // == 79.8 mph // floating-point values
 else_jump @TimeStart
-3F10: set_car 0@ component "sidledsstatus3" visible 0
-3F10: set_car 0@ component "sidledsstatus4" visible 1
 // Coils start glowing around 80 mph
 gosub @TimeCoil
 if
   11@ > 44.5 // == 81.7 mph // floating-point values
 else_jump @TimeStart
-3F10: set_car 0@ component "sidledsstatus4" visible 0
-3F10: set_car 0@ component "sidledsstatus5" visible 1
 3F10: set_car 0@ component "fluxcapacitorlightson" visible 1
-3F10: set_car 0@ component "fluxcapacitorlightsoff" visible 0
 for 7@ = 1 to 6 step 1
     3F11: set_car 0@ component "flux" index 7@ visible 1
 end
@@ -359,22 +287,9 @@ then
    gosub @TimeSparks
    gosub @TimeWormhole
 end
-
-if
-  11@ > 45.0 // floating-point values
-else_jump @TimeStart
-3F10: set_car 0@ component "sidledsstatus5" visible 0
-3F10: set_car 0@ component "sidledsstatus6" visible 1
-if
-  11@ > 46.5 // floating-point values
-else_jump @TimeStart
-3F10: set_car 0@ component "sidledsstatus6" visible 0
-3F10: set_car 0@ component "sidledsstatus7" visible 1
 if
   11@ > 47.6 // == 87.3 mph // floating-point values
 else_jump @TimeStart
-3F10: set_car 0@ component "sidledsstatus7" visible 0
-3F10: set_car 0@ component "sidledsstatus8" visible 1
 //gosub @Wire
 
 // Prepare for temporal displacement
@@ -383,7 +298,7 @@ if or
   not 7@ == 0 // Fueled
   Car.Model(0@) == #BUS
   Car.Model(0@) == #MAVERICK
-jf @TimeStart
+else_jump @TimeStart
 
 // Setup camera if we're in cutscene mode so we track the car before it time travels
 if and
@@ -549,14 +464,13 @@ then
     0169: set_fade_color 255 255 255
     043C: set_game_sounds_disable_on_fade 0
     fade 0 0
-    wait 0
+    //wait 0
     $TRAVEL = 1 // integer values
     $INST_TRAVEL = 1 // integer values
     $FADE = 1 // integer values
     3F12: set car 0@ component "fluxcoilson" alpha 0
     3F12: set car 0@ component "wormhole" alpha 0
     3F10: set_car 0@ component "fluxcapacitorlightson" visible 0
-    3F10: set_car 0@ component "fluxcapacitorlightsoff" visible 1
     3F10: set_car 0@ component "lightfl" visible 0
     3F10: set_car 0@ component "lightfr" visible 0
 else
@@ -585,13 +499,12 @@ else
 
 
     // Create Firetrail
-    0B10: 7@ = 1@ AND $TC_FRIED  // Get car variation
     if
-        7@ == 0
+        $LIGHTNING == 2
     then
-        create_thread @FireTrail 0@ 1@
-    else
         create_thread @FireTrail99 0@
+    else
+        create_thread @FireTrail 0@ 1@
     end
 
     // Handle the Train stuff if it has to dissapear.  This will be gone later.
@@ -618,6 +531,7 @@ else
         wait 10000
     end
 end
+$LIGHTNING = 0
 if
     80DC:   not player $PLAYER_CHAR driving 0@
 else_jump @TimeReentryFadeOut
@@ -710,6 +624,7 @@ then
 else
 03CF: load_wav 'BAND_01' as 1
 end
+create_thread @PlaySound 1
 while 83D0:   not wav 1 loaded
     wait 0
 end
@@ -863,7 +778,7 @@ $COOLDOWN = 1
 Car.Health(0@) = 8@
 Car.Angle(0@) = 9@
 Car.SetImmunities(0@, 0, 0, 0, 1, 1)
-wait 10
+//wait 10
 //13@ += 100000 // integer values
 04BA: set_car 0@ speed_instantly 11@
 if and
@@ -897,11 +812,13 @@ if
     7@ == 0  // Time circuits aren't fried
 then
     while 17@ < 999
-        wait 10
         gosub @TimeCoil
         gosub @TimeBodyGlow
+        wait 10
     end
 end
+3F18: set_car 0@ component "fluxcoilson" glow 0
+3F10: set_car 0@ component "fluxcoilson" visible 0
 3F12: set car 0@ component "fluxcoilson" alpha 0
 
 end_thread
@@ -923,6 +840,7 @@ end_thread
 0B10: 8@ = 1@ AND $TC_BIT
 if and
     00DC:   player $PLAYER_CHAR driving 0@
+    $LIGHTNING == 0
     $CAMERA_CONTROL == 0
 then
     if or

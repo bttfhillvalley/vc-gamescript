@@ -249,9 +249,6 @@ return
 3F10: set_car 0@ component "tcdswitchlightoff" visible 1
 3F10: set_car 0@ component "gloveboxgaugeslights" visible 0
 3F10: set_car 0@ component "tcdkeypadlightson" visible 0
-// Temp fix.  These need to be moved out
-3F14: move_car_part "tcdkeypadlightson" pos 0.0 -0.001 0.0 car 0@
-3F14: move_car_part "tcdkeypadenterlighton" pos 0.0 -0.001 0.0 car 0@
 //months
 for 4@ = 1 to 12
 	3F11: set_car 0@ component "dtmonth" index 4@ visible 0

@@ -98,9 +98,9 @@ jf @FuelRefuelOpenFusion
 
 // Plutonium refueling
 //preplace canister on vent
+3F14: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
 3F14: move_car_part "plutcanliquid" pos -0.4 -0.0 -0.02 car 0@
 3F14: move_car_part "plutcan" pos -0.4 -0.0 -0.02 car 0@
-3F14: move_car_part "plutcaninterior" pos -0.4 -0.0 -0.02 car 0@
 3F14: move_car_part "plut" pos -0.4 -0.0 -0.02 car 0@
 3F16: rotate_car_part "plutcaninterior" angle 0.0 0.0 -90.0 car 0@
 3F16: rotate_car_part "plutcanliquid" angle 0.0 0.0 -90.0 car 0@
@@ -132,14 +132,14 @@ wait 250
 04F7: status_text $PLUTONIUM 0 line 2 'PLUTO'  // Plutonium:
 //set canister in reactor
 For 4@ = 0.41 DownTo -0.01 Step 0.01
+    3F14: move_car_part "plutcaninterior" pos 0.0 0.0 4@ car 0@
     3F14: move_car_part "plutcanliquid" pos 0.0 0.0 4@ car 0@
     3F14: move_car_part "plutcan" pos 0.0 0.0 4@ car 0@
-    3F14: move_car_part "plutcaninterior" pos 0.0 0.0 4@ car 0@
     3F14: move_car_part "plut" pos 0.0 0.0 4@ car 0@
     wait 10
 end
 //turn canister
-    For 4@ = -90.0 To 0.0 Step 1.0
+For 4@ = -90.0 To 0.0 Step 1.0
     3F16: rotate_car_part "plutcaninterior" angle 0.0 0.0 4@ car 0@
     3F16: rotate_car_part "plutcanliquid" angle 0.0 0.0 4@ car 0@
     3F16: rotate_car_part "plutcan" angle 0.0 0.0 4@ car 0@

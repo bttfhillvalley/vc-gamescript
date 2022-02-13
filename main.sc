@@ -141,6 +141,9 @@ create_thread @TrainGlow           // Train Coils
 create_thread @Mode                // Instant & Cutscene Time Travel Modes
 create_thread @TimeCircuits        // On screen Time Circuits
 create_thread @TimeCircuitsModel   // in car time circuits
+for $SID = 1 to 10 step 1
+    create_thread @StatusIndicatorDisplay $SID   // in car time circuits
+end
 create_thread @CurrentTime         // Present Time information
 create_thread @MemoryManipulation  // The Keypad Core
 create_thread @Display             // Keys for turning on/off speedometer and time circuits
@@ -162,6 +165,7 @@ create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugMove helps us move objects/particles
 //create_thread @55TV
 //create_thread @55TVOff
+//create_thread @DebugCamera
 create_thread @CarSpawn
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
@@ -232,7 +236,9 @@ end
 {$INCLUDE script/TimeCircuitsModel.txt}
 {$INCLUDE script/TimeCircuits.txt}
 {$INCLUDE script/TimeEffects.txt}
+{$INCLUDE script/TimeLightning.txt}
 {$INCLUDE script/TimeMachineFuel.txt}
+{$INCLUDE script/TimeSID.txt}
 {$INCLUDE script/TimeTravel.txt}
 {$INCLUDE script/TimeTravelMode.txt}
 {$INCLUDE script/Train.txt}
