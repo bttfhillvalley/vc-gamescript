@@ -1,0 +1,31 @@
+:DrivingLights
+3F04: 1@ = get_car 0@ gear
+2@ = 0 // brakes
+3@ = 0 // reverse
+if
+    00DC:   player $PLAYER_CHAR driving 0@
+then
+    if
+        1@ == 0
+    then
+        if
+            00E1:   key_pressed 0 14
+        then
+            3@ = 1
+        end
+        if
+            00E1:   key_pressed 0 16
+        then
+            2@ = 1
+        end
+    else
+        if
+            00E1:   key_pressed 0 14
+        then
+            2@ = 1
+        end
+    end
+end
+3F10: set_car 0@ component "brklights" visible 2@
+3F10: set_car 0@ component "revlights" visible 3@
+return

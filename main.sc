@@ -213,6 +213,7 @@ end
 {$INCLUDE script/DoorCheck.txt}
 {$INCLUDE script/DrawText.txt}
 {$INCLUDE script/DrawTexture.txt}
+{$INCLUDE script/DrivingLights.txt}
 {$INCLUDE script/DebugCoords.txt}
 {$INCLUDE script/Environment.txt}
 {$INCLUDE script/FlyAnim.txt}

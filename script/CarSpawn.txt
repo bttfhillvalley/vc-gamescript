@@ -19,7 +19,7 @@ else_jump @CarSpawnStart
 0@ = Car.Create(10@, 1@, 2@, 3@)
 0175: set_car 0@ z_angle_to 4@
 create_thread @Time 0@ 0x4B0108 0 0 0 0 0 0 0 0 0 0 10261985 1000 -1 -1
-//create_thread @Time 0@ 0x400000 0 0 0 0 0 0 0 0 0 0 10261985 0121 -1 -1
+//create_thread @Time 0@ 0x80000 0 0 0 0 0 0 0 0 0 0 10261985 0121 -1 -1
 /*0369: put_player $PLAYER_CHAR in_car 0@
 wait 1000
 04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset 5.0 0.0 0.0

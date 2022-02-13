@@ -11,4 +11,5 @@ gosub @Shifter
 gosub @ParkingBrake
 gosub @CompassRotation
 gosub @DoorCheck
+gosub @DrivingLights
 jump @CarInterior
