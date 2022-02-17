@@ -46,11 +46,33 @@ jf @FuelCreateCoordinates
 if
     $EMPTY_FLASH == 0
 then
-    05F5: call_scm_func @DrawTexture params_count 5 2 825.0 155.0 38.0 23.0
+    if
+        $TIME_DISP == 1
+    then
+        05F5: call_scm_func @DrawTexture params_count 5 2 825.0 155.0 38.0 23.0
+    end
     3F10: set_car 0@ component "pchamberemptylight" visible 1
 else
-    05F5: call_scm_func @DrawTexture params_count 5 3 825.0 155.0 38.0 23.0
+    if
+        $TIME_DISP == 1
+    then
+        05F5: call_scm_func @DrawTexture params_count 5 3 825.0 155.0 38.0 23.0
+    end
     3F10: set_car 0@ component "pchamberemptylight" visible 0
+end
+
+// Randomly turn off the Plutonium powered car if its empty
+0B10: 7@ = 1@ AND $REAR_BIT  // Get fuel sorce
+if
+    7@ == 0  // Plutonium variation
+then
+    0209: 7@ = random_int_in_ranges 1 10000
+    if
+        7@ == 5000
+    then
+        $ENGINE_TURNOVER = 1  // Make it harder to turn on the engine
+        02D4: car 0@ turn_off_engine
+    end
 end
 jump @FuelReturn
 

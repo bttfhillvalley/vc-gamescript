@@ -1,23 +1,125 @@
 :Ignition
-thread 'IGNTN'
 
 // TODO:  This startup sequence needs to be redone
 // The oil pressure needle moves, but not the oil temp
 // Volts needle is oscillating too much
 
-:IgnitionStart
-wait 10
+3F02: 1@ = car 0@ engine_state
+// Show battery light
+if and
+    8119:   not car 0@ wrecked
+    00DC:   player $PLAYER_CHAR driving 0@
+    1@ == 0
+then
+    05F5: call_scm_func @DrawTexture params_count 5 5 782.0 155.0 45.0 23.0
+end
+// Handle Ignition
 if
-   Player.Defined($PLAYER_CHAR)
-else_jump @IgnitionStart
-if
-00DE:   player $PLAYER_CHAR driving_vehicle_type #INFERNUS //BTTF1
-else_jump @IgnitionStart
-03C1: 0@ = player $PLAYER_CHAR car
-040D: unload_wav 2
-03CF: load_wav 'BURG_02' as 2
-create_thread @PlaySound 2
+    80E1:   not key_pressed 0 16  // Accelerate Key
+then
+    12@ = 0
+end
 
+if and
+    1@ == 0
+    8119:   not car 0@ wrecked
+    00DC:   player $PLAYER_CHAR driving 0@
+    00E1:   key_pressed 0 16  // Accelerate Key
+    12@ == 0
+then
+    0209: 2@ = random_int 1 100
+    if or
+        $ENGINE_TURNOVER == 0
+        2@ == 50 // integer values
+    then
+        3F03: car 0@ turn_on_engine
+        $ENGINE_TURNOVER = 0
+        1@ = 1
+    else
+        05F5: call_scm_func @DrawTexture params_count 5 4 782.0 155.0 45.0 23.0 // battery light off
+        if
+            $START == 0 // integer values
+        then
+            $START = 1 // integer values
+            040D: unload_wav 1
+            03CF: load_wav 'BURG_05' as 1
+            create_thread @PlaySound 1
+        end
+    end
+else
+    if
+        $START == 1
+    then
+        $START = 0 // integer values
+        040D: unload_wav 1
+    end
+end
+
+// Handle shutting down when leaving car
+if and
+    1@ == 1
+    8119:   not car 0@ wrecked
+    00DC:   player $PLAYER_CHAR driving 0@
+    00E1:   key_pressed 0 15  // Exit car key
+then
+    02D4: car 0@ turn_off_engine
+    1@ = 0
+end
+
+// Sounds and setting engine state
+if
+    13@ == 0
+then
+    if
+        1@ == 1
+    then
+        13@ = 1 // Engine on
+        $IGNITION = 0
+        040D: unload_wav 2
+        03CF: load_wav 'BURG_02' as 2
+        create_thread @PlaySound 2
+        create_thread @DashboardStartup 0@
+    end
+else
+    if and
+        8119:   not car 0@ wrecked
+        00DC:   player $PLAYER_CHAR driving 0@
+        00E1:   key_pressed 0 16  // Accelerate Key
+    then
+        12@ = 1
+    end
+
+    if
+        1@ == 0
+    then
+        13@ = 0
+        040D: unload_wav 2
+        03CF: load_wav 'BURG_06' as 2
+        create_thread @PlaySound 2
+        // Stop Animations.  Probably don't have to other then get the voltage down to 0
+        create_thread @DashboardShutdown 0@
+    end
+end
+return
+
+:DashboardShutdown
+3F16: rotate_car_part "ignitionkey" angle 225.0 0.0 0.0 car 0@
+3F16: rotate_car_part "ignition" angle 225 0.0 0.0 car 0@
+//down
+for 1@ = 30.0 to -80.0 step -5.0
+    wait 10
+    3F16: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
+end
+3F10: set_car 0@ component "seatbeltlight" visible 0
+3F10: set_car 0@ component "lambdalight" visible 0
+3F10: set_car 0@ component "oillight" visible 0
+3F10: set_car 0@ component "fuellight" visible 0
+3F10: set_car 0@ component "brakelight" visible 0
+3F10: set_car 0@ component "batterylight" visible 0
+end_thread
+
+// Animate ignition sequence
+:DashboardStartup
 //turn key
 wait 0
 // Initialize dashboard
@@ -26,7 +128,6 @@ wait 0
 3F16: rotate_car_part "oilneedle" angle 0.0 -30.0 0.0 car 0@  //warm main temp
 3F10: set_car 0@ component "lambdalight" visible 0 //keep off
 3F10: set_car 0@ component "fuellight" visible 0   //keep off
-//3F10: set_car 0@ component "doorajarlight" visible 1 //activate
 3F10: set_car 0@ component "oillight" visible 1     //activate
 3F10: set_car 0@ component "brakelight" visible 1    //activate
 3F10: set_car 0@ component "batterylight" visible 1  //activate
@@ -77,12 +178,4 @@ for 1@ = -75.0 to 30 step 5.0
     wait 10
     3F16: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
 end
-
-
-:IgnitionWait
-wait 10
-if and
-8119:   not car 0@ wrecked
-00DC:   player $PLAYER_CHAR driving 0@
-else_jump @IgnitionStart
-jump @IgnitionWait
+end_thread

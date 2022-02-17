@@ -312,7 +312,7 @@ jf @WheelThrustEnd
 3F10: set_car 0@ component "fxthrusterbttf2lfth" visible 1
 
 // Thrusters
-/*0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.5
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.2 -1.339 -1.5
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -1.1 1.414 -1.5
@@ -346,10 +346,11 @@ gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.2 -1.339 -0.5
 gosub @TimeAddSpeedOffset
+
 04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.1 1.414 -0.5
 gosub @TimeAddSpeedOffset
-04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175     */
+04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
 jump @WheelThrustCheck
 
 :WheelThrustUnloadSound

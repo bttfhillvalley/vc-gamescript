@@ -1,3 +1,5 @@
+// 12@ Resrved for acceleration key status
+// 13@ Reserved for Engine state
 // 14@ Reserved for RPM
 // 15@ Reserved for Parking Brake
 :CarInterior
@@ -6,6 +8,7 @@ if
    not Car.Wrecked($DELOREAN)
 jf @CarInterior
 008B: 0@ = $DELOREAN // integer values and handles
+gosub @Ignition
 gosub @CarClock
 gosub @Shifter
 gosub @ParkingBrake

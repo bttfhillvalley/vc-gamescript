@@ -20,8 +20,8 @@ DEFINE MISSIONS 0
 {$OPCODE 3F09=2,remove_build %1p% amnt %2p%}                                    // removes all buildings and objects in a .dat file
 {$OPCODE 3F10=3,set_car %1d% component %2d% visible %3d%}                       // show or hide a car part by name
 {$OPCODE 3F11=4,set_car %1d% component %2d% index %4d% visible %3d%}            // show or hide a car part with index
-{$OPCODE 3F12=3,set car %1d% component %2d% alpha %3d%}                              // sets a car part's alpha from 0-255 instead of hiding or showing it completely
-{$OPCODE 3F13=3,set car %1d% component %2d% alpha %3d%}                              // sets a car part with index alpha from 0-255 instead of hiding or showing it completely
+{$OPCODE 3F12=3,set car %1d% component %2d% alpha %3d%}                         // sets a car part's alpha from 0-255 instead of hiding or showing it completely
+{$OPCODE 3F13=4,set car %1d% component %2d% index %4d% alpha %3d%}              // sets a car part with index alpha from 0-255 instead of hiding or showing it completely
 {$OPCODE 3F14=5,move_car_part %1d% pos %2d% %3d% %4d% car %5d%}                 // moves a car part by its frame
 {$OPCODE 3F15=6,move_car_part %1d% index %6d% pos %2d% %3d% %4d% car %5d%}      // moves a car part with index by its frame
 {$OPCODE 3F16=5,rotate_car_part %1d% angle %2d% %3d% %4d% car %5d%}             // rotates a car part by its frame
@@ -51,6 +51,7 @@ set_wb_check_to 0
 Camera.SetAtPos(892.0571, -1136.9220, 10.2717)
 
 $PLAYER_CHAR = Player.Create(#NULL, 892.0571, -1136.9220, 10.2717) // Mall
+0171: set_player $PLAYER_CHAR z_angle_to 180.0
 //$PLAYER_CHAR = Player.Create(#NULL, -1116.9710, 699.6134, 15.1518) // Garage
 //$PLAYER_CHAR = Player.Create(#NULL, -1376.2, -155.2, 248.6) // McFly interior 85
 //$PLAYER_CHAR = Player.Create(#NULL, -1560.4, -301.621, 17.23) // Lyon estates
@@ -150,11 +151,9 @@ create_thread @Display             // Keys for turning on/off speedometer and ti
 //create_thread @HoverConversion     // New Hover Conversion code
 //create_thread @Hover               // Flying 2015 cars
 //create_thread @RadioControl        // RC Mode
-create_thread @Shutdown            // All the parts that move when exiting a DeLorean
 //create_thread @GetPlutonium        // Plutonium pickup and lybians
 //create_thread @Garage              // DeLorean Garage
 create_thread @DrawRefresh         // On screen text display rendering
-create_thread @Ignition            // All the parts that move when entering a DeLorean
 create_thread @Environment         // Weather, parked car and ped generators for time trave
 create_thread @HillValley          // Real Time Clock and courthouse spawner
 create_thread @Conversion          // Flying DeLorean and Train hover conversion animations
@@ -208,6 +207,7 @@ end
 {$INCLUDE script/CompassRotation.txt}
 {$INCLUDE script/CurrentTime.txt}
 {$INCLUDE script/DeloreanVariation.txt}
+{$INCLUDE script/DebugCamera.txt}
 {$INCLUDE script/DigitalSpeedometer.txt}
 {$INCLUDE script/DisplayToggle.txt}
 {$INCLUDE script/DoorCheck.txt}
@@ -231,7 +231,6 @@ end
 {$INCLUDE script/RadioControl.txt}
 {$INCLUDE script/Rogers.txt}
 {$INCLUDE script/Shifter.txt}
-{$INCLUDE script/ShutDown.txt}
 {$INCLUDE script/Taxi.txt}
 {$INCLUDE script/TimeChangingMap.txt}
 {$INCLUDE script/TimeCircuitsModel.txt}

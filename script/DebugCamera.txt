@@ -32,12 +32,13 @@ then
         Camera.SetBehindPlayer
         1@ = 0
     else
-        0407: create_coordinate 2@ 3@ 4@ from_car $DELOREAN offset -2.5 4.5 1.0
+        0407: create_coordinate 2@ 3@ 4@ from_car $DELOREAN offset 1.75 -4.0 0.0
+        0407: create_coordinate 5@ 6@ 7@ from_car $DELOREAN offset 0.0 0.0 0.0
         005D: 2@ += $X_OFF // floating-point values (never used in VC or GTA 3)
         005D: 3@ += $Y_OFF // floating-point values (never used in VC or GTA 3)
         005D: 4@ += $Z_OFF // floating-point values (never used in VC or GTA 3)
         Camera.SetPosition(2@, 3@, 4@, 0.0, 0.0, 0.0)
-        Camera.OnVehicle($DELOREAN, 15, 2)
+        Camera.PointAt(5@, 6@, 7@, 2)
     end
 end
 jump @DebugCamera

@@ -207,6 +207,10 @@ end_thread
 3F10: set_car 0@ component "fuellight" visible 0
 3F10: set_car 0@ component "brakelight" visible 0
 3F10: set_car 0@ component "batterylight" visible 0
+3F10: set_car 0@ component "lowbeamslight" visible 0
+3F10: set_car 0@ component "highbeamslight" visible 0
+3F10: set_car 0@ component "turnsignalllight" visible 0
+3F10: set_car 0@ component "turnsignalrlight" visible 0
 3F10: set_car 0@ component "pchamberemptylight" visible 0
 3F10: set_car 0@ component "tcdkeypadenterlighton" visible 0
 3F10: set_car 0@ component "lightFL" visible 0
@@ -217,7 +221,7 @@ end_thread
 3F10: set_car 0@ component "turnlightlb" visible 0
 3F10: set_car 0@ component "brklights" visible 0
 3F10: set_car 0@ component "revlights" visible 0
-3F10: set_car 0@ component "headlighshighon" visible 0
+3F10: set_car 0@ component "headlightshighon" visible 0
 return
 
 :ThrusterLightsOff

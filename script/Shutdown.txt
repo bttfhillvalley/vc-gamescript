@@ -21,7 +21,7 @@ if and
 00DC:   player $PLAYER_CHAR driving 0@
 else_jump @ShutdownStart
 if or
-    00E1:   key_pressed 0 15
+    00E1:   key_pressed 0 15  // Exit car key
     $TURN_OFF == 1 // integer values
 else_jump @ShutdownDriving
 02D4: car 0@ turn_off_engine
@@ -32,19 +32,7 @@ else_jump @ShutdownStart
 040D: unload_wav 2
 03CF: load_wav 'BURG_06' as 2
 create_thread @PlaySound 2
-3F16: rotate_car_part "ignitionkey" angle 225.0 0.0 0.0 car 0@
-3F16: rotate_car_part "ignition" angle 225 0.0 0.0 car 0@
-//down
-for 1@ = 30.0 to 80.0 step 5.0
-    wait 10
-    3F16: rotate_car_part "voltsneedle" angle 0.0 1@ 0.0 car 0@
-end
-3F10: set_car 0@ component "seatbeltlight" visible 0
-3F10: set_car 0@ component "lambdalight" visible 0
-3F10: set_car 0@ component "oillight" visible 0
-3F10: set_car 0@ component "fuellight" visible 0
-3F10: set_car 0@ component "brakelight" visible 0
-3F10: set_car 0@ component "batterylight" visible 0
+
 03D1: play_wav 2
 $OFF = 1 // integer values
 

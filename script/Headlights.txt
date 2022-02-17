@@ -1,5 +1,15 @@
 :Headlights
+// 1@ - Night Lights
+// 2@ - 0: Off, 1: Left, 2: Right 3: Both
+// 3@ - Turn signal blinking
+// 4@ - Current Turn stalk position
+// 5@ - Target Turn stalk position
+// 6@ - Engine State
+
+
 thread 'HLIGHT'
+4@ = 0.0
+5@ = 0.0
 
 :HeadlightsStart
 wait 10
@@ -8,9 +18,10 @@ if
 else_jump @HeadlightsStart
 1@ = 0 // Off
 if
-     00E0:   player $PLAYER_CHAR in_any_car
+    00E0:   player $PLAYER_CHAR in_any_car
 else_jump @HeadlightsShow
 03C1: 0@ = player $PLAYER_CHAR car
+
 if or
     $CTIME1 >= 2020 // integer values
     $CTIME1 < 650 // integer values
@@ -19,15 +30,135 @@ if or
     $WEATHER == 5 // integer values
     $WEATHER == 9 // integer values
     $WEATHER == 10 // integer values
-else_jump @HeadlightsShow
-1@ = 1 // On
+then
+    1@ = 1 // On
+end
 
 :HeadlightsShow
 if
-    not Car.Wrecked(0@)
+8119:   not car 0@ wrecked
 else_jump @HeadlightsStart
 3F10: set_car 0@ component "lightFL" visible 1@
 3F10: set_car 0@ component "lightFR" visible 1@
-3F10: set_car 0@ component "turnlightrf" visible 1@
-3F10: set_car 0@ component "turnlightlf" visible 1@
+3F10: set_car 0@ component "lowbeamslight" visible 1@
+
+// Turn Indicators
+// Left
+if
+    $KEY == 59 // ";"
+then
+    if
+        2@ == 1
+    then
+        2@ = 0
+    else
+        2@ = 1
+        16@ = 0
+    end
+end
+
+// Right
+if
+    $KEY == 39 // "'"
+then
+    if
+        2@ == 2
+    then
+        2@ = 0
+    else
+        2@ = 2
+        16@ = 0
+    end
+end
+
+// Hazard
+if
+    $KEY == 76 // "l"
+then
+    if
+        2@ == 3
+    then
+        2@ = 0
+    else
+        2@ = 3
+        16@ = 0
+    end
+end
+
+// Blinker timer
+if
+    16@ < 500
+then
+    3@ = 1
+else
+    3@ = 0
+end
+
+if
+    16@ > 1000
+then
+    16@ = 0
+end
+
+// Show indicators
+if
+    2@ == 0
+then
+    3F10: set_car 0@ component "turnlightrf" visible 1@
+    3F10: set_car 0@ component "turnlightlf" visible 1@
+    3F10: set_car 0@ component "turnlightrb" visible 0
+    3F10: set_car 0@ component "turnlightlb" visible 0
+    3F10: set_car 0@ component "turnsignalrlight" visible 0
+    3F10: set_car 0@ component "turnsignalllight" visible 0
+    5@ = 0.0
+end
+
+if
+    2@ == 1
+then
+    3F10: set_car 0@ component "turnlightrf" visible 1@
+    3F10: set_car 0@ component "turnlightlf" visible 3@
+    3F10: set_car 0@ component "turnlightrb" visible 0
+    3F10: set_car 0@ component "turnlightlb" visible 3@
+    3F10: set_car 0@ component "turnsignalrlight" visible 0
+    3F10: set_car 0@ component "turnsignalllight" visible 3@
+    5@ = -5.0
+end
+
+if
+    2@ == 2
+then
+    3F10: set_car 0@ component "turnlightrf" visible 3@
+    3F10: set_car 0@ component "turnlightlf" visible 1@
+    3F10: set_car 0@ component "turnlightrb" visible 3@
+    3F10: set_car 0@ component "turnlightlb" visible 0
+    3F10: set_car 0@ component "turnsignalrlight" visible 3@
+    3F10: set_car 0@ component "turnsignalllight" visible 0
+    5@ = 5.0
+end
+
+if
+    2@ == 3
+then
+    3F10: set_car 0@ component "turnlightrf" visible 3@
+    3F10: set_car 0@ component "turnlightlf" visible 3@
+    3F10: set_car 0@ component "turnlightrb" visible 3@
+    3F10: set_car 0@ component "turnlightlb" visible 3@
+    3F10: set_car 0@ component "turnsignalrlight" visible 3@
+    3F10: set_car 0@ component "turnsignalllight" visible 3@
+    5@ = 0.0
+end
+
+if
+    0025: 5@ > 4@
+then
+    4@ += 1.0
+else if
+    0025: 4@ > 5@
+then
+    4@ -= 1.0
+end
+end
+3F16: rotate_car_part "turnsignallever" angle 0.0 4@ 0.0 car 0@
+
 jump @HeadlightsStart
