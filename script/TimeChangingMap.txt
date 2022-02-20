@@ -1,38 +1,49 @@
 :DateCheckStart
 wait 0
-3F09: remove_build "55lyon" amnt 4
-3F09: remove_build "farm" amnt 17
+3F09: remove_build "1855" amnt 0
+3F09: remove_build "1955" amnt 17
 3F09: remove_build "1985" amnt 7
 3F09: remove_build "2015" amnt 7
-3F09: remove_build "85mall" amnt 90
 
 :DateCheck
 if
-   $CYEAR < 1980
+    $CYEAR < 1910
 then
-3F08: add_build "55lyon" amnt 4
-3F08: add_build "farm" amnt 17
-   jump @WaitToLeave1955
+    3F08: add_build "1885" amnt 4
+    jump @WaitToLeave1885
 else if
-   $CYEAR >= 2010
+    $CYEAR < 1980
 then
-   3F08: add_build "2015" amnt 7
-   jump @WaitToLeave2015
+    3F08: add_build "1955" amnt 4
+    jump @WaitToLeave1955
+else if
+    $CYEAR < 2010
+then
+    3F08: add_build "1985" amnt 7
+    create_thread @canopener
+    jump @WaitToLeave1985
 else
-   3F08: add_build "1985" amnt 7
-   3F08: add_build "85mall" amnt 90
-   create_thread @canopener
-   jump @WaitToLeave1985
+    3F08: add_build "2015" amnt 7
+    jump @WaitToLeave2015
+end
 end
 end
 
-:WaitToLeave1955
+:WaitToLeave1885
 wait 0
 if
-  $CYEAR >= 1980 // We traveled to the present/future
-jf @WaitToLeave1955
-3F09: remove_build "55lyon" amnt 4
-3F09: remove_build "farm" amnt 17
+    $CYEAR >= 1910
+else_jump @WaitToLeave1885
+3F09: remove_build "1885" amnt 4
+jump @DateCheck
+
+:WaitToLeave1955
+wait 0
+if or
+    $CYEAR < 1910
+    $CYEAR >= 1980 // We traveled to the present/future
+else_jump @WaitToLeave1955
+3F09: remove_build "1955" amnt 4
 jump @DateCheck
 
 :WaitToLeave1985
@@ -40,9 +51,8 @@ wait 0
 if or
   $CYEAR < 1980 // We traveled back to the past
   $CYEAR >= 2010 // We traveled to the future
-jf @WaitToLeave1985
+else_jump @WaitToLeave1985
 3F09: remove_build "1985" amnt 7
-3F09: remove_build "85mall" amnt 90
 end_thread_named 'canopn'
 0108: destroy_object $dogfoodbase
 0108: destroy_object $dogfoodarm
@@ -68,6 +78,6 @@ jump @DateCheck
 wait 0
 if
   $CYEAR < 2010 // We traveled to the past/present
-jf @WaitToLeave2015
+else_jump @WaitToLeave2015
 3F09: remove_build "2015" amnt 7
 jump @DateCheck
