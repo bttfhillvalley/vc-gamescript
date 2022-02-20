@@ -47,15 +47,10 @@ fade 0 0
 set_wb_check_to 0
 00C0: set_current_time 8 0
 0572: set_taxi_boost_jump 1
-04E4: unknown_refresh_game_renderer_at 892.0571 -1136.9220
-Camera.SetAtPos(892.0571, -1136.9220, 10.2717)
-
-$PLAYER_CHAR = Player.Create(#NULL, 892.0571, -1136.9220, 10.2717) // Mall
+04E4: unknown_refresh_game_renderer_at 625.157 454.36
+Camera.SetAtPos(625.157, 454.36, 10.0)
+$PLAYER_CHAR = Player.Create(#NULL, 625.157, 454.36, 10.0) // VC mansion
 0171: set_player $PLAYER_CHAR z_angle_to 180.0
-//$PLAYER_CHAR = Player.Create(#NULL, -1116.9710, 699.6134, 15.1518) // Garage
-//$PLAYER_CHAR = Player.Create(#NULL, -1376.2, -155.2, 248.6) // McFly interior 85
-//$PLAYER_CHAR = Player.Create(#NULL, -1560.4, -301.621, 17.23) // Lyon estates
-//$PLAYER_CHAR = Player.Create(#NULL, -306.1443, -750.9825, 11.8055) // Hill valley
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
 $1955 = 1955 // integer values
@@ -166,12 +161,14 @@ create_thread @DateCheckStart      // New Time Changing code
 //create_thread @55TVOff
 //create_thread @DebugCamera
 create_thread @CarSpawn
+0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
 set_weather $WEATHER
 if
     not Actor.Dead($PLAYER_ACTOR)
 then
+023C: load_special_actor 1 'PLAYER8'
     0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER8'  //Marty Red T-Shirt
     038B: load_requested_models
     0353: refresh_actor $PLAYER_ACTOR

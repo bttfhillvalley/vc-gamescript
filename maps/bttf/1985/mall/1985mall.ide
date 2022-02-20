@@ -1,0 +1,76 @@
+objs
+5373, McFlyDoor, McFlyHouse, 1, 300, 1
+5374, McFlyHouse, McFlyHouse, 1, 300, 1
+5375, McFly1985v1, McFly1985v1, 1, 300, 1
+5380, mallshrubs, mall_generic, 1, 300, 1
+5392, mallclock_hr, mallclock1, 1, 300, 1
+5393, mallclock_hr1, mallclock1, 1, 300, 1
+5394, mallclock_colon, mallclock1, 1, 300, 1
+5395, mallclock_m1, mallclock1, 1, 300, 1
+5396, mallclock_m2, mallclock1, 1, 300, 1
+5397, mallclock_am, mallclock1, 1, 300, 1
+6343, mall_st1, mall_st, 1, 300, 1
+6342, mall_st2, mall_st, 1, 300, 1
+6322, mall_st3, mall_st, 1, 300, 1
+6323, mall_st4, mall_st, 1, 300, 1
+6325, mall_st6, mall_st, 1, 300, 1
+6327, mall_st8, mall_st, 1, 300, 1
+6345, mall_st9, mall_st, 1, 300, 1
+6329, mall_st10, mall_st, 1, 300, 1
+6330, mall_st11, mall_st, 1, 300, 1
+6331, mall_st12, mall_st, 1, 300, 1
+6332, mall_st13, mall_st, 1, 300, 1
+6333, mall_st14, mall_st, 1, 300, 1
+6336, mall_st17, mall_st, 1, 300, 1
+6337, mall_st18, mall_st, 1, 300, 1
+6338, mall_st19, mall_st, 1, 300, 1
+6300, mall_building, mall_building, 1, 300, 0
+6292, mall_roof, mall_roof, 1, 300, 0
+6298, mall_sign, mall_sign, 1, 300, 0
+6339, mall_build3, mall_build3, 1, 300, 0
+6309, mall_tygfridays2, mall_tyg2, 1, 300, 0
+6294, park_stripes1, mall_building, 1, 300, 0
+6303, mall_foxset, mall_foxset, 1, 300, 0
+6316, tyg_building1, tyg_build1, 1, 300, 0
+6289, mall_grass, mall_generic, 1, 300, 0
+6295, mall_lamp, mall_building, 1, 300, 0
+6290, mall_palm, mall_generic, 1, 300, 0
+6291, mall_trashbin, mall_building, 1, 300, 0
+6308, mall_tree, mall_generic, 1, 300, 0
+6307, mall_tree_dead, mall_generic, 1, 300, 0
+6328, mall_tree2, mall_generic, 1, 300, 0
+6305, park_brushtree, mall_generic, 1, 300, 0
+6306, park_tree, mall_generic, 1, 300, 0
+6319, tyg_lamp, mall_st, 1, 300, 0
+6293, park_stripes2, mall_building, 1, 300, 0
+6346, tyg_umbre1, tyg_build1, 1, 200, 1
+end
+tobj
+5382, dmcstsign_d, dmcstsign, 1, 300, 4, 6, 19
+5383, dmcstsign_n, dmcstsign, 1, 300, 4, 19, 6
+5398, lonepine_d, lonepine, 1, 300, 4, 6, 19
+5399, lonepine_n, lonepine, 1, 300, 4, 19, 6
+5400, nopine_d, nopine, 1, 300, 4, 6, 19
+5401, nopine_n, nopine, 1, 300, 4, 19, 6
+6301, mall_building_d, mall_building, 1, 300, 4, 6, 19
+6302, mall_building_n, mall_building, 1, 300, 4, 19, 6
+6340, mall_build3_d, mall_build3, 1, 300, 4, 6, 19
+6341, mall_build3_n, mall_build3, 1, 300, 4, 19, 6
+6304, mall_foxset_d, mall_foxset, 1, 300, 4, 6, 19
+6344, mall_foxset_n, mall_foxset, 1, 300, 4, 19, 6
+6299, mall_sign_d, mall_generic, 1, 300, 4, 6, 19
+6297, mall_sign_n, mall_generic, 1, 300, 4, 19, 6
+6310, mall_tygfridays2_d, mall_tyg2, 1, 300, 4, 6, 19
+6311, mall_tygfridays2_n, mall_tyg2, 1, 300, 4, 19, 6
+6317, tyg_building1_d, tyg_build1, 1, 300, 4, 6, 19
+6318, tyg_building1_n, tyg_build1, 1, 300, 4, 19, 6
+6320, tyg_lamp2_d, tyg_build1, 1, 300, 4, 6, 19
+6321, tyg_lamp2_n, tyg_build1, 1, 300, 4, 19, 6
+5377, dmcdlrshipnight, DMCDlrship, 1, 300, 4, 19, 6
+end
+2dfx
+6295, 1.73, 0, 19.3, 255, 207, 43, 200, 0, "coronastar", "shad_exp", 400, 8, 2, 0, 80, 1, 0, 0, 0
+6295, -1.73, 0, 19.3, 255, 207, 43, 200, 0, "coronastar", "shad_exp", 400, 8, 2, 0, 80, 1, 0, 0, 0
+6319, 0, 0, 0, 255, 226, 111, 200, 0, "coronastar", "shad_exp", 300, 8, 1, 0, 40, 1, 0, 0, 0
+6321, 0, 0, 0, 255, 255, 255, 200, 0, "coronastar", "shad_exp", 200, 8, 1, 0, 40, 1, 0, 0, 0
+end

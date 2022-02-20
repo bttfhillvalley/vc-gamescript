@@ -1,2 +1,2 @@
-//Attention: Do not decompile our code, you'll run int issues compiling again!
+//Attention: Do not decompile our code, you'll run into issues compiling again!
 //See the sourcecode in the folder _src in the root of the game directory.

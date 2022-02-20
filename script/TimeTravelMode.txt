@@ -21,10 +21,10 @@ $MODE += 1 // integer values
 if
     $MODE == 1 // integer values
 then
-    03E5: text_box 'MODE2'  // Mode: Instant Time Travel Sequence
+    03E5: text_box 'MODE1'  // Mode: Instant Time Travel Sequence
 else
     $MODE = 0 // integer values
-    03E5: text_box 'MODE1'  // Mode: Cutscene Time Travel Sequence
+    03E5: text_box 'MODE2'  // Mode: Cutscene Time Travel Sequence
 end
 wait 1000
 jump @ModeStart

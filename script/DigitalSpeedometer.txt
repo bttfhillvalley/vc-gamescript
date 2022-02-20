@@ -95,14 +95,14 @@ while true
                 gosub @TextDraw
                 033F: set_text_draw_letter_width_height 2.0 8.0
             	03E4: set_text_draw_align_right 1
-                045A: text_draw_1number 585.0 375.0 'SPEED1' 6@  // ~1~
+                045A: text_draw_1number 585.0 375.0 'NUMBER' 6@  // ~1~
             end
 
             //ones digit with decimal point
             gosub @TextDraw
             033F: set_text_draw_letter_width_height 2.0 8.0
         	03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 630.0 375.0 'SPEED' 5@  // 0~1~.
+            045A: text_draw_1number 630.0 375.0 'SPEED' 5@  // ~1~.
         else
             1@ = 255 // integer values
             2@ = 165 // integer values
@@ -112,7 +112,7 @@ while true
             gosub @TextDraw
             033F: set_text_draw_letter_width_height 2.0 8.0
         	03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 540.0 375.0 'SPEED1' 6@  // ~1~
+            045A: text_draw_1number 540.0 375.0 'NUMBER' 6@  // ~1~.
 
             //ones digit with decimal point
             gosub @TextDraw
@@ -124,7 +124,7 @@ while true
             gosub @TextDraw
             033F: set_text_draw_letter_width_height 2.0 8.0
         	03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 630.0 375.0 'SPEED1' 4@  // ~1~
+            045A: text_draw_1number 630.0 375.0 'NUMBER' 4@  // ~1~
 
         end
     end

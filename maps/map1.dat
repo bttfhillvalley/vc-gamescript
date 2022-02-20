@@ -1,0 +1,33 @@
+#
+# Load IDEs first, then the models and after that the IPLs
+#
+
+# everything is loaded on a per directory basis and in alphabetical order 
+# to improve the speed of loading
+
+#
+# Object types
+#
+IDE DATA\MAPS\GTA3.IDE
+
+#collision data
+COLFILE 0 MODELS\COLL\GENERIC.COL
+COLFILE 0 MODELS\COLL\MIAMI.COL
+
+SPLASH loadsc3
+
+# have to load map.zon before any of the IPLs
+MAPZONE DATA\MAP.ZON
+IPL DATA\GTA3.ZON
+#
+# Scene information
+#
+IPL DATA\MAPS\littleha.IPL
+IPL DATA\MAPS\downtown.IPL
+IPL DATA\MAPS\docks.IPL
+IPL DATA\MAPS\washintn.IPL
+IPL DATA\MAPS\oceandrv.IPL
+IPL DATA\MAPS\golf.IPL
+IPL DATA\MAPS\starisl.IPL
+IPL DATA\MAPS\nbeachbt.IPL
+IPL DATA\MAPS\nbeach.IPL

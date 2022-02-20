@@ -163,20 +163,20 @@ return
 
 :TimeCircuitsDay
 gosub @TextDrawRight
-045A: text_draw_1number 519.0 8@ 'DAY' 14@  // ~1~
+045A: text_draw_1number 519.0 8@ 'NUMBER' 14@  // ~1~
 gosub @TextDrawRight
-045A: text_draw_1number 529.0 8@ 'DAY' 15@  // ~1~
+045A: text_draw_1number 529.0 8@ 'NUMBER' 15@  // ~1~
 return
 
 :TimeCircuitsYear
 gosub @TextDrawRight
-045A: text_draw_1number 545.0 8@ 'YEAR' 4@  // ~1~
+045A: text_draw_1number 545.0 8@ 'NUMBER' 4@  // ~1~
 gosub @TextDrawRight
-045A: text_draw_1number 555.0 8@ 'YEAR' 5@  // ~1~
+045A: text_draw_1number 555.0 8@ 'NUMBER' 5@  // ~1~
 gosub @TextDrawRight
-045A: text_draw_1number 565.0 8@ 'YEAR' 6@  // ~1~
+045A: text_draw_1number 565.0 8@ 'NUMBER' 6@  // ~1~
 gosub @TextDrawRight
-045A: text_draw_1number 575.0 8@ 'YEAR' 7@  // ~1~
+045A: text_draw_1number 575.0 8@ 'NUMBER' 7@  // ~1~
 return
 
 :TimeCircuitsTime
@@ -184,9 +184,9 @@ gosub @TextDraw
 if
     9@ < 12
 then
-    033E: text_draw 580.0 8@ 'AM1'  // ?
+    033E: text_draw 580.0 8@ 'AM'  // ?
 else
-    033E: text_draw 580.0 8@ 'PM1'  // .
+    033E: text_draw 580.0 8@ 'PM'  // .
 end
 if
     9@ > 12
@@ -218,13 +218,13 @@ return
 0062: 10@ -= 9@
 9@ /= 10
 gosub @TextDrawRight
-045A: text_draw_1number 599.5 8@ 'HOUR1' 9@  // ~1~
+045A: text_draw_1number 599.5 8@ 'NUMBER' 9@  // ~1~
 gosub @TextDrawRight
-045A: text_draw_1number 610.5 8@ 'HOUR1' 10@  // ~1~
+045A: text_draw_1number 610.5 8@ 'NUMBER' 10@  // ~1~
 gosub @TextDrawRight
-045A: text_draw_1number 624.5 8@ 'MINUTE' 11@  // ~1~
+045A: text_draw_1number 624.5 8@ 'NUMBER' 11@  // ~1~
 gosub @TextDrawRight
-045A: text_draw_1number 634.5 8@ 'MINUTE' 12@  // ~1~
+045A: text_draw_1number 634.5 8@ 'NUMBER' 12@  // ~1~
 return
 
 :TimeCircuitsMonth
@@ -234,84 +234,84 @@ gosub @TextDraw
 if
   13@ == 1 // integer values
 jf @TimeCircuitsFeb
-033E: text_draw 476.0 8@ 'MONTH01'  // Jan
+033E: text_draw 476.0 8@ 'JAN'  // Jan
 return
 
 :TimeCircuitsFeb
 if
   13@ == 2 // integer values
 jf @TimeCircuitsMar
-033E: text_draw 476.0 8@ 'MONTH02'  // feb
+033E: text_draw 476.0 8@ 'FEB'  // feb
 return
 
 :TimeCircuitsMar
 if
   13@ == 3 // integer values
 jf @TimeCircuitsApr
-033E: text_draw 476.0 8@ 'MONTH03'  // mar
+033E: text_draw 476.0 8@ 'MAR'  // mar
 return
 
 :TimeCircuitsApr
 if
   13@ == 4 // integer values
 jf @TimeCircuitsMay
-033E: text_draw 476.0 8@ 'MONTH04'  // apr
+033E: text_draw 476.0 8@ 'APR'  // apr
 return
 
 :TimeCircuitsMay
 if
   13@ == 5 // integer values
 jf @TimeCircuitsJun
-033E: text_draw 476.0 8@ 'MONTH05'  // may
+033E: text_draw 476.0 8@ 'MAY'  // may
 return
 
 :TimeCircuitsJun
 if
   13@ == 6 // integer values
 jf @TimeCircuitsJul
-033E: text_draw 476.0 8@ 'MONTH06'  // Jun
+033E: text_draw 476.0 8@ 'JUN'  // Jun
 return
 
 :TimeCircuitsJul
 if
   13@ == 7 // integer values
 jf @TimeCircuitsAug
-033E: text_draw 476.0 8@ 'MONTH07'  // Jul
+033E: text_draw 476.0 8@ 'JUL'  // Jul
 return
 
 :TimeCircuitsAug
 if
   13@ == 8 // integer values
 jf @TimeCircuitsSep
-033E: text_draw 476.0 8@ 'MONTH08'  // aug
+033E: text_draw 476.0 8@ 'AUG'  // aug
 return
 
 :TimeCircuitsSep
 if
   13@ == 9 // integer values
 jf @TimeCircuitsOct
-033E: text_draw 476.0 8@ 'MONTH09'  // sep
+033E: text_draw 476.0 8@ 'SEP'  // sep
 return
 
 :TimeCircuitsOct
 if
   13@ == 10 // integer values
 jf @TimeCircuitsNov
-033E: text_draw 476.0 8@ 'MONTH10'  // oct
+033E: text_draw 476.0 8@ 'OCT'  // oct
 return
 
 :TimeCircuitsNov
 if
   13@ == 11 // integer values
 jf @TimeCircuitsDec
-033E: text_draw 476.0 8@ 'MONTH11'  // nov
+033E: text_draw 476.0 8@ 'NOV'  // nov
 return
 
 :TimeCircuitsDec
 if
   13@ == 12 // integer values
 jf @TimeCircuitsErr
-033E: text_draw 476.0 8@ 'MONTH12'  // dec
+033E: text_draw 476.0 8@ 'DEC'  // dec
 return
 
 :TimeCircuitsErr
