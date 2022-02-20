@@ -28,6 +28,11 @@ DEFINE MISSIONS 0
 {$OPCODE 3F17=6,rotate_car_part %1d% index %6d% angle %2d% %3d% %4d% car %5d%}  // rotates a car part with index by its frame
 {$OPCODE 3F18=3,set_car %1d% component %2d% glow %3d%}  // rotates a car part with index by its frame
 {$OPCODE 3F19=4,set_car %1d% component %2d% index %4d% glow %3d%}  // rotates a car part with index by its frame
+{$OPCODE 3F20=4,get_car %1d% orientation_to %2d% %3d% %4d%}  // rotates a car part with index by its frame
+{$OPCODE 3F21=4,set_car %1d% orientation_to %2d% %3d% %4d%}  // rotates a car part with index by its frame
+{$OPCODE 3F22=1,set_car %1d% wheelie}  // rotates a car part with index by its frame
+{$OPCODE 3F23=1,set_car %1d% remote}  // rotates a car part with index by its frame
+{$OPCODE 3F24=1,remove_car %1d% remote}  // rotates a car part with index by its frame
 
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
@@ -45,7 +50,7 @@ fade 0 0
 030C: set_mission_points += 154
 01F0: set_max_wanted_level_to 6
 set_wb_check_to 0
-00C0: set_current_time 8 0
+00C0: set_current_time 10 0
 0572: set_taxi_boost_jump 1
 04E4: unknown_refresh_game_renderer_at 625.157 454.36
 Camera.SetAtPos(625.157, 454.36, 10.0)
@@ -125,15 +130,15 @@ $CONVERSION = 0
 wait 0
 //-------------------------------------------------------------//
 //create_thread @Train               // Time Train
-create_thread @Truck               // GMC Value Van Delorean Transport Truck
-create_thread @Rogers              // 1885 train
-create_thread @Taxi                // 2015 taxi animation (incomplete)
-create_thread @Board               // hoverboard attach to cars
+//create_thread @Truck               // GMC Value Van Delorean Transport Truck
+//create_thread @Rogers              // 1885 train
+//create_thread @Taxi                // 2015 taxi animation (incomplete)
+//create_thread @Board               // hoverboard attach to cars
 create_thread @Speed               // hud and in car digital speedometers
 create_thread @Headlights          // Headlights
-create_thread @FusionGlow          // Time Train Flux Capacitor
+//create_thread @FusionGlow          // Time Train Flux Capacitor
 //create_thread @Glow                //Various glows
-create_thread @TrainGlow           // Train Coils
+//create_thread @TrainGlow           // Train Coils
 create_thread @Mode                // Instant & Cutscene Time Travel Modes
 create_thread @TimeCircuits        // On screen Time Circuits
 create_thread @TimeCircuitsModel   // in car time circuits
@@ -145,7 +150,7 @@ create_thread @MemoryManipulation  // The Keypad Core
 create_thread @Display             // Keys for turning on/off speedometer and time circuits
 //create_thread @HoverConversion     // New Hover Conversion code
 //create_thread @Hover               // Flying 2015 cars
-//create_thread @RadioControl        // RC Mode
+create_thread @RadioControl        // RC Mode
 //create_thread @GetPlutonium        // Plutonium pickup and lybians
 //create_thread @Garage              // DeLorean Garage
 create_thread @DrawRefresh         // On screen text display rendering
@@ -153,13 +158,14 @@ create_thread @Environment         // Weather, parked car and ped generators for
 create_thread @HillValley          // Real Time Clock and courthouse spawner
 create_thread @Conversion          // Flying DeLorean and Train hover conversion animations
 create_thread @Radio               // Copies the current radio station information for time travel/hover converion transitions
-create_thread @FlyPolice           // Flying 2015 police car conversion
+//create_thread @FlyPolice           // Flying 2015 police car conversion
 create_thread @CarInterior         // Delorean Interior lights and animations
 create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugMove helps us move objects/particles
 //create_thread @55TV
 //create_thread @55TVOff
 //create_thread @DebugCamera
+//create_thread @DebugParticle
 create_thread @CarSpawn
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 wait 0
@@ -241,5 +247,55 @@ end
 {$INCLUDE script/Train.txt}
 {$INCLUDE script/TrainEffects.txt}
 {$INCLUDE script/Truck.txt}
+
+:DebugParticle
+0@ = 0
+
+:DebugParticleStart
+wait 10
+if
+   Player.Defined($PLAYER_CHAR)
+else_jump @DebugParticleStart
+
+if
+003A:   $KEY == $KEY_RADIOCONTROL // R
+else_jump @DebugParticleStart
+if
+00DE:   player $PLAYER_CHAR driving_vehicle_type #TOPFUN
+else_jump @DebugParticleStart
+Model.Load(#SABRE)
+038B: load_requested_models
+while  not Model.Available(#SABRE)
+    wait 10
+end
+04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset 0.0 10.0 0.0
+0170: 4@ = player $PLAYER_CHAR z_angle
+046E: put_player $PLAYER_CHAR in_RC_mode_at 1@ 2@ 3@ angle 4@ RC_model #SABRE
+0484: 0@ = player $PLAYER_CHAR rc_car
+
+
+while not Car.Wrecked(0@)
+    wait 10
+    0A97: 10@ = vehicle 0@ struct
+    10@ += 0x50
+    0A8D: 11@ = read_memory 10@ size 1 virtual_protect 1
+    045A: text_draw_1number 10.0 10.0 'DAY' 11@  // Best Result: ~1~th
+end
+jump @DebugParticleStart
+
+
+
+
+/*
+// Right
+if in c
+then
+    0@ += 1
+end
+
+045A: text_draw_1number 10.0 10.0 'DAY' 0@  // Best Result: ~1~th
+
+*/
+
 //-------------Mission 0---------------
 // put missions here

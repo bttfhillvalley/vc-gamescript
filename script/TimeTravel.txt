@@ -95,7 +95,7 @@ if
 else_jump @TimeStart
 if
    not Car.Wrecked(0@)
-else_jump @TimeReset
+else_jump @TimeEnd
 //3F02: 1@ = car 0@ engine_state
 //045A: text_draw_1number 10.0 10.0 'DAY' 1@  // Best Result: ~1~th
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0
@@ -214,6 +214,7 @@ jump @Time88TrackCamera
 
 :TimeCircuitsCheck
 // Check Time Circuits On for Effects
+gosub @TimeEffectsModelReset
 0B10: 7@ = 1@ AND $TC_FRIED_BIT // Time Circuits Fried
 0B10: 8@ = 1@ AND $TC_BIT       // Time Circuits status
 if and
@@ -223,7 +224,6 @@ if and
 else_jump @TimeStart
 
 :TimeEffectsCheck
-gosub @TimeEffectsModelReset
 gosub @TimeUnloadSparkSounds
 
 // Bunch of speed related stuff for SID, coils, plasma, etc.
@@ -422,7 +422,7 @@ end
 
 // Now for the actual temporal displacement
 // Record coordinates
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0
+0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 -0.75
 
 // Plate stuff
 0B10: 5@ = 1@ AND $FLYING_BIT  // Get car variation
@@ -464,7 +464,7 @@ then
     0169: set_fade_color 255 255 255
     043C: set_game_sounds_disable_on_fade 0
     fade 0 0
-    //wait 0
+    wait 0
     $TRAVEL = 1 // integer values
     $INST_TRAVEL = 1 // integer values
     $FADE = 1 // integer values
@@ -531,7 +531,6 @@ else
         wait 10000
     end
 end
-$LIGHTNING = 0
 if
     80DC:   not player $PLAYER_CHAR driving 0@
 else_jump @TimeReentryFadeOut
@@ -600,8 +599,9 @@ Model.Destroy(10@)
 Car.Angle(0@) = 9@
 9@ -= 120.0
 Car.Health(0@) = 8@
-13@ += 100000 // integer values
 create_thread @SetVariation 0@ 1@
+gosub @TimeEffectsModelReset
+gosub @LightsOff
 
 :TimePastWait
 wait 0
@@ -644,6 +644,18 @@ else_jump @TimePastReentryCheckFade
 
 :TimePastReentryPlaySound
 03D1: play_wav 1
+
+// Load models
+:TimeReentryLoadModel
+Model.Load(10@)
+while not Model.Available(10@)
+    wait 10
+end
+0@ = Car.Create(10@, 2@, 3@, 5000.0)
+create_thread @SetVariation 0@ 1@
+gosub @TimeEffectsModelReset
+gosub @LightsOff
+Model.Destroy(10@)
 jump @TimeReentryExplosion
 
 // =========================================================================
@@ -749,26 +761,15 @@ end
 // Have the time vehicle come back
 if
 00DC:   player $PLAYER_CHAR driving 0@
-else_jump @TimeReentryLoadModel
+else_jump @TimeReentrySetVehicleData
 $TRAVEL = 0 // integer values
 0581: toggle_radar 1
 if
   $MODE == 0 // integer values
 else_jump @TimeReentryEnd
-Car.PutAt(0@, 2@, 3@, 4@)
-jump @TimeReentrySetVehicleData
-
-// Create vehicle if driver is not playing.
-:TimeReentryLoadModel
-Model.Load(10@)
-while not Model.Available(10@)
-    wait 10
-end
-0@ = Car.Create(10@, 2@, 3@, 4@)
-create_thread @SetVariation 0@ 1@
-Model.Destroy(10@)
 
 :TimeReentrySetVehicleData
+Car.PutAt(0@, 2@, 3@, 4@)
 //gosub @TimeReentryTrainAnimations
 $CUTSCENE = 0 // integer values
 $SET_TIME = 0 // integer values
@@ -791,14 +792,22 @@ if
     80DC:   not player $PLAYER_CHAR driving 0@
 then
     // This is for RC mode to get it to handbrake turn
-    create_thread @TimeEngineOff
+    create_thread @TimeEngineOff 0@
 end
 
 :TimeReentryEnd
 9@ = 0 // Unload sounds
 043C: set_game_sounds_disable_on_fade 1
 gosub @TimeEffectsModelReset
-create_thread @TimeReentryCoil 0@ 1@
+if
+    $LIGHTNING == 2
+then
+    02D4: car 0@ turn_off_engine
+    3F22: set_car 0@ wheelie
+else
+    create_thread @TimeReentryCoil 0@ 1@
+end
+$LIGHTNING = 0
 create_thread @Cold 0@ 1@
 create_thread @Steam 0@ 1@
 create_thread @FuelEmpty 0@ 1@
@@ -875,30 +884,6 @@ end
 return
 
 //================================================================================================
-
-:TimeReset
-// This pretty much checks to see if the delorean/train has been turned into an RC car since it has to be destroyed
-wait 100
-if or
-  10@ == #BUS // integer values
-  10@ == #MAVERICK // integer values
-else_jump @TimeCheckDelorean
-if
-   not Car.Wrecked($TRAIN)
-else_jump @TimeCheckTrain
-008B: 0@ = $TRAIN // integer values and handles
-jump @TimeStart
-
-:TimeCheckDelorean
-// RC Check
-if
-   not Car.Wrecked($DELOREAN)
-else_jump @TimeEnd
-008B: 0@ = $DELOREAN // integer values and handles
-jump @TimeStart
-
-:TimeCheckTrain
-$TRAIN_CREATE = 0 // integer values
 
 :TimeEnd
 Car.RemoveReferences(0@)
@@ -1214,6 +1199,7 @@ return
 4@ = Car.Angle(0@)
 Model.Load(#KEYCARD)
 038B: load_requested_models
+3@ += 0.75
 02CE: 3@ = ground_z 1@ 2@ 3@
 3@ += -0.35 // floating-point values
 10@ = Object.Create(#KEYCARD, 1@, 2@, 3@)

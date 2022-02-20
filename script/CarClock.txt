@@ -10,8 +10,13 @@ if
 then
     1@ -= 12
 end
-1@ += 10
-3F11: set_car 0@ component "consoleclockdigithour" index 1@ visible 1
+0085: 2@ = 1@
+2@ /= 10
+2@ *= 10
+0062: 1@ -= 2@
+2@ /= 10
+3F11: set_car 0@ component "consoleclockdigithour2" index 2@ visible 1
+3F11: set_car 0@ component "consoleclockdigithour1" index 1@ visible 1
 
 // Minutes
 for 1@ = 10 to 25

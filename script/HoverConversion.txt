@@ -33,8 +33,10 @@ end
 
 // Thrust
 Car.StorePos(0@, 2@, 3@, 4@)
+3F02: 7@ = car 0@ engine_state
 if and
     4@ < 200.0 // floating-point values
+    not 7@ == 0
     00E1:   key_pressed 0 6
 else_jump @HoverConversionReset
 3F10: set_car 0@ component "inner_vents" visible 1

@@ -20,8 +20,9 @@ wait 10
 if
    Player.Defined($PLAYER_CHAR)
 jf @ConversionStart
-if
-00DC:   player $PLAYER_CHAR driving 0@
+if and
+    not Car.Wrecked(0@)
+    00DC:   player $PLAYER_CHAR driving 0@
 jf @ConversionStart
 0407: create_coordinate $X_OFF $Y_OFF $Z_OFF from_car 0@ offset 0.0 0.0 0.0
 0067: $X_OFF -= 1@ // floating-point values

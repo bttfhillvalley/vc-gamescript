@@ -1,237 +1,100 @@
+// 0@: Dummy Car
+// 1@: Dummy Actor
+// 15@: Camera mode  // 15 For tracking, 3 for Behind the car
 :RadioControl
 thread 'R_CONT'
-10@ = 0 // integer values
+15@ = 15 // integer values
 
 :RadioControlStart
 wait 10
-if
-   Player.Defined($PLAYER_CHAR)
-jf @RadioControlStart
-if
-80E0:   not player $PLAYER_CHAR driving
-jf @RadioControlStart
 if and
-  $IN_GARAGE == 0 // integer values
-  $RC_CONTROL == 1 // integer values
-  $FUELING == 0 // integer values
-003A:   $KEY == $KEY_RADIOCONTROL // R
-jf @RadioControlStart
-if
-   not Car.Wrecked($DELOREAN)
-jf @RadioControlStart
-if or
-   Car.Model($DELOREAN) == #INFERNUS     //BTTF1
-   Car.Model($DELOREAN) == #DELUXO      //BTTF2
-   Car.Model($DELOREAN) == #SPARROW    //Flying BTTF2
-   Car.Model($DELOREAN) == #BANSHEE   //BTTF3
-   Car.Model($DELOREAN) == #BAGGAGE  //RailRoad Delorean
-jf @RadioControlStart
-$TYPE = Car.Model($DELOREAN)
-if
-   Car.Model($DELOREAN) == #SPARROW //Flying BTTF2
-jf @RadioControlLoadRCModels
-$TYPE = #DELUXO //BTTF2
-
-:RadioControlLoadRCModels
+   Player.Defined($PLAYER_CHAR)
+    80E0:   not player $PLAYER_CHAR driving
+    not Car.Wrecked($DELOREAN)
+    003A:   $KEY == $KEY_RADIOCONTROL // R
+else_jump @RadioControlStart
 $IN_RC = 1 // integer values
 Model.Load(#SABRE) //DMC-12
 Model.Load(#BOMB) //RC REMOTE
-Model.Load($TYPE)
 038B: load_requested_models
 
-:RadioControlCreateRCModels
+:RadioControlLoadModels
 wait 0
 if and
    Model.Available(#SABRE) //DMC-12
    Model.Available(#BOMB) //RC REMOTE
-   Model.Available($TYPE)
-jf @RadioControlCreateRCModels
-04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset 0.0 0.0 -1.0
-0225: 11@ = player $PLAYER_CHAR health
-$CAR = Car.Create(#SABRE, 1@, 2@, 5000.0) //DMC-12
-0369: put_player $PLAYER_CHAR in_car $CAR
-03C1: 4@ = player $PLAYER_CHAR car
-Car.SetImmunities(4@, 0, 0, 0, 1, 1)
-053F: set_car 4@ tires_vulnerable 0
-009A: 5@ = create_actor_pedtype 4 model #NULL at 1@ 2@ 3@ //player model
-008A: $RC_ACTOR = 5@ // integer values and handles
-01B2: give_actor 5@ weapon 34 ammo 1 // Load the weapon model before using this
-Actor.Health(5@) = 250
-0407: create_coordinate 1@ 2@ 3@ from_car $DELOREAN offset 0.0 0.0 -0.75
-01BE: set_actor 5@ to_look_at_spot 1@ 2@ 3@
-0245: set_actor 5@ walk_style_to 33
-6@ = Car.Angle($DELOREAN)
-02E3: 7@ = car $DELOREAN speed
-8@ = Car.Health($DELOREAN)
-0506: vehicle_model #INFERNUS set_next_variation $PLATE $VARIATION
-if
-01F4:   car $DELOREAN flipped
-jf @RadioControlCameraStart
-04C4: create_coordinate 7@ 8@ 9@ from_actor 5@ offset 0.0 -5.0 1.0
-Camera.SetPosition(7@, 8@, 9@, 0.0, 0.0, 0.0)
-Camera.OnVehicle($DELOREAN, 15, 2)
+else_jump @RadioControlLoadModels
+// Create Dummy car
+04C4: create_coordinate 2@ 3@ 4@ from_actor $PLAYER_ACTOR offset 0.0 0.0 -1.0
+0@ = Car.Create(#SABRE, 2@, 3@, 5000.0) //DMC-12
+0369: put_player $PLAYER_CHAR in_car 0@
+02D4: car 0@ turn_off_engine
 
-:RadioControlModeStart
+
+// Create Dummy Actor
+5@ = Actor.Angle($PLAYER_ACTOR)
+0225: 6@ = player $PLAYER_CHAR health
+009A: 1@ = create_actor_pedtype 4 model #NULL at 2@ 3@ 4@ //player model
+Actor.Angle(1@) = 5@
+Actor.Health(1@) = 6@
+01B2: give_actor 1@ weapon 34 ammo 1 // Load the weapon model before using this
+04C4: create_coordinate 2@ 3@ 4@ from_actor 1@ offset 0.0 -1.0 0.0
+0245: set_actor 1@ walk_style_to 33
+wait 0
+
+// Set Remote mode
+3F03: car $DELOREAN turn_on_engine
+3F23: set_car $DELOREAN remote
+
+:RadioControlLoop
 wait 10
-if or
-80E1:   not key_pressed 0 15
-  $RC_CONTROL == 0 // integer values
-jf @RadioControlExit
-Car.PutAt(4@, 7@, 8@, 5000.0)
-jump @RadioControlModeStart
-
-:RadioControlCameraStart
-Car.Destroy($DELOREAN)
-046E: put_player $PLAYER_CHAR in_RC_mode_at 1@ 2@ 3@ angle 6@ RC_model $TYPE
-$DELOREAN = Player.RC_car($PLAYER_CHAR)
-04BA: set_car $DELOREAN speed_instantly 7@
-Car.Health($DELOREAN) = 8@
-Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
-053F: set_car $DELOREAN tires_vulnerable 0
-048A: enable_rc_vehicle_detonation 0
-3F10: set_car $DELOREAN component "shifterr" visible 0
-3F10: set_car $DELOREAN component "shifter1" visible 0
-3F10: set_car $DELOREAN component "shifter2" visible 0
-3F10: set_car $DELOREAN component "shifter3" visible 0
-3F10: set_car $DELOREAN component "shifter4" visible 0
-3F10: set_car $DELOREAN component "shifter5" visible 0
-  3F10: set_car $DELOREAN component "lightfl" visible 0
-  3F10: set_car $DELOREAN component "lightfr" visible 0
-wait 250
-jump @RadioControlMode
-02D4: car $DELOREAN turn_off_engine
-
-:RadioControlMode
-wait 10
-Car.PutAt(4@, 1@, 2@, 5000.0)
-if or
-80E1:   not key_pressed 0 15
-  $RC_CONTROL == 0 // integer values
-jf @RadioControlExit
-if
-   not Car.Wrecked($DELOREAN)
-jf @RadioControlExit
 if and
-00E1:   key_pressed 0 13
-  $AI_CONTROL == 0 // integer values
-jf @RadioControlAICheck
-if
-  10@ == 0 // integer values
-jf @RadioControlCamera
-10@ = 1 // integer values
-0407: create_coordinate 1@ 2@ 3@ from_car $DELOREAN offset 0.0 0.0 -0.75
-01BE: set_actor 5@ to_look_at_spot 1@ 2@ 3@
-6@ = Car.Angle($DELOREAN)
-02E3: 7@ = car $DELOREAN speed
-8@ = Car.Health($DELOREAN)
-0506: vehicle_model #INFERNUS set_next_variation $PLATE $VARIATION
-Car.Destroy($DELOREAN)
-046E: put_player $PLAYER_CHAR in_RC_mode_at 1@ 2@ 3@ angle 6@ RC_model $TYPE
-$DELOREAN = Player.RC_car($PLAYER_CHAR)
-04BA: set_car $DELOREAN speed_instantly 7@
-Car.Health($DELOREAN) = 8@
-Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
-053F: set_car $DELOREAN tires_vulnerable 0
-048A: enable_rc_vehicle_detonation 0
-3F10: set_car $DELOREAN component "shifterr" visible 0
-3F10: set_car $DELOREAN component "shifter1" visible 0
-3F10: set_car $DELOREAN component "shifter2" visible 0
-3F10: set_car $DELOREAN component "shifter3" visible 0
-3F10: set_car $DELOREAN component "shifter4" visible 0
-3F10: set_car $DELOREAN component "shifter5" visible 0
-  3F10: set_car $DELOREAN component "lightfl" visible 0
-  3F10: set_car $DELOREAN component "lightfr" visible 0
-wait 250
-jump @RadioControlTrack
+    not Car.Wrecked($DELOREAN)
+    803A:   $KEY == $KEY_RADIOCONTROL // R
+else_jump @RadioControlExit
+if and
+    00E1:   player 0 pressed_button 13
+    16@ > 500
+then
+    16@ = 0
+    if
+        15@ == 3
+    then
+        15@ = 15
+    else
+        15@ = 3
+    end
+end
 
-:RadioControlCamera
-if
-  10@ == 1 // integer values
-jf @RadioControlTrack
-10@ = 0 // integer values
-wait 250
-3F10: set_car $DELOREAN component "shifterr" visible 0
-3F10: set_car $DELOREAN component "shifter1" visible 0
-3F10: set_car $DELOREAN component "shifter2" visible 0
-3F10: set_car $DELOREAN component "shifter3" visible 0
-3F10: set_car $DELOREAN component "shifter4" visible 0
-3F10: set_car $DELOREAN component "shifter5" visible 0
-  3F10: set_car $DELOREAN component "lightfl" visible 0
-  3F10: set_car $DELOREAN component "lightfr" visible 0
-jump @RadioControlTrack
+// Keep track of Delorean and have the dummy car over it to keep cars loaded
+0407: create_coordinate 2@ 3@ 4@ from_car $DELOREAN offset 0.0 0.0 -0.75
+Car.PutAt(0@, 2@, 3@, 5000.0)
+01BE: set_actor 1@ to_look_at_spot 2@ 3@ 4@
+04C4: create_coordinate 2@ 3@ 4@ from_actor 1@ offset 0.0 0.0 1.0
+Camera.SetPosition(2@, 3@, 4@, 0.0, 0.0, 0.0)
+Camera.OnVehicle($DELOREAN, 15@, 2)
 
-:RadioControlAICheck
-if
-  $AI_CONTROL == 0 // integer values
-jf @RadioControlCamera
-
-:RadioControlTrack
-0407: create_coordinate 1@ 2@ 3@ from_car $DELOREAN offset 0.0 0.0 0.0
-01BE: set_actor 5@ to_look_at_spot 1@ 2@ 3@
-11@ = Actor.Health(5@)
-0222: set_player $PLAYER_CHAR health_to 11@
-if
-   not 11@ == 0 // integer values
-jf @RadioControlExit
-if
-  10@ == 0 // integer values
-jf @RadioControlMode
-04C4: create_coordinate 7@ 8@ 9@ from_actor 5@ offset 0.0 -5.0 1.0
-Camera.SetPosition(7@, 8@, 9@, 0.0, 0.0, 0.0)
-Camera.PointAt(1@, 2@, 3@, 2)
-jump @RadioControlMode
+jump @RadioControlLoop
 
 :RadioControlExit
 $IN_RC = 0 // integer values
-04C4: create_coordinate 1@ 2@ 3@ from_actor 5@ offset 0.0 0.0 -1.0
-6@ = Actor.Angle(5@)
-Actor.DestroyInstantly(5@)
-012A: put_player $PLAYER_CHAR at 1@ 2@ 3@ and_remove_from_car
-0171: set_player $PLAYER_CHAR z_angle_to 6@
-Car.Destroy(4@)
-Camera.Restore
-Camera.SetBehindPlayer
+3F24: remove_car $DELOREAN remote
+04C4: create_coordinate 2@ 3@ 4@ from_actor 1@ offset 0.0 0.0 -1.0
+5@ = Actor.Angle(1@)
+6@ = Actor.Health(1@)
+Actor.DestroyInstantly(1@)
+012A: put_player $PLAYER_CHAR at 2@ 3@ 4@ and_remove_from_car
+Actor.Angle($PLAYER_ACTOR) = 5@
+Actor.Health($PLAYER_ACTOR) = 6@
+Car.Destroy(0@)
 if
-   not Car.Wrecked($DELOREAN)
-jf @RadioControlExitTT
-Camera.Restore
+    15@ == 3
+then
+    Camera.Restore_WithJumpCut
+else
+    Camera.Restore
+end
 Camera.SetBehindPlayer
-0407: create_coordinate 1@ 2@ 3@ from_car $DELOREAN offset 0.0 0.0 -0.75
-6@ = Car.Angle($DELOREAN)
-02E3: 7@ = car $DELOREAN speed
-8@ = Car.Health($DELOREAN)
-Car.Destroy($DELOREAN)
-0506: vehicle_model 141 set_next_variation $PLATE $VARIATION
-$DELOREAN = Car.Create($TYPE, 1@, 2@, 3@)
-Car.Angle($DELOREAN) = 6@
-04BA: set_car $DELOREAN speed_instantly 7@
-Car.Health($DELOREAN) = 8@
-Car.SetImmunities($DELOREAN, 0, 0, 0, 1, 1)
-053F: set_car $DELOREAN tires_vulnerable 0
-3F10: set_car $DELOREAN component "shifterr" visible 0
-3F10: set_car $DELOREAN component "shifter1" visible 0
-3F10: set_car $DELOREAN component "shifter2" visible 0
-3F10: set_car $DELOREAN component "shifter3" visible 0
-3F10: set_car $DELOREAN component "shifter4" visible 0
-3F10: set_car $DELOREAN component "shifter5" visible 0
-  3F10: set_car $DELOREAN component "lightfl" visible 0
-  3F10: set_car $DELOREAN component "lightfr" visible 0
-jump @RadioControlReset
-
-:RadioControlExitTT
-wait 25
-//0308: text_6numbers_lowpriority 'BEEPER' $MONTH $DAY $YEAR $HOUR $MINUTE $MINUTE  time 5000 5  // ~1~/~1~/~1~  ~1~:~1~~1~
-if
-    $FIRETRAIL == 0 // integer values
-jf @RadioControlReset
-Player.CanMove($PLAYER_CHAR) = False
-fade 0 1000
-wait 1000
-Car.Destroy($DELOREAN)
-fade 1 1000
-wait 1000
-
-:RadioControlReset
 Player.CanMove($PLAYER_CHAR) = False
 wait 500
 Player.CanMove($PLAYER_CHAR) = True

@@ -40,3 +40,11 @@ while 83D0:   not wav 0@ loaded
 end
 03D1: play_wav 0@
 end_thread
+
+:CheckCarWrecked
+if
+    Car.Wrecked(0@)
+then
+    end_thread
+end
+return
