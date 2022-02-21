@@ -30,9 +30,9 @@ else_jump @HoverConversionReset
 if
     $STAGE_TWO_BOOST == 1
 then
-    $BOOST_KEY = 4
+    0084: $BOOST_KEY = $HOVER_ACCEL_KEY
     if and
-        00E1: key_pressed 0 $HOVER_ACCEL_KEY
+        00E1: key_pressed 0 6
         80E1: key_pressed 0 $BOOST_KEY
     then
         02E3: 7@ = car 0@ speed
