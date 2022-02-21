@@ -124,7 +124,8 @@ $POSY = 190.0 // floating-point values
 $ROTATE_SPEED = 0.0 // floating-point values
 $WHEEL_SPARKS = 0.0 // floating-point values
 $CONVERSION = 0
-$STAGE_TWO_BOOST = 1
+$HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
+$STAGE_TWO_BOOST = 0
 {0219: $DELOREAN_GARAGE = create_garage_type 1 door -966.016 -861.529 5.761 to -966.016 -841.683 11.273 depth -978.454 -861.529  //Vice City DeLorean Garage
 03BB: set_garage $DELOREAN_GARAGE door_type_to_swing_open
 02A8: $DelGarageMap = create_marker 7 at -1007.3 -869.9 12.8 //Delorean Garage Icon
