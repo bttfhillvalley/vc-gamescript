@@ -442,11 +442,11 @@ else
     then
         // Blue wormhole
         04D5: create_corona_at 2@ 3@ 4@ radius 5@ type 1 flare 0 RGB 64 128 255
-        //3F06: create_light type 0 at 2@ 3@ 4@ dir 0.0 0.0 -1.0 range 10.0 rgb 5@ 5@ 5@ fog 0
+        3F28: create_light type 0 at 2@ 3@ 4@ dir 0.0 0.0 -1.0 range 10.0 rgb 5@ 5@ 5@ fog 0
     else
         // Red wormhole for hoodbox
         04D5: create_corona_at 2@ 3@ 4@ radius 5@ type 1 flare 0 RGB 255 100 75
-        //3F06: create_light type 0 at 2@ 3@ 4@ dir 0.0 0.0 -1.0 range 10.0 rgb 5@ 5@ 5@ fog 0
+        3F28: create_light type 0 at 2@ 3@ 4@ dir 0.0 0.0 -1.0 range 10.0 rgb 5@ 5@ 5@ fog 0
     end
 end
 5@ /= 1.25 // floating-point values (never used in VC or GTA 3)
@@ -820,13 +820,13 @@ return
 :TimeBodyGlow
 /*0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 3.0 0.0
 0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 0.0 2.5 0.0
-3F06: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0
+3F28: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset -3.0 0.0 2.0
 0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset -2.5 0.0 1.0
-3F06: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0
+3F28: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 3.0 0.0 0.0
 0407: create_coordinate 5@ 6@ 7@ from_car 0@ offset 2.5 0.0 0.0
-3F06: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0*/
+3F28: create_light type 0 at 2@ 3@ 4@ dir 5@ 6@ 7@ range 10.0 rgb 0.3 0.7 2.0 fog 0  */
 return
 
 // ======================================================================================================

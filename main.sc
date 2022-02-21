@@ -13,7 +13,6 @@ DEFINE MISSIONS 0
 {$OPCODE 3F03=1,car %1d% turn_on_engine}                                        // turn on engine
 {$OPCODE 3F04=2,%2d% = get_car %1d% gear}                                       // get current gear
 {$OPCODE 3F05=2,set_car %1d% hover %2d%}                                        // this turns a vehicle into a helicopter (currently unused)
-//{$OPCODE 3F06=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
 {$OPCODE 3F06=3,%3d% = get_car %1d% door %2d% status} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
 {$OPCODE 3F07=4,play_anim %1d% grp %2d% blend %3d% on char %4d%}                // plays an animation (currently unused)
 {$OPCODE 3F08=2,add_build %1p% amnt %2p%}                                       // adds all buildings and objects in a .dat file
@@ -26,13 +25,17 @@ DEFINE MISSIONS 0
 {$OPCODE 3F15=6,move_car_part %1d% index %6d% pos %2d% %3d% %4d% car %5d%}      // moves a car part with index by its frame
 {$OPCODE 3F16=5,rotate_car_part %1d% angle %2d% %3d% %4d% car %5d%}             // rotates a car part by its frame
 {$OPCODE 3F17=6,rotate_car_part %1d% index %6d% angle %2d% %3d% %4d% car %5d%}  // rotates a car part with index by its frame
-{$OPCODE 3F18=3,set_car %1d% component %2d% glow %3d%}  // rotates a car part with index by its frame
-{$OPCODE 3F19=4,set_car %1d% component %2d% index %4d% glow %3d%}  // rotates a car part with index by its frame
-{$OPCODE 3F20=4,get_car %1d% orientation_to %2d% %3d% %4d%}  // rotates a car part with index by its frame
-{$OPCODE 3F21=4,set_car %1d% orientation_to %2d% %3d% %4d%}  // rotates a car part with index by its frame
-{$OPCODE 3F22=1,set_car %1d% wheelie}  // rotates a car part with index by its frame
-{$OPCODE 3F23=1,set_car %1d% remote}  // rotates a car part with index by its frame
-{$OPCODE 3F24=1,remove_car %1d% remote}  // rotates a car part with index by its frame
+{$OPCODE 3F18=3,set_car %1d% component %2d% glow %3d%}  			// make a car component glow
+{$OPCODE 3F19=4,set_car %1d% component %2d% index %4d% glow %3d%}  		// make a car part with index glow
+{$OPCODE 3F20=4,get_car %1d% orientation_to %2d% %3d% %4d%}  			// get car XYZ orientation
+{$OPCODE 3F21=4,set_car %1d% orientation_to %2d% %3d% %4d%}  			// set car XYZ orientation
+{$OPCODE 3F22=1,set_car %1d% wheelie}  						// flip car or do a wheelie
+{$OPCODE 3F23=1,set_car %1d% remote}  						// enable RC mode for a car
+{$OPCODE 3F24=1,remove_car %1d% remote}  					// turn off RC mode for a car.  Must be done before the car is removed.
+{$OPCODE 3F25=2,apply_forward_force %2d% car %1d%}  				// Apply thrust to car
+{$OPCODE 3F26=2,get_car %1d% wheel_status_to %2d%}  				// Get wheel status
+{$OPCODE 3F27=2,set_car %1d% wheel_status %2d%}  				// Set wheel status
+{$OPCODE 3F28=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
 
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
@@ -121,6 +124,7 @@ $POSY = 190.0 // floating-point values
 $ROTATE_SPEED = 0.0 // floating-point values
 $WHEEL_SPARKS = 0.0 // floating-point values
 $CONVERSION = 0
+$STAGE_TWO_BOOST = 1
 {0219: $DELOREAN_GARAGE = create_garage_type 1 door -966.016 -861.529 5.761 to -966.016 -841.683 11.273 depth -978.454 -861.529  //Vice City DeLorean Garage
 03BB: set_garage $DELOREAN_GARAGE door_type_to_swing_open
 02A8: $DelGarageMap = create_marker 7 at -1007.3 -869.9 12.8 //Delorean Garage Icon
@@ -151,7 +155,7 @@ create_thread @Display             // Keys for turning on/off speedometer and ti
 //create_thread @HoverConversion     // New Hover Conversion code
 //create_thread @Hover               // Flying 2015 cars
 create_thread @RadioControl        // RC Mode
-//create_thread @GetPlutonium        // Plutonium pickup and lybians
+create_thread @GetPlutonium        // Plutonium pickup and lybians
 //create_thread @Garage              // DeLorean Garage
 create_thread @DrawRefresh         // On screen text display rendering
 create_thread @Environment         // Weather, parked car and ped generators for time trave
@@ -167,6 +171,7 @@ create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugCamera
 //create_thread @DebugParticle
 create_thread @CarSpawn
+create_thread @UNIQUE_STUNT_JUMPS
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
@@ -247,39 +252,31 @@ end
 {$INCLUDE script/Train.txt}
 {$INCLUDE script/TrainEffects.txt}
 {$INCLUDE script/Truck.txt}
+{$INCLUDE script/UniqueStuntJumps.txt}
 
 :DebugParticle
 0@ = 0
+10@ = 0
 
 :DebugParticleStart
 wait 10
 if
    Player.Defined($PLAYER_CHAR)
 else_jump @DebugParticleStart
-
 if
-003A:   $KEY == $KEY_RADIOCONTROL // R
+    $KEY == 72
 else_jump @DebugParticleStart
 if
-00DE:   player $PLAYER_CHAR driving_vehicle_type #TOPFUN
-else_jump @DebugParticleStart
-Model.Load(#SABRE)
-038B: load_requested_models
-while  not Model.Available(#SABRE)
-    wait 10
-end
-04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset 0.0 10.0 0.0
-0170: 4@ = player $PLAYER_CHAR z_angle
-046E: put_player $PLAYER_CHAR in_RC_mode_at 1@ 2@ 3@ angle 4@ RC_model #SABRE
-0484: 0@ = player $PLAYER_CHAR rc_car
-
-
-while not Car.Wrecked(0@)
-    wait 10
-    0A97: 10@ = vehicle 0@ struct
-    10@ += 0x50
-    0A8D: 11@ = read_memory 10@ size 1 virtual_protect 1
-    045A: text_draw_1number 10.0 10.0 'DAY' 11@  // Best Result: ~1~th
+    10@ == 0
+then
+    04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset 0.0 0.0 1.0
+    Camera.SetPosition(1@, 2@, 3@, 0.0, 0.0, 0.0)
+    Camera.OnPed($PLAYER_ACTOR, 15, 2)
+    10@ = 1
+else
+    Camera.Restore()
+    Camera.SetBehindPlayer()
+    10@ = 0
 end
 jump @DebugParticleStart
 

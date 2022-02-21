@@ -96,16 +96,10 @@ else_jump @TimeStart
 if
    not Car.Wrecked(0@)
 else_jump @TimeEnd
-//3F02: 1@ = car 0@ engine_state
-//045A: text_draw_1number 10.0 10.0 'DAY' 1@  // Best Result: ~1~th
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0
 008C: 4@ = float_to_integer 4@
-//045A: text_draw_1number 10.0 10.0 'DAY' $FLASH  // Best Result: ~1~th
 02E3: 11@ = car 0@ speed
-
 3F10: set_car 0@ component "inner_vents" visible 0
-
-//045A: text_draw_1number 10.0 10.0 'DAY' 7@  // Best Result: ~1~th
 gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
 gosub @Hook  // Controls putting up/down the hook.  I forget the variations though.  It's in the garage thread so I can document it here as well.
 gosub @TimeResetCamera
@@ -153,15 +147,6 @@ if and
     003A:   $KEY == $KEY_HOVERCONVERSION // C
     not 6@ == 0  // Flying circuits are installed
     $CONVERSION == 0  // Not animating
-else_jump @TimeFlyEngineOff
-jump @TimeFlyConvert
-
-:TimeFlyEngineOff
-if and
-    00DC:   player $PLAYER_CHAR driving 0@
-    00E1:   key_pressed 0 15
-    not 8@ == 0 // Flying
-    $CONVERSION == 0
 else_jump @TimeFlyNotDriving
 jump @TimeFlyConvert
 
