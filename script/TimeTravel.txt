@@ -382,11 +382,11 @@ then
 end
 
 // Set Last Departed date
-008B: 14@ = $CMONTH // integer values and handles
+008B: 14@ = $CYEAR // integer values (never used VC or GTA 3)
+14@ *= 100 // integer values (never used in VC or GTA 3)
+005C: 14@ += $CMONTH // integer values and handles
 14@ *= 100 // integer values (never used in VC or GTA 3)
 005C: 14@ += $CDAY // integer values (never used VC or GTA 3)
-14@ *= 10000 // integer values (never used in VC or GTA 3)
-005C: 14@ += $CYEAR // integer values (never used VC or GTA 3)
 
 // Get Last Departed Time
 00BF: $CHOUR = current_time_hours, $CMINUTE = current_time_minutes
@@ -541,31 +541,13 @@ else_jump @TimePast
 if and
 003C:   $CTIME == 12@ // integer values (never used VC or GTA 3)
 001E:   $CTIME1 > 13@ // integer values
-else_jump @TimePastCheckYear
+else_jump @TimePastB
 jump @TimePastLoadModel
 
-:TimePastCheckYear
-// Need to separate out year and month date since we're using mdy instead of ymd
-0085: 5@ = 12@ // integer values and handles
-0085: 6@ = 12@ // integer values and handles
-5@ /= 10000 // integer values (never used VC or GTA 3)
-5@ *= 10000 // integer values (never used in VC or GTA 3)
-0062: 6@ -= 5@ // integer values (never used VC or GTA 3)
-5@ /= 10000 // integer values (never used VC or GTA 3)
-
-// Check for future year
-if
-001E:   $CYEAR > 6@ // integer values
-else_jump @TimePastCheckDay
-jump @TimePastLoadModel
-
-:TimePastCheckDay
-// Check for future month/date but same year
-if and
-003C:   $CYEAR == 6@ // integer values (never used VC or GTA 3)
-001E:   $CMONTHDAY > 5@ // integer values
+:TimePastB
+if 
+001E:   $CTIME > 12@ // integer values
 else_jump @TimePast
-jump @TimePastLoadModel
 
 :TimePastLoadModel
 Model.Load(10@)
@@ -1076,17 +1058,17 @@ end_thread
 
 // =========================================================================================
 :LocalDateToGlobal
+008A: $YEAR = 12@ // integer values and handles
 008A: $MONTH = 12@ // integer values and handles
 008A: $DAY = 12@ // integer values and handles
-$DAY /= 10000
-008A: $YEAR = 12@ // integer values and handles
-$MONTH /= 10000
-$MONTH *= 10000
-0060: $YEAR -= $MONTH
-$MONTH /= 1000000
-$MONTH *= 100
-0060: $DAY -= $MONTH
+$YEAR /= 100
 $MONTH /= 100
+$YEAR *= 100
+0060: $DAY -= $YEAR
+$YEAR /= 10000
+$YEAR *= 100
+0060: $MONTH -= $YEAR
+$YEAR /= 100
 
 008A: $HOUR = 13@ // integer values and handles
 008A: $MINUTE = 13@ // integer values and handles
@@ -1122,11 +1104,11 @@ gosub @GlobalDateToLocal
 return
 
 :GlobalDateToLocal
-008B: 12@ = $MONTH // integer values and handles
+008B: 12@ = $YEAR // integer values and handles
+12@ *= 100 // integer values (never used in VC or GTA 3)
+005C: 12@ += $MONTH // integer values (never used VC or GTA 3)
 12@ *= 100 // integer values (never used in VC or GTA 3)
 005C: 12@ += $DAY // integer values (never used VC or GTA 3)
-12@ *= 10000 // integer values (never used in VC or GTA 3)
-005C: 12@ += $YEAR // integer values (never used VC or GTA 3)
 008B: 13@ = $HOUR
 13@ *= 100 // integer values (never used in VC or GTA 3)
 005C: 13@ += $MINUTE // integer values (never used VC or GTA 3)
