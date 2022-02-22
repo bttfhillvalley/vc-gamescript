@@ -21,5 +21,4 @@ else
     $MALL_SIGN = 2 //- Twin Pine
 end
 end
-045A: text_draw_1number 10.0 10.0 'NUMBER' $MALL_SIGN  // Best Result: ~1~th
 jump @TwinPinesCheck
