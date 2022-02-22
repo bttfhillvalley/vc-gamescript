@@ -1,0 +1,15 @@
+:interiors
+wait 0
+if 
+    Player.Defined($PLAYER_CHAR)
+jf @interiors 
+create_thread @hvmall
+create_thread @OceanHotel
+create_thread @Mansion_entrance
+create_thread @Mansion_EXIT_1
+create_thread @Mansion_EXIT_2
+create_thread @bikerbar
+create_thread @lovefist
+create_thread @lovefist_23
+
+end_thread

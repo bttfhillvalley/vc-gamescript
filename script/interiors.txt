@@ -1,0 +1,882 @@
+:HVMALL
+script_name 'HVMALL' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @HVMALL
+
+
+:hvmall_robinsons_side
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -417.3855 417.3149 13.1573 radius 1.5 1.5 1.5 // at side door
+jf @HVMALL_robinsons_side_inside
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 448.1599 1009.5330 19.1891 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_robinsons_side_inside
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 448.9555 1002.8490 19.1441 radius 1.5 1.5 1.5 // inside mall door
+jf @HVMALL_robinsons_front
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -420.1949 421.0471 13.1499 //outside side door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+
+:hvmall_robinsons_front
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -431.8250 387.5284 12.4222 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_robinsons_front_inside
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 460.5211 1123.937 18.4167 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_robinsons_front_inside
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 471.3085 1123.796 18.3129 radius 1.5 1.5 1.5 // inside mall door
+jf @HVMALL_robinsons_front2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -434.8313 385.2475 12.3804 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_robinsons_front2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -405.3858 351.0591 12.0988 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_robinsons_front_inside2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 447.9652 1241.9304 19.1459 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_robinsons_front_inside2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 448.1049 1249.7997 19.0094 radius 1.5 1.5 1.5 // inside mall door
+jf @HVMALL_robinsons_back
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -409.1818 348.3411 12.0987 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_robinsons_back
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -421.4301 215.8544 12.6961 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_robinsons_back_inside
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 362.8078 1124.4587 18.9158 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_robinsons_back_inside
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 357.0986 1124.6661 19.0187 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_JCPENNY_Front
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -418.6331 214.3392 11.6279 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+
+:hvmall_JCPENNY_Front
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -454.7986 275.6922 12.0313 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_JCPENNY_Front_inside
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 380.5899 1244.1198 19.1836 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_JCPENNY_Front_inside
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 379.8306 1250.4333 19.1552 radius 1.5 1.5 1.5 // inside mall door
+jf @HVMALL_JCPENNY_SIDE
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -457.243 279.5239 12.1999 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+
+:hvmall_JCPENNY_SIDE
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -456.756 222.4815 11.7378 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_JCPENNY_SIDE_inside
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 373.2605 1210.5391 25.6504 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_JCPENNY_SIDE_inside
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 370.2647 1210.2864 25.6868 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_Extramall_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -461.363 218.9872 11.566 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_Extramall_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -445.401 282.6935 11.9723 radius 0.5 0.5 0.5 // at front door
+jf @hvmall_Extramall_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 379.8471 1008.6616 19.2464 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_Extramall_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 380.0422 1002.2557 19.177 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_1_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -445.9723 285.8812 12.1106 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+
+:hvmall_littledoors_1_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -412.7648 231.5160 12.2883 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_littledoors_1_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 373.8047 1187.8310 19.0716 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_1_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 370.2908 1187.1430 19.1239 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_2_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -410.2572 229.9178 12.2596 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_2_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -415.9986 237.7717 13.5522 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_littledoors_2_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 374.5861 1205.9752 19.1821 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_2_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 370.2765 1205.9304 19.1009 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_3_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -412.176 235.7106 13.4805 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_3_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -436.124 203.6389 11.2976 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_littledoors_3_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 359.5395 1034.6514 19.1994 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_3_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 356.5909 1017.5396 19.1825 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_4_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -442.7181 286.5902 12.0864 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_4_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -441.1166 284.5287 11.9839 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_littledoors_4_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 360.5577 1017.8823 19.2009 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_4_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 356.5831 1033.6476 19.1825 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_5_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -435.0023 200.9129 11.0559 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_5_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -415.2927 366.1515 12.2843 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_littledoors_5_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 468.4419 1035.4261 19.1828 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_5_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 471.7368 1034.7533 19.1811 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_6_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -417.7993 364.0055 12.2257 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_6_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -396.1798 325.6298 12.2015 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_littledoors_6_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 454.3811 1090.4856 18.6367 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_6_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 457.3458 1090.7861 18.635 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_7_out
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -399.368 327.7668 12.159 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_7_out
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -399.3625 316.8198 12.4687 radius 1.5 1.5 1.5 // at front door
+jf @hvmall_littledoors_7_in
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 4 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 379.8987 1005.3729 25.2235 //inside mall
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_7_in
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 379.9376 1001.6456 25.282 radius 1.5 1.5 1.5 // inside mall door
+jf @hvmall_littledoors_8_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -402.2561 314.6622 12.2764 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_8_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 356.3291 1018.571 25.3072 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_9_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -420.1949 421.0471 13.1499 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_9_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 355.6096 1033.1542 25.3101 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_10_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -434.8313 385.2475 12.3804 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_10_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 369.6078 1071.5200 25.3311 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_11_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -409.1818 348.3411 12.0987 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_11_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 369.5461 1081.6876 25.3411 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_12_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -402.2561 314.6622 12.2764 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_12_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 358.9583 1136.369 25.2751 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_13_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -418.6331 214.3392 11.6279 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_13_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 369.5346 1168.9852 25.5427 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_14_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -457.243 279.5239 12.1999 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_14_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 369.5429 1199.9919 25.7025 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_15_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -461.363 218.9872 11.566 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_15_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 413.6979 1210.894 25.4149 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_16_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -445.9723 285.8812 12.1106 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+
+:hvmall_littledoors_16_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 425.281 1221.5835 25.375 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_17_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -410.2572 229.9178 12.2596 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+
+:hvmall_littledoors_17_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 455.9669 1249.4861 25.2834 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_18_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -402.2561 314.6622 12.2764 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_18_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 458.2809 1186.7395 25.1781 radius 1.5 1.5 1.5 // one way door
+jf @hvmall_littledoors_19_oneway
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -412.176 235.7106 13.4805 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+:hvmall_littledoors_19_oneway
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 470.3981 1133.8182 24.5724 radius 1.5 1.5 1.5 // one way door
+jf @HVmall
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -442.7181 286.5902 12.0864 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @HVMALL
+
+
+:OceanHotel
+script_name 'OcHot' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @HVMALL
+
+:ocean_beach_hotel
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 229.5 -1277.7 11.5 radius 1.5 1.5 1.5 // at front door
+jf @ocean_beach_hotel
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 1 
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at 221.3375 -1275.9030 12.0825 //inside
+wait 500
+016A: fade 1 500 ms
+jump @ocean_beach_hotel_2
+
+:ocean_beach_hotel_2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 227.9793 -1277.5530 12.0712 radius 1.5 1.5 1.5 // inside door
+jf @ocean_beach_hotel_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at 231.2114 -1278.0600 12.0712 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @ocean_beach_hotel
+
+
+:Mansion_entrance
+script_name 'manent' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @Mansion_entrance
+
+:Mansion_1
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -378.6299 -555.5281 19.5742 radius 1.5 1.5 1.5 // at front door
+jf @Mansion_1
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 2
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at -378.3865 -560.2910 19.5742 //inside
+wait 500
+016A: fade 1 500 ms
+jump @Mansion_1_2
+
+:Mansion_1_2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -378.6299 -555.5281 19.5742 radius 1.5 1.5 1.5 // inside door
+jf @Mansion_1_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -378.7451 -551.4708 19.2466 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @Mansion_1
+
+:Mansion_EXIT_1
+script_name 'manex1' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @Mansion_EXIT_1
+
+:Mansion_2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -336.7202 -574.2328 35.5600 radius 1.5 1.5 1.5 // at front door
+jf @Mansion_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 2
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at -329.3779 -583.0374 35.5600 //inside
+wait 500
+016A: fade 1 500 ms
+jump @Mansion_2_2
+
+:Mansion_2_2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -330.7428 -580.1313 35.5600 radius 1.5 1.5 1.5 // inside door
+jf @Mansion_2_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -345.4408 -573.9286 36.9414 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @Mansion_2
+
+:Mansion_EXIT_2
+script_name 'manex2' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @Mansion_EXIT_2
+
+:Mansion_3
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -353.5446 -582.1307 11.6016 radius 1.5 1.5 1.5 // at front door
+jf @Mansion_3
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 2
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at -344.0216 -578.7548 11.6016 //inside
+wait 500
+016A: fade 1 500 ms
+jump @Mansion_3_2
+
+:Mansion_3_2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -348.8583 -579.2407 11.6012 radius 1.5 1.5 1.5 // inside door
+jf @Mansion_3_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -353.1470 -587.4896 11.5999 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @Mansion_3
+
+:bikerbar_EXIT
+script_name 'bikeex' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @bikerbar_EXIT
+
+:bikerbar
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -597.3535 651.0412 11.6765 radius 1.5 1.5 1.5 // at front door
+jf @bikerbar
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 11
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at -596.7108 645.7925 11.6765 //inside
+wait 500
+016A: fade 1 500 ms
+jump @bikerbar_2
+
+:bikerbar_2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -597.3535 651.0412 11.6765 radius 1.5 1.5 1.5 // inside door
+jf @bikerbar_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -597.6973 654.6363 11.0723 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @bikerbar
+
+:lovefist_EXIT
+script_name 'loveex' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @lovefist_EXIT
+
+:lovefist
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -886.5897 1158.9590 13.6787 radius 1.5 1.5 1.5 // at front door
+jf @lovefist
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 9
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at -880.3626 1157.5090 16.5121 //inside
+wait 500
+016A: fade 1 500 ms
+jump @lovefist_2
+
+:lovefist_2
+wait 0
+if 
+00F5:   player $PLAYER_CHAR 0 -876.3243 1160.3430 17.8182 radius 1.5 1.5 1.5 // inside door
+jf @lovefist_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -879.5097 1159.4310 11.2330 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @lovefist
+
+
+:lovefist_23
+script_name 'love2ex' 
+wait 0
+if 
+   Player.Defined($PLAYER_CHAR)
+jf @lovefist_EXIT
+
+:lovefist_22
+wait 0
+if or 
+00F5:   player $PLAYER_CHAR 0 -893.96 1054.69 15.67 radius 1.5 1.5 1.5 // at front door
+00F5:   player $PLAYER_CHAR 0 -894.2510 1048.3240 15.6737 radius 1.5 1.5 1.5 // at front door
+00F5:   player $PLAYER_CHAR 0 -893.6165 1060.8910 15.6737 radius 1.5 1.5 1.5 // at front door
+jf @lovefist_23
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 8
+Camera.SetAtPos(448.3, 1030.0, 18.0)
+0055: put_player $PLAYER_CHAR at -946.6824 1081.3200 11.0946  //inside
+wait 500
+016A: fade 1 500 ms
+jump @lovefist_22_2
+
+:lovefist_22_2
+wait 0
+if or 
+00F5:   player $PLAYER_CHAR 0 -937.8724 1075.4150 11.0946 radius 1.5 1.5 1.5 // inside door
+00F5:   player $PLAYER_CHAR 0 -937.6663 1079.6110 11.0946 radius 1.5 1.5 1.5 // inside door
+00F5:   player $PLAYER_CHAR 0 -948.6251 1084.2300 11.0946 radius 1.5 1.5 1.5 // inside door
+00F5:   player $PLAYER_CHAR 0 -945.4660 1093.9460 13.7640 radius 1.5 1.5 1.5 // inside door
+00F5:   player $PLAYER_CHAR 0 -941.8904 1093.9440 13.7640 radius 1.5 1.5 1.5 // inside door                                                          
+jf @lovefist_22_2
+0169: set_fade_color 0 0 0
+016A: fade 0 500 ms
+wait 500
+select_interior 0 
+Camera.SetAtPos(-419.0733, 419.8275, 13.1453)
+0055: put_player $PLAYER_CHAR at -888.7933 1055.0370 14.9027 //outside front door
+wait 500
+016A: fade 1 500 ms
+jump @lovefist_23
+

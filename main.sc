@@ -55,9 +55,9 @@ fade 0 0
 set_wb_check_to 0
 00C0: set_current_time 10 0
 0572: set_taxi_boost_jump 1
-04E4: unknown_refresh_game_renderer_at -542.5803 268.1569
-Camera.SetAtPos(-542.5803, 268.1569, 12.4336)
-$PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // Twin Pines Mall
+04E4: unknown_refresh_game_renderer_at 625.157 454.36
+Camera.SetAtPos(625.157, 454.36, 10.0)
+$PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // VC mansion
 0171: set_player $PLAYER_CHAR z_angle_to 180.0
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
@@ -171,6 +171,7 @@ create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugParticle
 create_thread @CarSpawn
 create_thread @UNIQUE_STUNT_JUMPS
+create_thread @interiors
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
@@ -293,5 +294,7 @@ jump @InfLoop
 {$INCLUDE script/TwinPinesRipple.txt}
 {$INCLUDE script/TwinPinesTrees.txt}
 {$INCLUDE script/UniqueStuntJumps.txt}
+{$INCLUDE script/interiorspawner.txt}
+{$INCLUDE script/interiors.txt}
 //-------------Mission 0---------------
 // put missions here
