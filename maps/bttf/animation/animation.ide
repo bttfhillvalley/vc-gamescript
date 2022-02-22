@@ -92,6 +92,11 @@ objs
 5415, timerpart2, GarageVC, 1, 300, 129
 5416, timerpart3, GarageVC, 1, 300, 129
 6400, delhook, delhook, 1, 300, 129
+6401, 55pepsi, drinks, 1, 300, 129
+6402, 85pepsi, drinks, 1, 300, 129
+6403, 2015pepsi, drinks, 1, 300, 129
+6404, whiskey, drinks, 1, 300, 129
+
 end
 tobj
 end

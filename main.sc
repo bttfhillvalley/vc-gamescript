@@ -61,7 +61,7 @@ $PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // Twin Pines 
 0171: set_player $PLAYER_CHAR z_angle_to 180.0
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
-$1955 = 1955 // integer values
+$1955 = 1985 // integer values
 $1985 = 0 // integer values
 $2015 = 0 // integer values
 $1955CAR = 0 // integer values
@@ -296,5 +296,6 @@ jump @InfLoop
 {$INCLUDE script/UniqueStuntJumps.txt}
 {$INCLUDE script/interiorspawner.txt}
 {$INCLUDE script/interiors.txt}
+{$INCLUDE script/TimeChangingPickups.txt}
 //-------------Mission 0---------------
 // put missions here

@@ -12,23 +12,31 @@ if
     $CYEAR < 1910
 then
     3F08: add_build "1885" amnt 4
+    create_thread @whiskey
+    01EB: set_traffic_density_multiplier_to 0.0
     jump @WaitToLeave1885
 else if
     $CYEAR < 1980
 then
     3F08: add_build "1955" amnt 4
+    create_thread @1955Pepsi
     gosub @TwinpinesTreesCreate
     create_thread @TwinPinesRipple
+    01EB: set_traffic_density_multiplier_to 0.5
     jump @WaitToLeave1955
 else if
     $CYEAR < 2010
 then
     3F08: add_build "1985" amnt 7
+    01EB: set_traffic_density_multiplier_to 0.7
+    create_thread @1985Pepsi
     gosub @MallSignCreate
     create_thread @canopener
     jump @WaitToLeave1985
 else
     3F08: add_build "2015" amnt 7
+    01EB: set_traffic_density_multiplier_to 0.9
+    create_thread @2015Pepsi
     gosub @MallSignCreate
     jump @WaitToLeave2015
 end
@@ -41,6 +49,7 @@ if
     $CYEAR >= 1910
 else_jump @WaitToLeave1885
 3F09: remove_build "1885" amnt 4
+create_thread @1885pickupcleanup
 jump @DateCheck
 
 :WaitToLeave1955
@@ -50,6 +59,7 @@ if or
     $CYEAR >= 1980 // We traveled to the present/future
 else_jump @WaitToLeave1955
 3F09: remove_build "1955" amnt 4
+create_thread @1955pickupcleanup
 gosub @TwinPinesTreesDestroy
 jump @DateCheck
 
@@ -60,6 +70,7 @@ if or
   $CYEAR >= 2010 // We traveled to the future
 else_jump @WaitToLeave1985
 3F09: remove_build "1985" amnt 7
+create_thread @1985pickupcleanup
 gosub @MallSignDestroy
 end_thread_named 'canopn'
 0108: destroy_object $dogfoodbase
@@ -88,5 +99,6 @@ if
   $CYEAR < 2010 // We traveled to the past/present
 else_jump @WaitToLeave2015
 3F09: remove_build "2015" amnt 7
+create_thread @2015pickupcleanup
 gosub @MallSignDestroy
 jump @DateCheck

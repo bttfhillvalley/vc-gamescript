@@ -1,0 +1,2202 @@
+//*------------------------------------------*
+//this is where you remove pickups from the map
+//*------------------------------------------*
+
+:1885pickupcleanup
+wait 0
+0215: destroy_pickup $WHISKEYM1
+0215: destroy_pickup $WHISKEYM2
+0215: destroy_pickup $WHISKEYM3
+0215: destroy_pickup $WHISKEYM4
+0215: destroy_pickup $WHISKEYM5
+0215: destroy_pickup $WHISKEYM6
+0215: destroy_pickup $WHISKEYM7
+0215: destroy_pickup $WHISKEYM8
+0215: destroy_pickup $WHISKEYM9
+0215: destroy_pickup $WHISKEYM10
+0215: destroy_pickup $WHISKEYM11
+0215: destroy_pickup $WHISKEYM12
+0215: destroy_pickup $WHISKEYM13
+0215: destroy_pickup $WHISKEYM14
+0215: destroy_pickup $WHISKEYM15
+0215: destroy_pickup $WHISKEYM16
+0215: destroy_pickup $WHISKEYM17
+0215: destroy_pickup $WHISKEYM18
+0215: destroy_pickup $WHISKEYM19
+0215: destroy_pickup $WHISKEYM20
+0215: destroy_pickup $WHISKEYM21
+0215: destroy_pickup $WHISKEYM22
+0215: destroy_pickup $WHISKEYM23
+0215: destroy_pickup $WHISKEYM24
+0215: destroy_pickup $WHISKEYM25
+0215: destroy_pickup $WHISKEYM26
+0215: destroy_pickup $WHISKEYM27
+0215: destroy_pickup $WHISKEYM28
+0215: destroy_pickup $WHISKEYM29
+0215: destroy_pickup $WHISKEYM30
+0215: destroy_pickup $WHISKEYM31
+0215: destroy_pickup $WHISKEYM32
+0215: destroy_pickup $WHISKEYM33
+0215: destroy_pickup $WHISKEYM34
+0215: destroy_pickup $WHISKEYM35
+0215: destroy_pickup $WHISKEYM36
+0215: destroy_pickup $WHISKEYM37
+0215: destroy_pickup $WHISKEYM38
+0215: destroy_pickup $WHISKEYM39
+0215: destroy_pickup $WHISKEYM40
+0215: destroy_pickup $WHISKEYM41
+0215: destroy_pickup $WHISKEYM42
+0215: destroy_pickup $WHISKEYH1
+0215: destroy_pickup $WHISKEYH2
+0215: destroy_pickup $WHISKEYH3
+0215: destroy_pickup $WHISKEYH4
+0215: destroy_pickup $WHISKEYH5
+0215: destroy_pickup $WHISKEYH6
+0215: destroy_pickup $WHISKEYH7
+0215: destroy_pickup $WHISKEYH8
+0215: destroy_pickup $WHISKEYH9
+0215: destroy_pickup $WHISKEYH10
+0215: destroy_pickup $WHISKEYH11
+0215: destroy_pickup $WHISKEYH12
+0215: destroy_pickup $WHISKEYH13
+0215: destroy_pickup $WHISKEYH14
+0215: destroy_pickup $WHISKEYH15
+0215: destroy_pickup $WHISKEYH16
+0215: destroy_pickup $WHISKEYH17
+0215: destroy_pickup $WHISKEYH18
+0215: destroy_pickup $WHISKEYH19
+0215: destroy_pickup $WHISKEYH20
+0215: destroy_pickup $WHISKEYH21
+0215: destroy_pickup $WHISKEYH22
+0215: destroy_pickup $WHISKEYH23
+0215: destroy_pickup $WHISKEYH24
+0215: destroy_pickup $WHISKEYH25
+0215: destroy_pickup $WHISKEYH26
+0215: destroy_pickup $WHISKEYH27
+0215: destroy_pickup $WHISKEYH28
+0215: destroy_pickup $WHISKEYH29
+0215: destroy_pickup $WHISKEYH30
+0215: destroy_pickup $WHISKEYH31
+0215: destroy_pickup $WHISKEYH32
+0215: destroy_pickup $WHISKEYH33
+0215: destroy_pickup $WHISKEYH34
+0215: destroy_pickup $WHISKEYH35
+0215: destroy_pickup $WHISKEYH36
+0215: destroy_pickup $WHISKEYH37
+0215: destroy_pickup $WHISKEYH38
+0215: destroy_pickup $WHISKEYH39
+0215: destroy_pickup $WHISKEYH40
+0215: destroy_pickup $WHISKEYH41
+0215: destroy_pickup $WHISKEYH42
+0215: destroy_pickup $WHISKEYE1
+0215: destroy_pickup $WHISKEYE2
+0215: destroy_pickup $WHISKEYE3
+0215: destroy_pickup $WHISKEYE4
+0215: destroy_pickup $WHISKEYE5
+0215: destroy_pickup $WHISKEYE6
+0215: destroy_pickup $WHISKEYE7
+0215: destroy_pickup $WHISKEYE8
+0215: destroy_pickup $WHISKEYE9
+0215: destroy_pickup $WHISKEYE10
+0215: destroy_pickup $WHISKEYE11
+0215: destroy_pickup $WHISKEYE12
+0215: destroy_pickup $WHISKEYE13
+0215: destroy_pickup $WHISKEYE14
+0215: destroy_pickup $WHISKEYE15
+0215: destroy_pickup $WHISKEYE16
+0215: destroy_pickup $WHISKEYE17
+0215: destroy_pickup $WHISKEYE18
+0215: destroy_pickup $WHISKEYE19
+0215: destroy_pickup $WHISKEYE20
+0215: destroy_pickup $WHISKEYE21
+0215: destroy_pickup $WHISKEYE22
+0215: destroy_pickup $WHISKEYE23
+0215: destroy_pickup $WHISKEYE24
+0215: destroy_pickup $WHISKEYE25
+0215: destroy_pickup $WHISKEYE26
+0215: destroy_pickup $WHISKEYE27
+0215: destroy_pickup $WHISKEYE28
+0215: destroy_pickup $WHISKEYE29
+0215: destroy_pickup $WHISKEYE30
+0215: destroy_pickup $WHISKEYE31
+0215: destroy_pickup $WHISKEYE32
+0215: destroy_pickup $WHISKEYE33
+0215: destroy_pickup $WHISKEYE34
+0215: destroy_pickup $WHISKEYE35
+0215: destroy_pickup $WHISKEYE36
+0215: destroy_pickup $WHISKEYE37
+0215: destroy_pickup $WHISKEYE38
+0215: destroy_pickup $WHISKEYE39
+0215: destroy_pickup $WHISKEYE40
+0215: destroy_pickup $WHISKEYE41
+0215: destroy_pickup $WHISKEYE42
+
+end_thread
+
+:1955pickupcleanup
+wait 0
+0215: destroy_pickup $1955PEPSIM1
+0215: destroy_pickup $1955PEPSIM2
+0215: destroy_pickup $1955PEPSIM3
+0215: destroy_pickup $1955PEPSIM4
+0215: destroy_pickup $1955PEPSIM5
+0215: destroy_pickup $1955PEPSIM6
+0215: destroy_pickup $1955PEPSIM7
+0215: destroy_pickup $1955PEPSIM8
+0215: destroy_pickup $1955PEPSIM9
+0215: destroy_pickup $1955PEPSIM10
+0215: destroy_pickup $1955PEPSIM11
+0215: destroy_pickup $1955PEPSIM12
+0215: destroy_pickup $1955PEPSIM13
+0215: destroy_pickup $1955PEPSIM14
+0215: destroy_pickup $1955PEPSIM15
+0215: destroy_pickup $1955PEPSIM16
+0215: destroy_pickup $1955PEPSIM17
+0215: destroy_pickup $1955PEPSIM18
+0215: destroy_pickup $1955PEPSIM19
+0215: destroy_pickup $1955PEPSIM20
+0215: destroy_pickup $1955PEPSIM21
+0215: destroy_pickup $1955PEPSIM22
+0215: destroy_pickup $1955PEPSIM23
+0215: destroy_pickup $1955PEPSIM24
+0215: destroy_pickup $1955PEPSIM25
+0215: destroy_pickup $1955PEPSIM26
+0215: destroy_pickup $1955PEPSIM27
+0215: destroy_pickup $1955PEPSIM28
+0215: destroy_pickup $1955PEPSIM29
+0215: destroy_pickup $1955PEPSIM30
+0215: destroy_pickup $1955PEPSIM31
+0215: destroy_pickup $1955PEPSIM32
+0215: destroy_pickup $1955PEPSIM33
+0215: destroy_pickup $1955PEPSIM34
+0215: destroy_pickup $1955PEPSIM35
+0215: destroy_pickup $1955PEPSIM36
+0215: destroy_pickup $1955PEPSIM37
+0215: destroy_pickup $1955PEPSIM38
+0215: destroy_pickup $1955PEPSIM39
+0215: destroy_pickup $1955PEPSIM40
+0215: destroy_pickup $1955PEPSIM41
+0215: destroy_pickup $1955PEPSIM42
+0215: destroy_pickup $1955PEPSIH1
+0215: destroy_pickup $1955PEPSIH2
+0215: destroy_pickup $1955PEPSIH3
+0215: destroy_pickup $1955PEPSIH4
+0215: destroy_pickup $1955PEPSIH5
+0215: destroy_pickup $1955PEPSIH6
+0215: destroy_pickup $1955PEPSIH7
+0215: destroy_pickup $1955PEPSIH8
+0215: destroy_pickup $1955PEPSIH9
+0215: destroy_pickup $1955PEPSIH10
+0215: destroy_pickup $1955PEPSIH11
+0215: destroy_pickup $1955PEPSIH12
+0215: destroy_pickup $1955PEPSIH13
+0215: destroy_pickup $1955PEPSIH14
+0215: destroy_pickup $1955PEPSIH15
+0215: destroy_pickup $1955PEPSIH16
+0215: destroy_pickup $1955PEPSIH17
+0215: destroy_pickup $1955PEPSIH18
+0215: destroy_pickup $1955PEPSIH19
+0215: destroy_pickup $1955PEPSIH20
+0215: destroy_pickup $1955PEPSIH21
+0215: destroy_pickup $1955PEPSIH22
+0215: destroy_pickup $1955PEPSIH23
+0215: destroy_pickup $1955PEPSIH24
+0215: destroy_pickup $1955PEPSIH25
+0215: destroy_pickup $1955PEPSIH26
+0215: destroy_pickup $1955PEPSIH27
+0215: destroy_pickup $1955PEPSIH28
+0215: destroy_pickup $1955PEPSIH29
+0215: destroy_pickup $1955PEPSIH30
+0215: destroy_pickup $1955PEPSIH31
+0215: destroy_pickup $1955PEPSIH32
+0215: destroy_pickup $1955PEPSIH33
+0215: destroy_pickup $1955PEPSIH34
+0215: destroy_pickup $1955PEPSIH35
+0215: destroy_pickup $1955PEPSIH36
+0215: destroy_pickup $1955PEPSIH37
+0215: destroy_pickup $1955PEPSIH38
+0215: destroy_pickup $1955PEPSIH39
+0215: destroy_pickup $1955PEPSIH40
+0215: destroy_pickup $1955PEPSIH41
+0215: destroy_pickup $1955PEPSIH42
+end_thread
+
+:1985pickupcleanup
+wait 0
+0215: destroy_pickup $1985PEPSIM1
+0215: destroy_pickup $1985PEPSIM2
+0215: destroy_pickup $1985PEPSIM3
+0215: destroy_pickup $1985PEPSIM4
+0215: destroy_pickup $1985PEPSIM5
+0215: destroy_pickup $1985PEPSIM6
+0215: destroy_pickup $1985PEPSIM7
+0215: destroy_pickup $1985PEPSIM8
+0215: destroy_pickup $1985PEPSIM9
+0215: destroy_pickup $1985PEPSIM10
+0215: destroy_pickup $1985PEPSIM11
+0215: destroy_pickup $1985PEPSIM12
+0215: destroy_pickup $1985PEPSIM13
+0215: destroy_pickup $1985PEPSIM14
+0215: destroy_pickup $1985PEPSIM15
+0215: destroy_pickup $1985PEPSIM16
+0215: destroy_pickup $1985PEPSIM17
+0215: destroy_pickup $1985PEPSIM18
+0215: destroy_pickup $1985PEPSIM19
+0215: destroy_pickup $1985PEPSIM20
+0215: destroy_pickup $1985PEPSIM21
+0215: destroy_pickup $1985PEPSIM22
+0215: destroy_pickup $1985PEPSIM23
+0215: destroy_pickup $1985PEPSIM24
+0215: destroy_pickup $1985PEPSIM25
+0215: destroy_pickup $1985PEPSIM26
+0215: destroy_pickup $1985PEPSIM27
+0215: destroy_pickup $1985PEPSIM28
+0215: destroy_pickup $1985PEPSIM29
+0215: destroy_pickup $1985PEPSIM30
+0215: destroy_pickup $1985PEPSIM31
+0215: destroy_pickup $1985PEPSIM32
+0215: destroy_pickup $1985PEPSIM33
+0215: destroy_pickup $1985PEPSIM34
+0215: destroy_pickup $1985PEPSIM35
+0215: destroy_pickup $1985PEPSIM36
+0215: destroy_pickup $1985PEPSIM37
+0215: destroy_pickup $1985PEPSIM38
+0215: destroy_pickup $1985PEPSIM39
+0215: destroy_pickup $1985PEPSIM40
+0215: destroy_pickup $1985PEPSIM41
+0215: destroy_pickup $1985PEPSIM42
+0215: destroy_pickup $1985PEPSIH1
+0215: destroy_pickup $1985PEPSIH2
+0215: destroy_pickup $1985PEPSIH3
+0215: destroy_pickup $1985PEPSIH4
+0215: destroy_pickup $1985PEPSIH5
+0215: destroy_pickup $1985PEPSIH6
+0215: destroy_pickup $1985PEPSIH7
+0215: destroy_pickup $1985PEPSIH8
+0215: destroy_pickup $1985PEPSIH9
+0215: destroy_pickup $1985PEPSIH10
+0215: destroy_pickup $1985PEPSIH11
+0215: destroy_pickup $1985PEPSIH12
+0215: destroy_pickup $1985PEPSIH13
+0215: destroy_pickup $1985PEPSIH14
+0215: destroy_pickup $1985PEPSIH15
+0215: destroy_pickup $1985PEPSIH16
+0215: destroy_pickup $1985PEPSIH17
+0215: destroy_pickup $1985PEPSIH18
+0215: destroy_pickup $1985PEPSIH19
+0215: destroy_pickup $1985PEPSIH20
+0215: destroy_pickup $1985PEPSIH21
+0215: destroy_pickup $1985PEPSIH22
+0215: destroy_pickup $1985PEPSIH23
+0215: destroy_pickup $1985PEPSIH24
+0215: destroy_pickup $1985PEPSIH25
+0215: destroy_pickup $1985PEPSIH26
+0215: destroy_pickup $1985PEPSIH27
+0215: destroy_pickup $1985PEPSIH28
+0215: destroy_pickup $1985PEPSIH29
+0215: destroy_pickup $1985PEPSIH30
+0215: destroy_pickup $1985PEPSIH31
+0215: destroy_pickup $1985PEPSIH32
+0215: destroy_pickup $1985PEPSIH33
+0215: destroy_pickup $1985PEPSIH34
+0215: destroy_pickup $1985PEPSIH35
+0215: destroy_pickup $1985PEPSIH36
+0215: destroy_pickup $1985PEPSIH37
+0215: destroy_pickup $1985PEPSIH38
+0215: destroy_pickup $1985PEPSIH39
+0215: destroy_pickup $1985PEPSIH40
+0215: destroy_pickup $1985PEPSIH41
+0215: destroy_pickup $1985PEPSIH42
+end_thread
+
+:2015pickupcleanup
+wait 0
+0215: destroy_pickup $2015PEPSIM1
+0215: destroy_pickup $2015PEPSIM2
+0215: destroy_pickup $2015PEPSIM3
+0215: destroy_pickup $2015PEPSIM4
+0215: destroy_pickup $2015PEPSIM5
+0215: destroy_pickup $2015PEPSIM6
+0215: destroy_pickup $2015PEPSIM7
+0215: destroy_pickup $2015PEPSIM8
+0215: destroy_pickup $2015PEPSIM9
+0215: destroy_pickup $2015PEPSIM10
+0215: destroy_pickup $2015PEPSIM11
+0215: destroy_pickup $2015PEPSIM12
+0215: destroy_pickup $2015PEPSIM13
+0215: destroy_pickup $2015PEPSIM14
+0215: destroy_pickup $2015PEPSIM15
+0215: destroy_pickup $2015PEPSIM16
+0215: destroy_pickup $2015PEPSIM17
+0215: destroy_pickup $2015PEPSIM18
+0215: destroy_pickup $2015PEPSIM19
+0215: destroy_pickup $2015PEPSIM20
+0215: destroy_pickup $2015PEPSIM21
+0215: destroy_pickup $2015PEPSIM22
+0215: destroy_pickup $2015PEPSIM23
+0215: destroy_pickup $2015PEPSIM24
+0215: destroy_pickup $2015PEPSIM25
+0215: destroy_pickup $2015PEPSIM26
+0215: destroy_pickup $2015PEPSIM27
+0215: destroy_pickup $2015PEPSIM28
+0215: destroy_pickup $2015PEPSIM29
+0215: destroy_pickup $2015PEPSIM30
+0215: destroy_pickup $2015PEPSIM31
+0215: destroy_pickup $2015PEPSIM32
+0215: destroy_pickup $2015PEPSIM33
+0215: destroy_pickup $2015PEPSIM34
+0215: destroy_pickup $2015PEPSIM35
+0215: destroy_pickup $2015PEPSIM36
+0215: destroy_pickup $2015PEPSIM37
+0215: destroy_pickup $2015PEPSIM38
+0215: destroy_pickup $2015PEPSIM39
+0215: destroy_pickup $2015PEPSIM40
+0215: destroy_pickup $2015PEPSIM41
+0215: destroy_pickup $2015PEPSIM42
+0215: destroy_pickup $2015PEPSIH1
+0215: destroy_pickup $2015PEPSIH2
+0215: destroy_pickup $2015PEPSIH3
+0215: destroy_pickup $2015PEPSIH4
+0215: destroy_pickup $2015PEPSIH5
+0215: destroy_pickup $2015PEPSIH6
+0215: destroy_pickup $2015PEPSIH7
+0215: destroy_pickup $2015PEPSIH8
+0215: destroy_pickup $2015PEPSIH9
+0215: destroy_pickup $2015PEPSIH10
+0215: destroy_pickup $2015PEPSIH11
+0215: destroy_pickup $2015PEPSIH12
+0215: destroy_pickup $2015PEPSIH13
+0215: destroy_pickup $2015PEPSIH14
+0215: destroy_pickup $2015PEPSIH15
+0215: destroy_pickup $2015PEPSIH16
+0215: destroy_pickup $2015PEPSIH17
+0215: destroy_pickup $2015PEPSIH18
+0215: destroy_pickup $2015PEPSIH19
+0215: destroy_pickup $2015PEPSIH20
+0215: destroy_pickup $2015PEPSIH21
+0215: destroy_pickup $2015PEPSIH22
+0215: destroy_pickup $2015PEPSIH23
+0215: destroy_pickup $2015PEPSIH24
+0215: destroy_pickup $2015PEPSIH25
+0215: destroy_pickup $2015PEPSIH26
+0215: destroy_pickup $2015PEPSIH27
+0215: destroy_pickup $2015PEPSIH28
+0215: destroy_pickup $2015PEPSIH29
+0215: destroy_pickup $2015PEPSIH30
+0215: destroy_pickup $2015PEPSIH31
+0215: destroy_pickup $2015PEPSIH32
+0215: destroy_pickup $2015PEPSIH33
+0215: destroy_pickup $2015PEPSIH34
+0215: destroy_pickup $2015PEPSIH35
+0215: destroy_pickup $2015PEPSIH36
+0215: destroy_pickup $2015PEPSIH37
+0215: destroy_pickup $2015PEPSIH38
+0215: destroy_pickup $2015PEPSIH39
+0215: destroy_pickup $2015PEPSIH40
+0215: destroy_pickup $2015PEPSIH41
+0215: destroy_pickup $2015PEPSIH42
+end_thread
+//*------------------------------------------*
+//this is where you add pickups to the map
+//*------------------------------------------*
+
+
+
+//*------------------------------------------*
+//this is where you add pickups in 1885
+//*------------------------------------------*
+
+:whiskey //whiskey has an extra effect make sure to add all 3 to be consistant when making pickups
+wait 0
+Pickup.Create($WHISKEYM1, #WHISKEY, 2, -113.2, -975.7, 10.4)
+Pickup.Create($WHISKEYM2, #WHISKEY, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($WHISKEYM3, #WHISKEY, 2, 456.2, -471.4, 16.6)
+Pickup.Create($WHISKEYM4, #WHISKEY, 2, 377.4, 467.7, 11.6)
+Pickup.Create($WHISKEYM5, #WHISKEY, 2, 469.6, 697.4, 11.7)
+Pickup.Create($WHISKEYM6, #WHISKEY, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($WHISKEYM7, #WHISKEY, 2, 384.3, 756.6, 11.7)
+Pickup.Create($WHISKEYM8, #WHISKEY, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($WHISKEYM9, #WHISKEY, 2, 85.3, 402.7, 19.8)
+Pickup.Create($WHISKEYM10, #WHISKEY, 2, -711.7, -501.7, 11.3)
+Pickup.Create($WHISKEYM11, #WHISKEY, 2, -404.0, -588.0, 11.6)
+Pickup.Create($WHISKEYM12, #WHISKEY, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($WHISKEYM13, #WHISKEY, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($WHISKEYM14, #WHISKEY, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($WHISKEYM15, #WHISKEY, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($WHISKEYM16, #WHISKEY, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($WHISKEYM17, #WHISKEY, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($WHISKEYM18, #WHISKEY, 2, -885.4, -483.4, 13.1)
+Pickup.Create($WHISKEYM19, #WHISKEY, 2, -925.1, -638.3, 16.0)
+Pickup.Create($WHISKEYM20, #WHISKEY, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($WHISKEYM21, #WHISKEY, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($WHISKEYM22, #WHISKEY, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($WHISKEYM23, #WHISKEY, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($WHISKEYM24, #WHISKEY, 2, -851.4, -78.8, 11.5)
+Pickup.Create($WHISKEYM25, #WHISKEY, 2, -834.2, 740.6, 11.3)
+Pickup.Create($WHISKEYM26, #WHISKEY, 2, -330.702, -573.366, 11.6)
+Pickup.Create($WHISKEYM27, #WHISKEY, 2, -37.7, -938.3, 10.5)
+Pickup.Create($WHISKEYM28, #WHISKEY, 2, 471.1, -444.1, 10.6)
+Pickup.Create($WHISKEYM29, #WHISKEY, 2, 448.6, 16.6, 11.0)
+Pickup.Create($WHISKEYM30, #WHISKEY, 2, 425.6, 221.1, 16.2)
+Pickup.Create($WHISKEYM31, #WHISKEY, 2, 428.4, 947.5, 13.2)
+Pickup.Create($WHISKEYM32, #WHISKEY, 2, 385.6, 752.3, 11.7)
+Pickup.Create($WHISKEYM33, #WHISKEY, 2, -366.6, -500.3, 11.3)
+Pickup.Create($WHISKEYM34, #WHISKEY, 2, -342.2, -591.5, 36.9)
+Pickup.Create($WHISKEYM35, #WHISKEY, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($WHISKEYM36, #WHISKEY, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($WHISKEYM37, #WHISKEY, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($WHISKEYM38, #WHISKEY, 2, -967.1, -62.6, 11.0)
+Pickup.Create($WHISKEYM39, #WHISKEY, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($WHISKEYM40, #WHISKEY, 2, -882.0, 111.2, 9.3)
+Pickup.Create($WHISKEYM41, #WHISKEY, 2, -857.1, -83.6, 11.5)
+Pickup.Create($WHISKEYM42, #WHISKEY, 2, -839.0, 740.6, 11.3)
+Pickup.Create($WHISKEYH1, #HEALTH, 2, -113.2, -975.7, 10.4)
+Pickup.Create($WHISKEYH2, #HEALTH, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($WHISKEYH3, #HEALTH, 2, 456.2, -471.4, 16.6)
+Pickup.Create($WHISKEYH4, #HEALTH, 2, 377.4, 467.7, 11.6)
+Pickup.Create($WHISKEYH5, #HEALTH, 2, 469.6, 697.4, 11.7)
+Pickup.Create($WHISKEYH6, #HEALTH, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($WHISKEYH7, #HEALTH, 2, 384.3, 756.6, 11.7)
+Pickup.Create($WHISKEYH8, #HEALTH, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($WHISKEYH9, #HEALTH, 2, 85.3, 402.7, 19.8)
+Pickup.Create($WHISKEYH10, #HEALTH, 2, -711.7, -501.7, 11.3)
+Pickup.Create($WHISKEYH11, #HEALTH, 2, -404.0, -588.0, 11.6)
+Pickup.Create($WHISKEYH12, #HEALTH, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($WHISKEYH13, #HEALTH, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($WHISKEYH14, #HEALTH, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($WHISKEYH15, #HEALTH, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($WHISKEYH16, #HEALTH, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($WHISKEYH17, #HEALTH, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($WHISKEYH18, #HEALTH, 2, -885.4, -483.4, 13.1)
+Pickup.Create($WHISKEYH19, #HEALTH, 2, -925.1, -638.3, 16.0)
+Pickup.Create($WHISKEYH20, #HEALTH, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($WHISKEYH21, #HEALTH, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($WHISKEYH22, #HEALTH, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($WHISKEYH23, #HEALTH, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($WHISKEYH24, #HEALTH, 2, -851.4, -78.8, 11.5)
+Pickup.Create($WHISKEYH25, #HEALTH, 2, -834.2, 740.6, 11.3)
+Pickup.Create($WHISKEYH26, #HEALTH, 2, -330.702, -573.366, 11.6)
+Pickup.Create($WHISKEYH27, #HEALTH, 2, -37.7, -938.3, 10.5)
+Pickup.Create($WHISKEYH28, #HEALTH, 2, 471.1, -444.1, 10.6)
+Pickup.Create($WHISKEYH29, #HEALTH, 2, 448.6, 16.6, 11.0)
+Pickup.Create($WHISKEYH30, #HEALTH, 2, 425.6, 221.1, 16.2)
+Pickup.Create($WHISKEYH31, #HEALTH, 2, 428.4, 947.5, 13.2)
+Pickup.Create($WHISKEYH32, #HEALTH, 2, 385.6, 752.3, 11.7)
+Pickup.Create($WHISKEYH33, #HEALTH, 2, -366.6, -500.3, 11.3)
+Pickup.Create($WHISKEYH34, #HEALTH, 2, -342.2, -591.5, 36.9)
+Pickup.Create($WHISKEYH35, #HEALTH, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($WHISKEYH36, #HEALTH, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($WHISKEYH37, #HEALTH, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($WHISKEYH38, #HEALTH, 2, -967.1, -62.6, 11.0)
+Pickup.Create($WHISKEYH39, #HEALTH, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($WHISKEYH40, #HEALTH, 2, -882.0, 111.2, 9.3)
+Pickup.Create($WHISKEYH41, #HEALTH, 2, -857.1, -83.6, 11.5)
+Pickup.Create($WHISKEYH42, #HEALTH, 2, -839.0, 740.6, 11.3)
+Pickup.Create($WHISKEYE1, #ADRENALINE, 2, -113.2, -975.7, 10.4)
+Pickup.Create($WHISKEYE2, #ADRENALINE, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($WHISKEYE3, #ADRENALINE, 2, 456.2, -471.4, 16.6)
+Pickup.Create($WHISKEYE4, #ADRENALINE, 2, 377.4, 467.7, 11.6)
+Pickup.Create($WHISKEYE5, #ADRENALINE, 2, 469.6, 697.4, 11.7)
+Pickup.Create($WHISKEYE6, #ADRENALINE, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($WHISKEYE7, #ADRENALINE, 2, 384.3, 756.6, 11.7)
+Pickup.Create($WHISKEYE8, #ADRENALINE, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($WHISKEYE9, #ADRENALINE, 2, 85.3, 402.7, 19.8)
+Pickup.Create($WHISKEYE10, #ADRENALINE, 2, -711.7, -501.7, 11.3)
+Pickup.Create($WHISKEYE11, #ADRENALINE, 2, -404.0, -588.0, 11.6)
+Pickup.Create($WHISKEYE12, #ADRENALINE, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($WHISKEYE13, #ADRENALINE, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($WHISKEYE14, #ADRENALINE, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($WHISKEYE15, #ADRENALINE, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($WHISKEYE16, #ADRENALINE, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($WHISKEYE17, #ADRENALINE, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($WHISKEYE18, #ADRENALINE, 2, -885.4, -483.4, 13.1)
+Pickup.Create($WHISKEYE19, #ADRENALINE, 2, -925.1, -638.3, 16.0)
+Pickup.Create($WHISKEYE20, #ADRENALINE, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($WHISKEYE21, #ADRENALINE, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($WHISKEYE22, #ADRENALINE, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($WHISKEYE23, #ADRENALINE, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($WHISKEYE24, #ADRENALINE, 2, -851.4, -78.8, 11.5)
+Pickup.Create($WHISKEYE25, #ADRENALINE, 2, -834.2, 740.6, 11.3)
+Pickup.Create($WHISKEYE26, #ADRENALINE, 2, -330.702, -573.366, 11.6)
+Pickup.Create($WHISKEYE27, #ADRENALINE, 2, -37.7, -938.3, 10.5)
+Pickup.Create($WHISKEYE28, #ADRENALINE, 2, 471.1, -444.1, 10.6)
+Pickup.Create($WHISKEYE29, #ADRENALINE, 2, 448.6, 16.6, 11.0)
+Pickup.Create($WHISKEYE30, #ADRENALINE, 2, 425.6, 221.1, 16.2)
+Pickup.Create($WHISKEYE31, #ADRENALINE, 2, 428.4, 947.5, 13.2)
+Pickup.Create($WHISKEYE32, #ADRENALINE, 2, 385.6, 752.3, 11.7)
+Pickup.Create($WHISKEYE33, #ADRENALINE, 2, -366.6, -500.3, 11.3)
+Pickup.Create($WHISKEYE34, #ADRENALINE, 2, -342.2, -591.5, 36.9)
+Pickup.Create($WHISKEYE35, #ADRENALINE, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($WHISKEYE36, #ADRENALINE, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($WHISKEYE37, #ADRENALINE, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($WHISKEYE38, #ADRENALINE, 2, -967.1, -62.6, 11.0)
+Pickup.Create($WHISKEYE39, #ADRENALINE, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($WHISKEYE40, #ADRENALINE, 2, -882.0, 111.2, 9.3)
+Pickup.Create($WHISKEYE41, #ADRENALINE, 2, -857.1, -83.6, 11.5)
+Pickup.Create($WHISKEYE42, #ADRENALINE, 2, -839.0, 740.6, 11.3)
+
+:whiskey_1
+wait 0
+if    
+0214:   pickup $WhiskeyP1 picked_up
+jf @whiskey_2
+0215: destroy_pickup $WHISKEYE1
+0215: destroy_pickup $WhiskeyH1
+end_thread
+
+:whiskey_2
+wait 0
+if
+0214:   pickup $WHISKEYM2 picked_up
+jf @whiskey_3
+0215: destroy_pickup $WHISKEYE2
+0215: destroy_pickup $WhiskeyH2
+end_thread
+
+:whiskey_3
+wait 0
+if
+0214:   pickup $WHISKEYM3 picked_up
+jf @whiskey_4
+0215: destroy_pickup $WHISKEYE3
+0215: destroy_pickup $WhiskeyH3
+end_thread
+
+
+:whiskey_4
+wait 0
+if
+0214:   pickup $WHISKEYM4 picked_up
+jf @whiskey_5
+0215: destroy_pickup $WHISKEYE4
+0215: destroy_pickup $WhiskeyH4
+end_thread
+
+:whiskey_5
+wait 0
+if
+0214:   pickup $WHISKEYM5 picked_up
+jf @whiskey_6
+0215: destroy_pickup $WHISKEYE5
+0215: destroy_pickup $WhiskeyH5
+end_thread
+
+:whiskey_6
+wait 0
+if
+0214:   pickup $WHISKEYM6 picked_up
+jf @whiskey_7
+0215: destroy_pickup $WHISKEYE6
+0215: destroy_pickup $WhiskeyH6
+end_thread
+
+:whiskey_7
+wait 0
+if
+0214:   pickup $WHISKEYM7 picked_up
+jf @whiskey_8
+0215: destroy_pickup $WHISKEYE7
+0215: destroy_pickup $WhiskeyH7
+end_thread
+
+:whiskey_8
+wait 0
+if
+0214:   pickup $WHISKEYM8 picked_up
+jf @whiskey_9
+0215: destroy_pickup $WHISKEYE8
+0215: destroy_pickup $WhiskeyH8
+end_thread
+
+:whiskey_9
+wait 0
+if
+0214:   pickup $WHISKEYM9 picked_up
+jf @whiskey_10
+0215: destroy_pickup $WHISKEYE9
+0215: destroy_pickup $WhiskeyH9
+end_thread
+
+:whiskey_10
+wait 0
+if
+0214:   pickup $WHISKEYM10 picked_up
+jf @whiskey_11
+0215: destroy_pickup $WHISKEYE10
+0215: destroy_pickup $WhiskeyH10
+end_thread
+
+:whiskey_11
+wait 0
+if
+0214:   pickup $WHISKEYM11 picked_up
+jf @whiskey_12
+0215: destroy_pickup $WHISKEYE11
+0215: destroy_pickup $WhiskeyH11
+end_thread
+
+:whiskey_12
+wait 0
+if
+0214:   pickup $WHISKEYM12 picked_up
+jf @whiskey_13
+0215: destroy_pickup $WHISKEYE12
+0215: destroy_pickup $WhiskeyH12
+end_thread
+
+:whiskey_13
+wait 0
+if
+0214:   pickup $WHISKEYM13 picked_up
+jf @whiskey_14
+0215: destroy_pickup $WHISKEYE13
+0215: destroy_pickup $WhiskeyH13
+end_thread
+
+:whiskey_14
+wait 0
+if
+0214:   pickup $WHISKEYM14 picked_up
+jf @whiskey_15
+0215: destroy_pickup $WHISKEYE14
+0215: destroy_pickup $WhiskeyH14
+end_thread
+
+:whiskey_15
+wait 0
+if
+0214:   pickup $WHISKEYM15 picked_up
+jf @whiskey_16
+0215: destroy_pickup $WHISKEYE15
+0215: destroy_pickup $WhiskeyH15
+end_thread
+
+:whiskey_16
+wait 0
+if
+0214:   pickup $WHISKEYM16 picked_up
+jf @whiskey_17
+0215: destroy_pickup $WHISKEYE16
+0215: destroy_pickup $WhiskeyH16
+end_thread
+
+:whiskey_17
+wait 0
+if
+0214:   pickup $WHISKEYM17 picked_up
+jf @whiskey_18
+0215: destroy_pickup $WHISKEYE17
+0215: destroy_pickup $WhiskeyH17
+end_thread
+
+:whiskey_18
+wait 0
+if
+0214:   pickup $WHISKEYM18 picked_up
+jf @whiskey_19
+0215: destroy_pickup $WHISKEYE18
+0215: destroy_pickup $WhiskeyH18
+end_thread
+
+:whiskey_19
+wait 0
+if
+0214:   pickup $WHISKEYM19 picked_up
+jf @whiskey_20
+0215: destroy_pickup $WHISKEYE19
+0215: destroy_pickup $WhiskeyH19
+end_thread
+
+:whiskey_20
+wait 0
+if
+0214:   pickup $WHISKEYM20 picked_up
+jf @whiskey_21
+0215: destroy_pickup $WHISKEYE20
+0215: destroy_pickup $WhiskeyH20
+end_thread
+
+:whiskey_21
+wait 0
+if
+0214:   pickup $WHISKEYM21 picked_up
+jf @whiskey_22
+0215: destroy_pickup $WHISKEYE21
+0215: destroy_pickup $WhiskeyH21
+end_thread
+
+:whiskey_22
+wait 0
+if
+0214:   pickup $WHISKEYM22 picked_up
+jf @whiskey_23
+0215: destroy_pickup $WHISKEYE22
+0215: destroy_pickup $WhiskeyH22
+end_thread
+
+:whiskey_23
+wait 0
+if
+0214:   pickup $WHISKEYM23 picked_up
+jf @whiskey_24
+0215: destroy_pickup $WHISKEYE23
+0215: destroy_pickup $WhiskeyH23
+end_thread
+
+:whiskey_24
+wait 0
+if
+0214:   pickup $WHISKEYM24 picked_up
+jf @whiskey_25
+0215: destroy_pickup $WHISKEYE24
+0215: destroy_pickup $WhiskeyH24
+end_thread
+
+:whiskey_25
+wait 0
+if
+0214:   pickup $WHISKEYM25 picked_up
+jf @whiskey_26
+0215: destroy_pickup $WHISKEYE25
+0215: destroy_pickup $WhiskeyH25
+end_thread
+
+:whiskey_26
+wait 0
+if
+0214:   pickup $WHISKEYM26 picked_up
+jf @whiskey_27
+0215: destroy_pickup $WHISKEYE26
+0215: destroy_pickup $WhiskeyH26
+end_thread
+
+:whiskey_27
+wait 0
+if
+0214:   pickup $WHISKEYM27 picked_up
+jf @whiskey_28
+0215: destroy_pickup $WHISKEYE27
+0215: destroy_pickup $WhiskeyH27
+end_thread
+
+:whiskey_28
+wait 0
+if
+0214:   pickup $WHISKEYM28 picked_up
+jf @whiskey_29
+0215: destroy_pickup $WHISKEYE28
+0215: destroy_pickup $WhiskeyH28
+end_thread
+
+:whiskey_29
+wait 0
+if
+0214:   pickup $WHISKEYM29 picked_up
+jf @whiskey_30
+0215: destroy_pickup $WHISKEYE29
+0215: destroy_pickup $WhiskeyH29
+end_thread
+
+:whiskey_30
+wait 0
+if
+0214:   pickup $WHISKEYM30 picked_up
+jf @whiskey_31
+0215: destroy_pickup $WHISKEYE30
+0215: destroy_pickup $WhiskeyH30
+end_thread
+
+:whiskey_31
+wait 0
+if
+0214:   pickup $WHISKEYM31 picked_up
+jf @whiskey_32
+0215: destroy_pickup $WHISKEYE31
+0215: destroy_pickup $WhiskeyH31
+end_thread
+
+:whiskey_32
+wait 0
+if
+0214:   pickup $WHISKEYM32 picked_up
+jf @whiskey_33
+0215: destroy_pickup $WHISKEYE32
+0215: destroy_pickup $WhiskeyH32
+end_thread
+
+:whiskey_33
+wait 0
+if
+0214:   pickup $WHISKEYM33 picked_up
+jf @whiskey_34
+0215: destroy_pickup $WHISKEYE33
+0215: destroy_pickup $WhiskeyH33
+end_thread
+
+:whiskey_34
+wait 0
+if
+0214:   pickup $WHISKEYM34 picked_up
+jf @whiskey_35
+0215: destroy_pickup $WHISKEYE34
+0215: destroy_pickup $WhiskeyH34
+end_thread
+
+:whiskey_35
+wait 0
+if
+0214:   pickup $WHISKEYM35 picked_up
+jf @whiskey_36
+0215: destroy_pickup $WHISKEYE35
+0215: destroy_pickup $WhiskeyH35
+end_thread
+
+:whiskey_36
+wait 0
+if
+0214:   pickup $WHISKEYM36 picked_up
+jf @whiskey_37
+0215: destroy_pickup $WHISKEYE36
+0215: destroy_pickup $WhiskeyH36
+end_thread
+
+:whiskey_37
+wait 0
+if
+0214:   pickup $WHISKEYM37 picked_up
+jf @whiskey_38
+0215: destroy_pickup $WHISKEYE37
+0215: destroy_pickup $WhiskeyH37
+end_thread
+
+:whiskey_38
+wait 0
+if
+0214:   pickup $WHISKEYM38 picked_up
+jf @whiskey_39
+0215: destroy_pickup $WHISKEYE38
+0215: destroy_pickup $WhiskeyH38
+end_thread
+
+:whiskey_39
+wait 0
+if
+0214:   pickup $WHISKEYM39 picked_up
+jf @whiskey_40
+0215: destroy_pickup $WHISKEYE39
+0215: destroy_pickup $WhiskeyH39
+end_thread
+
+:whiskey_40
+wait 0
+if
+0214:   pickup $WHISKEYM40 picked_up
+jf @whiskey_41
+0215: destroy_pickup $WHISKEYE40
+0215: destroy_pickup $WhiskeyH40
+end_thread
+
+:whiskey_41
+wait 0
+if
+0214:   pickup $WHISKEYM41 picked_up
+jf @whiskey_42
+0215: destroy_pickup $WHISKEYE41
+0215: destroy_pickup $WhiskeyH41
+end_thread
+
+:whiskey_42
+wait 0
+if
+0214:   pickup $WHISKEYM42 picked_up
+jf @whiskey_1
+0215: destroy_pickup $WHISKEYE42
+0215: destroy_pickup $WhiskeyH42
+end_thread
+
+
+
+//*------------------------------------------*
+//this is where you add pickups in 1955
+//*------------------------------------------*
+
+:1955Pepsi
+wait 0
+Pickup.Create($1955PEPSIM1, #55PEPSI, 2, -113.2, -975.7, 10.4)
+Pickup.Create($1955PEPSIM2, #55PEPSI, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($1955PEPSIM3, #55PEPSI, 2, 456.2, -471.4, 16.6)
+Pickup.Create($1955PEPSIM4, #55PEPSI, 2, 377.4, 467.7, 11.6)
+Pickup.Create($1955PEPSIM5, #55PEPSI, 2, 469.6, 697.4, 11.7)
+Pickup.Create($1955PEPSIM6, #55PEPSI, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($1955PEPSIM7, #55PEPSI, 2, 384.3, 756.6, 11.7)
+Pickup.Create($1955PEPSIM8, #55PEPSI, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($1955PEPSIM9, #55PEPSI, 2, 85.3, 402.7, 19.8)
+Pickup.Create($1955PEPSIM10, #55PEPSI, 2, -711.7, -501.7, 11.3)
+Pickup.Create($1955PEPSIM11, #55PEPSI, 2, -404.0, -588.0, 11.6)
+Pickup.Create($1955PEPSIM12, #55PEPSI, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($1955PEPSIM13, #55PEPSI, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($1955PEPSIM14, #55PEPSI, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($1955PEPSIM15, #55PEPSI, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($1955PEPSIM16, #55PEPSI, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($1955PEPSIM17, #55PEPSI, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($1955PEPSIM18, #55PEPSI, 2, -885.4, -483.4, 13.1)
+Pickup.Create($1955PEPSIM19, #55PEPSI, 2, -925.1, -638.3, 16.0)
+Pickup.Create($1955PEPSIM20, #55PEPSI, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($1955PEPSIM21, #55PEPSI, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($1955PEPSIM22, #55PEPSI, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($1955PEPSIM23, #55PEPSI, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($1955PEPSIM24, #55PEPSI, 2, -851.4, -78.8, 11.5)
+Pickup.Create($1955PEPSIM25, #55PEPSI, 2, -834.2, 740.6, 11.3)
+Pickup.Create($1955PEPSIM26, #55PEPSI, 2, -330.702, -573.366, 11.6)
+Pickup.Create($1955PEPSIM27, #55PEPSI, 2, -37.7, -938.3, 10.5)
+Pickup.Create($1955PEPSIM28, #55PEPSI, 2, 471.1, -444.1, 10.6)
+Pickup.Create($1955PEPSIM29, #55PEPSI, 2, 448.6, 16.6, 11.0)
+Pickup.Create($1955PEPSIM30, #55PEPSI, 2, 425.6, 221.1, 16.2)
+Pickup.Create($1955PEPSIM31, #55PEPSI, 2, 428.4, 947.5, 13.2)
+Pickup.Create($1955PEPSIM32, #55PEPSI, 2, 385.6, 752.3, 11.7)
+Pickup.Create($1955PEPSIM33, #55PEPSI, 2, -366.6, -500.3, 11.3)
+Pickup.Create($1955PEPSIM34, #55PEPSI, 2, -342.2, -591.5, 36.9)
+Pickup.Create($1955PEPSIM35, #55PEPSI, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($1955PEPSIM36, #55PEPSI, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($1955PEPSIM37, #55PEPSI, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($1955PEPSIM38, #55PEPSI, 2, -967.1, -62.6, 11.0)
+Pickup.Create($1955PEPSIM39, #55PEPSI, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($1955PEPSIM40, #55PEPSI, 2, -882.0, 111.2, 9.3)
+Pickup.Create($1955PEPSIM41, #55PEPSI, 2, -857.1, -83.6, 11.5)
+Pickup.Create($1955PEPSIM42, #55PEPSI, 2, -839.0, 740.6, 11.3)
+Pickup.Create($1955PEPSIH1, #HEALTH, 2, -113.2, -975.7, 10.4)
+Pickup.Create($1955PEPSIH2, #HEALTH, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($1955PEPSIH3, #HEALTH, 2, 456.2, -471.4, 16.6)
+Pickup.Create($1955PEPSIH4, #HEALTH, 2, 377.4, 467.7, 11.6)
+Pickup.Create($1955PEPSIH5, #HEALTH, 2, 469.6, 697.4, 11.7)
+Pickup.Create($1955PEPSIH6, #HEALTH, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($1955PEPSIH7, #HEALTH, 2, 384.3, 756.6, 11.7)
+Pickup.Create($1955PEPSIH8, #HEALTH, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($1955PEPSIH9, #HEALTH, 2, 85.3, 402.7, 19.8)
+Pickup.Create($1955PEPSIH10, #HEALTH, 2, -711.7, -501.7, 11.3)
+Pickup.Create($1955PEPSIH11, #HEALTH, 2, -404.0, -588.0, 11.6)
+Pickup.Create($1955PEPSIH12, #HEALTH, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($1955PEPSIH13, #HEALTH, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($1955PEPSIH14, #HEALTH, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($1955PEPSIH15, #HEALTH, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($1955PEPSIH16, #HEALTH, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($1955PEPSIH17, #HEALTH, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($1955PEPSIH18, #HEALTH, 2, -885.4, -483.4, 13.1)
+Pickup.Create($1955PEPSIH19, #HEALTH, 2, -925.1, -638.3, 16.0)
+Pickup.Create($1955PEPSIH20, #HEALTH, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($1955PEPSIH21, #HEALTH, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($1955PEPSIH22, #HEALTH, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($1955PEPSIH23, #HEALTH, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($1955PEPSIH24, #HEALTH, 2, -851.4, -78.8, 11.5)
+Pickup.Create($1955PEPSIH25, #HEALTH, 2, -834.2, 740.6, 11.3)
+Pickup.Create($1955PEPSIH26, #HEALTH, 2, -330.702, -573.366, 11.6)
+Pickup.Create($1955PEPSIH27, #HEALTH, 2, -37.7, -938.3, 10.5)
+Pickup.Create($1955PEPSIH28, #HEALTH, 2, 471.1, -444.1, 10.6)
+Pickup.Create($1955PEPSIH29, #HEALTH, 2, 448.6, 16.6, 11.0)
+Pickup.Create($1955PEPSIH30, #HEALTH, 2, 425.6, 221.1, 16.2)
+Pickup.Create($1955PEPSIH31, #HEALTH, 2, 428.4, 947.5, 13.2)
+Pickup.Create($1955PEPSIH32, #HEALTH, 2, 385.6, 752.3, 11.7)
+Pickup.Create($1955PEPSIH33, #HEALTH, 2, -366.6, -500.3, 11.3)
+Pickup.Create($1955PEPSIH34, #HEALTH, 2, -342.2, -591.5, 36.9)
+Pickup.Create($1955PEPSIH35, #HEALTH, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($1955PEPSIH36, #HEALTH, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($1955PEPSIH37, #HEALTH, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($1955PEPSIH38, #HEALTH, 2, -967.1, -62.6, 11.0)
+Pickup.Create($1955PEPSIH39, #HEALTH, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($1955PEPSIH40, #HEALTH, 2, -882.0, 111.2, 9.3)
+Pickup.Create($1955PEPSIH41, #HEALTH, 2, -857.1, -83.6, 11.5)
+Pickup.Create($1955PEPSIH42, #HEALTH, 2, -839.0, 740.6, 11.3)
+
+:1955Pepsi_1
+wait 0
+if    
+0214:   pickup $1955PEPSIM1 picked_up
+jf @1955Pepsi_2
+0215: destroy_pickup $1955PEPSIH1
+end_thread
+
+:1955Pepsi_2
+wait 0
+if
+0214:   pickup $1955PEPSIM2 picked_up
+jf @1955Pepsi_3
+0215: destroy_pickup $1955PEPSIH2
+end_thread
+
+:1955Pepsi_3
+wait 0
+if
+0214:   pickup $1955PEPSIM3 picked_up
+jf @1955Pepsi_4
+0215: destroy_pickup $1955PEPSIH3
+end_thread
+
+
+:1955Pepsi_4
+wait 0
+if
+0214:   pickup $1955PEPSIM4 picked_up
+jf @1955Pepsi_5
+0215: destroy_pickup $1955PEPSIH4
+end_thread
+
+:1955Pepsi_5
+wait 0
+if
+0214:   pickup $1955PEPSIM5 picked_up
+jf @1955Pepsi_6
+0215: destroy_pickup $1955PEPSIH5
+end_thread
+
+:1955Pepsi_6
+wait 0
+if
+0214:   pickup $1955PEPSIM6 picked_up
+jf @1955Pepsi_7
+0215: destroy_pickup $1955PEPSIH6
+end_thread
+
+:1955Pepsi_7
+wait 0
+if
+0214:   pickup $1955PEPSIM7 picked_up
+jf @1955Pepsi_8
+0215: destroy_pickup $1955PEPSIH7
+end_thread
+
+:1955Pepsi_8
+wait 0
+if
+0214:   pickup $1955PEPSIM8 picked_up
+jf @1955Pepsi_9
+0215: destroy_pickup $1955PEPSIH8
+end_thread
+
+:1955Pepsi_9
+wait 0
+if
+0214:   pickup $1955PEPSIM9 picked_up
+jf @1955Pepsi_10
+0215: destroy_pickup $1955PEPSIH9
+end_thread
+
+:1955Pepsi_10
+wait 0
+if
+0214:   pickup $1955PEPSIM10 picked_up
+jf @1955Pepsi_11
+0215: destroy_pickup $1955PEPSIH10
+end_thread
+
+:1955Pepsi_11
+wait 0
+if
+0214:   pickup $1955PEPSIM11 picked_up
+jf @1955Pepsi_12
+0215: destroy_pickup $1955PEPSIH11
+end_thread
+
+:1955Pepsi_12
+wait 0
+if
+0214:   pickup $1955PEPSIM12 picked_up
+jf @1955Pepsi_13
+0215: destroy_pickup $1955PEPSIH12
+end_thread
+
+:1955Pepsi_13
+wait 0
+if
+0214:   pickup $1955PEPSIM13 picked_up
+jf @1955Pepsi_14
+0215: destroy_pickup $1955PEPSIH13
+end_thread
+
+:1955Pepsi_14
+wait 0
+if
+0214:   pickup $1955PEPSIM14 picked_up
+jf @1955Pepsi_15
+0215: destroy_pickup $1955PEPSIH14
+end_thread
+
+:1955Pepsi_15
+wait 0
+if
+0214:   pickup $1955PEPSIM15 picked_up
+jf @1955Pepsi_16
+0215: destroy_pickup $1955PEPSIH15
+end_thread
+
+:1955Pepsi_16
+wait 0
+if
+0214:   pickup $1955PEPSIM16 picked_up
+jf @1955Pepsi_17
+0215: destroy_pickup $1955PEPSIH16
+end_thread
+
+:1955Pepsi_17
+wait 0
+if
+0214:   pickup $1955PEPSIM17 picked_up
+jf @1955Pepsi_18
+0215: destroy_pickup $1955PEPSIH17
+end_thread
+
+:1955Pepsi_18
+wait 0
+if
+0214:   pickup $1955PEPSIM18 picked_up
+jf @1955Pepsi_19
+0215: destroy_pickup $1955PEPSIH18
+end_thread
+
+:1955Pepsi_19
+wait 0
+if
+0214:   pickup $1955PEPSIM19 picked_up
+jf @1955Pepsi_20
+0215: destroy_pickup $1955PEPSIH19
+end_thread
+
+:1955Pepsi_20
+wait 0
+if
+0214:   pickup $1955PEPSIM20 picked_up
+jf @1955Pepsi_21
+0215: destroy_pickup $1955PEPSIH20
+end_thread
+
+:1955Pepsi_21
+wait 0
+if
+0214:   pickup $1955PEPSIM21 picked_up
+jf @1955Pepsi_22
+0215: destroy_pickup $1955PEPSIH21
+end_thread
+
+:1955Pepsi_22
+wait 0
+if
+0214:   pickup $1955PEPSIM22 picked_up
+jf @1955Pepsi_23
+0215: destroy_pickup $1955PEPSIH22
+end_thread
+
+:1955Pepsi_23
+wait 0
+if
+0214:   pickup $1955PEPSIM23 picked_up
+jf @1955Pepsi_24
+0215: destroy_pickup $1955PEPSIH23
+end_thread
+
+:1955Pepsi_24
+wait 0
+if
+0214:   pickup $1955PEPSIM24 picked_up
+jf @1955Pepsi_25
+0215: destroy_pickup $1955PEPSIH24
+end_thread
+
+:1955Pepsi_25
+wait 0
+if
+0214:   pickup $1955PEPSIM25 picked_up
+jf @1955Pepsi_26
+0215: destroy_pickup $1955PEPSIH25
+end_thread
+
+:1955Pepsi_26
+wait 0
+if
+0214:   pickup $1955PEPSIM26 picked_up
+jf @1955Pepsi_27
+0215: destroy_pickup $1955PEPSIH26
+end_thread
+
+:1955Pepsi_27
+wait 0
+if
+0214:   pickup $1955PEPSIM27 picked_up
+jf @1955Pepsi_28
+0215: destroy_pickup $1955PEPSIH27
+end_thread
+
+:1955Pepsi_28
+wait 0
+if
+0214:   pickup $1955PEPSIM28 picked_up
+jf @1955Pepsi_29
+0215: destroy_pickup $1955PEPSIH28
+end_thread
+
+:1955Pepsi_29
+wait 0
+if
+0214:   pickup $1955PEPSIM29 picked_up
+jf @1955Pepsi_30
+0215: destroy_pickup $1955PEPSIH29
+end_thread
+
+:1955Pepsi_30
+wait 0
+if
+0214:   pickup $1955PEPSIM30 picked_up
+jf @1955Pepsi_31
+0215: destroy_pickup $1955PEPSIH30
+end_thread
+
+:1955Pepsi_31
+wait 0
+if
+0214:   pickup $1955PEPSIM31 picked_up
+jf @1955Pepsi_32
+0215: destroy_pickup $1955PEPSIH31
+end_thread
+
+:1955Pepsi_32
+wait 0
+if
+0214:   pickup $1955PEPSIM32 picked_up
+jf @1955Pepsi_33
+0215: destroy_pickup $1955PEPSIH32
+end_thread
+
+:1955Pepsi_33
+wait 0
+if
+0214:   pickup $1955PEPSIM33 picked_up
+jf @1955Pepsi_34
+0215: destroy_pickup $1955PEPSIH33
+end_thread
+
+:1955Pepsi_34
+wait 0
+if
+0214:   pickup $1955PEPSIM34 picked_up
+jf @1955Pepsi_35
+0215: destroy_pickup $1955PEPSIH34
+end_thread
+
+:1955Pepsi_35
+wait 0
+if
+0214:   pickup $1955PEPSIM35 picked_up
+jf @1955Pepsi_36
+0215: destroy_pickup $1955PEPSIH35
+end_thread
+
+:1955Pepsi_36
+wait 0
+if
+0214:   pickup $1955PEPSIM36 picked_up
+jf @1955Pepsi_37
+0215: destroy_pickup $1955PEPSIH36
+end_thread
+
+:1955Pepsi_37
+wait 0
+if
+0214:   pickup $1955PEPSIM37 picked_up
+jf @1955Pepsi_38
+0215: destroy_pickup $1955PEPSIH37
+end_thread
+
+:1955Pepsi_38
+wait 0
+if
+0214:   pickup $1955PEPSIM38 picked_up
+jf @1955Pepsi_39
+0215: destroy_pickup $1955PEPSIH38
+end_thread
+
+:1955Pepsi_39
+wait 0
+if
+0214:   pickup $1955PEPSIM39 picked_up
+jf @1955Pepsi_40
+0215: destroy_pickup $1955PEPSIH39
+end_thread
+
+:1955Pepsi_40
+wait 0
+if
+0214:   pickup $1955PEPSIM40 picked_up
+jf @1955Pepsi_41
+0215: destroy_pickup $1955PEPSIH40
+end_thread
+
+:1955Pepsi_41
+wait 0
+if
+0214:   pickup $1955PEPSIM41 picked_up
+jf @1955Pepsi_42
+0215: destroy_pickup $1955PEPSIH41
+end_thread
+
+:1955Pepsi_42
+wait 0
+if
+0214:   pickup $1955PEPSIM42 picked_up
+jf @1955Pepsi_1
+0215: destroy_pickup $1955PEPSIH42
+end_thread
+
+
+//*------------------------------------------*
+//this is where you add pickups in 1985
+//*------------------------------------------*
+
+:1985Pepsi
+wait 0
+Pickup.Create($1985PEPSIM1, #85PEPSI, 2, -113.2, -975.7, 10.4)
+Pickup.Create($1985PEPSIM2, #85PEPSI, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($1985PEPSIM3, #85PEPSI, 2, 456.2, -471.4, 16.6)
+Pickup.Create($1985PEPSIM4, #85PEPSI, 2, 377.4, 467.7, 11.6)
+Pickup.Create($1985PEPSIM5, #85PEPSI, 2, 469.6, 697.4, 11.7)
+Pickup.Create($1985PEPSIM6, #85PEPSI, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($1985PEPSIM7, #85PEPSI, 2, 384.3, 756.6, 11.7)
+Pickup.Create($1985PEPSIM8, #85PEPSI, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($1985PEPSIM9, #85PEPSI, 2, 85.3, 402.7, 19.8)
+Pickup.Create($1985PEPSIM10, #85PEPSI, 2, -711.7, -501.7, 11.3)
+Pickup.Create($1985PEPSIM11, #85PEPSI, 2, -404.0, -588.0, 11.6)
+Pickup.Create($1985PEPSIM12, #85PEPSI, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($1985PEPSIM13, #85PEPSI, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($1985PEPSIM14, #85PEPSI, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($1985PEPSIM15, #85PEPSI, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($1985PEPSIM16, #85PEPSI, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($1985PEPSIM17, #85PEPSI, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($1985PEPSIM18, #85PEPSI, 2, -885.4, -483.4, 13.1)
+Pickup.Create($1985PEPSIM19, #85PEPSI, 2, -925.1, -638.3, 16.0)
+Pickup.Create($1985PEPSIM20, #85PEPSI, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($1985PEPSIM21, #85PEPSI, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($1985PEPSIM22, #85PEPSI, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($1985PEPSIM23, #85PEPSI, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($1985PEPSIM24, #85PEPSI, 2, -851.4, -78.8, 11.5)
+Pickup.Create($1985PEPSIM25, #85PEPSI, 2, -834.2, 740.6, 11.3)
+Pickup.Create($1985PEPSIM26, #85PEPSI, 2, -330.702, -573.366, 11.6)
+Pickup.Create($1985PEPSIM27, #85PEPSI, 2, -37.7, -938.3, 10.5)
+Pickup.Create($1985PEPSIM28, #85PEPSI, 2, 471.1, -444.1, 10.6)
+Pickup.Create($1985PEPSIM29, #85PEPSI, 2, 448.6, 16.6, 11.0)
+Pickup.Create($1985PEPSIM30, #85PEPSI, 2, 425.6, 221.1, 16.2)
+Pickup.Create($1985PEPSIM31, #85PEPSI, 2, 428.4, 947.5, 13.2)
+Pickup.Create($1985PEPSIM32, #85PEPSI, 2, 385.6, 752.3, 11.7)
+Pickup.Create($1985PEPSIM33, #85PEPSI, 2, -366.6, -500.3, 11.3)
+Pickup.Create($1985PEPSIM34, #85PEPSI, 2, -342.2, -591.5, 36.9)
+Pickup.Create($1985PEPSIM35, #85PEPSI, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($1985PEPSIM36, #85PEPSI, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($1985PEPSIM37, #85PEPSI, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($1985PEPSIM38, #85PEPSI, 2, -967.1, -62.6, 11.0)
+Pickup.Create($1985PEPSIM39, #85PEPSI, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($1985PEPSIM40, #85PEPSI, 2, -882.0, 111.2, 9.3)
+Pickup.Create($1985PEPSIM41, #85PEPSI, 2, -857.1, -83.6, 11.5)
+Pickup.Create($1985PEPSIM42, #85PEPSI, 2, -839.0, 740.6, 11.3)
+Pickup.Create($1985PEPSIH1, #HEALTH, 2, -113.2, -975.7, 10.4)
+Pickup.Create($1985PEPSIH2, #HEALTH, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($1985PEPSIH3, #HEALTH, 2, 456.2, -471.4, 16.6)
+Pickup.Create($1985PEPSIH4, #HEALTH, 2, 377.4, 467.7, 11.6)
+Pickup.Create($1985PEPSIH5, #HEALTH, 2, 469.6, 697.4, 11.7)
+Pickup.Create($1985PEPSIH6, #HEALTH, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($1985PEPSIH7, #HEALTH, 2, 384.3, 756.6, 11.7)
+Pickup.Create($1985PEPSIH8, #HEALTH, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($1985PEPSIH9, #HEALTH, 2, 85.3, 402.7, 19.8)
+Pickup.Create($1985PEPSIH10, #HEALTH, 2, -711.7, -501.7, 11.3)
+Pickup.Create($1985PEPSIH11, #HEALTH, 2, -404.0, -588.0, 11.6)
+Pickup.Create($1985PEPSIH12, #HEALTH, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($1985PEPSIH13, #HEALTH, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($1985PEPSIH14, #HEALTH, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($1985PEPSIH15, #HEALTH, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($1985PEPSIH16, #HEALTH, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($1985PEPSIH17, #HEALTH, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($1985PEPSIH18, #HEALTH, 2, -885.4, -483.4, 13.1)
+Pickup.Create($1985PEPSIH19, #HEALTH, 2, -925.1, -638.3, 16.0)
+Pickup.Create($1985PEPSIH20, #HEALTH, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($1985PEPSIH21, #HEALTH, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($1985PEPSIH22, #HEALTH, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($1985PEPSIH23, #HEALTH, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($1985PEPSIH24, #HEALTH, 2, -851.4, -78.8, 11.5)
+Pickup.Create($1985PEPSIH25, #HEALTH, 2, -834.2, 740.6, 11.3)
+Pickup.Create($1985PEPSIH26, #HEALTH, 2, -330.702, -573.366, 11.6)
+Pickup.Create($1985PEPSIH27, #HEALTH, 2, -37.7, -938.3, 10.5)
+Pickup.Create($1985PEPSIH28, #HEALTH, 2, 471.1, -444.1, 10.6)
+Pickup.Create($1985PEPSIH29, #HEALTH, 2, 448.6, 16.6, 11.0)
+Pickup.Create($1985PEPSIH30, #HEALTH, 2, 425.6, 221.1, 16.2)
+Pickup.Create($1985PEPSIH31, #HEALTH, 2, 428.4, 947.5, 13.2)
+Pickup.Create($1985PEPSIH32, #HEALTH, 2, 385.6, 752.3, 11.7)
+Pickup.Create($1985PEPSIH33, #HEALTH, 2, -366.6, -500.3, 11.3)
+Pickup.Create($1985PEPSIH34, #HEALTH, 2, -342.2, -591.5, 36.9)
+Pickup.Create($1985PEPSIH35, #HEALTH, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($1985PEPSIH36, #HEALTH, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($1985PEPSIH37, #HEALTH, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($1985PEPSIH38, #HEALTH, 2, -967.1, -62.6, 11.0)
+Pickup.Create($1985PEPSIH39, #HEALTH, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($1985PEPSIH40, #HEALTH, 2, -882.0, 111.2, 9.3)
+Pickup.Create($1985PEPSIH41, #HEALTH, 2, -857.1, -83.6, 11.5)
+Pickup.Create($1985PEPSIH42, #HEALTH, 2, -839.0, 740.6, 11.3)
+
+:1985PEPSI_1
+wait 0
+if    
+0214:   pickup $1985PEPSIM1 picked_up
+jf @1985PEPSI_2
+0215: destroy_pickup $1985PEPSIH1
+end_thread
+
+:1985PEPSI_2
+wait 0
+if
+0214:   pickup $1985PEPSIM2 picked_up
+jf @1985PEPSI_3
+0215: destroy_pickup $1985PEPSIH2
+end_thread
+
+:1985PEPSI_3
+wait 0
+if
+0214:   pickup $1985PEPSIM3 picked_up
+jf @1985PEPSI_4
+0215: destroy_pickup $1985PEPSIH3
+end_thread
+
+
+:1985PEPSI_4
+wait 0
+if
+0214:   pickup $1985PEPSIM4 picked_up
+jf @1985PEPSI_5
+0215: destroy_pickup $1985PEPSIH4
+end_thread
+
+:1985PEPSI_5
+wait 0
+if
+0214:   pickup $1985PEPSIM5 picked_up
+jf @1985PEPSI_6
+0215: destroy_pickup $1985PEPSIH5
+end_thread
+
+:1985PEPSI_6
+wait 0
+if
+0214:   pickup $1985PEPSIM6 picked_up
+jf @1985PEPSI_7
+0215: destroy_pickup $1985PEPSIH6
+end_thread
+
+:1985PEPSI_7
+wait 0
+if
+0214:   pickup $1985PEPSIM7 picked_up
+jf @1985PEPSI_8
+0215: destroy_pickup $1985PEPSIH7
+end_thread
+
+:1985PEPSI_8
+wait 0
+if
+0214:   pickup $1985PEPSIM8 picked_up
+jf @1985PEPSI_9
+0215: destroy_pickup $1985PEPSIH8
+end_thread
+
+:1985PEPSI_9
+wait 0
+if
+0214:   pickup $1985PEPSIM9 picked_up
+jf @1985PEPSI_10
+0215: destroy_pickup $1985PEPSIH9
+end_thread
+
+:1985PEPSI_10
+wait 0
+if
+0214:   pickup $1985PEPSIM10 picked_up
+jf @1985PEPSI_11
+0215: destroy_pickup $1985PEPSIH10
+end_thread
+
+:1985PEPSI_11
+wait 0
+if
+0214:   pickup $1985PEPSIM11 picked_up
+jf @1985PEPSI_12
+0215: destroy_pickup $1985PEPSIH11
+end_thread
+
+:1985PEPSI_12
+wait 0
+if
+0214:   pickup $1985PEPSIM12 picked_up
+jf @1985PEPSI_13
+0215: destroy_pickup $1985PEPSIH12
+end_thread
+
+:1985PEPSI_13
+wait 0
+if
+0214:   pickup $1985PEPSIM13 picked_up
+jf @1985PEPSI_14
+0215: destroy_pickup $1985PEPSIH13
+end_thread
+
+:1985PEPSI_14
+wait 0
+if
+0214:   pickup $1985PEPSIM14 picked_up
+jf @1985PEPSI_15
+0215: destroy_pickup $1985PEPSIH14
+end_thread
+
+:1985PEPSI_15
+wait 0
+if
+0214:   pickup $1985PEPSIM15 picked_up
+jf @1985PEPSI_16
+0215: destroy_pickup $1985PEPSIH15
+end_thread
+
+:1985PEPSI_16
+wait 0
+if
+0214:   pickup $1985PEPSIM16 picked_up
+jf @1985PEPSI_17
+0215: destroy_pickup $1985PEPSIH16
+end_thread
+
+:1985PEPSI_17
+wait 0
+if
+0214:   pickup $1985PEPSIM17 picked_up
+jf @1985PEPSI_18
+0215: destroy_pickup $1985PEPSIH17
+end_thread
+
+:1985PEPSI_18
+wait 0
+if
+0214:   pickup $1985PEPSIM18 picked_up
+jf @1985PEPSI_19
+0215: destroy_pickup $1985PEPSIH18
+end_thread
+
+:1985PEPSI_19
+wait 0
+if
+0214:   pickup $1985PEPSIM19 picked_up
+jf @1985PEPSI_20
+0215: destroy_pickup $1985PEPSIH19
+end_thread
+
+:1985PEPSI_20
+wait 0
+if
+0214:   pickup $1985PEPSIM20 picked_up
+jf @1985PEPSI_21
+0215: destroy_pickup $1985PEPSIH20
+end_thread
+
+:1985PEPSI_21
+wait 0
+if
+0214:   pickup $1985PEPSIM21 picked_up
+jf @1985PEPSI_22
+0215: destroy_pickup $1985PEPSIH21
+end_thread
+
+:1985PEPSI_22
+wait 0
+if
+0214:   pickup $1985PEPSIM22 picked_up
+jf @1985PEPSI_23
+0215: destroy_pickup $1985PEPSIH22
+end_thread
+
+:1985PEPSI_23
+wait 0
+if
+0214:   pickup $1985PEPSIM23 picked_up
+jf @1985PEPSI_24
+0215: destroy_pickup $1985PEPSIH23
+end_thread
+
+:1985PEPSI_24
+wait 0
+if
+0214:   pickup $1985PEPSIM24 picked_up
+jf @1985PEPSI_25
+0215: destroy_pickup $1985PEPSIH24
+end_thread
+
+:1985PEPSI_25
+wait 0
+if
+0214:   pickup $1985PEPSIM25 picked_up
+jf @1985PEPSI_26
+0215: destroy_pickup $1985PEPSIH25
+end_thread
+
+:1985PEPSI_26
+wait 0
+if
+0214:   pickup $1985PEPSIM26 picked_up
+jf @1985PEPSI_27
+0215: destroy_pickup $1985PEPSIH26
+end_thread
+
+:1985PEPSI_27
+wait 0
+if
+0214:   pickup $1985PEPSIM27 picked_up
+jf @1985PEPSI_28
+0215: destroy_pickup $1985PEPSIH27
+end_thread
+
+:1985PEPSI_28
+wait 0
+if
+0214:   pickup $1985PEPSIM28 picked_up
+jf @1985PEPSI_29
+0215: destroy_pickup $1985PEPSIH28
+end_thread
+
+:1985PEPSI_29
+wait 0
+if
+0214:   pickup $1985PEPSIM29 picked_up
+jf @1985PEPSI_30
+0215: destroy_pickup $1985PEPSIH29
+end_thread
+
+:1985PEPSI_30
+wait 0
+if
+0214:   pickup $1985PEPSIM30 picked_up
+jf @1985PEPSI_31
+0215: destroy_pickup $1985PEPSIH30
+end_thread
+
+:1985PEPSI_31
+wait 0
+if
+0214:   pickup $1985PEPSIM31 picked_up
+jf @1985PEPSI_32
+0215: destroy_pickup $1985PEPSIH31
+end_thread
+
+:1985PEPSI_32
+wait 0
+if
+0214:   pickup $1985PEPSIM32 picked_up
+jf @1985PEPSI_33
+0215: destroy_pickup $1985PEPSIH32
+end_thread
+
+:1985PEPSI_33
+wait 0
+if
+0214:   pickup $1985PEPSIM33 picked_up
+jf @1985PEPSI_34
+0215: destroy_pickup $1985PEPSIH33
+end_thread
+
+:1985PEPSI_34
+wait 0
+if
+0214:   pickup $1985PEPSIM34 picked_up
+jf @1985PEPSI_35
+0215: destroy_pickup $1985PEPSIH34
+end_thread
+
+:1985PEPSI_35
+wait 0
+if
+0214:   pickup $1985PEPSIM35 picked_up
+jf @1985PEPSI_36
+0215: destroy_pickup $1985PEPSIH35
+end_thread
+
+:1985PEPSI_36
+wait 0
+if
+0214:   pickup $1985PEPSIM36 picked_up
+jf @1985PEPSI_37
+0215: destroy_pickup $1985PEPSIH36
+end_thread
+
+:1985PEPSI_37
+wait 0
+if
+0214:   pickup $1985PEPSIM37 picked_up
+jf @1985PEPSI_38
+0215: destroy_pickup $1985PEPSIH37
+end_thread
+
+:1985PEPSI_38
+wait 0
+if
+0214:   pickup $1985PEPSIM38 picked_up
+jf @1985PEPSI_39
+0215: destroy_pickup $1985PEPSIH38
+end_thread
+
+:1985PEPSI_39
+wait 0
+if
+0214:   pickup $1985PEPSIM39 picked_up
+jf @1985PEPSI_40
+0215: destroy_pickup $1985PEPSIH39
+end_thread
+
+:1985PEPSI_40
+wait 0
+if
+0214:   pickup $1985PEPSIM40 picked_up
+jf @1985PEPSI_41
+0215: destroy_pickup $1985PEPSIH40
+end_thread
+
+:1985PEPSI_41
+wait 0
+if
+0214:   pickup $1985PEPSIM41 picked_up
+jf @1985PEPSI_42
+0215: destroy_pickup $1985PEPSIH41
+end_thread
+
+:1985PEPSI_42
+wait 0
+if
+0214:   pickup $1985PEPSIM42 picked_up
+jf @1985PEPSI_1
+0215: destroy_pickup $1985PEPSIH42
+end_thread
+
+//*------------------------------------------*
+//this is where you add pickups in 2015
+//*------------------------------------------*
+
+:2015Pepsi
+wait 0
+Pickup.Create($2015PEPSIM1, #2015PEPSI, 2, -113.2, -975.7, 10.4)
+Pickup.Create($2015PEPSIM2, #2015PEPSI, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($2015PEPSIM3, #2015PEPSI, 2, 456.2, -471.4, 16.6)
+Pickup.Create($2015PEPSIM4, #2015PEPSI, 2, 377.4, 467.7, 11.6)
+Pickup.Create($2015PEPSIM5, #2015PEPSI, 2, 469.6, 697.4, 11.7)
+Pickup.Create($2015PEPSIM6, #2015PEPSI, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($2015PEPSIM7, #2015PEPSI, 2, 384.3, 756.6, 11.7)
+Pickup.Create($2015PEPSIM8, #2015PEPSI, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($2015PEPSIM9, #2015PEPSI, 2, 85.3, 402.7, 19.8)
+Pickup.Create($2015PEPSIM10, #2015PEPSI, 2, -711.7, -501.7, 11.3)
+Pickup.Create($2015PEPSIM11, #2015PEPSI, 2, -404.0, -588.0, 11.6)
+Pickup.Create($2015PEPSIM12, #2015PEPSI, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($2015PEPSIM13, #2015PEPSI, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($2015PEPSIM14, #2015PEPSI, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($2015PEPSIM15, #2015PEPSI, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($2015PEPSIM16, #2015PEPSI, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($2015PEPSIM17, #2015PEPSI, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($2015PEPSIM18, #2015PEPSI, 2, -885.4, -483.4, 13.1)
+Pickup.Create($2015PEPSIM19, #2015PEPSI, 2, -925.1, -638.3, 16.0)
+Pickup.Create($2015PEPSIM20, #2015PEPSI, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($2015PEPSIM21, #2015PEPSI, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($2015PEPSIM22, #2015PEPSI, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($2015PEPSIM23, #2015PEPSI, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($2015PEPSIM24, #2015PEPSI, 2, -851.4, -78.8, 11.5)
+Pickup.Create($2015PEPSIM25, #2015PEPSI, 2, -834.2, 740.6, 11.3)
+Pickup.Create($2015PEPSIM26, #2015PEPSI, 2, -330.702, -573.366, 11.6)
+Pickup.Create($2015PEPSIM27, #2015PEPSI, 2, -37.7, -938.3, 10.5)
+Pickup.Create($2015PEPSIM28, #2015PEPSI, 2, 471.1, -444.1, 10.6)
+Pickup.Create($2015PEPSIM29, #2015PEPSI, 2, 448.6, 16.6, 11.0)
+Pickup.Create($2015PEPSIM30, #2015PEPSI, 2, 425.6, 221.1, 16.2)
+Pickup.Create($2015PEPSIM31, #2015PEPSI, 2, 428.4, 947.5, 13.2)
+Pickup.Create($2015PEPSIM32, #2015PEPSI, 2, 385.6, 752.3, 11.7)
+Pickup.Create($2015PEPSIM33, #2015PEPSI, 2, -366.6, -500.3, 11.3)
+Pickup.Create($2015PEPSIM34, #2015PEPSI, 2, -342.2, -591.5, 36.9)
+Pickup.Create($2015PEPSIM35, #2015PEPSI, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($2015PEPSIM36, #2015PEPSI, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($2015PEPSIM37, #2015PEPSI, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($2015PEPSIM38, #2015PEPSI, 2, -967.1, -62.6, 11.0)
+Pickup.Create($2015PEPSIM39, #2015PEPSI, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($2015PEPSIM40, #2015PEPSI, 2, -882.0, 111.2, 9.3)
+Pickup.Create($2015PEPSIM41, #2015PEPSI, 2, -857.1, -83.6, 11.5)
+Pickup.Create($2015PEPSIM42, #2015PEPSI, 2, -839.0, 740.6, 11.3)
+Pickup.Create($2015PEPSIH1, #HEALTH, 2, -113.2, -975.7, 10.4)
+Pickup.Create($2015PEPSIH2, #HEALTH, 2, -225.1, -1158.1, 9.1)
+Pickup.Create($2015PEPSIH3, #HEALTH, 2, 456.2, -471.4, 16.6)
+Pickup.Create($2015PEPSIH4, #HEALTH, 2, 377.4, 467.7, 11.6)
+Pickup.Create($2015PEPSIH5, #HEALTH, 2, 469.6, 697.4, 11.7)
+Pickup.Create($2015PEPSIH6, #HEALTH, 2, 385.3, 1210.9, 19.4)
+Pickup.Create($2015PEPSIH7, #HEALTH, 2, 384.3, 756.6, 11.7)
+Pickup.Create($2015PEPSIH8, #HEALTH, 2, 10.7, 1099.0, 16.6)
+Pickup.Create($2015PEPSIH9, #HEALTH, 2, 85.3, 402.7, 19.8)
+Pickup.Create($2015PEPSIH10, #HEALTH, 2, -711.7, -501.7, 11.3)
+Pickup.Create($2015PEPSIH11, #HEALTH, 2, -404.0, -588.0, 11.6)
+Pickup.Create($2015PEPSIH12, #HEALTH, 2, -406.2503, -566.4947, 19.5804)
+Pickup.Create($2015PEPSIH13, #HEALTH, 2, -478.1, 1438.5, 16.1)
+Pickup.Create($2015PEPSIH14, #HEALTH, 2, -675.0, 1263.3, 25.1)
+Pickup.Create($2015PEPSIH15, #HEALTH, 2, -821.8, 1144.8, 26.1)
+Pickup.Create($2015PEPSIH16, #HEALTH, 2, -1139.4, 55.4, 11.2)
+Pickup.Create($2015PEPSIH17, #HEALTH, 2, -1290.9, 91.9, 26.9)
+Pickup.Create($2015PEPSIH18, #HEALTH, 2, -885.4, -483.4, 13.1)
+Pickup.Create($2015PEPSIH19, #HEALTH, 2, -925.1, -638.3, 16.0)
+Pickup.Create($2015PEPSIH20, #HEALTH, 2, -692.4, -1283.8, 11.1)
+Pickup.Create($2015PEPSIH21, #HEALTH, 2, -655.1, -1506.3, 8.1)
+Pickup.Create($2015PEPSIH22, #HEALTH, 2, -1399.4, -865.9, 20.9)
+Pickup.Create($2015PEPSIH23, #HEALTH, 2, -822.6, 1137.3, 12.4)
+Pickup.Create($2015PEPSIH24, #HEALTH, 2, -851.4, -78.8, 11.5)
+Pickup.Create($2015PEPSIH25, #HEALTH, 2, -834.2, 740.6, 11.3)
+Pickup.Create($2015PEPSIH26, #HEALTH, 2, -330.702, -573.366, 11.6)
+Pickup.Create($2015PEPSIH27, #HEALTH, 2, -37.7, -938.3, 10.5)
+Pickup.Create($2015PEPSIH28, #HEALTH, 2, 471.1, -444.1, 10.6)
+Pickup.Create($2015PEPSIH29, #HEALTH, 2, 448.6, 16.6, 11.0)
+Pickup.Create($2015PEPSIH30, #HEALTH, 2, 425.6, 221.1, 16.2)
+Pickup.Create($2015PEPSIH31, #HEALTH, 2, 428.4, 947.5, 13.2)
+Pickup.Create($2015PEPSIH32, #HEALTH, 2, 385.6, 752.3, 11.7)
+Pickup.Create($2015PEPSIH33, #HEALTH, 2, -366.6, -500.3, 11.3)
+Pickup.Create($2015PEPSIH34, #HEALTH, 2, -342.2, -591.5, 36.9)
+Pickup.Create($2015PEPSIH35, #HEALTH, 2, -381.2, 1065.2, 13.0)
+Pickup.Create($2015PEPSIH36, #HEALTH, 2, -730.1, 1226.3, 24.2)
+Pickup.Create($2015PEPSIH37, #HEALTH, 2, -1095.1, 99.4, 12.3)
+Pickup.Create($2015PEPSIH38, #HEALTH, 2, -967.1, -62.6, 11.0)
+Pickup.Create($2015PEPSIH39, #HEALTH, 2, -1022.1, -547.0, 11.2)
+Pickup.Create($2015PEPSIH40, #HEALTH, 2, -882.0, 111.2, 9.3)
+Pickup.Create($2015PEPSIH41, #HEALTH, 2, -857.1, -83.6, 11.5)
+Pickup.Create($2015PEPSIH42, #HEALTH, 2, -839.0, 740.6, 11.3)
+
+:2015PEPSI_1
+wait 0
+if    
+0214:   pickup $2015PEPSIM1 picked_up
+jf @2015PEPSI_2
+0215: destroy_pickup $2015PEPSIH1
+end_thread
+
+:2015PEPSI_2
+wait 0
+if
+0214:   pickup $2015PEPSIM2 picked_up
+jf @2015PEPSI_3
+0215: destroy_pickup $2015PEPSIH2
+end_thread
+
+:2015PEPSI_3
+wait 0
+if
+0214:   pickup $2015PEPSIM3 picked_up
+jf @2015PEPSI_4
+0215: destroy_pickup $2015PEPSIH3
+end_thread
+
+
+:2015PEPSI_4
+wait 0
+if
+0214:   pickup $2015PEPSIM4 picked_up
+jf @2015PEPSI_5
+0215: destroy_pickup $2015PEPSIH4
+end_thread
+
+:2015PEPSI_5
+wait 0
+if
+0214:   pickup $2015PEPSIM5 picked_up
+jf @2015PEPSI_6
+0215: destroy_pickup $2015PEPSIH5
+end_thread
+
+:2015PEPSI_6
+wait 0
+if
+0214:   pickup $2015PEPSIM6 picked_up
+jf @2015PEPSI_7
+0215: destroy_pickup $2015PEPSIH6
+end_thread
+
+:2015PEPSI_7
+wait 0
+if
+0214:   pickup $2015PEPSIM7 picked_up
+jf @2015PEPSI_8
+0215: destroy_pickup $2015PEPSIH7
+end_thread
+
+:2015PEPSI_8
+wait 0
+if
+0214:   pickup $2015PEPSIM8 picked_up
+jf @2015PEPSI_9
+0215: destroy_pickup $2015PEPSIH8
+end_thread
+
+:2015PEPSI_9
+wait 0
+if
+0214:   pickup $2015PEPSIM9 picked_up
+jf @2015PEPSI_10
+0215: destroy_pickup $2015PEPSIH9
+end_thread
+
+:2015PEPSI_10
+wait 0
+if
+0214:   pickup $2015PEPSIM10 picked_up
+jf @2015PEPSI_11
+0215: destroy_pickup $2015PEPSIH10
+end_thread
+
+:2015PEPSI_11
+wait 0
+if
+0214:   pickup $2015PEPSIM11 picked_up
+jf @2015PEPSI_12
+0215: destroy_pickup $2015PEPSIH11
+end_thread
+
+:2015PEPSI_12
+wait 0
+if
+0214:   pickup $2015PEPSIM12 picked_up
+jf @2015PEPSI_13
+0215: destroy_pickup $2015PEPSIH12
+end_thread
+
+:2015PEPSI_13
+wait 0
+if
+0214:   pickup $2015PEPSIM13 picked_up
+jf @2015PEPSI_14
+0215: destroy_pickup $2015PEPSIH13
+end_thread
+
+:2015PEPSI_14
+wait 0
+if
+0214:   pickup $2015PEPSIM14 picked_up
+jf @2015PEPSI_15
+0215: destroy_pickup $2015PEPSIH14
+end_thread
+
+:2015PEPSI_15
+wait 0
+if
+0214:   pickup $2015PEPSIM15 picked_up
+jf @2015PEPSI_16
+0215: destroy_pickup $2015PEPSIH15
+end_thread
+
+:2015PEPSI_16
+wait 0
+if
+0214:   pickup $2015PEPSIM16 picked_up
+jf @2015PEPSI_17
+0215: destroy_pickup $2015PEPSIH16
+end_thread
+
+:2015PEPSI_17
+wait 0
+if
+0214:   pickup $2015PEPSIM17 picked_up
+jf @2015PEPSI_18
+0215: destroy_pickup $2015PEPSIH17
+end_thread
+
+:2015PEPSI_18
+wait 0
+if
+0214:   pickup $2015PEPSIM18 picked_up
+jf @2015PEPSI_19
+0215: destroy_pickup $2015PEPSIH18
+end_thread
+
+:2015PEPSI_19
+wait 0
+if
+0214:   pickup $2015PEPSIM19 picked_up
+jf @2015PEPSI_20
+0215: destroy_pickup $2015PEPSIH19
+end_thread
+
+:2015PEPSI_20
+wait 0
+if
+0214:   pickup $2015PEPSIM20 picked_up
+jf @2015PEPSI_21
+0215: destroy_pickup $2015PEPSIH20
+end_thread
+
+:2015PEPSI_21
+wait 0
+if
+0214:   pickup $2015PEPSIM21 picked_up
+jf @2015PEPSI_22
+0215: destroy_pickup $2015PEPSIH21
+end_thread
+
+:2015PEPSI_22
+wait 0
+if
+0214:   pickup $2015PEPSIM22 picked_up
+jf @2015PEPSI_23
+0215: destroy_pickup $2015PEPSIH22
+end_thread
+
+:2015PEPSI_23
+wait 0
+if
+0214:   pickup $2015PEPSIM23 picked_up
+jf @2015PEPSI_24
+0215: destroy_pickup $2015PEPSIH23
+end_thread
+
+:2015PEPSI_24
+wait 0
+if
+0214:   pickup $2015PEPSIM24 picked_up
+jf @2015PEPSI_25
+0215: destroy_pickup $2015PEPSIH24
+end_thread
+
+:2015PEPSI_25
+wait 0
+if
+0214:   pickup $2015PEPSIM25 picked_up
+jf @2015PEPSI_26
+0215: destroy_pickup $2015PEPSIH25
+end_thread
+
+:2015PEPSI_26
+wait 0
+if
+0214:   pickup $2015PEPSIM26 picked_up
+jf @2015PEPSI_27
+0215: destroy_pickup $2015PEPSIH26
+end_thread
+
+:2015PEPSI_27
+wait 0
+if
+0214:   pickup $2015PEPSIM27 picked_up
+jf @2015PEPSI_28
+0215: destroy_pickup $2015PEPSIH27
+end_thread
+
+:2015PEPSI_28
+wait 0
+if
+0214:   pickup $2015PEPSIM28 picked_up
+jf @2015PEPSI_29
+0215: destroy_pickup $2015PEPSIH28
+end_thread
+
+:2015PEPSI_29
+wait 0
+if
+0214:   pickup $2015PEPSIM29 picked_up
+jf @2015PEPSI_30
+0215: destroy_pickup $2015PEPSIH29
+end_thread
+
+:2015PEPSI_30
+wait 0
+if
+0214:   pickup $2015PEPSIM30 picked_up
+jf @2015PEPSI_31
+0215: destroy_pickup $2015PEPSIH30
+end_thread
+
+:2015PEPSI_31
+wait 0
+if
+0214:   pickup $2015PEPSIM31 picked_up
+jf @2015PEPSI_32
+0215: destroy_pickup $2015PEPSIH31
+end_thread
+
+:2015PEPSI_32
+wait 0
+if
+0214:   pickup $2015PEPSIM32 picked_up
+jf @2015PEPSI_33
+0215: destroy_pickup $2015PEPSIH32
+end_thread
+
+:2015PEPSI_33
+wait 0
+if
+0214:   pickup $2015PEPSIM33 picked_up
+jf @2015PEPSI_34
+0215: destroy_pickup $2015PEPSIH33
+end_thread
+
+:2015PEPSI_34
+wait 0
+if
+0214:   pickup $2015PEPSIM34 picked_up
+jf @2015PEPSI_35
+0215: destroy_pickup $2015PEPSIH34
+end_thread
+
+:2015PEPSI_35
+wait 0
+if
+0214:   pickup $2015PEPSIM35 picked_up
+jf @2015PEPSI_36
+0215: destroy_pickup $2015PEPSIH35
+end_thread
+
+:2015PEPSI_36
+wait 0
+if
+0214:   pickup $2015PEPSIM36 picked_up
+jf @2015PEPSI_37
+0215: destroy_pickup $2015PEPSIH36
+end_thread
+
+:2015PEPSI_37
+wait 0
+if
+0214:   pickup $2015PEPSIM37 picked_up
+jf @2015PEPSI_38
+0215: destroy_pickup $2015PEPSIH37
+end_thread
+
+:2015PEPSI_38
+wait 0
+if
+0214:   pickup $2015PEPSIM38 picked_up
+jf @2015PEPSI_39
+0215: destroy_pickup $2015PEPSIH38
+end_thread
+
+:2015PEPSI_39
+wait 0
+if
+0214:   pickup $2015PEPSIM39 picked_up
+jf @2015PEPSI_40
+0215: destroy_pickup $2015PEPSIH39
+end_thread
+
+:2015PEPSI_40
+wait 0
+if
+0214:   pickup $2015PEPSIM40 picked_up
+jf @2015PEPSI_41
+0215: destroy_pickup $2015PEPSIH40
+end_thread
+
+:2015PEPSI_41
+wait 0
+if
+0214:   pickup $2015PEPSIM41 picked_up
+jf @2015PEPSI_42
+0215: destroy_pickup $2015PEPSIH41
+end_thread
+
+:2015PEPSI_42
+wait 0
+if
+0214:   pickup $2015PEPSIM42 picked_up
+jf @2015PEPSI_1
+0215: destroy_pickup $2015PEPSIH42
+end_thread
