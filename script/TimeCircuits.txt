@@ -41,7 +41,7 @@ jf @TimeCircuitsStart
 if
   $TIME_DISP == 1
 jf @TimeCircuitsStart
-05F5: call_scm_func @DrawTexture params_count 5 1 733.0 242.0 216.0 128.0 //time circuits display image
+05F5: call_scm_func @DrawTexture params_count 9 1 733.0 242.0 216.0 128.0 255 255 255 255 //time circuits display image
 8@ = 172.0 // floating-point values
 1@ = 255 // integer values
 2@ = 50 // integer values
@@ -117,7 +117,7 @@ gosub @TimeCircuitsDisplay
 if
 8185:   not car $DELOREAN health >= 650
 jf @TimeCircuitsStart
-05F5: call_scm_func @DrawTexture params_count 5 6 735.0 155.0 45.0 23.0 //lambda error light
+05F5: call_scm_func @DrawTexture params_count 9 6 735.0 155.0 45.0 23.0 255 255 255 255 //lambda error light
 3F10: set_car $DELOREAN component "lambdalight" visible 1
 jump @TimeCircuitsStart
 

@@ -11,7 +11,7 @@ if and
     00DC:   player $PLAYER_CHAR driving 0@
     1@ == 0
 then
-    05F5: call_scm_func @DrawTexture params_count 5 5 782.0 155.0 45.0 23.0
+    05F5: call_scm_func @DrawTexture params_count 9 5 782.0 155.0 45.0 23.0 255 255 255 255
 end
 // Handle Ignition
 if
@@ -36,7 +36,7 @@ then
         $ENGINE_TURNOVER = 0
         1@ = 1
     else
-        05F5: call_scm_func @DrawTexture params_count 5 4 782.0 155.0 45.0 23.0 // battery light off
+        05F5: call_scm_func @DrawTexture params_count 9 4 782.0 155.0 45.0 23.0 255 255 255 255 // battery light off
         if
             $START == 0 // integer values
         then
@@ -60,10 +60,13 @@ if and
     1@ == 1
     8119:   not car 0@ wrecked
     00DC:   player $PLAYER_CHAR driving 0@
-    00E1:   key_pressed 0 15  // Exit car key
 then
-    02D4: car 0@ turn_off_engine
-    1@ = 0
+    if
+        00E1:   key_pressed 0 15  // Exit car key
+    then
+        02D4: car 0@ turn_off_engine
+        1@ = 0
+    end
 end
 
 // Sounds and setting engine state

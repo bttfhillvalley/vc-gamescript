@@ -84,48 +84,63 @@ while true
             $IN_RC == 0
         then
             1@ = 255 // integer values
-            2@ = 50 // integer values
-            3@ = 50 // integer values
+            2@ = 255 // integer values
+            3@ = 255 // integer values
 
             //only show the tens digit if it's not a 0
+            05F5: call_scm_func @DrawTexture params_count 9 40 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
             if
                 6@ > 0
             then
                 //tens digit
-                gosub @TextDraw
-                033F: set_text_draw_letter_width_height 2.0 8.0
-            	03E4: set_text_draw_align_right 1
-                045A: text_draw_1number 585.0 375.0 'NUMBER' 6@  // ~1~
-            end
 
-            //ones digit with decimal point
-            gosub @TextDraw
-            033F: set_text_draw_letter_width_height 2.0 8.0
-        	03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 630.0 375.0 'SPEED' 5@  // ~1~.
+                6@ += 7
+                05F5: call_scm_func @DrawTexture params_count 9 6@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+                6@ += 10
+                05F5: call_scm_func @DrawTexture params_count 9 6@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+                6@ -= 17
+            end
+            // ones digit with decimal point
+
+            5@ += 7
+            05F5: call_scm_func @DrawTexture params_count 9 40 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 5@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            5@ += 10
+            05F5: call_scm_func @DrawTexture params_count 9 5@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            // dot
+            05F5: call_scm_func @DrawTexture params_count 9 37 825.0 470.0 10.0 10.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 38 825.0 470.0 10.0 10.0 1@ 2@ 3@ 255
+            5@ -= 17
         else
             1@ = 255 // integer values
-            2@ = 165 // integer values
-            3@ = 0 // integer values
-
+            2@ = 255 // integer values
+            3@ = 255 // integer values
             //tens digit
-            gosub @TextDraw
-            033F: set_text_draw_letter_width_height 2.0 8.0
-        	03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 540.0 375.0 'NUMBER' 6@  // ~1~.
 
-            //ones digit with decimal point
-            gosub @TextDraw
-            033F: set_text_draw_letter_width_height 2.0 8.0
-            03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 585.0 375.0 'SPEED' 5@  // ~1~.
+            6@ += 7
+            05F5: call_scm_func @DrawTexture params_count 9 41 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 6@ 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            6@ += 20
+            05F5: call_scm_func @DrawTexture params_count 9 6@ 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
 
-            //decimal digit
-            gosub @TextDraw
-            033F: set_text_draw_letter_width_height 2.0 8.0
-        	03E4: set_text_draw_align_right 1
-            045A: text_draw_1number 630.0 375.0 'NUMBER' 4@  // ~1~
+            // ones digit
+            5@ += 7
+            05F5: call_scm_func @DrawTexture params_count 9 41 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 5@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            5@ += 20
+            05F5: call_scm_func @DrawTexture params_count 9 5@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            // dot
+            05F5: call_scm_func @DrawTexture params_count 9 37 780.0 470.0 10.0 10.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 39 780.0 470.0 10.0 10.0 1@ 2@ 3@ 255
+            // ones digit
+            4@ += 7
+            05F5: call_scm_func @DrawTexture params_count 9 41 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 4@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            4@ += 20
+            05F5: call_scm_func @DrawTexture params_count 9 4@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
 
+            5@ -= 27
+            6@ -= 27
         end
     end
    	if
@@ -141,19 +156,12 @@ while true
 
         //now show the relevant digits
 		3F11: set_car 0@ component "digitalspeedodigit1" index 5@ visible 1
-		/*if
+		if
 		  	6@ == 0
 		then
 		    3F10: set_car 0@ component "digitalspeedodigit20" visible 1
-            /*if
-                $TM_TYPE <= 3
-            then
-                3F10: set_car 0@ component "digitalspeedodigit20" visible 1
-            else
-                3F10: set_car 0@ component "digitalspeedodigit20bttf3" visible 1
-            end
-		else*/
+		else
 			3F11: set_car 0@ component "digitalspeedodigit2" index 6@ visible 1
-		//end
+		end
 	end
 end

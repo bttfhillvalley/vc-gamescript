@@ -1,10 +1,10 @@
 #
 # Load IDEs first, then the models and after that the IPLs
 #
-
+CDIMAGE MODELS\BTTF.IMG
 # everything is loaded on a per directory basis and in alphabetical order
 # to improve the speed of loading
-CDIMAGE MODELS\BTTF.IMG
+
 #
 # Object types
 #
@@ -40,6 +40,9 @@ IDE DATA\MAPS\BTTF\railway\railway.IDE
 IDE DATA\MAPS\BTTF\delgado\delgado.IDE
 IDE DATA\MAPS\BTTF\1985\DMC\DMC.IDE
 IDE DATA\MAPS\BTTF\1985\mall\1985mall.IDE
+IDE DATA\MAPS\BTTF\1985\mall\twin_pine_sign.IDE
+IDE DATA\MAPS\BTTF\1985\mall\lone_pine_sign.IDE
+IDE DATA\MAPS\BTTF\1985\mall\no_pine_sign.IDE
 IDE DATA\MAPS\BTTF\1985\downtown\1985downtown.IDE
 IDE DATA\MAPS\BTTF\1985\garage\1985garage.IDE
 IDE DATA\MAPS\BTTF\1985\square\1985square.IDE
@@ -50,7 +53,7 @@ IDE DATA\MAPS\BTTF\1955\downtown\1955downtown.IDE
 IDE DATA\MAPS\BTTF\1955\pohatchee\pohatchee.IDE
 IDE DATA\MAPS\BTTF\1955\twinpinesranch\twinpinesranch.IDE
 IDE DATA\MAPS\BTTF\1955\square\1955square.IDE
-
+#IDE DATA\MAPS\BTTF\1955\LyonEstates\lyon55.IDE
 
 
 
@@ -79,6 +82,7 @@ COLFILE 0 DATA\MAPS\BTTF\1955\downtown\1955downtown.COL
 COLFILE 0 DATA\MAPS\BTTF\1955\pohatchee\pohatchee.COL
 COLFILE 0 DATA\MAPS\BTTF\1955\twinpinesranch\twinpinesranch.COL
 COLFILE 0 DATA\MAPS\BTTF\1955\square\1955square.COL
+#COLFILE 0 DATA\MAPS\BTTF\1955\LyonEstates\lyon55.COL
 
 
 
@@ -125,8 +129,7 @@ IPL DATA\MAPS\BTTF\1955\downtown\1955downtown.IPL
 IPL DATA\MAPS\BTTF\1955\pohatchee\pohatchee.IPL
 IPL DATA\MAPS\BTTF\1955\twinpinesranch\twinpinesranch.IPL
 IPL DATA\MAPS\BTTF\1955\square\1955square.IPL
-
-
+#IPL DATA\MAPS\\BTTF\1955\LyonEstates\lyon55.IPL
 
 
 IPL DATA\MAPS\paths.ipl

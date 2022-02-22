@@ -48,18 +48,12 @@ end
 tobj
 5382, dmcstsign_d, dmcstsign, 1, 300, 4, 6, 19
 5383, dmcstsign_n, dmcstsign, 1, 300, 4, 19, 6
-5398, lonepine_d, lonepine, 1, 300, 4, 6, 19
-5399, lonepine_n, lonepine, 1, 300, 4, 19, 6
-5400, nopine_d, nopine, 1, 300, 4, 6, 19
-5401, nopine_n, nopine, 1, 300, 4, 19, 6
 6301, mall_building_d, mall_building, 1, 300, 4, 6, 19
 6302, mall_building_n, mall_building, 1, 300, 4, 19, 6
 6340, mall_build3_d, mall_build3, 1, 300, 4, 6, 19
 6341, mall_build3_n, mall_build3, 1, 300, 4, 19, 6
 6304, mall_foxset_d, mall_foxset, 1, 300, 4, 6, 19
 6344, mall_foxset_n, mall_foxset, 1, 300, 4, 19, 6
-6299, mall_sign_d, mall_generic, 1, 300, 4, 6, 19
-6297, mall_sign_n, mall_generic, 1, 300, 4, 19, 6
 6310, mall_tygfridays2_d, mall_tyg2, 1, 300, 4, 6, 19
 6311, mall_tygfridays2_n, mall_tyg2, 1, 300, 4, 19, 6
 6317, tyg_building1_d, tyg_build1, 1, 300, 4, 6, 19

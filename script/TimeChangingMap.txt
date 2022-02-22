@@ -1,9 +1,11 @@
 :DateCheckStart
 wait 0
+$MALL_SIGN = 2
 3F09: remove_build "1855" amnt 0
 3F09: remove_build "1955" amnt 17
 3F09: remove_build "1985" amnt 7
 3F09: remove_build "2015" amnt 7
+gosub @MallSignDestroy
 
 :DateCheck
 if
@@ -15,15 +17,19 @@ else if
     $CYEAR < 1980
 then
     3F08: add_build "1955" amnt 4
+    gosub @TwinpinesTreesCreate
+    create_thread @TwinPinesRipple
     jump @WaitToLeave1955
 else if
     $CYEAR < 2010
 then
     3F08: add_build "1985" amnt 7
+    gosub @MallSignCreate
     create_thread @canopener
     jump @WaitToLeave1985
 else
     3F08: add_build "2015" amnt 7
+    gosub @MallSignCreate
     jump @WaitToLeave2015
 end
 end
@@ -44,6 +50,7 @@ if or
     $CYEAR >= 1980 // We traveled to the present/future
 else_jump @WaitToLeave1955
 3F09: remove_build "1955" amnt 4
+gosub @TwinPinesTreesDestroy
 jump @DateCheck
 
 :WaitToLeave1985
@@ -53,6 +60,7 @@ if or
   $CYEAR >= 2010 // We traveled to the future
 else_jump @WaitToLeave1985
 3F09: remove_build "1985" amnt 7
+gosub @MallSignDestroy
 end_thread_named 'canopn'
 0108: destroy_object $dogfoodbase
 0108: destroy_object $dogfoodarm
@@ -80,4 +88,5 @@ if
   $CYEAR < 2010 // We traveled to the past/present
 else_jump @WaitToLeave2015
 3F09: remove_build "2015" amnt 7
+gosub @MallSignDestroy
 jump @DateCheck

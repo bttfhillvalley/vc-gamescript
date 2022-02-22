@@ -1,0 +1,12 @@
+:TwinPinesTreesCreate
+$PINE1 = Object.Init(#1955TPPine,  -518.2, 276.72, 13.07)
+$PINE2 = Object.Init(#1955TPPine,  -519.33, 276.92, 13.07)
+Object.Angle($PINE1) = 80.0
+Object.Angle($PINE2) = -100.0
+return
+
+:TwinPinesTreesDestroy
+end_thread_named 'pinechk'
+0108: destroy_object $PINE1
+0108: destroy_object $PINE2
+return

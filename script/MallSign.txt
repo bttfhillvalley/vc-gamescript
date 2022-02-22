@@ -1,0 +1,20 @@
+:MallSignCreate
+if
+    $MALL_SIGN == 0
+then
+    3F08: add_build "nopine" amnt 7
+else if
+    $MALL_SIGN == 1
+then
+    3F08: add_build "lonepine" amnt 7
+else
+    3F08: add_build "twinpine" amnt 7
+end
+end
+return
+
+:MallSignDestroy
+3F09: remove_build "nopine" amnt 7
+3F09: remove_build "lonepine" amnt 7
+3F09: remove_build "twinpine" amnt 7
+return

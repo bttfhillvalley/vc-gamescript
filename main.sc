@@ -125,7 +125,8 @@ $ROTATE_SPEED = 0.0 // floating-point values
 $WHEEL_SPARKS = 0.0 // floating-point values
 $CONVERSION = 0
 $HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
-$STAGE_TWO_BOOST = 0
+$STAGE_TWO_BOOST = 1
+$MALL_SIGN = 2
 {0219: $DELOREAN_GARAGE = create_garage_type 1 door -966.016 -861.529 5.761 to -966.016 -841.683 11.273 depth -978.454 -861.529  //Vice City DeLorean Garage
 03BB: set_garage $DELOREAN_GARAGE door_type_to_swing_open
 02A8: $DelGarageMap = create_marker 7 at -1007.3 -869.9 12.8 //Delorean Garage Icon
@@ -153,8 +154,7 @@ end
 create_thread @CurrentTime         // Present Time information
 create_thread @MemoryManipulation  // The Keypad Core
 create_thread @Display             // Keys for turning on/off speedometer and time circuits
-//create_thread @HoverConversion     // New Hover Conversion code
-//create_thread @Hover               // Flying 2015 cars
+create_thread @Hover               // Flying 2015 cars
 create_thread @RadioControl        // RC Mode
 create_thread @GetPlutonium        // Plutonium pickup and lybians
 //create_thread @Garage              // DeLorean Garage
@@ -162,8 +162,6 @@ create_thread @DrawRefresh         // On screen text display rendering
 create_thread @Environment         // Weather, parked car and ped generators for time trave
 create_thread @HillValley          // Real Time Clock and courthouse spawner
 create_thread @Conversion          // Flying DeLorean and Train hover conversion animations
-create_thread @Radio               // Copies the current radio station information for time travel/hover converion transitions
-//create_thread @FlyPolice           // Flying 2015 police car conversion
 create_thread @CarInterior         // Delorean Interior lights and animations
 create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugMove helps us move objects/particles
@@ -200,8 +198,47 @@ then
     038F: load_texture 'batry' as 4  // Battery Light on
     038F: load_texture 'batro' as 5  // Battery Light Off
     038F: load_texture 'lambd' as 6  // LAMBDA Light (usually this is for engine damage but currently only shown if time circuits are on)
+    038F: load_texture '0s' as 7
+    038F: load_texture '1s' as 8
+    038F: load_texture '2s' as 9
+    038F: load_texture '3s' as 10
+    038F: load_texture '4s' as 11
+    038F: load_texture '5s' as 12
+    038F: load_texture '6s' as 13
+    038F: load_texture '7s' as 14
+    038F: load_texture '8s' as 15
+    038F: load_texture '9s' as 16
+    038F: load_texture '0' as 17
+    038F: load_texture '1' as 18
+    038F: load_texture '2' as 19
+    038F: load_texture '3' as 20
+    038F: load_texture '4' as 21
+    038F: load_texture '5' as 22
+    038F: load_texture '6' as 23
+    038F: load_texture '7' as 24
+    038F: load_texture '8' as 25
+    038F: load_texture '9' as 26
+    038F: load_texture 'y0' as 27
+    038F: load_texture 'y1' as 28
+    038F: load_texture 'y2' as 29
+    038F: load_texture 'y3' as 30
+    038F: load_texture 'y4' as 31
+    038F: load_texture 'y5' as 32
+    038F: load_texture 'y6' as 33
+    038F: load_texture 'y7' as 34
+    038F: load_texture 'y8' as 35
+    038F: load_texture 'y9' as 36
+    038F: load_texture 'dots' as 37
+    038F: load_texture 'dot' as 38
+    038F: load_texture 'ydot' as 39
+    038F: load_texture 'digbk' as 40
+    038F: load_texture 'ydgbk' as 41
     01B7: release_weather
 end
+
+:InfLoop
+wait 10
+jump @InfLoop
 {$INCLUDE script/2015PoliceCar.txt}
 {$INCLUDE script/55BarberPole.txt}
 {$INCLUDE script/55TV.txt}
@@ -234,9 +271,9 @@ end
 {$INCLUDE script/HoverboardAttach.txt}
 {$INCLUDE script/HoverConversion.txt}
 {$INCLUDE script/Ignition.txt}
+{$INCLUDE script/MallSign.txt}
 {$INCLUDE script/MemoryManipulation.txt}
 {$INCLUDE script/ParkingBrake.txt}
-{$INCLUDE script/Radio.txt}
 {$INCLUDE script/RadioControl.txt}
 {$INCLUDE script/Rogers.txt}
 {$INCLUDE script/Shifter.txt}
@@ -253,47 +290,8 @@ end
 {$INCLUDE script/Train.txt}
 {$INCLUDE script/TrainEffects.txt}
 {$INCLUDE script/Truck.txt}
+{$INCLUDE script/TwinPinesRipple.txt}
+{$INCLUDE script/TwinPinesTrees.txt}
 {$INCLUDE script/UniqueStuntJumps.txt}
-
-:DebugParticle
-0@ = 0
-10@ = 0
-
-:DebugParticleStart
-wait 10
-if
-   Player.Defined($PLAYER_CHAR)
-else_jump @DebugParticleStart
-if
-    $KEY == 72
-else_jump @DebugParticleStart
-if
-    10@ == 0
-then
-    04C4: create_coordinate 1@ 2@ 3@ from_actor $PLAYER_ACTOR offset 0.0 0.0 1.0
-    Camera.SetPosition(1@, 2@, 3@, 0.0, 0.0, 0.0)
-    Camera.OnPed($PLAYER_ACTOR, 15, 2)
-    10@ = 1
-else
-    Camera.Restore()
-    Camera.SetBehindPlayer()
-    10@ = 0
-end
-jump @DebugParticleStart
-
-
-
-
-/*
-// Right
-if in c
-then
-    0@ += 1
-end
-
-045A: text_draw_1number 10.0 10.0 'DAY' 0@  // Best Result: ~1~th
-
-*/
-
 //-------------Mission 0---------------
 // put missions here
