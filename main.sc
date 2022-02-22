@@ -55,9 +55,9 @@ fade 0 0
 set_wb_check_to 0
 00C0: set_current_time 10 0
 0572: set_taxi_boost_jump 1
-04E4: unknown_refresh_game_renderer_at 625.157 454.36
-Camera.SetAtPos(625.157, 454.36, 10.0)
-$PLAYER_CHAR = Player.Create(#NULL, 625.157, 454.36, 10.0) // VC mansion
+04E4: unknown_refresh_game_renderer_at -542.5803 268.1569
+Camera.SetAtPos(-542.5803, 268.1569, 12.4336)
+$PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // Twin Pines Mall
 0171: set_player $PLAYER_CHAR z_angle_to 180.0
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
