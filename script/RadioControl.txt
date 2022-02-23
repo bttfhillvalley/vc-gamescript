@@ -58,6 +58,7 @@ Actor.Health(1@) = 6@
 :RadioControlLoop
 wait 10
 if and
+    3F29:   is_player_in_remote_mode_with_car $DELOREAN
     not Car.Wrecked($DELOREAN)
     803A:   $KEY == $KEY_RADIOCONTROL // R
 else_jump @RadioControlExit

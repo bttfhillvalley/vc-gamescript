@@ -478,7 +478,6 @@ else
     // Create explosion
     gosub @EntryExplosion
 
-
     // Create Firetrail
     if
         $LIGHTNING == 2
@@ -743,7 +742,6 @@ Car.Health(0@) = 8@
 Car.Angle(0@) = 9@
 Car.SetImmunities(0@, 0, 0, 0, 1, 1)
 //wait 10
-//13@ += 100000 // integer values
 04BA: set_car 0@ speed_instantly 11@
 if and
     00DC:   player $PLAYER_CHAR driving 0@
@@ -755,6 +753,11 @@ if
     80DC:   not player $PLAYER_CHAR driving 0@
 then
     // This is for RC mode to get it to handbrake turn
+    if
+        Car.Wrecked($DELOREAN)
+    then
+        008A: $DELOREAN = 0@
+    end
     create_thread @TimeEngineOff 0@
 end
 
@@ -799,7 +802,6 @@ end_thread
 
 :TimeEngineOff
 0477: set_car 0@ animation 3 250 ms
-wait 250
 02D4: car 0@ turn_off_engine
 end_thread
 

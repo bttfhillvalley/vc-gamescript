@@ -77,6 +77,11 @@ else
         gosub @HideTrainHoverWheels
     end
     end
+
+    // Set wheels in correct hover position
+    6@ = 0.3 // Wheel retracting
+    7@ = 90.0 // Wheel rotating back
+    gosub @HoverAnimateModel
 end
 
 // Rear deck

@@ -1,4 +1,9 @@
 :Ignition
+if
+    Car.wrecked(0@)
+then
+    return
+end
 
 // TODO:  This startup sequence needs to be redone
 // The oil pressure needle moves, but not the oil temp
@@ -96,11 +101,15 @@ else
         1@ == 0
     then
         13@ = 0
-        040D: unload_wav 2
-        03CF: load_wav 'BURG_06' as 2
-        create_thread @PlaySound 2
-        // Stop Animations.  Probably don't have to other then get the voltage down to 0
-        create_thread @DashboardShutdown 0@
+        if
+            $REMOTE_TRAVEL == 0
+        then
+            040D: unload_wav 2
+            03CF: load_wav 'BURG_06' as 2
+            create_thread @PlaySound 2
+            // Stop Animations.  Probably don't have to other then get the voltage down to 0
+            create_thread @DashboardShutdown 0@
+        end
     end
 end
 return
@@ -123,6 +132,7 @@ end_thread
 
 // Animate ignition sequence
 :DashboardStartup
+// TODO: Need to redo to not crash RC
 //turn key
 wait 0
 // Initialize dashboard
@@ -153,6 +163,7 @@ end
 
 // Warm up oil
 wait 1000
+gosub @CheckCarWrecked
 for 1@ = -30.0 to 0.0 step 5.0
     wait 10
     3F16: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
@@ -160,6 +171,7 @@ end
 
 // Oil Temp Diagnostic (?)
 wait 500
+gosub @CheckCarWrecked
 for 1@ = 0.0 downto -75.0 step 5.0
     wait 10
     3F16: rotate_car_part "oilneedle" angle 0.0 1@ 0.0 car 0@
@@ -167,14 +179,19 @@ end
 
 // Turn off Dashboard lights
 wait 1000
+gosub @CheckCarWrecked
 3F10: set_car 0@ component "batterylight" visible 0  //off
 wait 1000
+gosub @CheckCarWrecked
 3F10: set_car 0@ component "oillight" visible 0    //off
 wait 1000
+gosub @CheckCarWrecked
 3F10: set_car 0@ component "seatbeltlight" visible 1
 wait 1000
+gosub @CheckCarWrecked
 3F10: set_car 0@ component "seatbeltlight" visible 0
 wait 5000
+gosub @CheckCarWrecked
 
 // Stabilize oil
 for 1@ = -75.0 to 30 step 5.0

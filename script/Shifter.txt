@@ -1,4 +1,9 @@
 :Shifter
+if
+    Car.wrecked(0@)
+then
+    return
+end
 02E3: 1@ = car 0@ speed
 3F10: set_car 0@ component "shiftern" visible 0 //Neutral Gear off
 3F10: set_car 0@ component "shifterr" visible 0 //Reverse Gear off

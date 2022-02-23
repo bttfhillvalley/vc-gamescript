@@ -122,9 +122,11 @@ if
 then
     Car.PutAt(0@, 5@, 6@, 5000.0)
 else
-    3F24: remove_car 0@ remote
-    wait 0  // Give it a frame for all references to remote control to be removed, otherwise it crashes.
+    $REMOTE_TRAVEL = 1
+    3F24: remove_car 0@ remote  // Give it a frame for all references to remote control to be removed, otherwise it crashes.
+    wait 0
     Car.Destroy(0@)
+    $REMOTE_TRAVEL = 0
 end
 return
 

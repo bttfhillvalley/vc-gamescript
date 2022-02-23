@@ -1,4 +1,9 @@
 :CompassRotation
+if
+    Car.wrecked(0@)
+then
+    return
+end
 0174: 1@ = car 0@ z_angle
 1@ *= -1.0
 3F16: rotate_car_part "compass" angle 0.0 0.0 1@ car 0@

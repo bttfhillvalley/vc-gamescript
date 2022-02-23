@@ -1,4 +1,9 @@
 :DrivingLights
+if
+    Car.wrecked(0@)
+then
+    return
+end
 3F04: 1@ = get_car 0@ gear
 2@ = 0 // brakes
 3@ = 0 // reverse

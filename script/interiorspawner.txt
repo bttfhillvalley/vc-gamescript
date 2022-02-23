@@ -1,8 +1,8 @@
 :interiors
 wait 0
-if 
+if
     Player.Defined($PLAYER_CHAR)
-jf @interiors 
+jf @interiors
 create_thread @hvmall
 create_thread @OceanHotel
 create_thread @Mansion_entrance

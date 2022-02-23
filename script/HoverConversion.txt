@@ -224,10 +224,17 @@ then
         6@ -= 0.01
     else
         if or
-            4@ > 5.0  // If we're really high up, just disable hovering
-            80DC:   not player $PLAYER_CHAR driving 0@
-            81F3:   not car 0@ airborne
+            00DC:   player $PLAYER_CHAR driving 0@
+            3F29:   is_player_in_remote_mode_with_car 0@
         then
+            if or
+                4@ > 5.0  // If we're really high up, just disable hovering
+                81F3:   not car 0@ airborne
+            then
+                create_thread @SetVariation 0@ 1@
+                jump @HoverAnimateEnd
+            end
+        else
             create_thread @SetVariation 0@ 1@
             jump @HoverAnimateEnd
         end

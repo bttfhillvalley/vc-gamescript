@@ -1,5 +1,9 @@
 :ParkingBrake
-// This checks the parking break.
+if
+    Car.wrecked(0@)
+then
+    return
+end
 if
     00E1:   player 0 pressed_button 6
 then

@@ -537,7 +537,7 @@ Pickup.Create($WHISKEYE42, #ADRENALINE, 2, -839.0, 740.6, 11.3)
 
 :whiskey_1
 wait 0
-if    
+if
 0214:   pickup $WhiskeyP1 picked_up
 jf @whiskey_2
 0215: destroy_pickup $WHISKEYE1
@@ -1009,7 +1009,7 @@ Pickup.Create($1955PEPSIH42, #HEALTH, 2, -839.0, 740.6, 11.3)
 
 :1955Pepsi_1
 wait 0
-if    
+if
 0214:   pickup $1955PEPSIM1 picked_up
 jf @1955Pepsi_2
 0215: destroy_pickup $1955PEPSIH1
@@ -1438,7 +1438,7 @@ Pickup.Create($1985PEPSIH42, #HEALTH, 2, -839.0, 740.6, 11.3)
 
 :1985PEPSI_1
 wait 0
-if    
+if
 0214:   pickup $1985PEPSIM1 picked_up
 jf @1985PEPSI_2
 0215: destroy_pickup $1985PEPSIH1
@@ -1866,7 +1866,7 @@ Pickup.Create($2015PEPSIH42, #HEALTH, 2, -839.0, 740.6, 11.3)
 
 :2015PEPSI_1
 wait 0
-if    
+if
 0214:   pickup $2015PEPSIM1 picked_up
 jf @2015PEPSI_2
 0215: destroy_pickup $2015PEPSIH1
