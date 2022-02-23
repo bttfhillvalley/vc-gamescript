@@ -36,6 +36,8 @@ DEFINE MISSIONS 0
 {$OPCODE 3F26=2,get_car %1d% wheel_status_to %2d%}  				// Get wheel status
 {$OPCODE 3F27=2,set_car %1d% wheel_status %2d%}  				// Set wheel status
 {$OPCODE 3F28=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
+{$OPCODE 3F29=1,is_player_in_remote_mode_with_car %1d%}  				// Set wheel status
+
 
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
@@ -61,7 +63,7 @@ $PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // Twin Pines 
 0171: set_player $PLAYER_CHAR z_angle_to 180.0
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
-$1955 = 1985 // integer values
+$1955 = 1955 // integer values
 $1985 = 0 // integer values
 $2015 = 0 // integer values
 $1955CAR = 0 // integer values
@@ -280,6 +282,7 @@ jump @InfLoop
 {$INCLUDE script/Shifter.txt}
 {$INCLUDE script/Taxi.txt}
 {$INCLUDE script/TimeChangingMap.txt}
+{$INCLUDE script/TimeChangingPickups.txt}
 {$INCLUDE script/TimeCircuitsModel.txt}
 {$INCLUDE script/TimeCircuits.txt}
 {$INCLUDE script/TimeEffects.txt}
@@ -296,6 +299,5 @@ jump @InfLoop
 {$INCLUDE script/UniqueStuntJumps.txt}
 {$INCLUDE script/interiorspawner.txt}
 {$INCLUDE script/interiors.txt}
-{$INCLUDE script/TimeChangingPickups.txt}
 //-------------Mission 0---------------
 // put missions here
