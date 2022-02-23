@@ -1,4 +1,15 @@
 main.scm
 maps
+!maps/airport/*.ipl
+!maps/airportN/*.ipl
+!maps/downtown/*.ipl
+!maps/downtows/*.ipl
+!maps/golf/*.ipl
+!maps/haitiN/*.ipl
+!maps/islandsf*.ipl
+!maps/oceandn*.ipl
 !maps/bttf/*
-
+animviewer.dat
+Cullzone.dat
+Cullzoneempty.dat
+WATERPRO.dat
