@@ -194,48 +194,7 @@ then
     Player.CanMove($PLAYER_CHAR) = True
     //Load Textures for on screen time travel hud here
     //!Important! there is a 5 character limit for texture names
-    0390: load_txd_dictionary 'hud'  // HUD.TXD
-    038F: load_texture 'lcd' as 1    // Time Circuit Labels
-    038F: load_texture 'empon' as 2  // Empty Light on
-    038F: load_texture 'empof' as 3  // Empty Light off
-    038F: load_texture 'batry' as 4  // Battery Light on
-    038F: load_texture 'batro' as 5  // Battery Light Off
-    038F: load_texture 'lambd' as 6  // LAMBDA Light (usually this is for engine damage but currently only shown if time circuits are on)
-    038F: load_texture '0s' as 7
-    038F: load_texture '1s' as 8
-    038F: load_texture '2s' as 9
-    038F: load_texture '3s' as 10
-    038F: load_texture '4s' as 11
-    038F: load_texture '5s' as 12
-    038F: load_texture '6s' as 13
-    038F: load_texture '7s' as 14
-    038F: load_texture '8s' as 15
-    038F: load_texture '9s' as 16
-    038F: load_texture '0' as 17
-    038F: load_texture '1' as 18
-    038F: load_texture '2' as 19
-    038F: load_texture '3' as 20
-    038F: load_texture '4' as 21
-    038F: load_texture '5' as 22
-    038F: load_texture '6' as 23
-    038F: load_texture '7' as 24
-    038F: load_texture '8' as 25
-    038F: load_texture '9' as 26
-    038F: load_texture 'y0' as 27
-    038F: load_texture 'y1' as 28
-    038F: load_texture 'y2' as 29
-    038F: load_texture 'y3' as 30
-    038F: load_texture 'y4' as 31
-    038F: load_texture 'y5' as 32
-    038F: load_texture 'y6' as 33
-    038F: load_texture 'y7' as 34
-    038F: load_texture 'y8' as 35
-    038F: load_texture 'y9' as 36
-    038F: load_texture 'dots' as 37
-    038F: load_texture 'dot' as 38
-    038F: load_texture 'ydot' as 39
-    038F: load_texture 'digbk' as 40
-    038F: load_texture 'ydgbk' as 41
+   {$INCLUDE script/TextureDictionary.txt}
     01B7: release_weather
 end
 
