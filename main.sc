@@ -194,7 +194,7 @@ then
     Player.CanMove($PLAYER_CHAR) = True
     //Load Textures for on screen time travel hud here
     //!Important! there is a 5 character limit for texture names
-   {$INCLUDE script/TextureDictionary.txt}
+    {$INCLUDE script/TextureDictionary.txt}
     01B7: release_weather
 end
 
@@ -233,6 +233,8 @@ jump @InfLoop
 {$INCLUDE script/HoverboardAttach.txt}
 {$INCLUDE script/HoverConversion.txt}
 {$INCLUDE script/Ignition.txt}
+{$INCLUDE script/Interiors.txt}
+{$INCLUDE script/InteriorSpawner.txt}
 {$INCLUDE script/MallSign.txt}
 {$INCLUDE script/MemoryManipulation.txt}
 {$INCLUDE script/ParkingBrake.txt}
@@ -256,7 +258,5 @@ jump @InfLoop
 {$INCLUDE script/TwinPinesRipple.txt}
 {$INCLUDE script/TwinPinesTrees.txt}
 {$INCLUDE script/UniqueStuntJumps.txt}
-{$INCLUDE script/interiorspawner.txt}
-{$INCLUDE script/interiors.txt}
 //-------------Mission 0---------------
 // put missions here
