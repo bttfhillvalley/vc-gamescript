@@ -4,16 +4,16 @@ if
     00E1:   player 0 pressed_button 6
 then
     if
-        15@ < 40.0
+        15@ < 20.0
     then
-        15@ += 10.0
+        15@ += 4.0
     end
 
 else
     if
         15@ > 0.0
     then
-        15@ -= 10.0
+        15@ -= 4.0
     end
 end
 

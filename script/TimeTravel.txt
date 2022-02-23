@@ -142,19 +142,15 @@ end
 
 // TODO: Need to only let car go to driving if flying circuits are damaged
 
-if and
+if or
     00DC:   player $PLAYER_CHAR driving 0@
+    3F29:   is_player_in_remote_mode_with_car 0@
+else_jump @TimeFlyHover
+
+if and
     003A:   $KEY == $KEY_HOVERCONVERSION // C
     not 6@ == 0  // Flying circuits are installed
     $CONVERSION == 0  // Not animating
-else_jump @TimeFlyNotDriving
-jump @TimeFlyConvert
-
-:TimeFlyNotDriving
-if and
-    80DC:   not player $PLAYER_CHAR driving 0@
-    not 8@ == 0 // Flying
-    $CONVERSION == 0
 else_jump @TimeFlyHover
 
 :TimeFlyConvert
@@ -545,7 +541,7 @@ else_jump @TimePastB
 jump @TimePastLoadModel
 
 :TimePastB
-if 
+if
 001E:   $CTIME > 12@ // integer values
 else_jump @TimePast
 

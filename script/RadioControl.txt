@@ -24,12 +24,17 @@ if and
    Model.Available(#SABRE) //DMC-12
    Model.Available(#BOMB) //RC REMOTE
 else_jump @RadioControlLoadModels
+
+// Set camera first
+04C4: create_coordinate 2@ 3@ 4@ from_actor $PLAYER_ACTOR offset 0.0 0.0 1.0
+Camera.SetPosition(2@, 3@, 4@, 0.0, 0.0, 0.0)
+Camera.OnVehicle($DELOREAN, 15@, 1)
+
 // Create Dummy car
 04C4: create_coordinate 2@ 3@ 4@ from_actor $PLAYER_ACTOR offset 0.0 0.0 -1.0
 0@ = Car.Create(#SABRE, 2@, 3@, 5000.0) //DMC-12
 0369: put_player $PLAYER_CHAR in_car 0@
 02D4: car 0@ turn_off_engine
-
 
 // Create Dummy Actor
 5@ = Actor.Angle($PLAYER_ACTOR)
@@ -40,7 +45,11 @@ Actor.Health(1@) = 6@
 01B2: give_actor 1@ weapon 34 ammo 1 // Load the weapon model before using this
 04C4: create_coordinate 2@ 3@ 4@ from_actor 1@ offset 0.0 -1.0 0.0
 0245: set_actor 1@ walk_style_to 33
-wait 0
+
+// Set initial Angle
+0407: create_coordinate 2@ 3@ 4@ from_car $DELOREAN offset 0.0 0.0 -0.75
+01BE: set_actor 1@ to_look_at_spot 2@ 3@ 4@
+
 
 // Set Remote mode
 3F03: car $DELOREAN turn_on_engine
@@ -73,7 +82,6 @@ Car.PutAt(0@, 2@, 3@, 5000.0)
 04C4: create_coordinate 2@ 3@ 4@ from_actor 1@ offset 0.0 0.0 1.0
 Camera.SetPosition(2@, 3@, 4@, 0.0, 0.0, 0.0)
 Camera.OnVehicle($DELOREAN, 15@, 2)
-
 jump @RadioControlLoop
 
 :RadioControlExit
