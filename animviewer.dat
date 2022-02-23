@@ -1,0 +1,39 @@
+#
+# Object types
+#
+IDE DATA\MAPS\generic.IDE
+IDE DATA\MAPS\littleha\littleha.IDE
+IDE DATA\MAPS\downtown\downtown.IDE
+IDE DATA\MAPS\downtows\downtows.IDE
+IDE DATA\MAPS\docks\docks.IDE
+IDE DATA\MAPS\washintn\washintn.IDE
+IDE DATA\MAPS\washints\washints.IDE
+IDE DATA\MAPS\oceandrv\oceandrv.IDE
+IDE DATA\MAPS\oceandn\oceandn.IDE
+IDE DATA\MAPS\golf\golf.IDE
+IDE DATA\MAPS\bridge\bridge.IDE
+IDE DATA\MAPS\starisl\starisl.IDE
+IDE DATA\MAPS\nbeachbt\nbeachbt.IDE
+IDE DATA\MAPS\nbeachw\nbeachw.IDE
+IDE DATA\MAPS\nbeach\nbeach.IDE
+IDE DATA\MAPS\bank\bank.IDE
+IDE DATA\MAPS\mall\mall.IDE
+IDE DATA\MAPS\yacht\yacht.IDE
+IDE DATA\MAPS\cisland\cisland.IDE
+IDE DATA\MAPS\club\club.IDE
+IDE DATA\MAPS\hotel\hotel.IDE
+IDE DATA\MAPS\lawyers\lawyers.IDE
+IDE DATA\MAPS\stripclb\stripclb.IDE
+IDE DATA\MAPS\airport\airport.IDE
+IDE DATA\MAPS\airportN\airportN.IDE
+IDE DATA\MAPS\haiti\haiti.IDE
+IDE DATA\MAPS\haitin\haitin.IDE
+IDE DATA\MAPS\concerth\concerth.IDE
+IDE DATA\MAPS\mansion\mansion.IDE
+IDE DATA\MAPS\islandsf\islandsf.IDE
+IDE DATA\MAPS\stadint\stadint.IDE
+
+
+
+#collision data
+COLFILE 0 MODELS\COLL\GENERIC.COL
