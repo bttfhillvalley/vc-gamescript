@@ -132,7 +132,7 @@ $ROTATE_SPEED = 0.0 // floating-point values
 $WHEEL_SPARKS = 0.0 // floating-point values
 $CONVERSION = 0
 $HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
-$STAGE_TWO_BOOST = 1
+$STAGE_TWO_BOOST = 0
 $MALL_SIGN = 2
 {0219: $DELOREAN_GARAGE = create_garage_type 1 door -966.016 -861.529 5.761 to -966.016 -841.683 11.273 depth -978.454 -861.529  //Vice City DeLorean Garage
 03BB: set_garage $DELOREAN_GARAGE door_type_to_swing_open
@@ -180,6 +180,8 @@ create_thread @CarSpawn
 create_thread @UNIQUE_STUNT_JUMPS
 create_thread @interiors
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
+0A8C: write memory 0x58E59B size 5 0x9090909090 virtual_protect 1
+0A8C: write memory 0x58E611 size 5 0x9090909090 virtual_protect 1
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
 set_weather $WEATHER
