@@ -42,7 +42,7 @@ if
   $TIME_DISP == 1
 jf @TimeCircuitsStart
 05F5: call_scm_func @DrawTexture params_count 9 1 733.0 242.0 216.0 128.0 255 255 255 255 //time circuits display image
-8@ = 172.0 // floating-point values
+8@ = 200.0 // floating-point values
 1@ = 255 // integer values
 2@ = 50 // integer values
 3@ = 50 // integer values
@@ -76,7 +76,7 @@ if
 then
     gosub @TimeCircuitsTime
 end
-8@ += 40.0 // floating-point values
+8@ += 43.0 // floating-point values
 1@ = 75 // integer values
 2@ = 255 // integer values
 3@ = 100 // integer values
@@ -86,7 +86,7 @@ end
 008B: 14@ = $CDAY // integer values and handles
 gosub @NumbersToDate
 gosub @TimeCircuitsDisplay
-8@ += 39.5 // floating-point values
+8@ += 43.0 // floating-point values
 1@ = 255 // integer values
 2@ = 175 // integer values
 3@ = 100 // integer values
@@ -162,21 +162,21 @@ gosub @TimeCircuitsTime
 return
 
 :TimeCircuitsDay
-gosub @TextDrawRight
-045A: text_draw_1number 519.0 8@ 'NUMBER' 14@  // ~1~
-gosub @TextDrawRight
-045A: text_draw_1number 529.0 8@ 'NUMBER' 15@  // ~1~
+14@ += 35
+15@ += 35
+05F5: call_scm_func @DrawTexture params_count 9 14@ 680.0 8@ 12.0 18.0 1@ 2@ 3@ 255
+05F5: call_scm_func @DrawTexture params_count 9 15@ 692.0 8@ 12.0 18.0 1@ 2@ 3@ 255
 return
 
 :TimeCircuitsYear
-gosub @TextDrawRight
-045A: text_draw_1number 545.0 8@ 'NUMBER' 4@  // ~1~
-gosub @TextDrawRight
-045A: text_draw_1number 555.0 8@ 'NUMBER' 5@  // ~1~
-gosub @TextDrawRight
-045A: text_draw_1number 565.0 8@ 'NUMBER' 6@  // ~1~
-gosub @TextDrawRight
-045A: text_draw_1number 575.0 8@ 'NUMBER' 7@  // ~1~
+4@ += 35
+5@ += 35
+6@ += 35
+7@ += 35
+05F5: call_scm_func @DrawTexture params_count 9 4@ 716.0 8@ 12.0 18.0 1@ 2@ 3@ 255
+05F5: call_scm_func @DrawTexture params_count 9 5@ 728.0 8@ 12.0 18.0 1@ 2@ 3@ 255
+05F5: call_scm_func @DrawTexture params_count 9 6@ 740.0 8@ 12.0 18.0 1@ 2@ 3@ 255
+05F5: call_scm_func @DrawTexture params_count 9 7@ 752.0 8@ 12.0 18.0 1@ 2@ 3@ 255
 return
 
 :TimeCircuitsTime
@@ -184,9 +184,13 @@ gosub @TextDraw
 if
     9@ < 12
 then
-    033E: text_draw 580.0 8@ 'AM'  // ?
+    8@ -= 6.0
+    05F5: call_scm_func @DrawTexture params_count 9 57 771.0 8@ 6.0 8.0 1@ 2@ 3@ 255
+    8@ += 6.0
 else
-    033E: text_draw 580.0 8@ 'PM'  // .
+    8@ += 5.0
+    05F5: call_scm_func @DrawTexture params_count 9 57 771.0 8@ 6.0 8.0 1@ 2@ 3@ 255
+    8@ -= 5.0
 end
 if
     9@ > 12
@@ -205,8 +209,11 @@ end
 if
     16@ < 500 // integer values
 then
-    gosub @TextDrawRight
-    033E: text_draw 614.0 8@ 'COLON'  // .    :
+    8@ -= 2.0
+    05F5: call_scm_func @DrawTexture params_count 9 57 812.5 8@ 6.0 8.0 1@ 2@ 3@ 255
+    8@ += 6.0
+    05F5: call_scm_func @DrawTexture params_count 9 57 812.5 8@ 6.0 8.0 1@ 2@ 3@ 255
+    8@ -= 4.0
 end
 return
 
@@ -217,103 +224,18 @@ return
 9@ *= 10
 0062: 10@ -= 9@
 9@ /= 10
-gosub @TextDrawRight
-045A: text_draw_1number 599.5 8@ 'NUMBER' 9@  // ~1~
-gosub @TextDrawRight
-045A: text_draw_1number 610.5 8@ 'NUMBER' 10@  // ~1~
-gosub @TextDrawRight
-045A: text_draw_1number 624.5 8@ 'NUMBER' 11@  // ~1~
-gosub @TextDrawRight
-045A: text_draw_1number 634.5 8@ 'NUMBER' 12@  // ~1~
+
+9@ += 35
+10@ += 35
+11@ += 35
+12@ += 35
+05F5: call_scm_func @DrawTexture params_count 9 9@ 788.0 8@ 12.0 18.0 1@ 2@ 3@ 255
+05F5: call_scm_func @DrawTexture params_count 9 10@ 800.0 8@ 12.0 18.0 1@ 2@ 3@ 255
+05F5: call_scm_func @DrawTexture params_count 9 11@ 824.0 8@ 12.0 18.0 1@ 2@ 3@ 255
+05F5: call_scm_func @DrawTexture params_count 9 12@ 836.0 8@ 12.0 18.0 1@ 2@ 3@ 255
 return
 
 :TimeCircuitsMonth
-gosub @TextDraw
-
-:TimeCircuitsJan
-if
-  13@ == 1 // integer values
-jf @TimeCircuitsFeb
-033E: text_draw 476.0 8@ 'JAN'  // Jan
-return
-
-:TimeCircuitsFeb
-if
-  13@ == 2 // integer values
-jf @TimeCircuitsMar
-033E: text_draw 476.0 8@ 'FEB'  // feb
-return
-
-:TimeCircuitsMar
-if
-  13@ == 3 // integer values
-jf @TimeCircuitsApr
-033E: text_draw 476.0 8@ 'MAR'  // mar
-return
-
-:TimeCircuitsApr
-if
-  13@ == 4 // integer values
-jf @TimeCircuitsMay
-033E: text_draw 476.0 8@ 'APR'  // apr
-return
-
-:TimeCircuitsMay
-if
-  13@ == 5 // integer values
-jf @TimeCircuitsJun
-033E: text_draw 476.0 8@ 'MAY'  // may
-return
-
-:TimeCircuitsJun
-if
-  13@ == 6 // integer values
-jf @TimeCircuitsJul
-033E: text_draw 476.0 8@ 'JUN'  // Jun
-return
-
-:TimeCircuitsJul
-if
-  13@ == 7 // integer values
-jf @TimeCircuitsAug
-033E: text_draw 476.0 8@ 'JUL'  // Jul
-return
-
-:TimeCircuitsAug
-if
-  13@ == 8 // integer values
-jf @TimeCircuitsSep
-033E: text_draw 476.0 8@ 'AUG'  // aug
-return
-
-:TimeCircuitsSep
-if
-  13@ == 9 // integer values
-jf @TimeCircuitsOct
-033E: text_draw 476.0 8@ 'SEP'  // sep
-return
-
-:TimeCircuitsOct
-if
-  13@ == 10 // integer values
-jf @TimeCircuitsNov
-033E: text_draw 476.0 8@ 'OCT'  // oct
-return
-
-:TimeCircuitsNov
-if
-  13@ == 11 // integer values
-jf @TimeCircuitsDec
-033E: text_draw 476.0 8@ 'NOV'  // nov
-return
-
-:TimeCircuitsDec
-if
-  13@ == 12 // integer values
-jf @TimeCircuitsErr
-033E: text_draw 476.0 8@ 'DEC'  // dec
-return
-
-:TimeCircuitsErr
-033E: text_draw 476.0 8@ 'ERR'  // dec
+13@ += 44
+05F5: call_scm_func @DrawTexture params_count 9 13@ 650.0 8@ 41.0 18.0 1@ 2@ 3@ 255
 return

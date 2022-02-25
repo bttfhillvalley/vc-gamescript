@@ -86,16 +86,11 @@ while true
             1@ = 255 // integer values
             2@ = 255 // integer values
             3@ = 255 // integer values
-
-
-
             // tens digit
             05F5: call_scm_func @DrawTexture params_count 9 27 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
             if
                 6@ > 0
             then
-
-
                 6@ += 5
                 05F5: call_scm_func @DrawTexture params_count 9 6@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
                 6@ -= 5

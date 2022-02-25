@@ -16,7 +16,7 @@ if and
     00DC:   player $PLAYER_CHAR driving 0@
     1@ == 0
 then
-    05F5: call_scm_func @DrawTexture params_count 9 5 782.0 155.0 45.0 23.0 255 255 255 255
+    05F5: call_scm_func @DrawTexture params_count 9 4 782.0 155.0 45.0 23.0 255 255 255 255
 end
 // Handle Ignition
 if
@@ -41,7 +41,7 @@ then
         $ENGINE_TURNOVER = 0
         1@ = 1
     else
-        05F5: call_scm_func @DrawTexture params_count 9 4 782.0 155.0 45.0 23.0 255 255 255 255 // battery light off
+        05F5: call_scm_func @DrawTexture params_count 9 4 782.0 155.0 45.0 23.0 64 64 64 255 // battery light off
         if
             $START == 0 // integer values
         then
