@@ -87,60 +87,58 @@ while true
             2@ = 255 // integer values
             3@ = 255 // integer values
 
-            //only show the tens digit if it's not a 0
-            05F5: call_scm_func @DrawTexture params_count 9 40 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+
+
+            // tens digit
+            05F5: call_scm_func @DrawTexture params_count 9 27 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
             if
                 6@ > 0
             then
-                //tens digit
 
-                6@ += 7
+
+                6@ += 5
                 05F5: call_scm_func @DrawTexture params_count 9 6@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-                6@ += 10
-                05F5: call_scm_func @DrawTexture params_count 9 6@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-                6@ -= 17
+                6@ -= 5
             end
             // ones digit with decimal point
 
-            5@ += 7
-            05F5: call_scm_func @DrawTexture params_count 9 40 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            5@ += 5
+            05F5: call_scm_func @DrawTexture params_count 9 27 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
             05F5: call_scm_func @DrawTexture params_count 9 5@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-            5@ += 10
-            05F5: call_scm_func @DrawTexture params_count 9 5@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            5@ -= 5
+
             // dot
-            05F5: call_scm_func @DrawTexture params_count 9 37 825.0 470.0 10.0 10.0 1@ 2@ 3@ 255
-            05F5: call_scm_func @DrawTexture params_count 9 38 825.0 470.0 10.0 10.0 1@ 2@ 3@ 255
-            5@ -= 17
+            05F5: call_scm_func @DrawTexture params_count 9 25 825.0 470.0 10.0 10.0 1@ 2@ 3@ 255
+
         else
             1@ = 255 // integer values
             2@ = 255 // integer values
             3@ = 255 // integer values
-            //tens digit
-
-            6@ += 7
-            05F5: call_scm_func @DrawTexture params_count 9 41 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-            05F5: call_scm_func @DrawTexture params_count 9 6@ 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-            6@ += 20
-            05F5: call_scm_func @DrawTexture params_count 9 6@ 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            // tens digit
+            05F5: call_scm_func @DrawTexture params_count 9 28 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            if
+                6@ > 0
+            then
+                6@ += 15
+                05F5: call_scm_func @DrawTexture params_count 9 6@ 715.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+                6@ -= 15
+            end
 
             // ones digit
-            5@ += 7
-            05F5: call_scm_func @DrawTexture params_count 9 41 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            5@ += 15
+            05F5: call_scm_func @DrawTexture params_count 9 28 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
             05F5: call_scm_func @DrawTexture params_count 9 5@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-            5@ += 20
-            05F5: call_scm_func @DrawTexture params_count 9 5@ 760.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            5@ -= 15
+
             // dot
-            05F5: call_scm_func @DrawTexture params_count 9 37 780.0 470.0 10.0 10.0 1@ 2@ 3@ 255
-            05F5: call_scm_func @DrawTexture params_count 9 39 780.0 470.0 10.0 10.0 1@ 2@ 3@ 255
-            // ones digit
-            4@ += 7
-            05F5: call_scm_func @DrawTexture params_count 9 41 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-            05F5: call_scm_func @DrawTexture params_count 9 4@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
-            4@ += 20
-            05F5: call_scm_func @DrawTexture params_count 9 4@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 26 780.0 470.0 10.0 10.0 1@ 2@ 3@ 255
 
-            5@ -= 27
-            6@ -= 27
+            // ones digit
+            4@ += 15
+            05F5: call_scm_func @DrawTexture params_count 9 28 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            05F5: call_scm_func @DrawTexture params_count 9 4@ 805.0 440.0 40.0 60.0 1@ 2@ 3@ 255
+            4@ -= 15
+
         end
     end
    	if

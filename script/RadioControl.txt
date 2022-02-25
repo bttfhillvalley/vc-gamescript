@@ -54,6 +54,8 @@ Actor.Health(1@) = 6@
 // Set Remote mode
 3F03: car $DELOREAN turn_on_engine
 3F23: set_car $DELOREAN remote
+04D6: enable_rc_car_detonation 0
+048A: enable_rc_vehicle_detonation 0
 
 :RadioControlLoop
 wait 10

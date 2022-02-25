@@ -2,16 +2,24 @@
 //{$INCLUDE TimeEffects.txt}
 // ========================================
 // 0@ is the car itself
-// 1@ is typically used for the speed
+// 1@ controls various time machine functions, as well as model variations
 // 2@, 3@, 4@ are for the car coordinates
-// 5@ - 9@ are generally three
-// 7@ is for bit operations
-// 8@ for recording health
-// 9@ is for spark sound tracking when not time travelling, car angle otherwise
+// 5@ - 8@ is for bit operations
+// 9@ is for spark sound tracking
 // 10@ is for the model
-// 11@ controls various time machine functions, as well as model variations
+// 11@ - car speed while in motion
 // 12@ - 15@ are reserved for time circuits
 // 16@ - 17@ are the timers, so no touchy
+// ========================================
+// During Time Travel
+// 2@, 3@, 4@ are for the car coordinates
+// 5@ - Free :(
+// 6@ - Forward Vector
+// 7@ - Right Vector
+// 8@ - Up Vector
+// 9@ - Health
+// 10@ - Model
+// 11@ - Velocity Vector
 // ========================================
 // 11@ Bit flags
 // MSB
@@ -96,8 +104,6 @@ else_jump @TimeStart
 if
    not Car.Wrecked(0@)
 else_jump @TimeEnd
-0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 0.0 0.0 0.0
-008C: 4@ = float_to_integer 4@
 02E3: 11@ = car 0@ speed
 3F10: set_car 0@ component "inner_vents" visible 0
 gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
@@ -119,23 +125,23 @@ end
 
 // Check Fuel
 :TimeFuel
-0B10: 7@ = 1@ AND $FUEL_BIT
+0B10: 5@ = 1@ AND $FUEL_BIT
 if and
    not 10@ == #MAVERICK  // Not Train
    not 10@ == #BUS
-   7@ == 0 // not fueled
+   5@ == 0 // not fueled
 else_jump @TimeFly
 gosub @Fuel
 
 // Check To see if we're going to hover.
 // FIXME: This will be removed from this section in the future since there will be no need for model swaps that require setting everything back up since it'll be the same car instance
 :TimeFly
-0B10: 6@ = 1@ AND $FC_BIT  // Flying Circuits
-0B10: 7@ = 1@ AND $FC_FRIED_BIT // Fried
-0B10: 8@ = 1@ AND $FLYING_BIT   // Is car flying?
+0B10: 5@ = 1@ AND $FC_BIT  // Flying Circuits
+0B10: 6@ = 1@ AND $FC_FRIED_BIT // Fried
+0B10: 7@ = 1@ AND $FLYING_BIT   // Is car flying?
 if and
-    not 7@ == 0   // Flying circuits are fried
-    not 8@ == 0  // Flying
+    not 6@ == 0   // Flying circuits are fried
+    not 7@ == 0  // Flying
 then
     02D4: car 0@ turn_off_engine
 end
@@ -149,14 +155,14 @@ else_jump @TimeFlyHover
 
 if and
     003A:   $KEY == $KEY_HOVERCONVERSION // C
-    not 6@ == 0  // Flying circuits are installed
+    not 5@ == 0  // Flying circuits are installed
     $CONVERSION == 0  // Not animating
 else_jump @TimeFlyHover
 
 :TimeFlyConvert
 if or
-    7@ == 0 // not Fried
-    not 8@ == 0 // Flying
+    6@ == 0 // not Fried
+    not 7@ == 0 // Flying
 then
     0B12: 1@ = 1@ XOR $FLYING_BIT  // Flip flying bit
     $CONVERSION = 1
@@ -172,7 +178,7 @@ if and
     $LIGHTNING == 0
     $WEATHER == 2 // integer values
     2@ == 500     // integer values
-    not 8@ == 0   // Flying
+    not 7@ == 0   // Flying
     00DC:   player $PLAYER_CHAR driving 0@
 else_jump @TimeLightningCheck
 $LIGHTNING = 1
@@ -196,11 +202,11 @@ jump @Time88TrackCamera
 :TimeCircuitsCheck
 // Check Time Circuits On for Effects
 gosub @TimeEffectsModelReset
-0B10: 7@ = 1@ AND $TC_FRIED_BIT // Time Circuits Fried
-0B10: 8@ = 1@ AND $TC_BIT       // Time Circuits status
+0B10: 5@ = 1@ AND $TC_FRIED_BIT // Time Circuits Fried
+0B10: 6@ = 1@ AND $TC_BIT       // Time Circuits status
 if and
-    7@ == 0     // Time Circuits are not fried
-    not 8@ == 0 // Time Circuits are On
+    5@ == 0     // Time Circuits are not fried
+    not 6@ == 0 // Time Circuits are On
     $COOLDOWN == 0
 else_jump @TimeStart
 
@@ -212,17 +218,17 @@ if
   11@ > 40.5 // == 74.3 mph
 else_jump @TimeStart
 // Set alpha of coils to match speed of car
-0087: 2@ = 11@
-2@ -= 40.5
-2@ *= 64.0
-008C: 3@ = float_to_integer 2@
+0087: 5@ = 11@
+5@ -= 40.5
+5@ *= 64.0
+008C: 5@ = float_to_integer 5@
 // Cap Alpha at 255
 if
-  3@ > 255
+  5@ > 255
 then
-  3@ = 255
+  5@ = 255
 end
-3F12: set car 0@ comp "fluxcoilson" alpha 3@
+3F12: set car 0@ comp "fluxcoilson" alpha 5@
 if
   11@ > 43.5 // == 79.8 mph // floating-point values
 else_jump @TimeStart
@@ -232,20 +238,20 @@ if
   11@ > 44.5 // == 81.7 mph // floating-point values
 else_jump @TimeStart
 3F10: set_car 0@ component "fluxcapacitorlightson" visible 1
-for 7@ = 1 to 6 step 1
-    3F11: set_car 0@ component "flux" index 7@ visible 1
+for 5@ = 1 to 6 step 1
+    3F11: set_car 0@ component "flux" index 5@ visible 1
 end
 
 // If we are fueled, go ahead and show sparks and
 // Load and play spark sounds
-0B10: 7@ = 1@ AND $HOOD_BIT // Time Circuits Fried
+0B10: 5@ = 1@ AND $HOOD_BIT // Time Circuits Fried
 if or
     03D2:   wav 1 ended
     83D0:   not wav 1 loaded
 then
     040D: unload_wav 1
     if
-       7@ == 0
+       5@ == 0
     then
         03CF: load_wav 'BAND_07' as 1
     else
@@ -259,9 +265,9 @@ end
 gosub @TimePlasma
 
 // Wormhole and sparks only pop up if fueled or if its the train
-0B10: 7@ = 1@ AND $FUEL_BIT // Time Circuits Fried
+0B10: 5@ = 1@ AND $FUEL_BIT // Time Circuits Fried
 if or
-   not 7@ == 0 // Fueled
+   not 5@ == 0 // Fueled
    Car.Model(0@) == #BUS
    Car.Model(0@) == #MAVERICK
 then
@@ -274,9 +280,9 @@ else_jump @TimeStart
 //gosub @Wire
 
 // Prepare for temporal displacement
-0B10: 7@ = 1@ AND $FUEL_BIT // Time Circuits Fried
+0B10: 5@ = 1@ AND $FUEL_BIT // Time Circuits Fried
 if or
-  not 7@ == 0 // Fueled
+  not 5@ == 0 // Fueled
   Car.Model(0@) == #BUS
   Car.Model(0@) == #MAVERICK
 else_jump @TimeStart
@@ -362,13 +368,6 @@ then
     $INST_TRAVEL = 1 // integer values
 end
 
-// Make care invincible while its supposed to be outatime (that way it doesn't explode while we're in a cutscene)
-Car.SetImmunities(0@, 1, 1, 1, 1, 1)
-8@ = Car.Health(0@)
-9@ = Car.Angle(0@)
-10@ = Car.Model(0@)
-Car.Health(0@) = 1000
-
 // Change current time if we are the ones time travelling
 if
     00DC:   player $PLAYER_CHAR driving 0@
@@ -408,7 +407,6 @@ end
 // Plate stuff
 0B10: 5@ = 1@ AND $FLYING_BIT  // Get car variation
 0B10: 6@ = 1@ AND $PLATE_BIT  // Get car variation
-0B10: 7@ = 1@ AND $HOOK_BIT  // Get car variation
 if and
     5@ == 0 // Not flying
     003B: 6@ == $PLATE_OUTATIME_BIT  // OUTATIME plate
@@ -475,8 +473,17 @@ else
     end
     end
 
+
+    // Make care invincible while its supposed to be outatime (that way it doesn't explode while we're in a cutscene)
+    Car.SetImmunities(0@, 1, 1, 1, 1, 1)
+    3F31: get_car 0@ rotation_matrix 6@ 7@ 8@
+    9@ = Car.Health(0@)
+    10@ = Car.Model(0@)
+    3F34: 11@ = car 0@ velocity_vector
+    Car.Health(0@) = 1000
+
     // Create explosion
-    gosub @EntryExplosion
+    05F5: call_scm_func @EntryExplosion params_count 4 10@ 2@ 3@ 4@
 
     // Create Firetrail
     if
@@ -484,7 +491,7 @@ else
     then
         create_thread @FireTrail99 0@
     else
-        create_thread @FireTrail 0@ 1@
+        create_thread @FireTrail 0@
     end
 
     // Handle the Train stuff if it has to dissapear.  This will be gone later.
@@ -554,6 +561,7 @@ if
 else_jump @TimePastModelVariation
 
 :TimePastModelCreateCar
+// TODO: CHANGE
 0@ = Car.Create(10@, 2@, 3@, 4@)
 Model.Destroy(10@)
 // Rotate the time machine to make it look like it braked after entry
@@ -614,7 +622,7 @@ while not Model.Available(10@)
     wait 10
 end
 0@ = Car.Create(10@, 2@, 3@, 5000.0)
-create_thread @SetVariation 0@ 1@
+create_thread @SetVariation 0@ 1@ 1
 gosub @TimeEffectsModelReset
 gosub @LightsOff
 Model.Destroy(10@)
@@ -708,16 +716,16 @@ end
 
 // 3 sonic booms, or one if its instant
 :TimeReentryExplosion
-gosub @ReentryExplosion
+05F5: call_scm_func @ReentryExplosion params_count 4 10@ 2@ 3@ 4@
 if or
   $INST_TRAVEL == 0 // integer values
   $MODE == 0 // integer values
 then
     // Two more explosions if we're in cutscene
     wait 750
-    gosub @ReentryExplosion
+    05F5: call_scm_func @ReentryExplosion params_count 4 10@ 2@ 3@ 4@
     wait 700
-    gosub @ReentryExplosion
+    05F5: call_scm_func @ReentryExplosion params_count 4 10@ 2@ 3@ 4@
 end
 
 // Have the time vehicle come back
@@ -738,11 +746,12 @@ $SET_TIME = 0 // integer values
 $INST_TRAVEL = 0 // integer values
 $COOLDOWN = 1
 053F: set_car 0@ tires_vulnerable 0
-Car.Health(0@) = 8@
-Car.Angle(0@) = 9@
+3F32: set_car 0@ rotation_matrix  6@ 7@ 8@
+Car.Health(0@) = 9@
 Car.SetImmunities(0@, 0, 0, 0, 1, 1)
-//wait 10
-04BA: set_car 0@ speed_instantly 11@
+wait 10
+3F35: set_car 0@ velocity_vector 11@
+//04BA: set_car 0@ speed_instantly 11@
 if and
     00DC:   player $PLAYER_CHAR driving 0@
     $MODE == 0 // integer values
@@ -758,7 +767,8 @@ then
     then
         008A: $DELOREAN = 0@
     end
-    create_thread @TimeEngineOff 0@
+    3F30: set_car 0@ rotate_force -0.02
+    02D4: car 0@ turn_off_engine
 end
 
 :TimeReentryEnd
@@ -781,9 +791,9 @@ jump @TimeStart
 
 // ===================================================================================
 :TimeReentryCoil
-0B10: 7@ = 1@ AND $TC_FRIED
+0B10: 5@ = 1@ AND $TC_FRIED
 if
-    7@ == 0  // Time circuits aren't fried
+    5@ == 0  // Time circuits aren't fried
 then
     while 17@ < 999
         gosub @TimeCoil
@@ -797,20 +807,12 @@ end
 
 end_thread
 
-
-// ===================================================================================
-
-:TimeEngineOff
-0477: set_car 0@ animation 3 250 ms
-02D4: car 0@ turn_off_engine
-end_thread
-
 // ==================================================================================
 // Reset stuff related to the camera and sound effects since they can loop (vfx effects do not)
 
 :TimeResetCamera
-0B10: 7@ = 1@ AND $TC_FRIED_BIT
-0B10: 8@ = 1@ AND $TC_BIT
+0B10: 5@ = 1@ AND $TC_FRIED_BIT
+0B10: 6@ = 1@ AND $TC_BIT
 if and
     00DC:   player $PLAYER_CHAR driving 0@
     $LIGHTNING == 0
@@ -818,8 +820,8 @@ if and
 then
     if or
         11@ < 47.6
-        not 7@ == 0 // Time Circuits are fried
-        8@ == 0 // Time Circuits are Off
+        not 5@ == 0 // Time Circuits are fried
+        6@ == 0 // Time Circuits are Off
         $COOLDOWN == 1
     then
         Model.Destroy(#KEYCARD)
@@ -832,15 +834,15 @@ end
 return
 
 :TimeUnloadSparkSounds
-0B10: 7@ = 1@ AND $TC_FRIED_BIT
-0B10: 8@ = 1@ AND $TC_BIT
+0B10: 5@ = 1@ AND $TC_FRIED_BIT
+0B10: 6@ = 1@ AND $TC_BIT
 if
     9@ == 1
 then
     if or
         11@ < 44.5
-        not 7@ == 0 // Time Circuits are fried
-        8@ == 0 // Time Circuits are Off
+        not 5@ == 0 // Time Circuits are fried
+        6@ == 0 // Time Circuits are Off
     then
         040D: unload_wav 1
         9@ = 0
@@ -1270,11 +1272,11 @@ if
 80DC:   not player $PLAYER_CHAR driving 0@
 else_jump @HookReturn
 
-0B10: 7@ = 1@ AND $HOOK_BIT
+0B10: 5@ = 1@ AND $HOOK_BIT
 // Hook check
 if or
-    003B: 7@ == $HOOK_SIDE_BIT
-    003B: 7@ == $HOOK_UP_BIT
+    003B: 5@ == $HOOK_SIDE_BIT
+    003B: 5@ == $HOOK_UP_BIT
 else_jump @HookReturn
 0407: create_coordinate 2@ 3@ 4@ from_car 0@ offset 1.5 0.0 0.0
 if and
@@ -1285,7 +1287,7 @@ else_jump @HookReturn
 // Put hook up or down
 0B10: 1@ = 1@ AND $HOOK_BITMASK
 if
-    003B: 7@ == $HOOK_SIDE_BIT
+    003B: 5@ == $HOOK_SIDE_BIT
 then
     0B11: 1@ = 1@ OR $HOOK_UP_BIT
 else
@@ -1298,24 +1300,24 @@ wait 250
 return
 
 :FluxCapacitorAnimation
-for 7@ = 0 to 6 step 1
-    3F11: set_car 0@ component "flux" index 7@ visible 0
+for 5@ = 0 to 6 step 1
+    3F11: set_car 0@ component "flux" index 5@ visible 0
 end
-0B10: 7@ = 1@ AND $TC_BIT
-0B10: 8@ = 1@ AND $TC_FRIED_BIT
+0B10: 5@ = 1@ AND $TC_BIT
+0B10: 6@ = 1@ AND $TC_FRIED_BIT
 if and
-    not 7@ == 0    // Time circuits on
-    8@ == 0  // Time circuits ok
+    not 5@ == 0    // Time circuits on
+    6@ == 0  // Time circuits ok
 then
     if
         16@ >= 540
     then
         16@ = 0
     end
-    0085: 7@ = 16@
-    7@ /= 90
-    7@ += 1
-    3F11: set_car 0@ component "flux" index 7@ visible 1
+    0085: 5@ = 16@
+    5@ /= 90
+    5@ += 1
+    3F11: set_car 0@ component "flux" index 5@ visible 1
 end
 return
 

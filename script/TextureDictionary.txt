@@ -1,42 +1,141 @@
     0390: load_txd_dictionary 'hud'  // HUD.TXD
     038F: load_texture 'lcd' as 1    // Time Circuit Labels
     038F: load_texture 'empon' as 2  // Empty Light on
-    038F: load_texture 'empof' as 3  // Empty Light off
-    038F: load_texture 'batry' as 4  // Battery Light on
-    038F: load_texture 'batro' as 5  // Battery Light Off
-    038F: load_texture 'lambd' as 6  // LAMBDA Light (usually this is for engine damage but currently only shown if time circuits are on)
-    038F: load_texture '0s' as 7
-    038F: load_texture '1s' as 8
-    038F: load_texture '2s' as 9
-    038F: load_texture '3s' as 10
-    038F: load_texture '4s' as 11
-    038F: load_texture '5s' as 12
-    038F: load_texture '6s' as 13
-    038F: load_texture '7s' as 14
-    038F: load_texture '8s' as 15
-    038F: load_texture '9s' as 16
-    038F: load_texture '0' as 17
-    038F: load_texture '1' as 18
-    038F: load_texture '2' as 19
-    038F: load_texture '3' as 20
-    038F: load_texture '4' as 21
-    038F: load_texture '5' as 22
-    038F: load_texture '6' as 23
-    038F: load_texture '7' as 24
-    038F: load_texture '8' as 25
-    038F: load_texture '9' as 26
-    038F: load_texture 'y0' as 27
-    038F: load_texture 'y1' as 28
-    038F: load_texture 'y2' as 29
-    038F: load_texture 'y3' as 30
-    038F: load_texture 'y4' as 31
-    038F: load_texture 'y5' as 32
-    038F: load_texture 'y6' as 33
-    038F: load_texture 'y7' as 34
-    038F: load_texture 'y8' as 35
-    038F: load_texture 'y9' as 36
-    038F: load_texture 'dots' as 37
-    038F: load_texture 'dot' as 38
-    038F: load_texture 'ydot' as 39
-    038F: load_texture 'digbk' as 40
-    038F: load_texture 'ydgbk' as 41
+    038F: load_texture 'batry' as 3  // Battery Light on
+    038F: load_texture 'lambd' as 4  // LAMBDA Light (usually this is for engine damage but currently only shown if time circuits are on)
+    038F: load_texture '0' as 5 //RED SPEEDOMETER NUMBER 0
+    038F: load_texture '1' as 6 //RED SPEEDOMETER NUMBER 1
+    038F: load_texture '2' as 7 //RED SPEEDOMETER NUMBER 2
+    038F: load_texture '3' as 8 //RED SPEEDOMETER NUMBER 3
+    038F: load_texture '4' as 9 //RED SPEEDOMETER NUMBER 4
+    038F: load_texture '5' as 10 //RED SPEEDOMETER NUMBER 5
+    038F: load_texture '6' as 11 //RED SPEEDOMETER NUMBER 6
+    038F: load_texture '7' as 12 //RED SPEEDOMETER NUMBER 7
+    038F: load_texture '8' as 13 //RED SPEEDOMETER NUMBER 8
+    038F: load_texture '9' as 14 //RED SPEEDOMETER NUMBER 9
+    038F: load_texture 'y0' as 15 //YELLOW SPEEDOMETER NUMBER 0
+    038F: load_texture 'y1' as 16 //YELLOW SPEEDOMETER NUMBER 1
+    038F: load_texture 'y2' as 17 //YELLOW SPEEDOMETER NUMBER 2
+    038F: load_texture 'y3' as 18 //YELLOW SPEEDOMETER NUMBER 3
+    038F: load_texture 'y4' as 19 //YELLOW SPEEDOMETER NUMBER 4
+    038F: load_texture 'y5' as 20 //YELLOW SPEEDOMETER NUMBER 5
+    038F: load_texture 'y6' as 21 //YELLOW SPEEDOMETER NUMBER 6
+    038F: load_texture 'y7' as 22 //YELLOW SPEEDOMETER NUMBER 7
+    038F: load_texture 'y8' as 23 //YELLOW SPEEDOMETER NUMBER 8
+    038F: load_texture 'y9' as 24 //YELLOW SPEEDOMETER NUMBER 9
+    038F: load_texture 'dot' as 25  //RED SPEEDOMETER DOT
+    038F: load_texture 'ydot' as 26 //YELLOW SPEEDOMETER DOT
+    038F: load_texture 'digbk' as 27  //RED SPEEDOMETER NUMBER BACKGROUND
+    038F: load_texture 'ydgbk' as 28 //YELLOW SPEEDOMETER NUMBER BACKGROUND
+    038F: load_texture 'DBAK' as 29 //TIME CIRCUIT NUMBER BACKING
+    038F: load_texture 'PBAK' as 30 //PRESENT TIME DEPARTED NUMBER BACKING
+    038F: load_texture 'LBAK' as 31 //LAST TIME DEPARTED NUMBER BACKING
+    038F: load_texture 'DMBAK' as 32 //TIME CIRCUIT MONTH BACKING
+    038F: load_texture 'PMBAK' as 33 //PRESENT TIME MONTH BACKING
+    038F: load_texture 'LMBAK' as 34 //LAST TIME DEPARTED MONTH BACKING
+    038F: load_texture 'W0' as 35 //TIME CIRCUIT NUMBER 0
+    038F: load_texture 'W1' as 36 //TIME CIRCUIT NUMBER 1
+    038F: load_texture 'W2' as 37 //TIME CIRCUIT NUMBER 2
+    038F: load_texture 'W3' as 38 //TIME CIRCUIT NUMBER 3
+    038F: load_texture 'W4' as 39 //TIME CIRCUIT NUMBER 4
+    038F: load_texture 'W5' as 40 //TIME CIRCUIT NUMBER 5
+    038F: load_texture 'W6' as 41 //TIME CIRCUIT NUMBER 6
+    038F: load_texture 'W7' as 42 //TIME CIRCUIT NUMBER 7
+    038F: load_texture 'W8' as 43 //TIME CIRCUIT NUMBER 8
+    038F: load_texture 'W9' as 44 //TIME CIRCUIT NUMBER 9
+    038F: load_texture 'WJAN' as 45 //TIME CIRCUIT JAN
+    038F: load_texture 'WFEB' as 46 //TIME CIRCUIT FEB
+    038F: load_texture 'WMAR' as 47 //TIME CIRCUIT MAR
+    038F: load_texture 'WAPR' as 48 //TIME CIRCUIT APR
+    038F: load_texture 'WMAY' as 49 //TIME CIRCUIT MAY
+    038F: load_texture 'WJUN' as 50 //TIME CIRCUIT JUN
+    038F: load_texture 'WJUL' as 51 //TIME CIRCUIT JUL
+    038F: load_texture 'WAUG' as 52 //TIME CIRCUIT AUG
+    038F: load_texture 'WSEP' as 53 //TIME CIRCUIT SEP
+    038F: load_texture 'WOCT' as 53 //TIME CIRCUIT OCT
+    038F: load_texture 'WNOV' as 55 //TIME CIRCUIT NOV
+    038F: load_texture 'WDEC' as 56 //TIME CIRCUIT DEC
+    038F: load_texture 'WDOT' as 57 //TIME CIRCUIT DOT
+    038F: load_texture 'DNOV' as 58 //LAST TIME DEPARTED NOV
+    038F: load_texture 'PNOV' as 59 //LAST TIME DEPARTED NOV
+    038F: load_texture 'LNOV' as 60 //LAST TIME DEPARTED NOV
+     038F: load_texture 'DMBAK' as 61 //LAST TIME DEPARTED NOV
+    038F: load_texture 'PMBAK' as 62 //LAST TIME DEPARTED NOV
+    038F: load_texture 'LMBAK' as 63 //LAST TIME DEPARTED NOV
+    //INCASE THE ABOVE DOESNT WORK OUT
+    {038F: load_texture 'D0' as 48 //DESTINATION TIME NUMBER 0
+    038F: load_texture 'D1' as 49 //DESTINATION TIME NUMBER 1
+    038F: load_texture 'D2' as 50 //DESTINATION TIME NUMBER 2
+    038F: load_texture 'D3' as 51 //DESTINATION TIME NUMBER 3
+    038F: load_texture 'D4' as 52 //DESTINATION TIME NUMBER 4
+    038F: load_texture 'D5' as 53 //DESTINATION TIME NUMBER 5
+    038F: load_texture 'D6' as 54 //DESTINATION TIME NUMBER 6
+    038F: load_texture 'D7' as 55 //DESTINATION TIME NUMBER 7
+    038F: load_texture 'D8' as 56 //DESTINATION TIME NUMBER 8
+    038F: load_texture 'D9' as 57 //DESTINATION TIME NUMBER 9
+    038F: load_texture 'P0' as 58 //PRESENT TIME NUMBER 0
+    038F: load_texture 'P1' as 59 //PRESENT TIME NUMBER 1
+    038F: load_texture 'P2' as 60 //PRESENT TIME NUMBER 2
+    038F: load_texture 'P3' as 61 //PRESENT TIME NUMBER 3
+    038F: load_texture 'P4' as 62 //PRESENT TIME NUMBER 4
+    038F: load_texture 'P5' as 63 //PRESENT TIME NUMBER 5
+    038F: load_texture 'P6' as 64 //PRESENT TIME NUMBER 6
+    038F: load_texture 'P7' as 65 //PRESENT TIME NUMBER 7
+    038F: load_texture 'P8' as 66 //PRESENT TIME NUMBER 8
+    038F: load_texture 'P9' as 67 //PRESENT TIME NUMBER 9
+    038F: load_texture 'L0' as 68 //LAST TIME DEPARTED NUMBER 0
+    038F: load_texture 'L1' as 69 //LAST TIME DEPARTED NUMBER 1
+    038F: load_texture 'L2' as 70 //LAST TIME DEPARTED NUMBER 2
+    038F: load_texture 'L3' as 71 //LAST TIME DEPARTED NUMBER 3
+    038F: load_texture 'L4' as 72 //LAST TIME DEPARTED NUMBER 4
+    038F: load_texture 'L5' as 73 //LAST TIME DEPARTED NUMBER 5
+    038F: load_texture 'L6' as 74 //LAST TIME DEPARTED NUMBER 6
+    038F: load_texture 'L7' as 75 //LAST TIME DEPARTED NUMBER 7
+    038F: load_texture 'L8' as 76 //LAST TIME DEPARTED NUMBER 8
+    038F: load_texture 'L9' as 77 //LAST TIME DEPARTED NUMBER 9
+    038F: load_texture 'P0' as 78 //PRESENT TIME NUMBER 0
+    038F: load_texture 'P1' as 79 //PRESENT TIME NUMBER 1
+    038F: load_texture 'P2' as 80 //PRESENT TIME NUMBER 2
+    038F: load_texture 'P3' as 81 //PRESENT TIME NUMBER 3
+    038F: load_texture 'P4' as 82 //PRESENT TIME NUMBER 4
+    038F: load_texture 'P5' as 83 //PRESENT TIME NUMBER 5
+    038F: load_texture 'P6' as 84 //PRESENT TIME NUMBER 6
+    038F: load_texture 'P7' as 85 //PRESENT TIME NUMBER 7
+    038F: load_texture 'P8' as 86 //PRESENT TIME NUMBER 8
+    038F: load_texture 'P9' as 87 //PRESENT TIME NUMBER 9
+    038F: load_texture 'DJAN' as 88 //DESTINATION TIME JAN
+    038F: load_texture 'DFEB' as 89 //DESTINATION TIME FEB
+    038F: load_texture 'DMAR' as 90 //DESTINATION TIME MAR
+    038F: load_texture 'DAPR' as 91 //DESTINATION TIME APR
+    038F: load_texture 'DMAY' as 92 //DESTINATION TIME MAY
+    038F: load_texture 'DJUN' as 93 //DESTINATION TIME JUN
+    038F: load_texture 'DJUL' as 94 //DESTINATION TIME JUL
+    038F: load_texture 'DAUG' as 95 //DESTINATION TIME AUG
+    038F: load_texture 'DSEP' as 96 //DESTINATION TIME SEP
+    038F: load_texture 'DOCT' as 97 //DESTINATION TIME OCT
+    038F: load_texture 'DNOV' as 98 //DESTINATION TIME NOV
+    038F: load_texture 'DDEC' as 99 //DESTINATION TIME DEC
+    038F: load_texture 'PJAN' as 100 //PRESENT TIME JAN
+    038F: load_texture 'PFEB' as 101 //PRESENT TIME FEB
+    038F: load_texture 'PMAR' as 102 //PRESENT TIME MAR
+    038F: load_texture 'PAPR' as 103 //PRESENT TIME APR
+    038F: load_texture 'PMAY' as 104 //PRESENT TIME MAY
+    038F: load_texture 'PJUN' as 105 //PRESENT TIME JUN
+    038F: load_texture 'PJUL' as 106 //PRESENT TIME JUL
+    038F: load_texture 'PAUG' as 107 //PRESENT TIME AUG
+    038F: load_texture 'PSEP' as 108 //PRESENT TIME SEP
+    038F: load_texture 'POCT' as 109 //PRESENT TIME OCT
+    038F: load_texture 'PNOV' as 110 //PRESENT TIME NOV
+    038F: load_texture 'PDEC' as 111 //PRESENT TIME DEC
+    038F: load_texture 'LJAN' as 112 //LAST TIME DEPARTED JAN
+    038F: load_texture 'LFEB' as 113 //LAST TIME DEPARTED FEB
+    038F: load_texture 'LMAR' as 114 //LAST TIME DEPARTED MAR
+    038F: load_texture 'LAPR' as 115 //LAST TIME DEPARTED APR
+    038F: load_texture 'LMAY' as 116 //LAST TIME DEPARTED MAY
+    038F: load_texture 'LJUN' as 117 //LAST TIME DEPARTED JUN
+    038F: load_texture 'LJUL' as 118 //LAST TIME DEPARTED JUL
+    038F: load_texture 'LAUG' as 119 //LAST TIME DEPARTED AUG
+    038F: load_texture 'LSEP' as 120 //LAST TIME DEPARTED SEP
+    038F: load_texture 'LOCT' as 121 //LAST TIME DEPARTED OCT
+    038F: load_texture 'LNOV' as 122 //LAST TIME DEPARTED NOV
+    038F: load_texture 'LDEC' as 123 //LAST TIME DEPARTED DEC}
