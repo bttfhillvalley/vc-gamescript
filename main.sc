@@ -13,7 +13,7 @@ DEFINE MISSIONS 0
 {$OPCODE 3F03=1,car %1d% turn_on_engine}                                        // turn on engine
 {$OPCODE 3F04=2,%2d% = get_car %1d% gear}                                       // get current gear
 {$OPCODE 3F05=2,set_car %1d% hover %2d%}                                        // this turns a vehicle into a helicopter (currently unused)
-{$OPCODE 3F06=3,%3d% = get_car %1d% door %2d% status} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
+{$OPCODE 3F06=3,%3d% = get_car %1d% door %2d% status}                           // get door status
 {$OPCODE 3F07=4,play_anim %1d% grp %2d% blend %3d% on char %4d%}                // plays an animation (currently unused)
 {$OPCODE 3F08=2,add_build %1p% amnt %2p%}                                       // adds all buildings and objects in a .dat file
 {$OPCODE 3F09=2,remove_build %1p% amnt %2p%}                                    // removes all buildings and objects in a .dat file
@@ -25,19 +25,24 @@ DEFINE MISSIONS 0
 {$OPCODE 3F15=6,move_car_part %1d% index %6d% pos %2d% %3d% %4d% car %5d%}      // moves a car part with index by its frame
 {$OPCODE 3F16=5,rotate_car_part %1d% angle %2d% %3d% %4d% car %5d%}             // rotates a car part by its frame
 {$OPCODE 3F17=6,rotate_car_part %1d% index %6d% angle %2d% %3d% %4d% car %5d%}  // rotates a car part with index by its frame
-{$OPCODE 3F18=3,set_car %1d% component %2d% glow %3d%}  			// make a car component glow
-{$OPCODE 3F19=4,set_car %1d% component %2d% index %4d% glow %3d%}  		// make a car part with index glow
-{$OPCODE 3F20=4,get_car %1d% orientation_to %2d% %3d% %4d%}  			// get car XYZ orientation
-{$OPCODE 3F21=4,set_car %1d% orientation_to %2d% %3d% %4d%}  			// set car XYZ orientation
-{$OPCODE 3F22=1,set_car %1d% wheelie}  						// flip car or do a wheelie
-{$OPCODE 3F23=1,set_car %1d% remote}  						// enable RC mode for a car
-{$OPCODE 3F24=1,remove_car %1d% remote}  					// turn off RC mode for a car.  Must be done before the car is removed.
-{$OPCODE 3F25=2,apply_forward_force %2d% car %1d%}  				// Apply thrust to car
-{$OPCODE 3F26=2,get_car %1d% wheel_status_to %2d%}  				// Get wheel status
-{$OPCODE 3F27=2,set_car %1d% wheel_status %2d%}  				// Set wheel status
+{$OPCODE 3F18=3,set_car %1d% component %2d% glow %3d%}                          // make a car component glow
+{$OPCODE 3F19=4,set_car %1d% component %2d% index %4d% glow %3d%}               // make a car part with index glow
+{$OPCODE 3F20=4,get_car %1d% orientation_to %2d% %3d% %4d%}                     // get car XYZ orientation
+{$OPCODE 3F21=4,set_car %1d% orientation_to %2d% %3d% %4d%}                     // set car XYZ orientation
+{$OPCODE 3F22=1,set_car %1d% wheelie}                                           // flip car or do a wheelie
+{$OPCODE 3F23=1,set_car %1d% remote}                                            // enable RC mode for a car
+{$OPCODE 3F24=1,remove_car %1d% remote}                                         // turn off RC mode for a car.  Must be done before the car is removed.
+{$OPCODE 3F25=2,apply_forward_force %2d% car %1d%}                              // Apply thrust to car
+{$OPCODE 3F26=2,get_car %1d% wheel_status_to %2d%}                              // Get wheel status
+{$OPCODE 3F27=2,set_car %1d% wheel_status %2d%}                                 // Set wheel status
 {$OPCODE 3F28=12,create_light type %1d% at %2d% %3d% %4d% dir %5d% %6d% %7d% range %8d% rgb %9d% %10d% %11d% fog %12d%} //create a light on a vehicle (used for wormhole lighting and reentry blue hue)
-{$OPCODE 3F29=1,is_player_in_remote_mode_with_car %1d%}  				// Set wheel status
-
+{$OPCODE 3F29=1,is_player_in_remote_mode_with_car %1d%}                         // Is player in RC mode with specified car?
+{$OPCODE 3F30=2,set_car %1d% rotate_force %2d%}                                 // Add rotational Z force to car
+{$OPCODE 3F31=4,get_car %1d% rotation_matrix %2d% %3d% %4d%}                    // Get rotational matrix as a very big int.  XXXYYYZZZ, Forward, Right Up
+{$OPCODE 3F32=4,set_car %1d% rotation_matrix %2d% %3d% %4d%}                    // Set rotational matrix
+{$OPCODE 3F33=4,get_car %1d% velocity_vector %2d% %3d% %4d%}                    // Get velocity vector
+{$OPCODE 3F34=2,%2d% = car %1d% velocity_vector}                                // Get velocity vector including speed
+{$OPCODE 3F35=2,set_car %1d% velocity_vector %2d%}                              // Set velocity vector including speed
 
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
