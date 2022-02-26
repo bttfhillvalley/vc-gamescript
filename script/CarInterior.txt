@@ -5,14 +5,16 @@
 :CarInterior
 wait 10
 if
-   not Car.Wrecked($DELOREAN)
-jf @CarInterior
-008B: 0@ = $DELOREAN // integer values and handles
-gosub @Ignition
+    Car.Wrecked(0@)
+then
+    end_thread
+end
 gosub @CarClock
-gosub @Shifter
-gosub @ParkingBrake
 gosub @CompassRotation
+gosub @DigitalSpeedo
 gosub @DoorCheck
 gosub @DrivingLights
+gosub @Ignition
+gosub @ParkingBrake
+gosub @Shifter
 jump @CarInterior

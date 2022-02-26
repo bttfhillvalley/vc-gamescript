@@ -1,17 +1,22 @@
 {$USE CLEO}
 // TODO: Change this to be car specific
-// 4@ = Y1
-// 5@ = Y2
-// 6@ = Y3
-// 7@ = Y4
-// 8@ = TCD Handle
-// 9@ = H1
-// 10@ = H2
-// 11@ = M1
-// 12@ = M2
-// 13@ = MONTH
-// 14@ = D1
-// 15@ = D2
+// 0@ - Car
+// 1@ - TCD Switch
+// 2@ - MONTH
+// 3@ - DAY
+// 4@ - YEAR
+// 5@ - HOUR
+// 6@ - MINUTE
+// 7@ - CMONTH
+// 8@ - CDAY
+// 9@ - CYEAR
+// 10@ - CHOUR
+// 11@ - CMINUTE
+// 12@ - PTIME
+// 13@ - PTIME1
+// 14@ - TCON
+// 15@ - FRIED
+
 
 :TimeCircuitsModel
 thread 'TC_MOD'
@@ -20,16 +25,32 @@ thread 'TC_MOD'
 :TimeCircuitsModelStart
 wait 10
 if
-   not Car.Wrecked($DELOREAN)
-jf @TimeCircuitsModelStart
-008B: 0@ = $DELOREAN // integer values and handles
+    Car.Wrecked(0@)
+then
+    end_thread
+end
+
+// Store any globals if driving
+if
+    00DC:   player $PLAYER_CHAR in_car 0@
+then
+    008B: 2@ = $MONTH
+    008B: 3@ = $DAY
+    008B: 4@ = $YEAR
+    008B: 5@ = $HOUR
+    008B: 6@ = $MINUTE
+    008B: 12@ = $PTIME
+    008B: 13@ = $PTIME1
+    008B: 14@ = $TCON
+    008B: 15@ = $FRIED
+end
+
 //first, hide all components / put them to base configuration
 gosub @TimeCircuitsModelReset
 if or
-  $TCON == 0 // integer values
-  $FRIED == 1 // integer values
-jf @TimeCircuitsModelTurnOn
-
+    14@ == 0
+    15@ == 1
+else_jump @TimeCircuitsModelTurnOn
 if
     1@ > 0.0
 then
@@ -55,69 +76,67 @@ then
 end
 
 //Destination time
-2@ = 0
-008B: 4@ = $MONTH // integer values and handles
-008B: 5@ = $DAY // integer values and handles
-008B: 6@ = $YEAR // integer values and handles
-008B: 7@ = $HOUR // integer values and handles
-008B: 8@ = $MINUTE // integer values and handles
-0B10: 15@ = $FLASH AND 0x8
 if
-    15@ == 0
+    00DC:   player $PLAYER_CHAR in_car 0@
 then
-    05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 2@ 0 4@
-end
-0B10: 15@ = $FLASH AND 0x4
-if
-    15@ == 0
-then
-    05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 2@ 0 5@
-end
-0B10: 15@ = $FLASH AND 0x2
-if
-    15@ == 0
-then
-    05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 2@ 0 6@
-end
-0B10: 15@ = $FLASH AND 0x1
-if
-    15@ == 0
-then
-    05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 2@ 0 7@
-    05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 2@ 0 8@
+    0B10: 15@ = $FLASH AND 0x8
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 0 0 2@
+    end
+    0B10: 15@ = $FLASH AND 0x4
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 0 0 3@
+    end
+    0B10: 15@ = $FLASH AND 0x2
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 0 0 4@
+    end
+    0B10: 15@ = $FLASH AND 0x1
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 0 0 5@
+        05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 0 0 6@
+    end
+else
+    05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 0 2@ 3@ 4@ 5@ 6@
 end
 
-//Present time
-2@ = 1
-008B: 4@ = $CMONTH // integer values and handles
-008B: 5@ = $CDAY // integer values and handles
-008B: 6@ = $CYEAR // integer values and handles
-00BF: 7@ = current_time_hours, 8@ = current_time_minutes
-gosub @TimeCircuitsModelDisplay
+// Present time
+008B: 7@ = $CMONTH // integer values and handles
+008B: 8@ = $CDAY // integer values and handles
+008B: 9@ = $CYEAR // integer values and handles
+00BF: 10@ = current_time_hours, 11@ = current_time_minutes
+05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 1 7@ 8@ 9@ 10@ 11@
 
-//Last Time Departed
-2@ = 2
-008B: 4@ = $PTIME
+// Last Time Departed
 if
-   not 4@ == -1 // integer values
+    not 12@ == -1 // integer values
 then
-    008B: 5@ = $PTIME // integer values and handles
-    008B: 6@ = $PTIME
-    4@ /= 100
-    6@ /= 100
-    6@ *= 100
-    0062: 5@ -= 6@
-    6@ /= 10000
-    6@ *= 100
-    0062: 4@ -= 6@
-    6@ /= 100
-    008B: 7@ = $PTIME1 // integer values and handles
-    008B: 8@ = $PTIME1 // integer values and handles
+    0085: 7@ = 12@
+    0085: 8@ = 12@ // integer values and handles
+    0085: 9@ = 12@
     7@ /= 100
-    7@ *= 100
-    0062: 8@ -= 7@
-    7@ /= 100
-    gosub @TimeCircuitsModelDisplay
+    9@ /= 100
+    9@ *= 100
+    0062: 8@ -= 9@
+    9@ /= 10000
+    9@ *= 100
+    0062: 7@ -= 9@
+    9@ /= 100
+    008B: 10@ = 13@ // integer values and handles
+    008B: 11@ = 13@ // integer values and handles
+    10@ /= 100
+    10@ *= 100
+    0062: 11@ -= 10@
+    10@ /= 100
+    05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 2 7@ 8@ 9@ 10@ 11@
 end
 
 // Display colons
@@ -135,14 +154,14 @@ then
 end
 
 // Keypad stuff
-for 2@ = 0 to 9 step 1
-    0B11: 3@ = 2@ OR 0x30
-    0B11: 4@ = 2@ OR 0x60
+for 7@ = 0 to 9 step 1
+    0B11: 8@ = 7@ OR 0x30
+    0B11: 9@ = 7@ OR 0x60
     if or
-        0AB0: key_pressed 3@
-        0AB0: key_pressed 4@
+        0AB0: key_pressed 8@
+        0AB0: key_pressed 9@
     then
-        create_thread @TimeCircuitsModelKeypad 0@ 2@
+        create_thread @TimeCircuitsModelKeypad 0@ 7@
     end
 end
 
@@ -156,12 +175,12 @@ end
 jump @TimeCircuitsModelStart
 
 :TimeCircuitsModelDisplay
-05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 2@ 0 4@
-05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 2@ 0 5@
-05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 2@ 0 6@
-05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 2@ 0 7@
-05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 2@ 0 8@
-return
+05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 1@ 0 2@
+05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 1@ 0 3@
+05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 1@ 0 4@
+05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 1@ 0 5@
+05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 1@ 0 6@
+05F6: cleo_return 0
 
 :TimeCircuitsModelMonth
 if
@@ -293,11 +312,11 @@ end
 //tcd switch and needles in the dash in front of the passenger seat
 //the tcd switch needs to rotate in the opposite direction
 :TimeCircuitsSwitchModel
-8@ *= -1.0
-3F16: rotate_car_part "tcdhandle" angle 0.0 8@ 0.0 car 0@
-8@ *= -1.0
-3F16: rotate_car_part "ppowerneedle" angle 0.0 8@ 0.0 car 0@
-3F16: rotate_car_part "primaryneedle" angle 0.0 8@ 0.0 car 0@
+1@ *= -1.0
+3F16: rotate_car_part "tcdhandle" angle 0.0 1@ 0.0 car 0@
+1@ *= -1.0
+3F16: rotate_car_part "ppowerneedle" angle 0.0 1@ 0.0 car 0@
+3F16: rotate_car_part "primaryneedle" angle 0.0 1@ 0.0 car 0@
 return
 
 :TimeCircuitsModelReset
@@ -307,35 +326,35 @@ return
 3F10: set_car 0@ component "gloveboxgaugeslights" visible 0
 3F10: set_car 0@ component "tcdkeypadlightson" visible 0
 //months
-for 4@ = 1 to 12
-	3F11: set_car 0@ component "dtmonth" index 4@ visible 0
-	3F11: set_car 0@ component "ptmonth" index 4@ visible 0
-	3F11: set_car 0@ component "ltdmonth" index 4@ visible 0
+for 7@ = 1 to 12
+	3F11: set_car 0@ component "dtmonth" index 7@ visible 0
+	3F11: set_car 0@ component "ptmonth" index 7@ visible 0
+	3F11: set_car 0@ component "ltdmonth" index 7@ visible 0
 end
 
 //days
-for 4@ = 10 to 23
-	3F11: set_car 0@ component "dtday" index 4@ visible 0
-	3F11: set_car 0@ component "ptday" index 4@ visible 0
-	3F11: set_car 0@ component "ltdday" index 4@ visible 0
+for 7@ = 10 to 23
+	3F11: set_car 0@ component "dtday" index 7@ visible 0
+	3F11: set_car 0@ component "ptday" index 7@ visible 0
+	3F11: set_car 0@ component "ltdday" index 7@ visible 0
 end
 //years
-for 4@ = 10 to 49
-	3F11: set_car 0@ component "dtyear" index 4@ visible 0
-	3F11: set_car 0@ component "ptyear" index 4@ visible 0
-	3F11: set_car 0@ component "ltdyear" index 4@ visible 0
+for 7@ = 10 to 49
+	3F11: set_car 0@ component "dtyear" index 7@ visible 0
+	3F11: set_car 0@ component "ptyear" index 7@ visible 0
+	3F11: set_car 0@ component "ltdyear" index 7@ visible 0
 end
 //hours
-for 4@ = 10 to 21
-	3F11: set_car 0@ component "dthour" index 4@ visible 0
-	3F11: set_car 0@ component "pthour" index 4@ visible 0
-	3F11: set_car 0@ component "ltdhour" index 4@ visible 0
+for 7@ = 10 to 21
+	3F11: set_car 0@ component "dthour" index 7@ visible 0
+	3F11: set_car 0@ component "pthour" index 7@ visible 0
+	3F11: set_car 0@ component "ltdhour" index 7@ visible 0
 end
 //minutes
-for 4@ = 10 to 25
-	3F11: set_car 0@ component "dtmin" index 4@ visible 0
-	3F11: set_car 0@ component "ptmin" index 4@ visible 0
-	3F11: set_car 0@ component "ltdmin" index 4@ visible 0
+for 7@ = 10 to 25
+	3F11: set_car 0@ component "dtmin" index 7@ visible 0
+	3F11: set_car 0@ component "ptmin" index 7@ visible 0
+	3F11: set_car 0@ component "ltdmin" index 7@ visible 0
 end
 //am indicators
 3F10: set_car 0@ component "dtam" visible 0

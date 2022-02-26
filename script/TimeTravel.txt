@@ -91,10 +91,11 @@ Car.SetImmunities(0@, 0, 0, 0, 1, 1)
 053F: set_car 0@ tires_vulnerable 0
 create_thread @SetVariation 0@ 1@
 10@ = Car.Model(0@)
-gosub @TimeCircuitsModelReset
 gosub @TimeEffectsModelReset
 gosub @LightsOff
 gosub @GlowInit
+create_thread @TimeCircuitsModel 0@
+create_thread @CarInterior 0@
 
 :TimeStart
 wait 10
@@ -561,17 +562,15 @@ if
 else_jump @TimePastModelVariation
 
 :TimePastModelCreateCar
-// TODO: CHANGE
 0@ = Car.Create(10@, 2@, 3@, 4@)
 Model.Destroy(10@)
-// Rotate the time machine to make it look like it braked after entry
-9@ += 120.0
-Car.Angle(0@) = 9@
-9@ -= 120.0
-Car.Health(0@) = 8@
+3F32: set_car 0@ rotation_matrix  6@ 7@ 8@
+Car.Health(0@) = 9@
 create_thread @SetVariation 0@ 1@
 gosub @TimeEffectsModelReset
 gosub @LightsOff
+create_thread @TimeCircuitsModel 0@
+create_thread @CarInterior 0@
 
 :TimePastWait
 wait 0
@@ -625,6 +624,8 @@ end
 create_thread @SetVariation 0@ 1@ 1
 gosub @TimeEffectsModelReset
 gosub @LightsOff
+create_thread @TimeCircuitsModel 0@
+create_thread @CarInterior 0@
 Model.Destroy(10@)
 jump @TimeReentryExplosion
 

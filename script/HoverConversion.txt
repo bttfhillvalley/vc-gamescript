@@ -25,8 +25,7 @@ end
 // Thrust
 Car.StorePos(0@, 2@, 3@, 4@)
 3F02: 7@ = car 0@ engine_state
-if and
-    0026: $HEIGHT_LIMIT > 4@ // floating-point values
+if
     not 7@ == 0
 else_jump @HoverConversionReset
 
@@ -745,8 +744,7 @@ else_jump @HoverStart
 // Thrust
 Car.StorePos(0@, 2@, 3@, 4@)
 3F02: 7@ = car 0@ engine_state
-if and
-    0026: $HEIGHT_LIMIT > 4@ // floating-point values
+if
     not 7@ == 0
 else_jump @HoverConversionReset
 if

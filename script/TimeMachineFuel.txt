@@ -48,14 +48,14 @@ then
     if
         $TIME_DISP == 1
     then
-        05F5: call_scm_func @DrawTexture params_count 9 2 825.0 155.0 38.0 23.0 64 64 64 255
+        05F5: call_scm_func @DrawTexture params_count 9 2 825.0 155.0 38.0 23.0 255 255 255 255
     end
     3F10: set_car 0@ component "pchamberemptylight" visible 1
 else
     if
         $TIME_DISP == 1
     then
-        05F5: call_scm_func @DrawTexture params_count 9 2 825.0 155.0 38.0 23.0 255 255 255 255
+        05F5: call_scm_func @DrawTexture params_count 9 2 825.0 155.0 38.0 23.0 64 64 64 255
     end
     3F10: set_car 0@ component "pchamberemptylight" visible 0
 end

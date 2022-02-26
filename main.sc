@@ -133,7 +133,7 @@ $WHEEL_SPARKS = 0.0 // floating-point values
 $CONVERSION = 0
 $HEIGHT_LIMIT = 200.0
 $HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
-$STAGE_TWO_BOOST = 0
+$STAGE_TWO_BOOST = 1
 $MALL_SIGN = 2
 {0219: $DELOREAN_GARAGE = create_garage_type 1 door -966.016 -861.529 5.761 to -966.016 -841.683 11.273 depth -978.454 -861.529  //Vice City DeLorean Garage
 03BB: set_garage $DELOREAN_GARAGE door_type_to_swing_open
@@ -148,14 +148,13 @@ wait 0
 //create_thread @Rogers              // 1885 train
 //create_thread @Taxi                // 2015 taxi animation (incomplete)
 //create_thread @Board               // hoverboard attach to cars
-create_thread @Speed               // hud and in car digital speedometers
+create_thread @Speed               // hud digital speedometers
 create_thread @Headlights          // Headlights
 //create_thread @FusionGlow          // Time Train Flux Capacitor
 //create_thread @Glow                //Various glows
 //create_thread @TrainGlow           // Train Coils
 create_thread @Mode                // Instant & Cutscene Time Travel Modes
 create_thread @TimeCircuits        // On screen Time Circuits
-create_thread @TimeCircuitsModel   // in car time circuits
 for $SID = 1 to 10 step 1
     create_thread @StatusIndicatorDisplay $SID   // in car time circuits
 end
@@ -170,9 +169,8 @@ create_thread @DrawRefresh         // On screen text display rendering
 create_thread @Environment         // Weather, parked car and ped generators for time trave
 create_thread @HillValley          // Real Time Clock and courthouse spawner
 create_thread @Conversion          // Flying DeLorean and Train hover conversion animations
-create_thread @CarInterior         // Delorean Interior lights and animations
 create_thread @DateCheckStart      // New Time Changing code
-//create_thread @DebugMove helps us move objects/particles
+//create_thread @DebugMove           // helps us move objects/particles
 //create_thread @55TV
 //create_thread @55TVOff
 //create_thread @DebugCamera
