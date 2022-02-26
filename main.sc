@@ -131,6 +131,7 @@ $POSY = 190.0 // floating-point values
 $ROTATE_SPEED = 0.0 // floating-point values
 $WHEEL_SPARKS = 0.0 // floating-point values
 $CONVERSION = 0
+$HEIGHT_LIMIT = 200.0
 $HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
 $STAGE_TWO_BOOST = 0
 $MALL_SIGN = 2
@@ -180,8 +181,9 @@ create_thread @CarSpawn
 create_thread @UNIQUE_STUNT_JUMPS
 create_thread @interiors
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
-0A8C: write memory 0x58E59B size 5 0x9090909090 virtual_protect 1
-0A8C: write memory 0x58E611 size 5 0x9090909090 virtual_protect 1
+0A8C: write_memory 0x58E59B size 5 value 0x90 virtual_protect 1
+0A8C: write_memory 0x58E611 size 5 value 0x90 virtual_protect 1
+0A8C: write_memory 0x69C70C size 4 value $HEIGHT_LIMIT virtual_protect 1
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
 set_weather $WEATHER
