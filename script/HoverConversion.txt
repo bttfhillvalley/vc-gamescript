@@ -23,6 +23,10 @@ then
 end
 
 // Thrust
+if or
+    00DC:   player $PLAYER_CHAR driving 0@
+    3F29:   is_player_in_remote_mode_with_car 0@
+else_jump @HoverConversionReturn
 Car.StorePos(0@, 2@, 3@, 4@)
 3F02: 7@ = car 0@ engine_state
 if
@@ -48,6 +52,7 @@ else
 end
 
 // Vent Boosters
+if
 if
     00E1:   key_pressed 0 $BOOST_KEY
 else_jump @HoverConversionReset

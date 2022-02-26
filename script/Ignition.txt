@@ -104,6 +104,7 @@ else
         if
             $REMOTE_TRAVEL == 0
         then
+            $VSOUND = 0
             040D: unload_wav 2
             03CF: load_wav 'BURG_06' as 2
             create_thread @PlaySound 2

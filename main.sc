@@ -149,7 +149,6 @@ wait 0
 //create_thread @Taxi                // 2015 taxi animation (incomplete)
 //create_thread @Board               // hoverboard attach to cars
 create_thread @Speed               // hud digital speedometers
-create_thread @Headlights          // Headlights
 //create_thread @FusionGlow          // Time Train Flux Capacitor
 //create_thread @Glow                //Various glows
 //create_thread @TrainGlow           // Train Coils

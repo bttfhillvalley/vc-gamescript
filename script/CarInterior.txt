@@ -1,4 +1,6 @@
-// 12@ Resrved for acceleration key status
+// 10@ - 0: Off, 1: Left, 2: Right 3: Both
+// 11@ Current Turn stalk position
+// 12@ Reserved for acceleration key status
 // 13@ Reserved for Engine state
 // 14@ Reserved for RPM
 // 15@ Reserved for Parking Brake
@@ -14,6 +16,7 @@ gosub @CompassRotation
 gosub @DigitalSpeedo
 gosub @DoorCheck
 gosub @DrivingLights
+gosub @Headlights
 gosub @Ignition
 gosub @ParkingBrake
 gosub @Shifter
