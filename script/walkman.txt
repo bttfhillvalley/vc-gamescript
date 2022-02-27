@@ -1,0 +1,82 @@
+:walkman
+wait 0
+Pickup.Create($walkman, #WALKMAN, 2, -554.3566, 269.3522, 12.3053)
+const
+PICKUP_PICKED_UP = 0@
+CLOTHES_1 = 1@
+CLOTHES_1_TYPE = 9  // set your clothing, see list of clothing at 055B
+CLOTHES_1_X = -554.3566  // set your x position
+CLOTHES_1_Y = 269.3522  // set your y position
+CLOTHES_1_Z = 12.3053  // set your z position
+end
+
+// create pickup
+055B: CLOTHES_1 = create_clothes_pickup CLOTHES_1_TYPE at CLOTHES_1_X CLOTHES_1_Y CLOTHES_1_Z
+
+while true
+    wait 0 ms
+    if
+        PICKUP_PICKED_UP == 0
+    then
+        if
+            0214:   pickup CLOTHES_1 picked_up
+        then
+            gosub @CLOTHES_FADE_OUT
+            if
+                0256:   player $PLAYER_CHAR defined
+            then
+                0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER9' // set your character, see list of special characters at 023C
+            end
+            gosub @CLOTHES_FADE_IN
+        end
+    end
+end
+
+:CLOTHES_FADE_OUT
+PICKUP_PICKED_UP = 1
+if
+    0256:   player $PLAYER_CHAR defined
+then
+    0169: set_fade_color 0 0 1
+    fade 0 500 ms
+    while if 016B:   fading
+        wait 0 ms
+    end
+else
+    PICKUP_PICKED_UP = 0
+end
+if
+    0256:   player $PLAYER_CHAR defined
+then
+    03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 1
+    01B4: set_player $PLAYER_CHAR can_move 0 
+else
+    PICKUP_PICKED_UP = 0
+end
+return
+
+:CLOTHES_FADE_IN
+if
+    0256:   player $PLAYER_CHAR defined
+then
+    038B: load_requested_models
+    if
+        0256:   player $PLAYER_CHAR defined
+    then
+        0353: refresh_actor $PLAYER_ACTOR
+    end
+    03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 0
+    if
+        810F:   not player $PLAYER_CHAR wanted_level > 2
+    then
+        0110: clear_player $PLAYER_CHAR wanted_level
+    end
+    01B4: set_player $PLAYER_CHAR can_move 1 
+    PICKUP_PICKED_UP = 0
+    fade 1 500 ms
+    03E5: text_box 'CLOHELP'  // Clean Clothes!!
+else
+    PICKUP_PICKED_UP = 0
+end
+return
+end_thread

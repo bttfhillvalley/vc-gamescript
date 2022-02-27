@@ -177,6 +177,7 @@ create_thread @DateCheckStart      // New Time Changing code
 create_thread @CarSpawn
 create_thread @UNIQUE_STUNT_JUMPS
 create_thread @interiors
+create_thread @walkman
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 0A8C: write_memory 0x58E59B size 5 value 0x90 virtual_protect 1
 0A8C: write_memory 0x58E611 size 5 value 0x90 virtual_protect 1
@@ -264,5 +265,6 @@ jump @InfLoop
 {$INCLUDE script/TwinPinesRipple.txt}
 {$INCLUDE script/TwinPinesTrees.txt}
 {$INCLUDE script/UniqueStuntJumps.txt}
+{$INCLUDE script/Walkman.txt}
 //-------------Mission 0---------------
 // put missions here
