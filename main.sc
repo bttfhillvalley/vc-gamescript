@@ -178,8 +178,8 @@ create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugParticle
 create_thread @CarSpawn
 create_thread @UNIQUE_STUNT_JUMPS
-create_thread @interiors
-create_thread @walkman
+create_thread @Interiors
+create_thread @Walkman
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 0A8C: write_memory 0x58E59B size 5 value 0x90 virtual_protect 1 // Disable Tail light point lights
 0A8C: write_memory 0x58E611 size 5 value 0x90 virtual_protect 1 // Disable Brake light point lights
@@ -203,14 +203,6 @@ create_thread @walkman
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
 set_weather $WEATHER
-if
-    not Actor.Dead($PLAYER_ACTOR)
-then
-023C: load_special_actor 1 'PLAYER'
-    0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER'  //Marty Red T-Shirt
-    038B: load_requested_models
-    0353: refresh_actor $PLAYER_ACTOR
-end
 fade 1 1000
 if
     Player.Defined($PLAYER_CHAR)
@@ -284,5 +276,6 @@ jump @InfLoop
 {$INCLUDE script/TwinPinesTrees.txt}
 {$INCLUDE script/UniqueStuntJumps.txt}
 {$INCLUDE script/Walkman.txt}
+{$INCLUDE script/Windows.txt}
 //-------------Mission 0---------------
 // put missions here

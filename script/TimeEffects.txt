@@ -1,5 +1,4 @@
 :GlowInit
-3F18: set_car 0@ component "inner_vents" glow 1
 for 2@ = 1 to 6 step 1
     3F19: set_car 0@ component "flux" index 2@ glow 1
 end
@@ -55,6 +54,16 @@ end
 3F18: set_car 0@ component "tempneedle" glow 1
 3F18: set_car 0@ component "speedoneedle" glow 1
 
+3F18: set_car 0@ component "fxthrusterbttf2rbon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2rbth" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2rfon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2rfth" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lbon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lbth" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lfon" glow 1
+3F18: set_car 0@ component "fxthrusterbttf2lfth" glow 1
+3F18: set_car 0@ component "inner_vents" glow 1
+3F18: set_car 0@ component "inner_ventsglow" glow 1
 
 // lights behind the tcd switch
 3F18: set_car 0@ component "tcdswitchlighton" glow 1

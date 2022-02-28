@@ -15,15 +15,22 @@ then
     if
         1@ == 0
     then
-        3@ = 1
-        if
+        if and
+            00E1:   key_pressed 0 14
+            80E1:   not key_pressed 0 16
+        then
+            3@ = 1
+        end
+        if and
+            80E1:   not key_pressed 0 14
             00E1:   key_pressed 0 16
         then
             2@ = 1
         end
     else
-        if
+        if and
             00E1:   key_pressed 0 14
+            80E1:   not key_pressed 0 16
         then
             2@ = 1
         end

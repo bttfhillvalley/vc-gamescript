@@ -140,7 +140,7 @@ gosub @TimeCircuitsDisplay
 if
 8185:   not car $DELOREAN health >= 650
 jf @TimeCircuitsStart
-05F5: call_scm_func @DrawTexture params_count 9 6 735.0 155.0 45.0 23.0 255 255 255 255 //lambda error light
+05F5: call_scm_func @DrawTexture params_count 9 4 735.0 155.0 45.0 23.0 255 255 255 255 //lambda error light
 3F10: set_car $DELOREAN component "lambdalight" visible 1
 jump @TimeCircuitsStart
 

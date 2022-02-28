@@ -244,14 +244,9 @@ return
 3F10: set_car 0@ component "fxthrusterbttf2lfon" visible 0
 3F10: set_car 0@ component "fxthrusterbttf2lfth" visible 0
 
-3F18: set_car 0@ component "fxthrusterbttf2rbon" glow 1
-3F18: set_car 0@ component "fxthrusterbttf2rbth" glow 1
-3F18: set_car 0@ component "fxthrusterbttf2rfon" glow 1
-3F18: set_car 0@ component "fxthrusterbttf2rfth" glow 1
-3F18: set_car 0@ component "fxthrusterbttf2lbon" glow 1
-3F18: set_car 0@ component "fxthrusterbttf2lbth" glow 1
-3F18: set_car 0@ component "fxthrusterbttf2lfon" glow 1
-3F18: set_car 0@ component "fxthrusterbttf2lfth" glow 1
+3F10: set_car 0@ component "inner_vents" visible 0
+3F10: set_car 0@ component "inner_ventsglow" visible 0
+
 return
 
 :BoosterLightsOn

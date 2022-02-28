@@ -1,0 +1,64 @@
+:Windows
+if
+    00DC:   player $PLAYER_CHAR in_car 0@
+then
+    // Left
+    if
+        $KEY == 74 // "J"
+    then
+        0B12: 9@ = 9@ XOR 0x1
+    end
+
+    // Right
+    if
+        $KEY == 75 // "K"
+    then
+        0B12: 9@ = 9@ XOR 0x2
+    end
+end
+
+// Animate Left
+0B10: 1@ = 9@ AND 0x1
+if
+    1@ == 0
+then
+    if
+        7@ < 0.0
+    then
+        7@ += 0.005
+    end
+else
+    if
+        7@ > -0.15
+    then
+        7@ -= 0.005
+    end
+end
+
+// Animate right
+0B10: 1@ = 9@ AND 0x2
+if
+    1@ == 0
+then
+    if
+        8@ < 0.0
+    then
+        8@ += 0.005
+    end
+
+else
+    if
+        8@ > -0.15
+    then
+        8@ -= 0.005
+    end
+end
+0087: 1@ = 7@
+1@ *= 0.5
+0087: 2@ = 7@
+3F14: move_car_part "door_lf_hi_ok_window" pos 1@ 7@ 2@ car 0@
+0087: 1@ = 8@
+1@ *= -0.5
+0087: 2@ = 8@
+3F14: move_car_part "door_rf_hi_ok_window" pos 1@ 8@ 2@ car 0@
+return

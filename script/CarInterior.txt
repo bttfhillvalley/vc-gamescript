@@ -1,3 +1,7 @@
+// Already using 1@-6@ in other scripts, will need to create a second one in case we need more animations.
+// 7@ - Left window
+// 8@ - Right window
+// 9@ - 0: Windows up, 1: Left down, 2: Right down, 3: Both
 // 10@ - 0: Off, 1: Left, 2: Right 3: Both
 // 11@ Current Turn stalk position
 // 12@ Reserved for acceleration key status
@@ -20,4 +24,5 @@ gosub @Headlights
 gosub @Ignition
 gosub @ParkingBrake
 gosub @Shifter
+gosub @Windows
 jump @CarInterior

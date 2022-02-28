@@ -106,7 +106,6 @@ if
    not Car.Wrecked(0@)
 else_jump @TimeEnd
 02E3: 11@ = car 0@ speed
-3F10: set_car 0@ component "inner_vents" visible 0
 gosub @MemoryHandling   // This controls global/local variables whenever the player switches between time machines, since time circuit control is global.
 gosub @Hook  // Controls putting up/down the hook.  I forget the variations though.  It's in the garage thread so I can document it here as well.
 gosub @TimeResetCamera
