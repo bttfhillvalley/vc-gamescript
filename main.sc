@@ -206,8 +206,8 @@ set_weather $WEATHER
 if
     not Actor.Dead($PLAYER_ACTOR)
 then
-023C: load_special_actor 1 'PLAYER8'
-    0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER8'  //Marty Red T-Shirt
+023C: load_special_actor 1 'PLAYER'
+    0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER'  //Marty Red T-Shirt
     038B: load_requested_models
     0353: refresh_actor $PLAYER_ACTOR
 end
