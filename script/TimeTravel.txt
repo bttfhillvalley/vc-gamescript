@@ -690,6 +690,9 @@ Player.ClearWantedLevel($PLAYER_CHAR)
 042B: clear_peds_from_cube -5000.0 -5000.0 -5000.0 5000.0 5000.0 5000.0
 0395: clear_area 1 at 2@ 3@ range 4@ 5000.0
 04E4: unknown_refresh_game_renderer_at 2@ 3@
+
+// Fade
+wait 0
 if
   $MODE == 0 // integer values
 then
@@ -922,6 +925,7 @@ thread 'COLD'
 8@ = 0 // integer values
 9@ = 0 // integer values
 0B10: 15@ = 1@ AND $REAR_BIT  // Get car variation
+//3F37: replace 0@// replace_dict '0' texture '0' with_dict '0' texture '1' // HUD.TXD
 
 :ColdStart
 wait 10

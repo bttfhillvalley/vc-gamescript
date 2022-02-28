@@ -39,6 +39,7 @@ if
 then
     0084: $BOOST_KEY = $HOVER_ACCEL_KEY
     if and
+        0026: $HEIGHT_LIMIT > 4@
         00E1: key_pressed 0 6
         80E1: key_pressed 0 $BOOST_KEY
     then
@@ -52,8 +53,8 @@ else
 end
 
 // Vent Boosters
-if
-if
+if and
+    0026: $HEIGHT_LIMIT > 4@
     00E1:   key_pressed 0 $BOOST_KEY
 else_jump @HoverConversionReset
 // Booster
@@ -752,7 +753,8 @@ Car.StorePos(0@, 2@, 3@, 4@)
 if
     not 7@ == 0
 else_jump @HoverConversionReset
-if
+if and
+    0026: $HEIGHT_LIMIT > 4@
     00E1: key_pressed 0 6
 then
     02E3: 7@ = car 0@ speed

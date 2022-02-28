@@ -43,6 +43,8 @@ DEFINE MISSIONS 0
 {$OPCODE 3F33=4,get_car %1d% velocity_vector %2d% %3d% %4d%}                    // Get velocity vector
 {$OPCODE 3F34=2,%2d% = car %1d% velocity_vector}                                // Get velocity vector including speed
 {$OPCODE 3F35=2,set_car %1d% velocity_vector %2d%}                              // Set velocity vector including speed
+//{$OPCODE 3F36=0,add_txd} // %1d% texture %2d% with_dict %3d% texture %4d%}     // HUD.TXD
+//{$OPCODE 3F37=1,replace_dict %1d%} // %1d% texture %2d% with_dict %3d% texture %4d%}     // HUD.TXD
 
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
@@ -131,7 +133,7 @@ $POSY = 190.0 // floating-point values
 $ROTATE_SPEED = 0.0 // floating-point values
 $WHEEL_SPARKS = 0.0 // floating-point values
 $CONVERSION = 0
-$HEIGHT_LIMIT = 200.0
+$HEIGHT_LIMIT = 220.0
 $HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
 $STAGE_TWO_BOOST = 1
 $MALL_SIGN = 2
@@ -179,9 +181,25 @@ create_thread @UNIQUE_STUNT_JUMPS
 create_thread @interiors
 create_thread @walkman
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
-0A8C: write_memory 0x58E59B size 5 value 0x90 virtual_protect 1
-0A8C: write_memory 0x58E611 size 5 value 0x90 virtual_protect 1
-0A8C: write_memory 0x69C70C size 4 value $HEIGHT_LIMIT virtual_protect 1
+0A8C: write_memory 0x58E59B size 5 value 0x90 virtual_protect 1 // Disable Tail light point lights
+0A8C: write_memory 0x58E611 size 5 value 0x90 virtual_protect 1 // Disable Brake light point lights
+0A8C: write_memory 0x69C70C size 4 value $HEIGHT_LIMIT virtual_protect 1 // Change height limit for Delorean
+
+// These next ones disables the collapsing of frames on particular dummies
+0A8C: write_memory 0x699730 size 4 value 0x80 virtual_protect 1 // Front Bumper
+0A8C: write_memory 0x69973c size 4 value 0x00 virtual_protect 1 // Bonnet
+0A8C: write_memory 0x699748 size 4 value 0x00 virtual_protect 1 // Wing RF
+0A8C: write_memory 0x699754 size 4 value 0x40 virtual_protect 1 // Wing RR
+0A8C: write_memory 0x699760 size 4 value 0x5050 virtual_protect 1 // Door RF
+0A8C: write_memory 0x69976c size 4 value 0x3150 virtual_protect 1 // Door RR
+0A8C: write_memory 0x699778 size 4 value 0x00 virtual_protect 1 // Wing LF
+0A8C: write_memory 0x699784 size 4 value 0x20 virtual_protect 1 // Wing LR
+0A8C: write_memory 0x699790 size 4 value 0x5030 virtual_protect 1 // Door LF
+0A8C: write_memory 0x69979c size 4 value 0x3130 virtual_protect 1 // Door LR
+0A8C: write_memory 0x6997a8 size 4 value 0x100 virtual_protect 1 // Boot
+0A8C: write_memory 0x6997b4 size 4 value 0x100 virtual_protect 1 // Rear Bumper
+0A8C: write_memory 0x6997c0 size 4 value 0xc80 virtual_protect 1 // Windscreen
+
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
 set_weather $WEATHER

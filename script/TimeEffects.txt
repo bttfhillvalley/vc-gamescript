@@ -22,8 +22,8 @@ end
 3F18: set_car 0@ component "lightFR" glow 1
 3F18: set_car 0@ component "lowbeamslight" glow 1
 3F18: set_car 0@ component "highbeamslight" glow 1
-3F18: set_car 0@ component "turnsignalllight" visible 1
-3F18: set_car 0@ component "turnsignalrlight" visible 1
+3F18: set_car 0@ component "turnsignalllight" glow 1
+3F18: set_car 0@ component "turnsignalrlight" glow 1
 3F18: set_car 0@ component "turnlightrb" glow 1
 3F18: set_car 0@ component "turnlightlb" glow 1
 3F18: set_car 0@ component "turnlightrf" glow 1
