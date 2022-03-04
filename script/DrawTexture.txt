@@ -9,7 +9,7 @@ if
 	//Widescreen off
     9@ == 0
 then
-    0015: 1@ /= 857.0 //  currentResX/640.0
+    0015: 10@ /= 857.0 //  currentResX/640.0
 else
     0015: 10@ /= 848.0 //  currentResX/640.0
 end
