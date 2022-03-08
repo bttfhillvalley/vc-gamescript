@@ -6,6 +6,7 @@ then
 end
 gosub @ThrusterLightsOff
 gosub @HideFuel
+3F01: car 0@ raise_front_suspension 0
 
 // Wheel
 0B10: 13@ = 1@ AND $FC_BIT
@@ -31,7 +32,7 @@ then
     if
         003B: 14@ == $WHEELS_50S_BIT
     then
-        3F01: raise_front_suspension 0@
+        3F01: car 0@ raise_front_suspension 1
         gosub @ShowThrusters
         gosub @HideDeloreanWheels
         gosub @Show50sWheels
@@ -60,7 +61,7 @@ else
     if
         003B: 14@ == $WHEELS_50S_BIT
     then
-        3F01: raise_front_suspension 0@
+        3F01: car 0@ raise_front_suspension 1
         gosub @ShowHoverThrusters
         gosub @HideDeloreanHoverWheels
         gosub @Show50sHoverWheels

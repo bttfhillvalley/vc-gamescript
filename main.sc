@@ -8,7 +8,7 @@ DEFINE MISSIONS 0
 {$OPCODE 0124=2,write_memory_address %1d% value %2d%}                // used for writing a temporary address
 {$OPCODE 0125=2,%2d% = read_memory_address %1d%}                     // used for reading a temporary address
 
-{$OPCODE 3F01=1,set car %1d% suspension}                                        // set suspension
+{$OPCODE 3F01=2,car %1d% raise_suspension %2d%}                                 // set suspension
 {$OPCODE 3F02=2,%2d% = car %1d% engine_state}                                   // get engine state
 {$OPCODE 3F03=1,car %1d% turn_on_engine}                                        // turn on engine
 {$OPCODE 3F04=2,%2d% = get_car %1d% gear}                                       // get current gear

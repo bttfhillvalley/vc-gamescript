@@ -86,6 +86,8 @@ $HOOK_HOLDER_BIT    = 0x01
 $HOOK_SIDE_BIT      = 0x02
 $HOOK_UP_BIT        = 0x03
 
+$VARIATION = 0
+
 thread 'TIME'
 Car.SetImmunities(0@, 0, 0, 0, 1, 1)
 053F: set_car 0@ tires_vulnerable 0
@@ -113,6 +115,52 @@ gosub @FluxCapacitorAnimation
 if
     00DC:   player $PLAYER_CHAR driving 0@
 else_jump @TimeFuel
+
+// Temporary variation changer
+0B10: 5@ = 1@ AND $FLYING_BIT   // Is car flying?
+if and
+    5@ == 0
+    $LANDING == 0
+    $KEY == 46 // "."
+then
+    if
+        $VARIATION == 0 // BTTF1
+    then
+        1@ = 0x420004
+    end
+    if
+        $VARIATION == 1 // BTTF1 w/ Hook
+    then
+        1@ = 0x420103
+    end
+    if
+        $VARIATION == 2 // BTTF1 w/ Flying
+    then
+        1@ = 0x4a0101
+    end
+    if
+        $VARIATION == 3 // BTTF2
+    then
+        1@ = 0x4b0108
+    end
+    if
+        $VARIATION == 4 // BTTF3
+    then
+        1@ = 0x4b09d8
+    end
+    if
+        $VARIATION == 5 // BTTF3RR
+    then
+        1@ = 0x4b0ba8
+    end
+    $VARIATION += 1
+    if
+        $VARIATION > 5
+    then
+        $VARIATION = 0
+    end
+    create_thread @SetVariation 0@ 1@
+end
 gosub @TimeUnloadSparkSounds
 
 // Time circuits flashing based on car variation
