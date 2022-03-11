@@ -1,7 +1,8 @@
 // Welcome to the Back to the Future Hill Valley 0.2f r3 SCM, if you got this far you must atleast know enough to get started, if you don't, hopefully the comments spread throughout this SC and script files will help.
 // Please Only ever open the Main.SC not the Main.SCM as you will lose any comments we have made or hopefully you have made in the future, it will also get rid of thread names and make you very sad. just don't do it.
 // we may add a table of contents help guide in the future for people to better understand the mod and learn to make changes.
-DEFINE MISSIONS 0
+DEFINE MISSIONS 1
+DEFINE MISSION 0 AT @INITIAL
 //These are the New Opcodes originally written by Ilufir rewritten by Kyonko Yuuki, defining them here means no nasty setup for sanny builder.
 {$USE bitwise}
 {$USE CLEO}
@@ -137,10 +138,7 @@ $HEIGHT_LIMIT = 220.0
 $HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
 $STAGE_TWO_BOOST = 1
 $MALL_SIGN = 2
-{0219: $DELOREAN_GARAGE = create_garage_type 1 door -966.016 -861.529 5.761 to -966.016 -841.683 11.273 depth -978.454 -861.529  //Vice City DeLorean Garage
-03BB: set_garage $DELOREAN_GARAGE door_type_to_swing_open
-02A8: $DelGarageMap = create_marker 7 at -1007.3 -869.9 12.8 //Delorean Garage Icon
-04CE: $BrownEstateMap = create_icon_marker_without_sphere 5 at -378.5 -551.3 18.2 //Brown Estate Icon  }
+start_mission 0  // Initial
 
 //------------------0.2F-r3-Feature-Scripts-Go-Here--------------------------//
 wait 0
@@ -277,5 +275,11 @@ jump @InfLoop
 {$INCLUDE script/Walkman.txt}
 {$INCLUDE script/Windows.txt}
 {$INCLUDE script/radiationsuit.txt}
+
 //-------------Mission 0---------------
+{$INCLUDE script/MISSION/initial.txt}
+
+
+
+//-------------Mission 1---------------
 // put missions here

@@ -1,0 +1,1025 @@
+:INITIAL
+script_name 'INITIAL' 
+$DEFAULT_WAIT_TIME = 250 // $ = int 
+$ONMISSION = 0 // $ = int 
+
+
+016C: restart_if_wasted_at 493.5 703.1 11.1 angle 90.0 
+016D: restart_if_busted_at 508.9 506.8 10.3 angle 174.0 
+016C: restart_if_wasted_at -108.3 -974.4 9.4 angle 283.9 
+016D: restart_if_busted_at 398.8 -469.7 10.7 angle 323.0 
+058D: set_restart_mission_taxi_start 407.6 725.3 10.5 angle 177.0 
+058D: set_restart_mission_taxi_start -102.6 -947.7 9.6 angle 192.7 
+058D: set_restart_mission_taxi_start -784.4 1189.3 10.2 angle 90.0 
+058D: set_restart_mission_taxi_start -850.8 -483.9 10.2 angle 189.8 
+058D: set_restart_mission_taxi_start 492.5 475.1 10.6 angle 274.2 
+058D: set_restart_mission_taxi_start 418.5 -422.6 9.3 angle 58.7 
+058D: set_restart_mission_taxi_start -665.3 793.7 10.5 angle 180.0 
+058D: set_restart_mission_taxi_start -873.0 -641.8 10.5 angle 97.1 
+015C: set_zone_gang_info 'STREET4' 1 13 0 0 0 0 0 0 0 0 0 30 
+015C: set_zone_gang_info 'STREET4' 0 10 0 0 0 0 0 0 0 0 0 40 
+0152: set_zone_car_info 'STREET4' 1 13 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'STREET4' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'STREET4' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'STREET4' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'STREET4' 1 7 
+0324: set_zone_pedgroup_info 'STREET4' 0 8 
+04EC: set_zone_car_class_info 'RICH2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'RICH2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0152: set_zone_car_info 'RICH2' 1 10 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'RICH2' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'CLUB2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'CLUB2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'RICH2' 1 27 
+0324: set_zone_pedgroup_info 'RICH2' 0 28 
+015C: set_zone_gang_info 'CLUB2' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'CLUB2' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'CLUB2' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'CLUB2' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'CLUB2' 1 300 0 350 200 0 0 100 50 0 500 500 
+04EC: set_zone_car_class_info 'CLUB2' 0 250 0 300 250 0 0 150 50 0 500 500 
+0324: set_zone_pedgroup_info 'CLUB2' 1 57 
+0324: set_zone_pedgroup_info 'CLUB2' 0 58 
+015C: set_zone_gang_info 'SHOP3' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'SHOP3' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'SHOP3' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'SHOP3' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'SHOP3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'SHOP3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'SHOP3' 1 35 
+0324: set_zone_pedgroup_info 'SHOP3' 0 36 
+015C: set_zone_gang_info 'STREET3' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'STREET3' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'STREET3' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'STREET3' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'STREET3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'STREET3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'STREET3' 1 5 
+0324: set_zone_pedgroup_info 'STREET3' 0 6 
+015C: set_zone_gang_info 'SHOP2' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'SHOP2' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'SHOP2' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'SHOP2' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'SHOP2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'SHOP2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'SHOP2' 1 33 
+0324: set_zone_pedgroup_info 'SHOP2' 0 34 
+015C: set_zone_gang_info 'OCEAND1' 1 15 0 0 0 0 0 0 0 0 0 30 
+015C: set_zone_gang_info 'OCEAND1' 0 35 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'OCEAND1' 1 12 0 0 0 0 0 0 0 0 0 40 
+0152: set_zone_car_info 'OCEAND1' 0 15 0 0 0 0 0 0 0 0 0 30 
+04EC: set_zone_car_class_info 'OCEAND1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'OCEAND1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'OCEAND1' 1 63 
+0324: set_zone_pedgroup_info 'OCEAND1' 0 64 
+015C: set_zone_gang_info 'OCEAND2' 1 15 0 0 0 0 0 0 0 0 0 30 
+015C: set_zone_gang_info 'OCEAND2' 0 35 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'OCEAND2' 1 12 0 0 0 0 0 0 0 0 0 40 
+0152: set_zone_car_info 'OCEAND2' 0 15 0 0 0 0 0 0 0 0 0 30 
+04EC: set_zone_car_class_info 'OCEAND2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'OCEAND2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'OCEAND2' 1 65 
+0324: set_zone_pedgroup_info 'OCEAND2' 0 66 
+015C: set_zone_gang_info 'BEACH1' 1 20 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'BEACH1' 0 5 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'BEACH1' 1 11 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'BEACH1' 0 11 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'BEACH1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'BEACH1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'BEACH1' 1 45 
+0324: set_zone_pedgroup_info 'BEACH1' 0 46 
+015C: set_zone_gang_info 'BEACH2' 1 20 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'BEACH2' 0 5 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'BEACH2' 1 11 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'BEACH2' 0 11 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'BEACH2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'BEACH2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'BEACH2' 1 47 
+0324: set_zone_pedgroup_info 'BEACH2' 0 48 
+015C: set_zone_gang_info 'BEACH3' 1 20 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'BEACH3' 0 5 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'BEACH3' 1 11 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'BEACH3' 0 11 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'BEACH3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'BEACH3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'BEACH3' 1 49 
+0324: set_zone_pedgroup_info 'BEACH3' 0 50 
+015C: set_zone_gang_info 'STREET2' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'STREET2' 0 13 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'STREET2' 1 11 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'STREET2' 0 9 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'STREET2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'STREET2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'STREET2' 1 3 
+0324: set_zone_pedgroup_info 'STREET2' 0 4 
+015C: set_zone_gang_info 'CONSTRU' 1 10 0 0 0 0 0 0 0 0 0 20 
+015C: set_zone_gang_info 'CONSTRU' 0 8 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'CONSTRU' 1 9 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'CONSTRU' 0 7 0 0 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'CONSTRU' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'CONSTRU' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'CONSTRU' 1 17 
+0324: set_zone_pedgroup_info 'CONSTRU' 0 18 
+015C: set_zone_gang_info 'CLUB1' 1 10 0 0 0 0 0 0 0 0 0 20 
+015C: set_zone_gang_info 'CLUB1' 0 12 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'CLUB1' 1 9 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'CLUB1' 0 10 0 0 0 0 0 0 0 0 0 20 
+04EC: set_zone_car_class_info 'CLUB1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'CLUB1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'CLUB1' 1 55 
+0324: set_zone_pedgroup_info 'CLUB1' 0 56 
+015C: set_zone_gang_info 'GOLF1' 1 3 0 0 0 0 0 0 0 1000 0 0 
+015C: set_zone_gang_info 'GOLF1' 0 0 0 0 0 0 0 0 0 1000 0 0 
+0152: set_zone_car_info 'GOLF1' 1 3 0 0 0 0 0 0 0 1000 0 0 
+0152: set_zone_car_info 'GOLF1' 0 0 0 0 0 0 0 0 0 1000 0 0 
+0324: set_zone_pedgroup_info 'GOLF1' 1 41 
+0324: set_zone_pedgroup_info 'GOLF1' 0 42 
+015C: set_zone_gang_info 'GOLF2' 1 2 0 0 0 0 0 0 0 1000 0 0 
+015C: set_zone_gang_info 'GOLF2' 0 0 0 0 0 0 0 0 0 1000 0 0 
+0152: set_zone_car_info 'GOLF2' 1 2 0 0 0 0 0 0 0 1000 0 0 
+0152: set_zone_car_info 'GOLF2' 0 0 0 0 0 0 0 0 0 1000 0 0 
+0324: set_zone_pedgroup_info 'GOLF2' 1 43 
+0324: set_zone_pedgroup_info 'GOLF2' 0 44 
+015C: set_zone_gang_info 'STREET1' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'STREET1' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'STREET1' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'STREET1' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'STREET1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'STREET1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'STREET1' 1 1 
+0324: set_zone_pedgroup_info 'STREET1' 0 2 
+015C: set_zone_gang_info 'RICH1' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'RICH1' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'RICH1' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'RICH1' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'RICH1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'RICH1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'RICH1' 1 25 
+0324: set_zone_pedgroup_info 'RICH1' 0 26 
+015C: set_zone_gang_info 'SHOP1' 1 200 0 0 0 0 20 0 0 0 0 30 
+015C: set_zone_gang_info 'SHOP1' 0 200 0 0 0 0 20 0 0 0 0 30 
+0152: set_zone_car_info 'SHOP1' 1 12 0 0 50 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'SHOP1' 0 9 0 0 50 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'SHOP1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'SHOP1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'SHOP1' 1 31 
+0324: set_zone_pedgroup_info 'SHOP1' 0 32 
+015C: set_zone_gang_info 'TOUR1' 1 7 0 0 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'TOUR1' 0 5 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'TOUR1' 1 7 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'TOUR1' 0 5 0 0 0 0 0 0 0 0 0 20 
+04EC: set_zone_car_class_info 'TOUR1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'TOUR1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'TOUR1' 1 19 
+0324: set_zone_pedgroup_info 'TOUR1' 0 20 
+015C: set_zone_gang_info 'TOUR2' 1 7 0 0 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'TOUR2' 0 5 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'TOUR2' 1 7 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'TOUR2' 0 5 0 0 0 0 0 0 0 0 0 20 
+04EC: set_zone_car_class_info 'TOUR2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'TOUR2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'TOUR2' 1 21 
+0324: set_zone_pedgroup_info 'TOUR2' 0 22 
+015C: set_zone_gang_info 'AIRPORT' 1 13 0 0 0 0 50 0 0 0 0 40 
+015C: set_zone_gang_info 'AIRPORT' 0 10 0 0 0 0 50 0 0 0 0 30 
+0152: set_zone_car_info 'AIRPORT' 1 12 0 0 0 0 50 0 0 0 0 50 
+0152: set_zone_car_info 'AIRPORT' 0 12 0 0 0 0 50 0 0 0 0 50 
+04EC: set_zone_car_class_info 'AIRPORT' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'AIRPORT' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'AIRPORT' 1 51 
+0324: set_zone_pedgroup_info 'AIRPORT' 0 52 
+015C: set_zone_gang_info 'TERMINL' 1 13 0 0 0 0 50 0 0 0 0 40 
+015C: set_zone_gang_info 'TERMINL' 0 8 0 0 0 0 50 0 0 0 0 30 
+0152: set_zone_car_info 'TERMINL' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'TERMINL' 0 12 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'TERMINL' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'TERMINL' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'TERMINL' 1 53 
+0324: set_zone_pedgroup_info 'TERMINL' 0 54 
+015C: set_zone_gang_info 'DOCKS' 1 13 0 0 0 0 0 0 0 0 0 20 
+015C: set_zone_gang_info 'DOCKS' 0 10 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'DOCKS' 1 12 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'DOCKS' 0 10 0 0 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'DOCKS' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'DOCKS' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'DOCKS' 1 15 
+0324: set_zone_pedgroup_info 'DOCKS' 0 16 
+015C: set_zone_gang_info 'STREET6' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'STREET6' 0 5 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'STREET6' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'STREET6' 0 5 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'STREET6' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'STREET6' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'STREET6' 1 23 
+0324: set_zone_pedgroup_info 'STREET6' 0 24 
+015C: set_zone_gang_info 'STREET5' 1 4 0 0 100 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'STREET5' 0 5 0 0 200 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'STREET5' 1 6 0 0 100 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'STREET5' 0 6 0 0 200 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'STREET5' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'STREET5' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'STREET5' 1 9 
+0324: set_zone_pedgroup_info 'STREET5' 0 10 
+015C: set_zone_gang_info 'SHOP4' 1 13 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'SHOP4' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'SHOP4' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'SHOP4' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'SHOP4' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'SHOP4' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'SHOP4' 1 37 
+0324: set_zone_pedgroup_info 'SHOP4' 0 38 
+015C: set_zone_gang_info 'SHOP5' 1 12 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'SHOP5' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'SHOP5' 1 12 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'SHOP5' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'SHOP5' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'SHOP5' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'SHOP5' 1 39 
+0324: set_zone_pedgroup_info 'SHOP5' 0 40 
+015C: set_zone_gang_info 'BUSINES' 1 18 0 0 0 0 0 0 0 0 0 40 
+015C: set_zone_gang_info 'BUSINES' 0 10 0 0 0 0 0 0 0 0 0 30 
+0152: set_zone_car_info 'BUSINES' 1 16 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'BUSINES' 0 10 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'BUSINES' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'BUSINES' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'BUSINES' 1 11 
+0324: set_zone_pedgroup_info 'BUSINES' 0 12 
+015C: set_zone_gang_info 'TESTT' 1 0 0 0 0 0 0 0 0 0 0 0 
+015C: set_zone_gang_info 'TESTT' 0 0 0 0 0 0 0 0 0 0 0 0 
+0152: set_zone_car_info 'TESTT' 1 0 0 0 0 0 0 0 0 0 0 0 
+0152: set_zone_car_info 'TESTT' 0 0 0 0 0 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'TESTT' 1 11 
+0324: set_zone_pedgroup_info 'TESTT' 0 12 
+015C: set_zone_gang_info 'BIKAREA' 1 13 0 0 0 0 0 0 0 0 0 20 
+015C: set_zone_gang_info 'BIKAREA' 0 10 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'BIKAREA' 1 12 0 0 0 0 0 100 0 0 0 10 
+0152: set_zone_car_info 'BIKAREA' 0 10 0 0 0 0 0 100 0 0 0 10 
+04EC: set_zone_car_class_info 'BIKAREA' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'BIKAREA' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'BIKAREA' 1 13 
+0324: set_zone_pedgroup_info 'BIKAREA' 0 14 
+015C: set_zone_gang_info 'GANG2' 1 13 0 250 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'GANG2' 0 10 0 250 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'GANG2' 1 12 0 250 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'GANG2' 0 10 0 250 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'GANG2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'GANG2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'GANG2' 1 59 
+0324: set_zone_pedgroup_info 'GANG2' 0 59 
+015C: set_zone_gang_info 'GHETTO1' 1 13 0 150 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'GHETTO1' 0 10 0 150 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'GHETTO1' 1 12 0 150 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'GHETTO1' 0 10 0 150 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'GHETTO1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'GHETTO1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'GHETTO1' 1 59 
+0324: set_zone_pedgroup_info 'GHETTO1' 0 60 
+015C: set_zone_gang_info 'GHETTO2' 1 13 150 0 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'GHETTO2' 0 10 150 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'GHETTO2' 1 12 200 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'GHETTO2' 0 10 200 0 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'GHETTO2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'GHETTO2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'GHETTO2' 1 61 
+0324: set_zone_pedgroup_info 'GHETTO2' 0 62 
+015C: set_zone_gang_info 'RICH3' 1 13 0 0 0 0 50 0 0 0 0 40 
+015C: set_zone_gang_info 'RICH3' 0 10 0 0 0 0 50 0 0 0 0 40 
+0152: set_zone_car_info 'RICH3' 1 9 0 0 0 0 0 0 0 0 0 50 
+0152: set_zone_car_info 'RICH3' 0 7 0 0 0 0 0 0 0 0 0 50 
+04EC: set_zone_car_class_info 'RICH3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'RICH3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'RICH3' 1 29 
+0324: set_zone_pedgroup_info 'RICH3' 0 30 
+015C: set_zone_gang_info 'GANG1' 1 12 0 0 0 0 0 0 1000 0 0 0 
+015C: set_zone_gang_info 'GANG1' 0 12 0 0 0 0 0 0 1000 0 0 0 
+0152: set_zone_car_info 'GANG1' 1 8 0 0 0 0 0 0 0 0 0 0 
+0152: set_zone_car_info 'GANG1' 0 8 0 0 0 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'GANG1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'GANG1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'GANG1' 1 59 
+0324: set_zone_pedgroup_info 'GANG1' 0 60 
+015C: set_zone_gang_info 'BAGGAG' 1 5 0 0 0 0 1000 0 0 0 0 0 
+015C: set_zone_gang_info 'BAGGAG' 0 5 0 0 0 0 1000 0 0 0 0 0 
+0152: set_zone_car_info 'BAGGAG' 1 3 0 0 0 0 1000 0 0 0 0 0 
+0152: set_zone_car_info 'BAGGAG' 0 3 0 0 0 0 1000 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'TERMINL' 1 59 
+0324: set_zone_pedgroup_info 'TERMINL' 0 60 
+015C: set_zone_gang_info 'ICCREAM' 1 13 0 0 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'ICCREAM' 0 10 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'ICCREAM' 1 12 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'ICCREAM' 0 10 0 0 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'ICCREAM' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'ICCREAM' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'ICCREAM' 1 61 
+0324: set_zone_pedgroup_info 'ICCREAM' 0 62 
+015C: set_zone_gang_info 'BOATYRD' 1 13 0 0 0 0 0 0 0 0 0 20 
+015C: set_zone_gang_info 'BOATYRD' 0 10 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'BOATYRD' 1 12 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'BOATYRD' 0 10 0 0 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'BOATYRD' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'BOATYRD' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'BOATYRD' 1 15 
+0324: set_zone_pedgroup_info 'BOATYRD' 0 16 
+015C: set_zone_gang_info 'KAUFCAB' 1 13 0 0 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'KAUFCAB' 0 10 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'KAUFCAB' 1 12 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'KAUFCAB' 0 10 0 0 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'KAUFCAB' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'KAUFCAB' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'KAUFCAB' 1 59 
+0324: set_zone_pedgroup_info 'KAUFCAB' 0 59 
+015C: set_zone_gang_info 'PRINTWK' 1 13 0 0 0 0 0 0 0 0 0 10 
+015C: set_zone_gang_info 'PRINTWK' 0 10 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'PRINTWK' 1 12 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'PRINTWK' 0 10 0 0 0 0 0 0 0 0 0 10 
+04EC: set_zone_car_class_info 'PRINTWK' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'PRINTWK' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'PRINTWK' 1 59 
+0324: set_zone_pedgroup_info 'PRINTWK' 0 60 
+015C: set_zone_gang_info 'CARYRD' 1 13 0 0 0 0 0 0 0 0 0 20 
+015C: set_zone_gang_info 'CARYRD' 0 5 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'CARYRD' 1 12 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'CARYRD' 0 5 0 0 0 0 0 0 0 0 0 20 
+04EC: set_zone_car_class_info 'CARYRD' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'CARYRD' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'CARYRD' 1 23 
+0324: set_zone_pedgroup_info 'CARYRD' 0 24 
+015C: set_zone_gang_info 'PORNSTU' 1 4 0 0 0 0 0 0 0 0 0 20 
+015C: set_zone_gang_info 'PORNSTU' 0 5 0 0 0 0 0 0 0 0 0 10 
+0152: set_zone_car_info 'PORNSTU' 1 6 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'PORNSTU' 0 6 0 0 0 0 0 0 0 0 0 20 
+04EC: set_zone_car_class_info 'PORNSTU' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+04EC: set_zone_car_class_info 'PORNSTU' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0 
+0324: set_zone_pedgroup_info 'PORNSTU' 1 9 
+0324: set_zone_pedgroup_info 'PORNSTU' 0 10 
+015C: set_zone_gang_info 'ARMYBAS' 1 18 0 0 1000 0 0 0 0 0 0 0 
+015C: set_zone_gang_info 'ARMYBAS' 0 18 0 0 1000 0 0 0 0 0 0 0 
+0152: set_zone_car_info 'ARMYBAS' 1 6 0 0 0 0 0 0 0 0 0 20 
+0152: set_zone_car_info 'ARMYBAS' 0 6 0 0 0 0 0 0 0 0 0 20 
+0324: set_zone_pedgroup_info 'ARMYBAS' 1 51 
+0324: set_zone_pedgroup_info 'ARMYBAS' 0 52 
+022B: create_forbidden_for_peds_cube -956.0 -355.0 5.0 -898.0 -328.0 25.0 
+022B: create_forbidden_for_peds_cube 411.0 -600.0 -10.0 451.0 -553.0 30.0 
+022B: create_forbidden_for_peds_cube 450.0 -509.0 -10.0 472.0 -489.0 30.0 
+022B: create_forbidden_for_peds_cube 355.0 -773.0 -10.0 324.0 -808.0 30.0 
+022B: create_forbidden_for_peds_cube 371.0 -503.0 -10.0 403.0 -490.0 30.0 
+022B: create_forbidden_for_peds_cube 357.0 -506.0 -10.0 384.0 -475.0 30.0 
+022B: create_forbidden_for_peds_cube 363.0 -476.0 -10.0 378.0 -468.0 30.0 
+022B: create_forbidden_for_peds_cube 383.0 -488.0 -10.0 398.3 -470.5 30.0 
+022B: create_forbidden_for_peds_cube 376.66 -453.85 -10.0 328.91 -504.02 30.0 
+022B: create_forbidden_for_peds_cube -395.0 -579.0 19.0 -338.0 -560.0 30.0 
+022B: create_forbidden_for_peds_cube -671.71 1236.53 20.0 -667.16 1231.51 25.0 
+022B: create_forbidden_for_peds_cube -733.84 1255.72 8.0 -728.34 1259.73 20.0 
+022B: create_forbidden_for_peds_cube 474.0 1250.0 17.0 356.0 1003.0 32.0 
+022B: create_forbidden_for_peds_cube 236.0 -1281.5 0.0 232.3 -1267.6 32.0 
+022B: create_forbidden_for_peds_cube -395.6 -658.6 0.0 -363.2 -636.7 32.0 
+022B: create_forbidden_for_peds_cube -237.8 -1387.1 0.0 -228.7 -1331.8 32.0 
+022B: create_forbidden_for_peds_cube -692.193 -1522.901 0.0 -575.311 -1453.378 30.0 
+022B: create_forbidden_for_peds_cube -896.098 -593.101 0.0 -855.09 -548.64 30.0 
+022B: create_forbidden_for_peds_cube -1031.494 -902.312 0.0 -949.479 -821.592 30.0 
+022B: create_forbidden_for_peds_cube -1176.038 -266.898 0.0 -1012.796 -158.26 30.0 
+022B: create_forbidden_for_peds_cube -112.495 920.349 0.0 9.705 1025.694 30.0 
+022B: create_forbidden_for_peds_cube -1012.06 181.561 0.0 -982.06 216.561 30.0 
+022B: create_forbidden_for_peds_cube -230.0 -464.5 10.0 56.85 -459.8 20.0 
+022B: create_forbidden_for_peds_cube -396.4 -583.6 15.0 -360.5 -555.6 33.0 
+022B: create_forbidden_for_peds_cube 468.0 -77.0 0.0 490.0 -54.0 30.0 
+022B: create_forbidden_for_peds_cube 354.9 -483.1 21.0 406.0 -490.0 0.0 
+01E8: create_forbidden_for_cars_cube -583.92 1371.84 8.0 -383.4 1531.17 25.0 
+01E8: create_forbidden_for_cars_cube 86.0 250.0 15.0 -100.0 281.0 30.0 
+01E8: create_forbidden_for_cars_cube 411.0 -600.0 -10.0 451.0 -553.0 30.0 
+01E8: create_forbidden_for_cars_cube 450.0 -509.0 -10.0 472.0 -489.0 30.0 
+01E8: create_forbidden_for_cars_cube 355.0 -773.0 -10.0 324.0 -808.0 30.0 
+01E8: create_forbidden_for_cars_cube 259.0 -941.0 -10.0 284.0 -925.0 30.0 
+01E8: create_forbidden_for_cars_cube -1102.0 76.0 -10.0 -1126.0 58.9 30.0 
+01E8: create_forbidden_for_cars_cube -995.0 415.0 -10.0 -960.0 785.0 30.0 
+01E8: create_forbidden_for_cars_cube -230.0 -464.5 10.0 165.85 -459.8 20.0 
+0592: set_gang 4 attack_player_with_cops 1 
+0237: set_gang 0 primary_weapon_to 17 secondary_weapon_to 0 
+0237: set_gang 1 primary_weapon_to 17 secondary_weapon_to 0 
+0237: set_gang 2 primary_weapon_to 17 secondary_weapon_to 0 
+0237: set_gang 3 primary_weapon_to 17 secondary_weapon_to 17 
+0237: set_gang 4 primary_weapon_to 17 secondary_weapon_to 17 
+0237: set_gang 5 primary_weapon_to 17 secondary_weapon_to 0 
+0237: set_gang 6 primary_weapon_to 23 secondary_weapon_to 0 
+03F1: pedtype 7 add_threat 256 
+03F1: pedtype 8 add_threat 128 
+Object.Init($ARENA_DOOR_1, #DTN_STADDOORA, -1109.615, 1330.097, 20.372)
+Object.RemoveFromMissionCleanupList($ARENA_DOOR_1)
+Object.Init($ARENA_DOOR_2, #DTN_STADDOORB, -1109.615, 1331.932, 20.372)
+Object.RemoveFromMissionCleanupList($ARENA_DOOR_2)
+Object.Init($9, #STRIPCLBDRCLSD, 97.203, -1469.731, 10.578)
+Object.RemoveFromMissionCleanupList($9)
+Object.Init($10, #COP_DR_CLOSED, 396.545, -472.883, 12.6)
+Object.RemoveFromMissionCleanupList($10)
+Object.Init($11, #OD_CLBDR_CLOSE, 490.34, -77.017, 11.598)
+Object.RemoveFromMissionCleanupList($11)
+Object.Init($12, #DTHOTRING_A, -1037.08, 1340.258, 36.552)
+Object.RemoveFromMissionCleanupList($12)
+$13 = 0 // $ = int 
+Object.Init($FILM_STUDIO_FRONT_GATE_OPEN, #CI_GATESOPEN, 10.273, 963.308, 12.258)
+Object.RemoveFromMissionCleanupList($FILM_STUDIO_FRONT_GATE_OPEN)
+Object.Init($FILM_STUDIO_BACK_GATE_OPEN, #CI_BACKGATEOPEN, -14.381, 884.12, 13.542)
+Object.RemoveFromMissionCleanupList($FILM_STUDIO_BACK_GATE_OPEN)
+Object.Init($33, #CI_JETYGATESOPEN, -115.825, 1028.55, 11.334)
+Object.RemoveFromMissionCleanupList($33)
+Object.Init($9, #STRIPCLBDRCLSD, 97.203, -1469.731, 10.578)
+Object.RemoveFromMissionCleanupList($9)
+Object.Init($978, #STRPBCKDRCLSD, 68.988, -1444.242, 10.727)
+Object.RemoveFromMissionCleanupList($978)
+Object.Init($979, #ELECTRICGATE, -1114.1, 67.0, 10.1)
+Object.Angle($979) = 90.0
+Object.RemoveFromMissionCleanupList($979)
+Object.Init($982, #DK_CAMJONESDOOR, -837.134, -901.672, 12.03)
+Object.RemoveFromMissionCleanupList($982)
+Object.Angle($982) = 0.0
+Object.Init($983, #DTS_GS_LIFTDOORL, -559.476, 784.807, 23.279)
+Object.RemoveFromMissionCleanupList($983)
+Object.Init($984, #DTS_GS_LIFTDOORR, -559.476, 779.64, 23.279)
+Object.RemoveFromMissionCleanupList($984)
+Object.Init($985, #DTS_GS_LIFTDOORL, -553.563, 790.595, 97.917)
+Object.RemoveFromMissionCleanupList($985)
+Object.Init($986, #DTS_GS_LIFTDOORR, -553.563, 785.427, 97.917)
+Object.RemoveFromMissionCleanupList($986)
+Object.Init($987, #DTS_SPOT_A, -354.531, 989.975, 45.8)
+034D: rotate_object $987 from_angle 160.0 to_angle 160.0 flag 0 
+Object.RemoveFromMissionCleanupList($987)
+Object.Init($988, #DTS_SOAPYTITWANK_A, -324.797, 991.184, 71.708)
+Object.RemoveFromMissionCleanupList($988)
+Object.Init($989, #DT_GSPOT_STAIRS, -573.897, 1374.25, 15.657)
+Object.RemoveFromMissionCleanupList($989)
+Object.Init($990, #DT_GSPOT_STAIRS, -367.067, 913.038, 16.058)
+Object.RemoveFromMissionCleanupList($990)
+034D: rotate_object $990 from_angle 157.0 to_angle 157.0 flag 0 
+Object.Init($991, #OD_CELLDOOR02, 384.098, -505.893, 9.68)
+0566: object $991 set_interior 12 
+Object.RemoveFromMissionCleanupList($991)
+Object.Angle($991) = 0.0
+Object.Init($992, #NHAITPLATDR, -981.114, 265.419, 8.939)
+Object.RemoveFromMissionCleanupList($992)
+Object.Init($993, #NHAITPLATDRR, -981.114, 267.607, 8.937)
+Object.RemoveFromMissionCleanupList($993)
+Object.Init($994, #SPAD_DR_CLOSED1, 465.375, 30.336, 33.181)
+Object.RemoveFromMissionCleanupList($994)
+Object.Init($995, #SPAD_DR_CLOSED2, 465.375, 30.336, 33.181)
+Object.RemoveFromMissionCleanupList($995)
+Object.Init($996, #SPAD_DR_CLOSED3, 464.663, 30.336, 23.881)
+Object.RemoveFromMissionCleanupList($996)
+Object.Init($997, #PH_BUILD_DR_CLOSED, 569.925, 52.0, 14.616)
+Object.RemoveFromMissionCleanupList($997)
+034D: rotate_object $997 from_angle 270.0 to_angle 270.0 flag 0 
+Object.Init($999, #DTS_BBDOOR, -598.017, 651.207, 12.025)
+Object.RemoveFromMissionCleanupList($999)
+Object.Init($1000, #GOLF_GATESOPEN, 107.81, 228.072, 20.989)
+Object.RemoveFromMissionCleanupList($1000)
+Object.Init($1001, #PRINTDOOOR, -1063.773, -278.932, 13.024)
+Object.RemoveFromMissionCleanupList($1001)
+Object.Init($1002, #UNROCKETED_WIN1, -899.851, -341.061, 14.318)
+0566: object $1002 set_interior 3 
+Object.RemoveFromMissionCleanupList($1002)
+Object.Init($1003, #BNK_GRILL01, -899.214, -333.656, 21.233)
+0566: object $1003 set_interior 3 
+Object.CollisionDetection($1003, False)
+Object.ToggleInMovingList($1003, False)
+Object.RemoveFromMissionCleanupList($1003)
+Object.Init($1004, #BNK_GRILL01, -899.214, -348.466, 21.233)
+0566: object $1004 set_interior 3 
+Object.CollisionDetection($1004, False)
+Object.ToggleInMovingList($1004, False)
+Object.RemoveFromMissionCleanupList($1004)
+Object.Init($1005, #BNK_GRILL01, -907.307, -336.618, 23.987)
+0566: object $1005 set_interior 3 
+Object.CollisionDetection($1005, False)
+Object.ToggleInMovingList($1005, False)
+Object.RemoveFromMissionCleanupList($1005)
+Object.Init($1006, #BNK_GRILL01, -907.307, -345.504, 23.987)
+0566: object $1006 set_interior 3 
+Object.CollisionDetection($1006, False)
+Object.ToggleInMovingList($1006, False)
+Object.RemoveFromMissionCleanupList($1006)
+Object.Init($1007, #BNK_GRILL01, -915.401, -336.6184, 23.987)
+0566: object $1007 set_interior 3 
+Object.CollisionDetection($1007, False)
+Object.ToggleInMovingList($1007, False)
+Object.RemoveFromMissionCleanupList($1007)
+Object.Init($1008, #BNK_GRILL01, -915.401, -345.5, 23.987)
+0566: object $1008 set_interior 3 
+Object.CollisionDetection($1008, False)
+Object.ToggleInMovingList($1008, False)
+Object.RemoveFromMissionCleanupList($1008)
+014B: $28 = init_car_generator 205 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1022.6 -868.6 12.2 angle 175.0 
+014C: set_parked_car_generator $28 cars_to_generate_to 101 
+014B: $29 = init_car_generator 145 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1014.1 -867.4 12.2 angle 188.0 
+014C: set_parked_car_generator $29 cars_to_generate_to 0 
+014B: $30 = init_car_generator 162 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1720.3 -239.6 14.8 angle 92.0 
+014C: set_parked_car_generator $30 cars_to_generate_to 101 
+014B: $31 = init_car_generator 155 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1681.2 -103.7 14.7 angle 180.0 
+014C: set_parked_car_generator $31 cars_to_generate_to 101 
+014B: $32 = init_car_generator 155 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -72.4 -1607.9 12.7 angle 0.0 
+014C: set_parked_car_generator $32 cars_to_generate_to 101 
+014B: $1009 = init_car_generator 145 75 71 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -401.2715 -534.6655 11.7534 angle 149.2032 
+014C: set_parked_car_generator $1009 cars_to_generate_to 0 
+014B: $1010 = init_car_generator 236 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -870.4673 -717.2427 10.1069 angle 94.1213 
+014C: set_parked_car_generator $1010 cars_to_generate_to 101 
+014B: $1011 = init_car_generator 201 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -865.2949 1158.359 9.8204 angle 2.347 
+014C: set_parked_car_generator $1011 cars_to_generate_to 0 
+014B: $1012 = init_car_generator 185 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1034.889 -1452.775 10.7 angle 248.8739 
+014C: set_parked_car_generator $1012 cars_to_generate_to 0 
+014B: $1013 = init_car_generator 203 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 403.0317 -178.5811 5.7 angle 350.0462 
+014C: set_parked_car_generator $1013 cars_to_generate_to 101 
+014B: $1014 = init_car_generator 203 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 231.0536 -130.1794 5.7 angle 357.5423 
+014C: set_parked_car_generator $1014 cars_to_generate_to 101 
+014B: $1015 = init_car_generator 160 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -69.2982 72.6166 5.7 angle 104.6175 
+014C: set_parked_car_generator $1015 cars_to_generate_to 101 
+014B: $1016 = init_car_generator 184 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 237.4778 302.2366 5.7 angle 86.2011 
+014C: set_parked_car_generator $1016 cars_to_generate_to 101 
+014B: $1017 = init_car_generator 138 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1268.25 83.833 10.4182 angle 179.549 
+014C: set_parked_car_generator $1017 cars_to_generate_to 101 
+014B: $1018 = init_car_generator 158 -1 -1 force_spawn 0 alarm 0 door_lock 70 min_delay 0 max_delay 10000 at -870.2545 -353.9059 10.0475 angle 357.8359 
+014C: set_parked_car_generator $1018 cars_to_generate_to 101 
+014B: $1019 = init_car_generator 163 -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -1709.024 -287.6807 13.8276 angle 0.0 
+014C: set_parked_car_generator $1019 cars_to_generate_to 101 
+014B: $1020 = init_car_generator 163 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -1742.649 -214.2183 13.8276 angle 102.0596 
+014C: set_parked_car_generator $1020 cars_to_generate_to 101 
+014B: $1021 = init_car_generator 200 43 72 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1701.372 -234.7718 13.8276 angle 87.8929 
+014C: set_parked_car_generator $1021 cars_to_generate_to 0 
+014B: $1022 = init_car_generator 164 0 0 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1160.0 -605.0 11.75 angle 10.0 
+014C: set_parked_car_generator $1022 cars_to_generate_to 0 
+014B: $1025 = init_car_generator 197 6 1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 242.6 -1274.6 10.0 angle 165.0 
+014C: set_parked_car_generator $1025 cars_to_generate_to 101 
+014B: $1026 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 11.5 -1382.0 9.6 angle 261.0 
+014C: set_parked_car_generator $1026 cars_to_generate_to 101 
+014B: $1027 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 19.8 -991.8 9.7 angle 0.0 
+014C: set_parked_car_generator $1027 cars_to_generate_to 101 
+014B: $1028 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -6.4 -991.3 9.7 angle 180.0 
+014C: set_parked_car_generator $1028 cars_to_generate_to 101 
+014B: $1029 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 12.8 -1015.1 9.7 angle 180.0 
+014C: set_parked_car_generator $1029 cars_to_generate_to 101 
+014B: $1030 = init_car_generator -1 -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at -35.7 -1013.6 9.7 angle 0.0 
+014C: set_parked_car_generator $1030 cars_to_generate_to 101 
+014B: $1031 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 81.3 -871.8 9.7 angle 57.0 
+014C: set_parked_car_generator $1031 cars_to_generate_to 101 
+014B: $1032 = init_car_generator 191 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -7.1 -1205.1 9.6 angle 181.0 
+014C: set_parked_car_generator $1032 cars_to_generate_to 101 
+014B: $1033 = init_car_generator 204 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 37.9 -1320.4 9.6 angle 355.0 
+014C: set_parked_car_generator $1033 cars_to_generate_to 101 
+014B: $1035 = init_car_generator 191 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 507.4 -308.8 12.8 angle 176.0 
+014C: set_parked_car_generator $1035 cars_to_generate_to 101 
+014B: $1036 = init_car_generator 206 -1 -1 force_spawn 0 alarm 70 door_lock 0 min_delay 0 max_delay 10000 at 19.8 -1246.9 10.1 angle 0.0 
+014C: set_parked_car_generator $1036 cars_to_generate_to 101 
+014B: $1037 = init_car_generator 229 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 307.9 1254.6 27.5 angle 180.5 
+014C: set_parked_car_generator $1037 cars_to_generate_to 101 
+014B: $1038 = init_car_generator -1 -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at 277.4 -1175.3 11.0 angle 350.0 
+014C: set_parked_car_generator $1038 cars_to_generate_to 101 
+014B: $1039 = init_car_generator -1 -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at 278.8 -1074.0 11.0 angle 172.0 
+014C: set_parked_car_generator $1039 cars_to_generate_to 101 
+014B: $1040 = init_car_generator -1 -1 -1 force_spawn 0 alarm 60 door_lock 0 min_delay 0 max_delay 10000 at 365.3 -837.9 11.0 angle 335.0 
+014C: set_parked_car_generator $1040 cars_to_generate_to 101 
+014B: $1041 = init_car_generator -1 -1 -1 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at 237.2 -1377.5 10.9 angle 170.0 
+014C: set_parked_car_generator $1041 cars_to_generate_to 101 
+014B: $1042 = init_car_generator 192 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 127.4 -818.5 9.5 angle 250.6 
+014C: set_parked_car_generator $1042 cars_to_generate_to 0 
+014B: $1043 = init_car_generator 192 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 382.2 -632.8 11.0 angle 9.9 
+014C: set_parked_car_generator $1043 cars_to_generate_to 0 
+014B: $1044 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 235.7 -893.3 11.0 angle 150.0 
+014C: set_parked_car_generator $1044 cars_to_generate_to 101 
+014B: $1045 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 150.6 -995.6 11.0 angle 353.0 
+014C: set_parked_car_generator $1045 cars_to_generate_to 101 
+014B: $1046 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 122.3 -1107.7 9.7 angle 175.0 
+014C: set_parked_car_generator $1046 cars_to_generate_to 101 
+014B: $1047 = init_car_generator 136 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -313.4 -1236.4 5.0 angle 180.0 
+014C: set_parked_car_generator $1047 cars_to_generate_to 101 
+014B: $1048 = init_car_generator 182 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -328.4 -1317.7 5.0 angle 0.0 
+014C: set_parked_car_generator $1048 cars_to_generate_to 101 
+014B: $1049 = init_car_generator 183 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -286.8 -1353.1 5.0 angle 90.0 
+014C: set_parked_car_generator $1049 cars_to_generate_to 101 
+014B: $1050 = init_car_generator 214 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -314.0 -1318.3 5.0 angle 0.0 
+014C: set_parked_car_generator $1050 cars_to_generate_to 101 
+014B: $1051 = init_car_generator 192 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 376.9 477.0 11.2 angle 282.0 
+014C: set_parked_car_generator $1051 cars_to_generate_to 0 
+014B: $1052 = init_car_generator 229 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 718.465 701.3998 12.394 angle 320.7776 
+014C: set_parked_car_generator $1052 cars_to_generate_to 0 
+014B: $1053 = init_car_generator 191 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -256.6 -1275.4 7.4 angle 348.0 
+014C: set_parked_car_generator $1053 cars_to_generate_to 101 
+014B: $1054 = init_car_generator 145 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -236.6 -1374.6 7.1 angle 280.3 
+014C: set_parked_car_generator $1054 cars_to_generate_to 0 
+014B: $1055 = init_car_generator -1 -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -168.9 -1392.2 3.1 angle 280.0 
+014C: set_parked_car_generator $1055 cars_to_generate_to 101 
+014B: $1056 = init_car_generator -1 -1 -1 force_spawn 0 alarm 60 door_lock 0 min_delay 0 max_delay 10000 at -140.2 -1414.1 3.1 angle 108.7 
+014C: set_parked_car_generator $1056 cars_to_generate_to 101 
+014B: $1057 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -142.1 -1373.0 3.1 angle 287.3 
+014C: set_parked_car_generator $1057 cars_to_generate_to 101 
+014B: $1058 = init_car_generator 187 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 393.9 -1736.4 8.8 angle 249.6 
+014C: set_parked_car_generator $1058 cars_to_generate_to 0 
+014B: $1059 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 198.2 -504.9 10.9 angle 90.0 
+014C: set_parked_car_generator $1059 cars_to_generate_to 101 
+014B: $1060 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 128.8 -515.2 13.1 angle 270.0 
+014C: set_parked_car_generator $1060 cars_to_generate_to 101 
+014B: $1061 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 215.7 -418.6 9.7 angle 170.0 
+014C: set_parked_car_generator $1061 cars_to_generate_to 101 
+014B: $1062 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 222.7 -351.1 9.9 angle 73.0 
+014C: set_parked_car_generator $1062 cars_to_generate_to 101 
+014B: $1063 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 228.2 -222.2 10.9 angle 250.0 
+014C: set_parked_car_generator $1063 cars_to_generate_to 101 
+014B: $1064 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 456.5 2.8 10.0 angle 97.4 
+014C: set_parked_car_generator $1064 cars_to_generate_to 101 
+014B: $1065 = init_car_generator -1 -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at 478.5 -15.9 9.8 angle 99.7 
+014C: set_parked_car_generator $1065 cars_to_generate_to 101 
+014B: $1066 = init_car_generator 178 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 413.8 97.7 10.5 angle 301.3 
+014C: set_parked_car_generator $1066 cars_to_generate_to 101 
+014B: $1067 = init_car_generator 170 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 483.9 -42.8 9.1 angle 0.0 
+014C: set_parked_car_generator $1067 cars_to_generate_to 101 
+014B: $1068 = init_car_generator 193 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 301.2 265.6 15.3 angle 278.4 
+014C: set_parked_car_generator $1068 cars_to_generate_to 0 
+014B: $1069 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 286.3 394.4 12.3 angle 265.2 
+014C: set_parked_car_generator $1069 cars_to_generate_to 101 
+014B: $1070 = init_car_generator -1 -1 -1 force_spawn 0 alarm 40 door_lock 0 min_delay 0 max_delay 10000 at 573.0 586.1 12.5 angle 74.0 
+014C: set_parked_car_generator $1070 cars_to_generate_to 101 
+014B: $1071 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 604.4 758.8 12.6 angle 90.0 
+014C: set_parked_car_generator $1071 cars_to_generate_to 101 
+014B: $1072 = init_car_generator 193 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 388.6 834.5 11.9 angle 273.0 
+014C: set_parked_car_generator $1072 cars_to_generate_to 101 
+014B: $1073 = init_car_generator -1 -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at 255.4 1297.5 16.5 angle 193.4 
+014C: set_parked_car_generator $1073 cars_to_generate_to 101 
+014B: $1074 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 552.5 1246.8 15.9 angle 88.0 
+014C: set_parked_car_generator $1074 cars_to_generate_to 101 
+014B: $1075 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 555.1 1032.6 17.9 angle 9.0 
+014C: set_parked_car_generator $1075 cars_to_generate_to 101 
+014B: $1076 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 563.4 1053.6 17.6 angle 98.0 
+014C: set_parked_car_generator $1076 cars_to_generate_to 101 
+014B: $1077 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 430.3 957.0 12.3 angle 294.0 
+014C: set_parked_car_generator $1077 cars_to_generate_to 101 
+014B: $1078 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 309.2 1204.4 16.2 angle 91.0 
+014C: set_parked_car_generator $1078 cars_to_generate_to 101 
+014B: $1079 = init_car_generator 173 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -101.6 1011.5 11.5 angle 270.3 
+014C: set_parked_car_generator $1079 cars_to_generate_to 101 
+014B: $1080 = init_car_generator 200 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -36.8 874.0 11.1 angle 194.2 
+014C: set_parked_car_generator $1080 cars_to_generate_to 0 
+014B: $1081 = init_car_generator 191 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -6.4 957.1 9.4 angle 355.1 
+014C: set_parked_car_generator $1081 cars_to_generate_to 101 
+014B: $1082 = init_car_generator 190 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -141.1 1030.4 5.5 angle 180.0 
+014C: set_parked_car_generator $1082 cars_to_generate_to 101 
+014B: $1083 = init_car_generator 179 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 16.4 1139.9 18.5 angle 265.0 
+014C: set_parked_car_generator $1083 cars_to_generate_to 101 
+014B: $1084 = init_car_generator 205 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -363.0 -532.2 12.0 angle 355.5 
+014C: set_parked_car_generator $1084 cars_to_generate_to 101 
+014B: $1085 = init_car_generator 225 0 0 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -394.7 -533.7 12.0 angle 355.5 
+014C: set_parked_car_generator $1085 cars_to_generate_to 101 
+014B: $1086 = init_car_generator 145 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -221.3 -422.7 11.2 angle 90.0 
+014C: set_parked_car_generator $1086 cars_to_generate_to 0 
+014B: $1087 = init_car_generator 132 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -492.8 -429.4 10.6 angle 0.0 
+014C: set_parked_car_generator $1087 cars_to_generate_to 101 
+014B: $1088 = init_car_generator 206 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -558.8 -450.7 10.4 angle 0.0 
+014C: set_parked_car_generator $1088 cars_to_generate_to 101 
+014B: $1089 = init_car_generator 175 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -678.8 -415.1 9.5 angle 0.0 
+014C: set_parked_car_generator $1089 cars_to_generate_to 101 
+014B: $1090 = init_car_generator 130 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -593.6 -318.3 10.4 angle 130.0 
+014C: set_parked_car_generator $1090 cars_to_generate_to 0 
+014B: $1091 = init_car_generator 210 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -267.0 -303.6 9.5 angle 160.0 
+014C: set_parked_car_generator $1091 cars_to_generate_to 0 
+014B: $1092 = init_car_generator 178 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -350.8 -534.9 11.4 angle 86.5 
+014C: set_parked_car_generator $1092 cars_to_generate_to 101 
+014B: $1093 = init_car_generator 133 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -751.5 -1359.4 10.6 angle 69.0 
+014C: set_parked_car_generator $1093 cars_to_generate_to 101 
+014B: $1094 = init_car_generator 143 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -717.2 -1462.2 10.3 angle 0.0 
+014C: set_parked_car_generator $1094 cars_to_generate_to 101 
+014B: $1095 = init_car_generator 170 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -741.7 -1549.5 11.5 angle 336.0 
+014C: set_parked_car_generator $1095 cars_to_generate_to 101 
+014B: $1096 = init_car_generator 229 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -898.9971 -1462.046 10.94 angle 10.8204 
+014C: set_parked_car_generator $1096 cars_to_generate_to 0 
+014B: $1097 = init_car_generator 173 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -946.3 -1379.5 11.5 angle 69.0 
+014C: set_parked_car_generator $1097 cars_to_generate_to 101 
+014B: $1098 = init_car_generator 229 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -947.7 -1264.1 11.3 angle 164.0 
+014C: set_parked_car_generator $1098 cars_to_generate_to 0 
+014B: $1099 = init_car_generator 223 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -592.3 -1510.3 5.0 angle 250.0 
+014C: set_parked_car_generator $1099 cars_to_generate_to 101 
+014B: $1100 = init_car_generator 176 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -576.4 -1505.2 5.0 angle 250.0 
+014C: set_parked_car_generator $1100 cars_to_generate_to 101 
+014B: $1101 = init_car_generator 202 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -755.9 -1077.5 5.0 angle 0.0 
+014C: set_parked_car_generator $1101 cars_to_generate_to 101 
+014B: $1102 = init_car_generator 178 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1028.2 82.2 11.2 angle 171.9 
+014C: set_parked_car_generator $1102 cars_to_generate_to 101 
+014B: $1103 = init_car_generator 200 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1107.6 292.9 11.5 angle 268.3 
+014C: set_parked_car_generator $1103 cars_to_generate_to 0 
+014B: $1104 = init_car_generator 142 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -964.94 133.54 8.23 angle 271.61 
+014C: set_parked_car_generator $1104 cars_to_generate_to 0 
+014B: $1105 = init_car_generator 153 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -867.6105 -572.2039 10.11294 angle 277.5232 
+014C: set_parked_car_generator $1105 cars_to_generate_to 101 
+014B: $1106 = init_car_generator 178 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -904.2 808.9 10.5 angle 269.6 
+014C: set_parked_car_generator $1106 cars_to_generate_to 101 
+014B: $1107 = init_car_generator 130 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -426.0 1412.5 10.5 angle 80.0 
+014C: set_parked_car_generator $1107 cars_to_generate_to 0 
+014B: $1108 = init_car_generator 198 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -425.8 1407.0 9.8 angle 80.0 
+014C: set_parked_car_generator $1108 cars_to_generate_to 101 
+014B: $1109 = init_car_generator 147 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -872.843 692.633 10.997 angle 359.746 
+014C: set_parked_car_generator $1109 cars_to_generate_to 0 
+014B: $1110 = init_car_generator 166 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -592.301 655.117 10.06 angle 9.794 
+014C: set_parked_car_generator $1110 cars_to_generate_to 101 
+014B: $1111 = init_car_generator 166 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -589.212 655.117 10.06 angle 9.794 
+014C: set_parked_car_generator $1111 cars_to_generate_to 101 
+014B: $1112 = init_car_generator 191 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -596.17 676.928 11.271 angle 180.0 
+014C: set_parked_car_generator $1112 cars_to_generate_to 101 
+014B: $1113 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -756.7 976.3 10.4 angle 0.0 
+014C: set_parked_car_generator $1113 cars_to_generate_to 101 
+014B: $1114 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -803.3 964.1 10.4 angle 270.0 
+014C: set_parked_car_generator $1114 cars_to_generate_to 101 
+014B: $1115 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -752.6 1003.0 10.4 angle 0.0 
+014C: set_parked_car_generator $1115 cars_to_generate_to 101 
+014B: $1116 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -781.5 996.5 10.4 angle 90.0 
+014C: set_parked_car_generator $1116 cars_to_generate_to 101 
+014B: $1117 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -772.7 1031.8 10.4 angle 270.0 
+014C: set_parked_car_generator $1117 cars_to_generate_to 101 
+014B: $1118 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -781.7 1077.9 10.4 angle 90.0 
+014C: set_parked_car_generator $1118 cars_to_generate_to 101 
+014B: $1119 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -821.7 563.4 10.5 angle 0.0 
+014C: set_parked_car_generator $1119 cars_to_generate_to 101 
+014B: $1120 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -851.0 581.3 10.5 angle 180.0 
+014C: set_parked_car_generator $1120 cars_to_generate_to 101 
+014B: $1121 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -869.5 533.0 10.5 angle 180.0 
+014C: set_parked_car_generator $1121 cars_to_generate_to 101 
+014B: $1122 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -821.6 499.7 10.5 angle 90.0 
+014C: set_parked_car_generator $1122 cars_to_generate_to 101 
+014B: $1123 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1324.5 1137.0 9.3 angle 180.0 
+014C: set_parked_car_generator $1123 cars_to_generate_to 101 
+014B: $1124 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1353.8 1158.0 9.3 angle 0.0 
+014C: set_parked_car_generator $1124 cars_to_generate_to 101 
+014B: $1125 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1444.8 1162.7 9.3 angle 160.0 
+014C: set_parked_car_generator $1125 cars_to_generate_to 101 
+014B: $1126 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1543.8 1227.0 9.3 angle 30.0 
+014C: set_parked_car_generator $1126 cars_to_generate_to 101 
+014B: $1127 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1562.9 1282.4 9.3 angle 98.0 
+014C: set_parked_car_generator $1127 cars_to_generate_to 101 
+014B: $1128 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1587.7 1313.8 9.3 angle 87.0 
+014C: set_parked_car_generator $1128 cars_to_generate_to 101 
+014B: $1129 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1568.1 1351.0 9.3 angle 261.9 
+014C: set_parked_car_generator $1129 cars_to_generate_to 101 
+014B: $1130 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1562.7 1406.9 9.3 angle 150.1 
+014C: set_parked_car_generator $1130 cars_to_generate_to 101 
+014B: $1131 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1445.3 1499.0 9.3 angle 20.6 
+014C: set_parked_car_generator $1131 cars_to_generate_to 101 
+014B: $1132 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1349.1 1503.7 9.3 angle 180.0 
+014C: set_parked_car_generator $1132 cars_to_generate_to 101 
+014B: $1133 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1318.7 1524.1 9.3 angle 180.0 
+014C: set_parked_car_generator $1133 cars_to_generate_to 101 
+014B: $1134 = init_car_generator 188 -1 -1 force_spawn 1 alarm 80 door_lock 0 min_delay 0 max_delay 10000 at 386.0 1227.0 19.4 angle 90.0 
+014C: set_parked_car_generator $1134 cars_to_generate_to 0 
+014B: $1135 = init_car_generator 173 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1377.7 -961.4 14.4 angle 177.9 
+014C: set_parked_car_generator $1135 cars_to_generate_to 101 
+014B: $1136 = init_car_generator 174 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1142.5 -939.3 14.6 angle 89.6 
+014C: set_parked_car_generator $1136 cars_to_generate_to 0 
+014B: $1137 = init_car_generator 229 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1235.171 -1235.171 14.77 angle 337.839 
+014C: set_parked_car_generator $1137 cars_to_generate_to 0 
+014B: $1138 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1584.2 -656.4 14.0 angle 0.0 
+014C: set_parked_car_generator $1138 cars_to_generate_to 101 
+014B: $1139 = init_car_generator -1 -1 -1 force_spawn 0 alarm 20 door_lock 0 min_delay 0 max_delay 10000 at -1606.5 -633.8 14.0 angle 180.0 
+014C: set_parked_car_generator $1139 cars_to_generate_to 101 
+014B: $1140 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1628.0 -667.0 14.0 angle 180.0 
+014C: set_parked_car_generator $1140 cars_to_generate_to 101 
+014B: $1141 = init_car_generator -1 -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -1637.5 -624.6 14.0 angle 0.0 
+014C: set_parked_car_generator $1141 cars_to_generate_to 101 
+014B: $1142 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1659.6 -646.4 14.0 angle 180.0 
+014C: set_parked_car_generator $1142 cars_to_generate_to 101 
+014B: $1143 = init_car_generator -1 -1 -1 force_spawn 0 alarm 30 door_lock 0 min_delay 0 max_delay 10000 at -1706.0 -655.9 14.0 angle 90.0 
+014C: set_parked_car_generator $1143 cars_to_generate_to 101 
+014B: $1144 = init_car_generator -1 -1 -1 force_spawn 0 alarm 50 door_lock 0 min_delay 0 max_delay 10000 at -1691.5 -614.8 14.0 angle 0.0 
+014C: set_parked_car_generator $1144 cars_to_generate_to 101 
+014B: $1145 = init_car_generator -1 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -1573.3 -614.7 14.0 angle 0.0 
+014C: set_parked_car_generator $1145 cars_to_generate_to 101 
+014B: $1146 = init_car_generator 156 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 516.1 503.1 10.5 angle 0.0 
+014C: set_parked_car_generator $1146 cars_to_generate_to 0 
+014B: $1147 = init_car_generator 156 -1 -1 force_spawn 0 alarm 0 door_lock 40 min_delay 0 max_delay 10000 at 493.2045 503.683 10.4612 angle 179.9753 
+014C: set_parked_car_generator $1147 cars_to_generate_to 0 
+014B: $1148 = init_car_generator 156 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 355.7 -511.4 11.6 angle 320.0 
+014C: set_parked_car_generator $1148 cars_to_generate_to 0 
+014B: $1149 = init_car_generator 156 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 372.3 -525.7 11.6 angle 140.0 
+014C: set_parked_car_generator $1149 cars_to_generate_to 0 
+014B: $1150 = init_car_generator 156 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -855.4 -665.4 10.6 angle 0.0 
+014C: set_parked_car_generator $1150 cars_to_generate_to 0 
+014B: $1151 = init_car_generator 156 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -844.8 -675.6 10.6 angle 90.0 
+014C: set_parked_car_generator $1151 cars_to_generate_to 0 
+014B: $1152 = init_car_generator 156 -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -665.2 777.6 11.0 angle 180.0 
+014C: set_parked_car_generator $1152 cars_to_generate_to 0 
+014B: $1146A = init_car_generator 236 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 516.1 503.1 10.5 angle 0.0 
+014C: set_parked_car_generator $1146 cars_to_generate_to 101 
+014B: $1147A = init_car_generator 157 -1 -1 force_spawn 0 alarm 0 door_lock 40 min_delay 0 max_delay 10000 at 493.2045 503.683 10.4612 angle 179.9753 
+014C: set_parked_car_generator $1147 cars_to_generate_to 101 
+014B: $1148A = init_car_generator 236 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 355.7 -511.4 11.6 angle 320.0 
+014C: set_parked_car_generator $1148 cars_to_generate_to 101 
+014B: $1149A = init_car_generator 157 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 372.3 -525.7 11.6 angle 140.0 
+014C: set_parked_car_generator $1149 cars_to_generate_to 101 
+014B: $1150A = init_car_generator 236 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -855.4 -665.4 10.6 angle 0.0 
+014C: set_parked_car_generator $1150 cars_to_generate_to 101 
+014B: $1151A = init_car_generator 157 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -844.8 -675.6 10.6 angle 90.0 
+014C: set_parked_car_generator $1151 cars_to_generate_to 101 
+014B: $1152A = init_car_generator 236 -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -665.2 777.6 11.0 angle 180.0 
+014C: set_parked_car_generator $1152 cars_to_generate_to 100 
+014B: $1146B = init_car_generator 220 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 516.1 503.1 10.5 angle 0.0 
+014C: set_parked_car_generator $1146 cars_to_generate_to 0 
+014B: $1147B = init_car_generator 220 -1 -1 force_spawn 0 alarm 0 door_lock 40 min_delay 0 max_delay 10000 at 493.2045 503.683 10.4612 angle 179.9753 
+014C: set_parked_car_generator $1147 cars_to_generate_to 0 
+014B: $1148B = init_car_generator 220 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 355.7 -511.4 11.6 angle 320.0 
+014C: set_parked_car_generator $1148 cars_to_generate_to 0 
+014B: $1149B = init_car_generator 220 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at 372.3 -525.7 11.6 angle 140.0 
+014C: set_parked_car_generator $1149 cars_to_generate_to 0 
+014B: $1150B = init_car_generator 220 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -855.4 -665.4 10.6 angle 0.0 
+014C: set_parked_car_generator $1150 cars_to_generate_to 0 
+014B: $1151B = init_car_generator 220 -1 -1 force_spawn 0 alarm 0 door_lock 30 min_delay 0 max_delay 10000 at -844.8 -675.6 10.6 angle 90.0 
+014C: set_parked_car_generator $1151 cars_to_generate_to 0 
+014B: $1152B = init_car_generator 220 -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -665.2 777.6 11.0 angle 180.0 
+014C: set_parked_car_generator $1152 cars_to_generate_to 0 
+014B: $1153 = init_car_generator 146 -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at 472.5 701.2 10.5 angle 90.0 
+014C: set_parked_car_generator $1153 cars_to_generate_to 101 
+014B: $1154 = init_car_generator 146 -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -111.9 -949.9 10.2 angle 280.0 
+014C: set_parked_car_generator $1154 cars_to_generate_to 101 
+014B: $1155 = init_car_generator 146 -1 -1 force_spawn 0 alarm 0 door_lock 10 min_delay 0 max_delay 10000 at -776.1 1135.1 11.5 angle 0.0 
+014C: set_parked_car_generator $1155 cars_to_generate_to 101 
+014B: $1156 = init_car_generator 137 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -694.9 917.3 10.8 angle 270.0 
+014C: set_parked_car_generator $1156 cars_to_generate_to 101 
+014B: $1157 = init_car_generator 210 -1 -1 force_spawn 0 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at 114.6977 252.3439 20.6832 angle 105.6803 
+014C: set_parked_car_generator $1157 cars_to_generate_to 0 
+014B: $1158 = init_car_generator 205 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -363.0 -532.2 12.0 angle 0.0 
+014C: set_parked_car_generator $1158 cars_to_generate_to 101 
+014B: $DOCP = init_car_generator 169 -1 -1 force_spawn 1 alarm 0 door_lock 0 min_delay 0 max_delay 10000 at -991.8661 -889.3837 12.8986 angle 45.0 
+014C: set_parked_car_generator $DOCP cars_to_generate_to 0 
+Pickup.Create($1159, 269, 2, 30.0, -1330.9, 13.0)
+Pickup.Create($1160, 264, 2, 206.7, -1254.4, 12.0)
+032B: $1161 = create_weapon_pickup 274 15 ammo 34 at -228.4 -1318.2 9.1 
+032B: $1162 = create_weapon_pickup 274 15 ammo 34 at 340.5 -249.5 12.5 
+032B: $1163 = create_weapon_pickup 277 15 ammo 16 at 42.3 -959.2 21.8 
+032B: $1164 = create_weapon_pickup 277 15 ammo 16 at 568.9 -449.3 11.1 
+032B: $1165 = create_weapon_pickup 281 15 ammo 100 at 287.9 50.7 10.8 
+032B: $1166 = create_weapon_pickup 270 15 ammo 4 at 362.2 -500.5 12.3 
+Pickup.Create($1167, 266, 15, 402.6, 102.5, 11.4)
+032B: $1168 = create_weapon_pickup 276 15 ammo 60 at 418.9 589.9 18.3 
+Pickup.Create($1169, 268, 15, 476.9, 1014.9, 19.2)
+Pickup.Create($1170, 262, 15, 402.4, -488.3, 12.4)
+Pickup.Create($1171, 259, 15, 224.0, -1207.5, 11.0)
+Pickup.Create($1172, 263, 15, 118.7, -1546.1, 10.8)
+Pickup.Create($1173, 267, 15, 56.6, -459.3, 11.4)
+032B: $1174 = create_weapon_pickup 282 15 ammo 60 at 5.4 -1277.0 10.4 
+032B: $1175 = create_weapon_pickup 282 15 ammo 60 at 157.0 -895.3 12.3 
+032B: $1176 = create_weapon_pickup 291 15 ammo 4 at 556.6 207.4 14.5 
+032B: $1177 = create_weapon_pickup 280 15 ammo 60 at -32.8 1019.2 13.0 
+032B: $1178 = create_weapon_pickup 282 15 ammo 60 at 17.3 1145.7 23.5 
+Pickup.Create($1179, 261, 2, 95.0, 279.2, 21.8)
+032B: $1180 = create_weapon_pickup 288 15 ammo 300 at -546.0 -418.9 9.8 
+032B: $1181 = create_weapon_pickup 285 15 ammo 20 at -476.4 -571.2 12.9 
+Pickup.Create($1182, 268, 15, -554.11, -547.7, 10.7)
+032B: $1183 = create_weapon_pickup 272 15 ammo 4 at -755.7 1347.5 11.8 
+032B: $1184 = create_weapon_pickup 282 15 ammo 60 at -545.8 694.6 11.0 
+032B: $1185 = create_weapon_pickup 280 15 ammo 60 at -980.4 118.7 9.3 
+032B: $1186 = create_weapon_pickup 280 15 ammo 60 at -1221.0 -641.6 11.7 
+032B: $1187 = create_weapon_pickup 285 15 ammo 20 at -742.1 -949.9 9.9 
+032B: $1188 = create_weapon_pickup 287 15 ammo 4 at -995.1 -1178.1 13.6 
+032B: $1189 = create_weapon_pickup 283 15 ammo 60 at -713.3 -1466.0 11.2 
+032B: $1190 = create_weapon_pickup 288 15 ammo 300 at -1015.1 -1392.9 11.5 
+032B: $1191 = create_weapon_pickup 278 15 ammo 14 at -1359.0 -742.2 14.9 
+032B: $1192 = create_weapon_pickup 289 15 ammo 100 at -1744.9 -288.9 29.7 
+032B: $1193 = create_weapon_pickup 270 15 ammo 4 at -939.8 -464.9 10.9 
+032B: $1194 = create_weapon_pickup 275 15 ammo 12 at -1182.7 -61.1 11.4 
+032B: $1195 = create_weapon_pickup 279 15 ammo 10 at -1305.2 177.1 11.4 
+032B: $1196 = create_weapon_pickup 285 15 ammo 14 at -1114.3 -602.0 26.0 
+Pickup.Create($1198, 269, 15, -310.7, -551.2, 10.3)
+032B: $1199 = create_weapon_pickup 275 15 ammo 24 at -306.7 -551.2 10.3 
+032B: $1200 = create_weapon_pickup 276 15 ammo 60 at -302.7 -551.2 10.3 
+032B: $1201 = create_weapon_pickup 285 15 ammo 28 at -298.7 -551.2 10.3 
+032B: $1202 = create_weapon_pickup 290 15 ammo 500 at -294.7 -551.2 10.3 
+032B: $1203 = create_weapon_pickup 287 15 ammo 8 at -290.7 -551.2 10.3 
+Pickup.Create($1205, 269, 15, 210.2, -1274.7, 19.2)
+032B: $1206 = create_weapon_pickup 275 15 ammo 24 at 206.2 -1273.7 19.2 
+032B: $1207 = create_weapon_pickup 288 15 ammo 60 at 224.2 -1273.1 19.2 
+032B: $1208 = create_weapon_pickup 285 15 ammo 28 at 228.2 -1279.2 19.2 
+032B: $1209 = create_weapon_pickup 290 15 ammo 500 at 226.0 -1268.6 20.1 
+032B: $1210 = create_weapon_pickup 287 15 ammo 8 at 231.7 -1264.4 20.1 
+Pickup.Create($1212, 269, 15, -817.1, 1344.7, 66.4)
+032B: $1213 = create_weapon_pickup 275 15 ammo 24 at -821.1 1344.7 66.4 
+032B: $1214 = create_weapon_pickup 288 15 ammo 60 at -825.1 1344.7 66.4 
+032B: $1215 = create_weapon_pickup 285 15 ammo 28 at -830.1 1344.7 66.4 
+032B: $1216 = create_weapon_pickup 290 15 ammo 500 at -833.1 1344.7 66.4 
+032B: $1217 = create_weapon_pickup 287 15 ammo 8 at -839.0 1351.6 66.4 
+032B: $1288 = create_weapon_pickup 280 15 ammo 120 at -330.9 -569.7 11.6 
+032B: $1289 = create_weapon_pickup 277 15 ammo 50 at -335.9 -569.5 11.6 
+$1277 = 0 // $ = int 
+Pickup.Create($1278, 289, 1, -1105.9, 335.3, 11.1)
+Pickup.Create($1279, 287, 1, -1105.9, 330.3, 11.1)
+Pickup.Create($1280, 290, 1, -1105.9, 325.3, 11.1)
+Pickup.Create($1281, 291, 1, -1105.9, 320.3, 11.1)
+Object.Init($1283, #MAN_DOOROPEN, -378.542, -554.006, 21.96)
+Object.RemoveFromMissionCleanupList($1283)
+Object.Init($1284, #COMGATE1OPEN, -712.524, -489.428, 12.549)
+Object.RemoveFromMissionCleanupList($1284)
+Object.Init($1285, #COMGATE2OPEN, -183.824, -473.223, 12.615)
+Object.RemoveFromMissionCleanupList($1285)
+wait 0 
+Player.InfiniteRun($PLAYER_CHAR, True)
+055D: make_player $PLAYER_CHAR fireproof 1 
+055E: set_player $PLAYER_CHAR max_health += 100 
+055F: set_player $PLAYER_CHAR max_armour += 100 
+035E: set_player $PLAYER_CHAR armour_to 200 
+0222: set_player $PLAYER_CHAR health_to 200 
+04F8: define_police_trigger_type 1 if_player_with_wanted_level_in_rectangle 225.0 -1244.0 227.4 -1248.5 spawn_policeA_at 249.0 -1255.0 headed_towards 246.0 -1250.6 spawn_policeB_at 208.4 -1238.4 headed_towards 209.6 -1243.5 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle 235.3 -1299.6 261.1 -1270.7 spawn_policeA_at 212.2 -1309.6 headed_towards 228.0 -1311.3 spawn_policeB_at 221.2 -1309.6 headed_towards 228.0 -1311.3 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle 220.0 -1144.0 232.0 -1136.0 spawn_policeA_at 190.5 -1101.5 headed_towards 185.5 -1122.7 spawn_policeB_at 278.8 -1112.0 headed_towards 269.0 -1140.5 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -112.5 -1275.0 -120.5 -1267.0 spawn_policeA_at -37.7 -1244.15 headed_towards -36.7 -1270.0 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle 324.0 -735.5 332.0 -727.5 spawn_policeA_at 361.6 -715.0 headed_towards 338.6 -705.5 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle 385.6 -602.2 377.6 -594.2 spawn_policeA_at 374.6 -559.0 headed_towards 394.6 -571.5 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle 146.6 -450.2 154.6 -440.2 spawn_policeA_at 183.9 -480.0 headed_towards 184.6 -447.5 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle 250.6 -457.2 240.6 -449.2 spawn_policeA_at 346.8 -466.4 headed_towards 311.5 -461.5 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 7 if_player_with_wanted_level_in_rectangle 171.0 -549.2 179.0 -557.2 spawn_policeA_at 161.8 -693.4 headed_towards 168.5 -650.5 spawn_policeB_at 169.5 -693.4 headed_towards 173.0 -660.0 
+04F8: define_police_trigger_type 2 if_player_with_wanted_level_in_rectangle 305.6 -183.2 315.6 -191.2 spawn_policeA_at 269.2 -197.8 headed_towards 276.6 -180.5 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle 316.5 -65.0 322.5 -58.0 spawn_policeA_at 296.5 6.9 headed_towards 315.7 -11.0 spawn_policeB_at 369.5 12.2 headed_towards 342.0 -9.7 
+04F8: define_police_trigger_type 7 if_player_with_wanted_level_in_rectangle 364.0 236.2 372.0 244.2 spawn_policeA_at 336.1 271.4 headed_towards 337.8 249.5 spawn_policeB_at 401.5 213.4 headed_towards 401.0 234.0 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle 364.5 169.0 372.5 177.0 spawn_policeA_at 406.7 151.15 headed_towards 398.7 170.0 spawn_policeB_at 326.5 182.4 headed_towards 346.0 164.3 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -87.0 -937.0 -99.0 -947.0 spawn_policeA_at -136.0 -912.15 headed_towards -115.0 -901.6 spawn_policeB_at -56.0 -875.0 headed_towards -95.5 -893.3 
+04F8: define_police_trigger_type 7 if_player_with_wanted_level_in_rectangle 536.0 696.2 546.0 706.2 spawn_policeA_at 516.0 753.6 headed_towards 541.5 753.5 spawn_policeB_at 506.2 654.4 headed_towards 534.0 657.0 
+04F8: define_police_trigger_type 2 if_player_with_wanted_level_in_rectangle 314.0 906.0 322.0 914.0 spawn_policeA_at 348.3 864.0 headed_towards 316.0 870.8 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 7 if_player_with_wanted_level_in_rectangle 356.0 748.0 364.0 756.0 spawn_policeA_at 335.0 667.6 headed_towards 356.2 685.2 spawn_policeB_at 388.5 846.2 headed_towards 366.0 828.0 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -34.0 1041.0 -26.0 1049.0 spawn_policeA_at 23.3 1075.0 headed_towards 28.0 1030.8 spawn_policeB_at 35.5 993.4 headed_towards 39.0 1023.3 
+04F8: define_police_trigger_type 2 if_player_with_wanted_level_in_rectangle 16.0 930.0 24.0 938.0 spawn_policeA_at 28.3 874.0 headed_towards 10.0 881.8 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -368.0 -480.0 -378.0 -490.0 spawn_policeA_at -253.5 -439.0 headed_towards -252.5 -470.5 spawn_policeB_at -451.2 -452.4 headed_towards -442.0 -480.0 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -533.0 -480.0 -543.0 -490.0 spawn_policeA_at -647.0 -449.0 headed_towards -637.5 -481.5 spawn_policeB_at -451.2 -452.4 headed_towards -457.0 -480.0 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -255.0 -435.0 -245.0 -443.0 spawn_policeA_at -210.8 -470.0 headed_towards -241.5 -472.0 spawn_policeB_at -298.2 -485.0 headed_towards -257.0 -477.5 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -645.0 -446.0 -637.0 -454.0 spawn_policeA_at -610.8 -482.0 headed_towards -635.5 -472.0 spawn_policeB_at -684.2 -492.0 headed_towards -651.0 -480.5 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle -790.0 -1490.2 -798.0 -1498.2 spawn_policeA_at -815.8 -1450.5 headed_towards -822.0 -1469.0 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -809.0 -1436.7 -800.0 -1428.0 spawn_policeA_at -853.3 -1466.0 headed_towards -824.5 -1474.8 spawn_policeB_at -808.5 -1382.4 headed_towards -788.0 -1392.3 
+04F8: define_police_trigger_type 7 if_player_with_wanted_level_in_rectangle -870.0 -1335.7 -862.0 -1327.0 spawn_policeA_at -902.3 -1343.0 headed_towards -882.5 -1348.8 spawn_policeB_at -880.5 -1297.4 headed_towards -860.0 -1307.3 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle -924.0 -1248.0 -916.0 -1240.0 spawn_policeA_at -909.8 -1270.5 headed_towards -920.0 -1265.0 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle -1224.0 -788.0 -1216.0 -780.0 spawn_policeA_at -1260.8 -737.5 headed_towards -1258.0 -780.0 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 3 if_player_with_wanted_level_in_rectangle -884.0 -1070.0 -876.0 -1078.0 spawn_policeA_at -925.0 -1044.5 headed_towards -901.0 -1074.0 spawn_policeB_at -189.5 -1295.4 headed_towards -190.0 -1279.3 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -1130.0 -711.7 -1138.0 -719.7 spawn_policeA_at -1111.3 -683.0 headed_towards -1134.5 -686.4 spawn_policeB_at -1166.0 -691.4 headed_towards -1144.7 -690.3 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -986.0 -713.0 -978.0 -721.0 spawn_policeA_at -1011.8 -577.4 headed_towards -989.7 -575.4 spawn_policeB_at -945.5 -660.0 headed_towards -969.4 -661.6 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -1012.0 -392.0 -1004.0 -384.0 spawn_policeA_at -1044.3 -337.8 headed_towards -1023.7 -336.4 spawn_policeB_at -975.0 -444.0 headed_towards -1000.4 -445.6 
+04F8: define_police_trigger_type 6 if_player_with_wanted_level_in_rectangle -1112.0 -372.0 -1104.0 -364.0 spawn_policeA_at -1078.3 -337.0 headed_towards -1101.5 -339.4 spawn_policeB_at -1138.0 -348.4 headed_towards -1117.3 -346.3 
+
+//markers
+//02A8: $DelGarageMap = create_marker 7 at -1007.3 -869.9 12.8 //Delorean Garage Icon
+//04CE: $BrownEstateMap = create_icon_marker_without_sphere 5 at -378.5 -551.3 18.2 //Brown Estate Icon
+
+//pay n spray markers
+//02A8: $292 = create_marker 27 at 925.0 -359.5 -100.0
+//04CE: $974 = create_icon_marker_without_sphere 27 at -3.8 -1265.8 12.0 
+//04CE: $975 = create_icon_marker_without_sphere 27 at 319.0 441.3 12.0 
+//04CE: $976 = create_icon_marker_without_sphere 27 at -903.0 -1261.1 12.0 
+//04CE: $977 = create_icon_marker_without_sphere 27 at -876.2 -105.5 12.0 
+
+//garages
+//0219: $DELOREAN_GARAGE = create_garage_type 1 door -966.016 -861.529 5.761 to -966.016 -841.683 11.273 depth -978.454 -861.529  //Vice City DeLorean Garage
+//03BB: set_garage $DELOREAN_GARAGE door_type_to_swing_open
+
+//pay n sprays off for the moment due to reloading the car with all frames! (may need custom script for these)
+//0219: $265 = create_garage_type 5 door -914.129 -1263.54 10.706 to -906.3 -1266.9 14.421 depth -907.137 -1246.626 
+//0219: $266 = create_garage_type 5 door -1014.341 -857.732 6.325 to -1014.341 -841.532 10.885 depth -1001.315 -857.732 
+//03BB: set_garage $266 door_type_to_swing_open 
+//0219: $267 = create_garage_type 5 door -886.157 -115.158 9.992 to -876.7 -119.83 15.58 depth -882.699 -108.312 
+//0219: $268 = create_garage_type 5 door 323.9 427.4 10.0 to 313.9 430.53 15.7 depth 326.3 434.5 
+//0219: $269 = create_garage_type 5 door -7.55 -1253.77 9.322 to 2.64 -1253.7 14.4 depth -7.55 -1261.2 
+//0219: $270 = create_garage_type 1 door -1056.05 -469.668 10.053 to -1038.966 -467.675 14.753 depth -1054.074 -486.611 
+//03BB: set_garage $270 door_type_to_swing_open 
+
+0219: $271 = create_garage_type 23 door -823.448 -1488.083 10.852 to -842.0 -1481.0 16.165 depth -834.686 -1515.899 
+03DA: set_garage $271 camera_follows_player 
+03BB: set_garage $271 door_type_to_swing_open 
+0219: $273 = create_garage_type 19 door 449.137 340.002 10.794 to 465.43 326.187 14.7 depth 465.42 340.002 
+03BB: set_garage $273 door_type_to_swing_open 
+0219: $274 = create_garage_type 4 door -1163.248 -1407.282 10.157 to -1159.338 -1397.813 16.989 depth -1178.292 -1400.939
+0219: $275 = create_garage_type 26 door 303.998 400.718 12.025 to 301.281 410.584 16.044 depth 298.697 402.389 
+03DA: set_garage $275 camera_follows_player 
+03BB: set_garage $275 door_type_to_swing_open 
+057A: set_garage $275 max_cars_to 1 
+0219: $276 = create_garage_type 17 door -848.225 1303.119 10.421 to -836.832 1307.033 15.816 depth -853.657 1318.901 
+03DA: set_garage $276 camera_follows_player 
+057A: set_garage $276 max_cars_to 4 
+0219: $277 = create_garage_type 18 door -825.466 1311.499 10.537 to -817.159 1314.355 15.061 depth -828.66 1320.791 
+03DA: set_garage $277 camera_follows_player 
+057A: set_garage $277 max_cars_to 2 
+0219: $278 = create_garage_type 24 door -816.37 1314.69 10.582 to -819.54 1324.01 15.061 depth -808.09 1317.46 
+03DA: set_garage $278 camera_follows_player 
+057A: set_garage $278 max_cars_to 2 
+0219: $279 = create_garage_type 25 door 27.143 -1483.954 9.423 to 21.365 -1490.59 12.994 depth 22.611 -1483.384 
+03BB: set_garage $279 door_type_to_swing_open 
+03DA: set_garage $279 camera_follows_player 
+057A: set_garage $279 max_cars_to 1 
+0219: $280 = create_garage_type 16 door 450.136 641.029 10.112 to 457.977 641.029 13.092 depth 450.136 635.726 
+03BB: set_garage $280 door_type_to_swing_open 
+03DA: set_garage $280 camera_follows_player 
+057A: set_garage $280 max_cars_to 1 
+0219: $281 = create_garage_type 27 door -981.654 -802.265 6.325 to -981.654 -821.865 10.73 depth -991.127 -802.265 
+03BB: set_garage $281 door_type_to_swing_open 
+03DA: set_garage $281 camera_follows_player 
+057A: set_garage $281 max_cars_to 4 
+0219: $282 = create_garage_type 28 door -992.416 -802.265 6.325 to -992.416 -821.865 10.73 depth -1001.889 -802.265 
+03BB: set_garage $282 door_type_to_swing_open 
+03DA: set_garage $282 camera_follows_player 
+057A: set_garage $282 max_cars_to 4 
+0219: $283 = create_garage_type 29 door -1003.771 -802.265 6.325 to -1003.771 -821.865 10.73 depth -1013.244 -802.265 
+03BB: set_garage $283 door_type_to_swing_open 
+03DA: set_garage $283 camera_follows_player 
+057A: set_garage $283 max_cars_to 4 
+0219: $287 = create_garage_type 30 door -1015.436 -802.265 6.325 to -1015.436 -821.865 10.73 depth -1024.909 -802.265 
+03BB: set_garage $287 door_type_to_swing_open 
+03DA: set_garage $287 camera_follows_player 
+057A: set_garage $287 max_cars_to 4 
+0219: $291 = create_garage_type 31 door -362.12 -550.214 11.722 to -353.12 -550.214 15.16 depth -362.12 -539.484 
+03BB: set_garage $291 door_type_to_swing_open 
+03DA: set_garage $291 camera_follows_player 
+057A: set_garage $291 max_cars_to 2 
+terminate_this_script 
