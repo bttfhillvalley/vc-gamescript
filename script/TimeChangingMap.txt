@@ -30,6 +30,7 @@ then
     3F08: add_build "1985" amnt 7
     01EB: set_traffic_density_multiplier_to 0.7
     create_thread @1985Pepsi
+    create_thread @walkman
     gosub @MallSignCreate
     create_thread @canopener
     jump @WaitToLeave1985
