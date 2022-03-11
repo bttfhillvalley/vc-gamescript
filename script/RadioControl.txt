@@ -12,17 +12,18 @@ if and
     80E0:   not player $PLAYER_CHAR driving
     not Car.Wrecked($DELOREAN)
     003A:   $KEY == $KEY_RADIOCONTROL // R
+    02D7:   player $PLAYER_CHAR current_weapon == 2
 else_jump @RadioControlStart
 $IN_RC = 1 // integer values
 Model.Load(#SABRE) //DMC-12
-Model.Load(#BOMB) //RC REMOTE
+Model.Load(#SCREWDRIVER) //RC REMOTE
 038B: load_requested_models
 
 :RadioControlLoadModels
 wait 0
 if and
    Model.Available(#SABRE) //DMC-12
-   Model.Available(#BOMB) //RC REMOTE
+   Model.Available(#SCREWDRIVER) //RC REMOTE
 else_jump @RadioControlLoadModels
 
 // Set camera first
@@ -42,7 +43,7 @@ Camera.OnVehicle($DELOREAN, 15@, 1)
 009A: 1@ = create_actor_pedtype 4 model #NULL at 2@ 3@ 4@ //player model
 Actor.Angle(1@) = 5@
 Actor.Health(1@) = 6@
-01B2: give_actor 1@ weapon 34 ammo 1 // Load the weapon model before using this
+01B2: give_actor 1@ weapon 2 ammo 1 // Load the weapon model before using this
 04C4: create_coordinate 2@ 3@ 4@ from_actor 1@ offset 0.0 -1.0 0.0
 0245: set_actor 1@ walk_style_to 33
 

@@ -5,7 +5,7 @@ DEFINE MISSIONS 1
 DEFINE MISSION 0 AT @INITIAL
 //These are the New Opcodes originally written by Ilufir rewritten by Kyonko Yuuki, defining them here means no nasty setup for sanny builder.
 {$USE bitwise}
-{$USE CLEO}
+{$USE CLEO}                                                                                                                                    
 {$OPCODE 0124=2,write_memory_address %1d% value %2d%}                // used for writing a temporary address
 {$OPCODE 0125=2,%2d% = read_memory_address %1d%}                     // used for reading a temporary address
 
@@ -68,6 +68,7 @@ set_wb_check_to 0
 04E4: unknown_refresh_game_renderer_at -542.5803 268.1569
 Camera.SetAtPos(-542.5803, 268.1569, 12.4336)
 $PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // Twin Pines Mall
+032B: $BTTFREMOTEDEBUG = create_weapon_pickup 260 15 ammo 1 at -542.5803 268.1569 12.4336 //remove me before release :)
 0171: set_player $PLAYER_CHAR z_angle_to 180.0
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
