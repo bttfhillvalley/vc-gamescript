@@ -179,7 +179,6 @@ create_thread @DateCheckStart      // New Time Changing code
 create_thread @CarSpawn
 create_thread @UNIQUE_STUNT_JUMPS
 create_thread @Interiors
-create_thread @radsuit //radiation suit spawn
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 0A8C: write_memory 0x58E59B size 5 value 0x90 virtual_protect 1 // Disable Tail light point lights
 0A8C: write_memory 0x58E611 size 5 value 0x90 virtual_protect 1 // Disable Brake light point lights

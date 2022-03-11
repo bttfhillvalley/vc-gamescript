@@ -31,6 +31,7 @@ then
     01EB: set_traffic_density_multiplier_to 0.7
     create_thread @1985Pepsi
     create_thread @walkman
+    create_thread @radsuit
     gosub @MallSignCreate
     create_thread @canopener
     jump @WaitToLeave1985

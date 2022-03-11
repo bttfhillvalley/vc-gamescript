@@ -307,8 +307,8 @@ wait 0
 0215: destroy_pickup $1985PEPSIH40
 0215: destroy_pickup $1985PEPSIH41
 0215: destroy_pickup $1985PEPSIH42
-0215: destroy_pickup $walkmanclothes1
 0215: destroy_pickup $walkman
+0215: destroy_pickup $Radsuit
 end_thread
 
 :2015pickupcleanup
