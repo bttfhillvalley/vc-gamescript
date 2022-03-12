@@ -1,15 +1,13 @@
 :walkman
 wait 0
-Pickup.Create($walkman, #WALKMAN, 2, -554.3566, 269.3522, 12.3053)
-055B: $walkmanclothes1 = create_clothes_pickup 9 at -554.3566 269.3522 12.3053
+Pickup.Create($walkman, #pickupmusic, 2, -461.1937, 272.9984, 24.0962)
 
 :walkmanoff
 wait 0
 if and
     0256:   player $PLAYER_CHAR defined
-    0214:   pickup $walkmanclothes1 picked_up
+    0214:   pickup $walkman picked_up
 jf @walkmanoff
-0215: destroy_pickup $walkman
 0169: set_fade_color 0 0 0
 016A: fade 0 500 ms
 wait 500
