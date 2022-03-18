@@ -742,23 +742,15 @@ then
         10@ == #BUS // integer values
         10@ == #MAVERICK // integer values
     then
-        3F95: $IGNORE = play_sound "train_reentry_1.wav" pos 2@ 3@ 4@ loop 0 min 30.0
+        3F95: $IGNORE = play_sound "train_reentry.wav" pos 2@ 3@ 4@ loop 0 min 50.0
     else
-        3F95: $IGNORE = play_sound "delorean_reentry_1.wav" pos 2@ 3@ 4@ loop 0 min 30.0
+        3F95: $IGNORE = play_sound "delorean_reentry.wav" pos 2@ 3@ 4@ loop 0 min 50.0
     end
     // Two more explosions if we're in cutscene
     wait 750
     05F5: call_scm_func @ReentryExplosion params_count 4 10@ 2@ 3@ 4@
     wait 700
     05F5: call_scm_func @ReentryExplosion params_count 4 10@ 2@ 3@ 4@
-    if or
-        10@ == #BUS // integer values
-        10@ == #MAVERICK // integer values
-    then
-        3F95: $IGNORE = play_sound "train_reentry_2.wav" pos 2@ 3@ 4@ loop 0 min 30.0
-    else
-        3F95: $IGNORE = play_sound "delorean_reentry_2.wav" pos 2@ 3@ 4@ loop 0 min 30.0
-    end
 end
 
 // Have the time vehicle come back
