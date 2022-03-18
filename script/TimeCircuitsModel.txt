@@ -147,7 +147,7 @@ then
         00DC:   player $PLAYER_CHAR in_car 0@
         $TRAVEL == 0
     then
-        //3F80: play_sound "colon_beep.wav"
+        3F86: attach_sound "colon_beep.wav" to_car 0@ offset 0 0.32 0.14 loop 0 size 1.0
     end
 end
 if

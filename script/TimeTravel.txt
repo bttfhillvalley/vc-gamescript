@@ -1318,7 +1318,7 @@ then
         if
             3F83: is_sound_stopped "flux_idle.wav"
         then
-            3F86: attach_sound "flux_idle.wav" to_car 0@ offset 0 0 0 loop 1 size 5.0
+            3F86: attach_sound "flux_idle.wav" to_car 0@ offset 0 -0.775 0.265 loop 1 size 1.0
         end
     else
         if

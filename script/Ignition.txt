@@ -15,6 +15,7 @@ if and
     8119:   not car 0@ wrecked
     00DC:   player $PLAYER_CHAR driving 0@
     1@ == 0
+    $TIME_DISP == 1
 then
     05F5: call_scm_func @DrawTexture params_count 9 3 782.0 155.0 45.0 23.0 255 255 255 255
 end
@@ -41,7 +42,11 @@ then
         $ENGINE_TURNOVER = 0
         1@ = 1
     else
-        05F5: call_scm_func @DrawTexture params_count 9 3 782.0 155.0 45.0 23.0 64 64 64 255 // battery light off
+        if
+            $TIME_DISP == 1
+        then
+            05F5: call_scm_func @DrawTexture params_count 9 3 782.0 155.0 45.0 23.0 64 64 64 255 // battery light off
+        end
         if
             $START == 0 // integer values
         then
