@@ -46,9 +46,7 @@ then
             $START == 0 // integer values
         then
             $START = 1 // integer values
-            040D: unload_wav 1
-            03CF: load_wav 'BURG_05' as 1
-            create_thread @PlaySound 1
+            3F86: attach_sound "engine_turnover.wav" to_car 0@ offset 0 0 0 loop 1 min 10.0
         end
     end
 else
@@ -56,7 +54,7 @@ else
         $START == 1
     then
         $START = 0 // integer values
-        040D: unload_wav 1
+        3F81: stop_sound "engine_turnover.wav"
     end
 end
 
@@ -83,9 +81,7 @@ then
     then
         13@ = 1 // Engine on
         $IGNITION = 0
-        040D: unload_wav 2
-        03CF: load_wav 'BURG_02' as 2
-        create_thread @PlaySound 2
+        3F86: attach_sound "engine_start.wav" to_car 0@ offset 0 0 0 loop 0 min 10.0
         create_thread @DashboardStartup 0@
     end
 else
@@ -105,9 +101,7 @@ else
             $REMOTE_TRAVEL == 0
         then
             $VSOUND = 0
-            040D: unload_wav 2
-            03CF: load_wav 'BURG_06' as 2
-            create_thread @PlaySound 2
+            3F86: attach_sound "engine_stop.wav" to_car 0@ offset 0 0 0 loop 0 min 10.0
             // Stop Animations.  Probably don't have to other then get the voltage down to 0
             create_thread @DashboardShutdown 0@
         end

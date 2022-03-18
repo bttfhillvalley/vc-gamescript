@@ -17,7 +17,6 @@
 // 14@ - TCON
 // 15@ - FRIED
 
-
 :TimeCircuitsModel
 thread 'TC_MOD'
 1@ = 0.0 //tcd switch and needles in the dash in front of the passenger seat
@@ -52,9 +51,9 @@ if or
     15@ == 1
 else_jump @TimeCircuitsModelTurnOn
 if
-    1@ > 0.0
+    1@ < 0.0
 then
-    1@ -= 10.0
+    1@ += 10.0
     gosub @TimeCircuitsSwitchModel
 end
 jump @TimeCircuitsModelStart
@@ -69,9 +68,9 @@ jump @TimeCircuitsModelStart
 
 //rotate the components up to 60.0 degrees towards on position
 if
-    1@ < 60.0
+    1@ > -60.0
 then
-    1@ += 10.0
+    1@ -= 10.0
     gosub @TimeCircuitsSwitchModel
 end
 
@@ -144,6 +143,12 @@ if
     16@ > 999 // integer values
 then
     16@ = 0 // integer values
+    if and
+        00DC:   player $PLAYER_CHAR in_car 0@
+        $TRAVEL == 0
+    then
+        //3F80: play_sound "colon_beep.wav"
+    end
 end
 if
     16@ < 500 // integer values
@@ -312,11 +317,7 @@ end
 //tcd switch and needles in the dash in front of the passenger seat
 //the tcd switch needs to rotate in the opposite direction
 :TimeCircuitsSwitchModel
-1@ *= -1.0
 3F16: rotate_car_part "tcdhandle" angle 0.0 1@ 0.0 car 0@
-1@ *= -1.0
-3F16: rotate_car_part "ppowerneedle" angle 0.0 1@ 0.0 car 0@
-3F16: rotate_car_part "primaryneedle" angle 0.0 1@ 0.0 car 0@
 return
 
 :TimeCircuitsModelReset

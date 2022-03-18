@@ -5,7 +5,7 @@ DEFINE MISSIONS 1
 DEFINE MISSION 0 AT @INITIAL
 //These are the New Opcodes originally written by Ilufir rewritten by Kyonko Yuuki, defining them here means no nasty setup for sanny builder.
 {$USE bitwise}
-{$USE CLEO}                                                                                                                                    
+{$USE CLEO}
 {$OPCODE 0124=2,write_memory_address %1d% value %2d%}                // used for writing a temporary address
 {$OPCODE 0125=2,%2d% = read_memory_address %1d%}                     // used for reading a temporary address
 
@@ -44,8 +44,22 @@ DEFINE MISSION 0 AT @INITIAL
 {$OPCODE 3F33=4,get_car %1d% velocity_vector %2d% %3d% %4d%}                    // Get velocity vector
 {$OPCODE 3F34=2,%2d% = car %1d% velocity_vector}                                // Get velocity vector including speed
 {$OPCODE 3F35=2,set_car %1d% velocity_vector %2d%}                              // Set velocity vector including speed
-//{$OPCODE 3F36=0,add_txd} // %1d% texture %2d% with_dict %3d% texture %4d%}     // HUD.TXD
+{$OPCODE 3F36=2,get_car %1d% steering_angle %2d%}                               // Get Steering wheel angle
 //{$OPCODE 3F37=1,replace_dict %1d%} // %1d% texture %2d% with_dict %3d% texture %4d%}     // HUD.TXD
+//{$OPCODE 3F38=9,add_part_anim %1d% mov %2d% %3d% %4d% ang %5d% %6d% %7d% tim %8d% car %9d%}
+{$OPCODE 3F80=0,stop_all_sounds}                                                // Stop all sounds
+{$OPCODE 3F81=1,stop_sound %1d%}                                                // Stop sound
+{$OPCODE 3F82=1,is_sound_playing %1d%}                                          // Is sound still playing?
+{$OPCODE 3F83=1,is_sound_stopped %1d%}                                          // Is sound stopped?
+{$OPCODE 3F84=2,play_sound_store %1d% loop %2d%}                                // Play Sound
+{$OPCODE 3F85=6,play_sound %1d% pos %2d% %3d% %4d% loop %5d% size %6d%}         // Play Sound at location
+{$OPCODE 3F86=7,attach_sound %1d% to_car %7d% pos %2d% %3d% %4d% loop %5d% size %6d%} // Attach sound to car
+{$OPCODE 3F91=2,stop_sound %1d% index %2d%}                                     // Stop sound w/ index
+{$OPCODE 3F92=2,is_sound_playing %1d% index %2d%}                               // Is sound still playing? w/ index
+{$OPCODE 3F93=2,is_sound_stopped %1d% index %2d%}                               // Is sound stopped? w/ index
+{$OPCODE 3F94=3,%3d% = play_sound_store %1d% loop %2d%}                         // Play Sound w/ index
+{$OPCODE 3F95=7,%7d% = play_sound %1d% pos %2d% %3d% %4d% loop %5d% size %6d%}  // Play sound at location w/ index
+{$OPCODE 3F96=8,%8d% = attach_sound %1d% to_car %7d% pos %2d% %3d% %4d% loop %5d% size %6d%} // Attach sound to car w/ index
 
 //Audio Library
 //\CLEO\CLEO_AUDIO\test.mp3
@@ -68,7 +82,7 @@ set_wb_check_to 0
 04E4: unknown_refresh_game_renderer_at -542.5803 268.1569
 Camera.SetAtPos(-542.5803, 268.1569, 12.4336)
 $PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // Twin Pines Mall
-032B: $BTTFREMOTEDEBUG = create_weapon_pickup 260 15 ammo 1 at -542.5803 268.1569 12.4336 //remove me before release :)
+//$PLAYER_CHAR = Player.Create(#NULL, -771.3590, 85.7275, 87.6737) // Twin Pines Mall
 0171: set_player $PLAYER_CHAR z_angle_to 180.0
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
@@ -139,6 +153,7 @@ $HEIGHT_LIMIT = 220.0
 $HOVER_ACCEL_KEY = 19 // 4 - Radio Key, 19 - Submission key.  Not completely compatible with ClassicAxis
 $STAGE_TWO_BOOST = 1
 $MALL_SIGN = 2
+032B: $BTTFREMOTEDEBUG = create_weapon_pickup 260 15 ammo 1 at -542.5803 268.1569 12.4336 //remove me before release :)
 start_mission 0  // Initial
 
 //------------------0.2F-r3-Feature-Scripts-Go-Here--------------------------//
@@ -176,7 +191,6 @@ create_thread @DateCheckStart      // New Time Changing code
 //create_thread @DebugCamera
 //create_thread @DebugParticle
 create_thread @CarSpawn
-create_thread @UNIQUE_STUNT_JUMPS
 create_thread @Interiors
 0A8C: write_memory 0x54F429 size 5 value 0x90 virtual_protect 1 // Disable plane trails
 0A8C: write_memory 0x58E59B size 5 value 0x90 virtual_protect 1 // Disable Tail light point lights
@@ -197,6 +211,7 @@ create_thread @Interiors
 0A8C: write_memory 0x6997a8 size 4 value 0x100 virtual_protect 1 // Boot
 0A8C: write_memory 0x6997b4 size 4 value 0x100 virtual_protect 1 // Rear Bumper
 0A8C: write_memory 0x6997c0 size 4 value 0xc80 virtual_protect 1 // Windscreen
+3F80: stop_all_sounds
 
 wait 0
 0180: set_on_mission_flag_to $ONMISSION
@@ -254,6 +269,7 @@ jump @InfLoop
 {$INCLUDE script/MemoryManipulation.txt}
 {$INCLUDE script/ParkingBrake.txt}
 {$INCLUDE script/RadioControl.txt}
+{$INCLUDE script/RadiationSuit.txt}
 {$INCLUDE script/Rogers.txt}
 {$INCLUDE script/Shifter.txt}
 {$INCLUDE script/Taxi.txt}
@@ -272,15 +288,9 @@ jump @InfLoop
 {$INCLUDE script/Truck.txt}
 {$INCLUDE script/TwinPinesRipple.txt}
 {$INCLUDE script/TwinPinesTrees.txt}
-{$INCLUDE script/UniqueStuntJumps.txt}
 {$INCLUDE script/Walkman.txt}
 {$INCLUDE script/Windows.txt}
-{$INCLUDE script/radiationsuit.txt}
-
 //-------------Mission 0---------------
 {$INCLUDE script/MISSION/initial.txt}
-
-
-
 //-------------Mission 1---------------
 // put missions here

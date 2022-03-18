@@ -18,7 +18,7 @@ create_thread @ClockBellChime
 
 
 :TimeModStart
-wait 500
+wait 0
 00BF: 3@ = current_time_hours, 4@ = current_time_minutes
 00C0: set_current_time 3@ 4@
 if

@@ -1,21 +1,19 @@
 :Lightning
-040D: unload_wav 1
 0B10: 5@ = 1@ AND $TC_FRIED_BIT // Time Circuits Fried
 0B10: 6@ = 1@ AND $TC_BIT       // Time Circuits status
 if or
     not 5@ == 0 // Time Circuits are fried
     6@ == 0     // Time Circuits are off
 then
-    03CF: load_wav 'BURG_12' as 1 // Load standard sound
+    3F84: play_sound "lightning.wav" loop 0
 else if
     $MODE == 0 // integer values
 then
-    03CF: load_wav 'BURG_10' as 1 // Cutscene sound
+    3F84: play_sound "lightning_cutscene.wav" loop 0
 else
-    03CF: load_wav 'BURG_11' as 1 // Instant sound
+    3F84: play_sound "lightning_instant.wav" loop 0
 end
 end
-create_thread @PlaySound 1
 0169: set_fade_color 255 255 255
 
 // Set camera if we have functional time circuits for cutscene mode

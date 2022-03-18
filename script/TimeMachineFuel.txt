@@ -18,16 +18,14 @@ else_jump @FuelEmptyEnd
 if
     15@ == 0  // Play warning sound only for plutonium variant
 then
-    040D: unload_wav 1
-    03CF: load_wav 'INLIFT' as 1
-    create_thread @PlaySound 1
+    3F84: play_sound "klaxon.wav" loop 0
 end
 
-for 1@ = 0 to 2 step 1
+for 1@ = 0 to 3 step 1
   $EMPTY_FLASH = 0
-  wait 450
+  wait 400
   $EMPTY_FLASH = 1
-  wait 450
+  wait 400
 end
 
 :FuelEmptyEnd
@@ -107,11 +105,10 @@ $FUELING = 1 // integer values
 if
    7@ == 0  // Plutonium variation
 then
-    03CF: load_wav 'BAND_08' as 1
+    3F96: $IGNORE = attach_sound "nuclear_refuel.wav" to_car 0@ offset 0 -2.0 0 loop 0 min 5.0
 else
-    03CF: load_wav 'LIFTOP' as 1
+    3F96: $IGNORE = attach_sound "fusion_open.wav" to_car 0@ offset 0 -2.0 0 loop 0 min 5.0
 end
-create_thread @PlaySound 1
 
 if
    7@ == 0
@@ -246,9 +243,7 @@ for 5@ = 0 to 40 step 1
 end
 
 // Close Mr. Fusion
-040D: unload_wav 1
-03CF: load_wav 'LIFTCL' as 1
-create_thread @PlaySound 1
+3F96: $IGNORE = attach_sound "fusion_close.wav" to_car 0@ offset 0 -2.0 0 loop 0 min 5.0
 for 5@ = -90.0 to 0.0 step 9.0
     3F16: rotate_car_part "fusion" angle 5@ 0.0 0.0 car 0@
     wait 10
@@ -269,21 +264,19 @@ jump @FuelDoneRefueling
 return
 
 :FuelRefuelTrash
-040D: unload_wav 1
 0209: 7@ = random_int_in_ranges 0 3
 if
     7@ == 0
 then
-    03CF: load_wav 'MOB_01A' as 1
+    3F96: $IGNORE = attach_sound "fusion_trash1.wav" to_car 0@ offset 0 -2.0 0 loop 0 min 5.0
 else if
     7@ == 1
 then
-    03CF: load_wav 'MOB_01B' as 1
+    3F96: $IGNORE = attach_sound "fusion_trash2.wav" to_car 0@ offset 0 -2.0 0 loop 0 min 5.0
 else
-    03CF: load_wav 'MOB_01C' as 1
+    3F96: $IGNORE = attach_sound "fusion_trash3.wav" to_car 0@ offset 0 -2.0 0 loop 0 min 5.0
 end
 end
-create_thread @PlaySound 1
 return
 
 :FuelDoneRefueling
@@ -293,7 +286,6 @@ gosub @LocalToGlobal
 wait 500
 01B4: set_player $PLAYER_CHAR can_move 1
 wait 500
-040D: unload_wav 1
 0151: remove_status_text $PLUTONIUM
 0B11: 1@ = 1@ OR $FUEL_BIT
 $FUELING = 0 // integer values
@@ -318,3 +310,65 @@ jump @FuelReturn
 
 :FuelReturn
 return
+
+:PlutoniumGaugeOn
+0B10: 5@ = 1@ AND $FUEL_BIT
+if
+    5@ == 0
+then
+    end_thread
+end
+wait 2000
+3F84: play_sound "plut_gauge.wav" loop 0
+
+// Eventually this will be part of Ilufir's animation handler so we don't have to code it here.
+for 2@ = 0.0 to 90.0 step 2.0
+    wait 10
+    0087: 3@ = 2@
+    3@ /= 2.0
+    if
+        3@ < 10.0
+    then
+        3@ = 10.0
+    end
+    0087: 4@ = 2@
+    4@ /= 3.0
+    if
+        4@ >= 22.5
+    then
+        4@ = 22.5
+    end
+    3F16: rotate_car_part "pchamberneedle" angle 0.0 3@ 0.0 car 0@
+    3F16: rotate_car_part "ppowerneedle" angle 0.0 4@ 0.0 car 0@
+    3F16: rotate_car_part "primaryneedle" angle 0.0 4@ 0.0 car 0@
+end
+end_thread
+
+:PlutoniumGaugeOff
+0B10: 5@ = 1@ AND $FUEL_BIT
+if
+    5@ == 0
+then
+    end_thread
+end
+for 2@ = 90.0 downto 0.0 step 2.0
+    wait 10
+    0087: 3@ = 2@
+    3@ /= 2.0
+    if
+        3@ < 10.0
+    then
+        3@ = 10.0
+    end
+    0087: 4@ = 2@
+    4@ /= 3.0
+    if
+        4@ >= 22.5
+    then
+        4@ = 22.5
+    end
+    3F16: rotate_car_part "pchamberneedle" angle 0.0 3@ 0.0 car 0@
+    3F16: rotate_car_part "ppowerneedle" angle 0.0 4@ 0.0 car 0@
+    3F16: rotate_car_part "primaryneedle" angle 0.0 4@ 0.0 car 0@
+end
+end_thread

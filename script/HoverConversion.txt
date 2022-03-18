@@ -2,10 +2,16 @@
 :HoverConversion
 gosub @ThrusterLightsOff
 0B10: 5@ = 1@ AND $FLYING_BIT   // Is car flying?
-if or
-    not 5@ == 0
-    $LANDING == 1
-else_jump @HoverConversionReturn
+if and
+    5@ == 0
+    $LANDING == 0
+then
+    3F36: get_car 0@ steering_angle 6@
+    6@ *= 0.5 // For some reason, need to half the steering angle.
+    3F16: rotate_car_part "brakerf" angle 0 0 6@ car 0@
+    3F16: rotate_car_part "brakelf" angle 0 0 6@ car 0@
+    jump @HoverConversionReturn
+end
 3F05: set_car 0@ hover 1
 3F02: 6@ = car 0@ engine_state
 
@@ -18,10 +24,15 @@ then
         $CONVERSION == 0
         not 6@ == 0
     then
-        3F10: set_car 0@ component "fxthrusterbttf2rbon" visible 1
-        3F10: set_car 0@ component "fxthrusterbttf2rfon" visible 1
-        3F10: set_car 0@ component "fxthrusterbttf2lbon" visible 1
-        3F10: set_car 0@ component "fxthrusterbttf2lfon" visible 1
+        0B10: 5@ = 1@ AND $WHEELS_BIT   // Wheels bit
+        if
+            003B: 5@ == $WHEELS_DELOREAN_BIT
+        then
+            3F10: set_car 0@ component "fxthrusterbttf2rbon" visible 1
+            3F10: set_car 0@ component "fxthrusterbttf2rfon" visible 1
+            3F10: set_car 0@ component "fxthrusterbttf2lbon" visible 1
+            3F10: set_car 0@ component "fxthrusterbttf2lfon" visible 1
+        end
         if or
             $CTIME1 >= 2020 // integer values
             $CTIME1 < 650 // integer values
@@ -54,13 +65,23 @@ then
     0084: $BOOST_KEY = $HOVER_ACCEL_KEY
     if and
         0026: $HEIGHT_LIMIT > 4@
-        00E1: key_pressed 0 6
-        80E1: key_pressed 0 $BOOST_KEY
+        80E1: not key_pressed 0 $BOOST_KEY
     then
-        02E3: 7@ = car 0@ speed
-        7@ *= -0.1
-        7@ += 11.0
-        3F25: apply_forward_force 7@ car 0@
+        if
+            00E1: key_pressed 0 6
+        then
+            if and
+                00E1: key_pressed 0 5
+                00E1: key_pressed 0 7
+            then
+                7@ = -5.0
+            else
+                02E3: 7@ = car 0@ speed
+                7@ *= -0.1
+                7@ += 11.0
+            end
+            3F25: apply_forward_force 7@ car 0@
+        end
     end
 else
     $BOOST_KEY = 6
@@ -82,23 +103,13 @@ else_jump @HoverConversionReset
 3F25: apply_forward_force 7@ car 0@
 
 // Vent Sounds
+
 // Only play once
 if and
     $VSOUND == 0 // not loaded
     $TRAVEL == 0
 then
-    $VSOUND = 1 // loaded
-    040D: unload_wav 2
-    03CF: load_wav 'BURG_04' as 2
-end
-
-if and
-    $VSOUND == 1 // loaded
-    $TRAVEL == 0
-    03D0:   wav 2 loaded
-then
-    03D1: play_wav 2
-    $VSOUND = 2  // playing
+    3F96: $VSOUND = attach_sound "boost.wav" to_car 0@ offset 0 -2.0 0 loop 0 size 10.0
 end
 jump @HoverConversionReturn
 
@@ -131,12 +142,14 @@ return
 // Extend/retract piston
 0063: 10@ -= 11@
 3F14: move_car_part "strutrb" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "brakerb" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "holderrb" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "shockrb" pos 8@ 0.0 9@ car 0@
 3F14: move_car_part "shockpistonrb" pos 8@ 0.0 10@ car 0@
 3F14: move_car_part "fxwheelrbdummy" pos 6@ 0.0 0.0 car 0@
 
 3F14: move_car_part "strutrf" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "brakerf" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "holderrf" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "shockrf" pos 8@ 0.0 9@ car 0@
 3F14: move_car_part "shockpistonrf" pos 8@ 0.0 10@ car 0@
@@ -144,12 +157,14 @@ return
 6@ *= -1.0
 8@ *= -1.0
 3F14: move_car_part "strutlb" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "brakelb" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "holderlb" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "shocklb" pos 8@ 0.0 9@ car 0@
 3F14: move_car_part "shockpistonlb" pos 8@ 0.0 10@ car 0@
 3F14: move_car_part "fxwheellbdummy" pos 6@ 0.0 0.0 car 0@
 
 3F14: move_car_part "strutlf" pos 6@ 0.0 0.0 car 0@
+3F14: move_car_part "brakelf" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "holderlf" pos 6@ 0.0 0.0 car 0@
 3F14: move_car_part "shocklf" pos 8@ 0.0 9@ car 0@
 3F14: move_car_part "shockpistonlf" pos 8@ 0.0 10@ car 0@
@@ -160,11 +175,15 @@ return
 0087: 5@ = 7@ // Piston
 3F16: rotate_car_part "holderrf" angle 0.0 5@ 0.0 car 0@
 3F16: rotate_car_part "holderrb" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "brakerf" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "brakerb" angle 0.0 5@ 0.0 car 0@
 3F16: rotate_car_part "fxwheelrfdummy" angle 0.0 5@ 0.0 car 0@
 3F16: rotate_car_part "fxwheelrbdummy" angle 0.0 5@ 0.0 car 0@
 5@ *= -1.0
 3F16: rotate_car_part "holderlf" angle 0.0 5@ 0.0 car 0@
 3F16: rotate_car_part "holderlb" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "brakelf" angle 0.0 5@ 0.0 car 0@
+3F16: rotate_car_part "brakelb" angle 0.0 5@ 0.0 car 0@
 3F16: rotate_car_part "fxwheellfdummy" angle 0.0 5@ 0.0 car 0@
 3F16: rotate_car_part "fxwheellbdummy" angle 0.0 5@ 0.0 car 0@
 return
@@ -195,23 +214,21 @@ return
 :HoverAnimate
 $CONVERSION = 1
 0B10: 15@ = 1@ AND $FLYING_BIT   // Is car flying?
-040D: unload_wav 2
 if
     15@ == 0
 then
     6@ = 0.3 // Wheel retracting
     7@ = 90.0 // Wheel rotating back
     $LANDING = 1
-    03CF: load_wav 'BURG_08' as 2
+    3F96: $IGNORE = attach_sound "hover_retract.wav" to_car 0@ offset 0 0 0 loop 0 size 10.0
     3F27: set_car 0@ wheel_status 0  // Add tires back.  TODO: Keep track of tire status
 else
     create_thread @SetVariation 0@ 1@
     6@ = 0.0 // Wheel extending
     7@ = 0.0 // Wheel rotating out
-    03CF: load_wav 'BURG_07' as 2
+    3F96: $IGNORE = attach_sound "hover_extend.wav" to_car 0@ offset 0 0 0 loop 0 size 10.0
     3F27: set_car 0@ wheel_status 2 // Remove tires
 end
-create_thread @PlaySound 2
 
 :HoverAnimateStart
 wait 10
@@ -300,9 +317,7 @@ if
 00E1:   key_pressed 0 16
 jf @WheelThrust
 16@ = 0 // integer values
-040D: unload_wav 2
-03CF: load_wav 'BURG_03' as 2
-create_thread @PlaySound 2
+3F96: $IGNORE = attach_sound "wheel_thrust.wav" to_car 0@ offset 0 0 0 loop 0 size 10.0
 
 :WheelThrustCheck
 wait 10
@@ -310,15 +325,15 @@ wait 10
 if  and
     8119:   not car 0@ wrecked
     00DC:   player $PLAYER_CHAR driving 0@
-jf @WheelThrustUnloadSound
+jf @WheelThrustEnd
 if
    16@ < 2000 // integer values
-jf @WheelThrustUnloadSound
+jf @WheelThrustEnd
 
 // Unload if we let go of the gas
 if
 00E1:   key_pressed 0 16
-jf @WheelThrustUnloadSound
+jf @WheelThrustEnd
 
 // Vent thruster will override the wheel thruster
 if
@@ -370,9 +385,6 @@ gosub @TimeAddSpeedOffset
 gosub @TimeAddSpeedOffset
 04D5: create_corona_at 2@ 3@ 4@ radius 1.0 type 1 flare 0 RGB 255 225 175
 jump @WheelThrustCheck
-
-:WheelThrustUnloadSound
-040D: unload_wav 2
 
 :WheelThrustEnd
 3F10: set_car 0@ component "fxthrusterbttf2rbth" visible 0
