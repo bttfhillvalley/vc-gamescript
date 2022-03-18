@@ -19,7 +19,7 @@ Model.Load(#SABRE) //DMC-12
 Model.Load(#SCREWDRIVER) //RC REMOTE
 038B: load_requested_models
 
-:RadioControlLoadModels                                   
+:RadioControlLoadModels
 wait 0
 if and
    Model.Available(#SABRE) //DMC-12

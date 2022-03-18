@@ -1,3 +1,22 @@
+{$USE CLEO}
+// TODO: Change this to be car specific
+// 0@ - Car
+// 1@ - TCD Switch
+// 2@ - MONTH
+// 3@ - DAY
+// 4@ - YEAR
+// 5@ - HOUR
+// 6@ - MINUTE
+// 7@ - CMONTH
+// 8@ - CDAY
+// 9@ - CYEAR
+// 10@ - CHOUR
+// 11@ - CMINUTE
+// 12@ - PTIME
+// 13@ - PTIME1
+// 14@ - TCON
+// 15@ - FRIED
+
 :TimeCircuitsFlash
 0B10: 1@ = 0@ AND $FLASH_BIT
 if
@@ -17,132 +36,355 @@ else
 end
 end_thread
 
-:TimeCircuits
-thread 'T_CIRC'
+:TimeCircuitsModel
+thread 'TC_MOD'
+1@ = 0.0 //tcd switch and needles in the dash in front of the passenger seat
+$DPOS = 200.0 // floating-point values
+$DR = 255 // integer values
+$DG = 80 // integer values
+$DB = 30 // integer values
 
-:TimeCircuitsStart
+$PPOS = 243.0 // floating-point values
+$PR = 70 // integer values
+$PG = 240 // integer values
+$PB = 10 // integer values
+
+$LPOS = 286.0 // floating-point values
+$LR = 240 // integer values
+$LG = 190 // integer values
+$LB = 40 // integer values
+
+$MONTH_POS = 650.0
+$DAY_POS = 680.0
+$YEAR_POS = 716.0
+$HOUR_POS = 788.0
+$MINUTE_POS = 824.0
+
+:TimeCircuitsModelStart
 wait 10
 if
-   Player.Defined($PLAYER_CHAR)
-jf @TimeCircuitsStart
-if
-00DC:   player $PLAYER_CHAR driving $DELOREAN
-jf @TimeCircuitsStart
-if
-  $TCON == 1 // integer values
-jf @TimeCircuitsStart
-if and
-  $TRAVEL == 0 // integer values
-  $CUTSCENE == 0 // integer values
-jf @TimeCircuitsStart
-if
-  $FRIED == 0 // integer values
-jf @TimeCircuitsStart
-if
-  $TIME_DISP == 1
-jf @TimeCircuitsStart
-// Draw Time Circuit Display Image
-05F5: call_scm_func @DrawTexture params_count 9 1 733.0 242.0 216.0 128.0 255 255 255 255
+    Car.Wrecked(0@)
+then
+    end_thread
+end
 
-// Handle colon timer
+// Store any globals if driving
+if
+    00DC:   player $PLAYER_CHAR in_car 0@
+then
+    if
+        17@ > 100
+    then
+        008B: 2@ = $MONTH
+        008B: 3@ = $DAY
+        008B: 4@ = $YEAR
+        008B: 5@ = $HOUR
+        008B: 6@ = $MINUTE
+        008B: 12@ = $PTIME
+        008B: 13@ = $PTIME1
+        008B: 14@ = $TCON
+        008B: 15@ = $FRIED
+    end
+else
+    17@ = 0
+end
+
+//first, hide all components / put them to base configuration
+gosub @TimeCircuitsModelReset
+if or
+    14@ == 0
+    15@ == 1
+else_jump @TimeCircuitsModelTurnOn
+if
+    1@ < 0.0
+then
+    1@ += 10.0
+    3F16: rotate_car_part "tcdhandle" angle 0.0 1@ 0.0 car 0@
+end
+jump @TimeCircuitsModelStart
+
+:TimeCircuitsModelTurnOn
+//change the lights behind the tcd switch to on and fall through to handling the tcd
+//this is not necessary for the off case because it's done in @TimeCircuitsModelReset
+3F10: set_car 0@ component "tcdswitchlighton" visible 1
+3F10: set_car 0@ component "tcdswitchlightoff" visible 0
+3F10: set_car 0@ component "tcdkeypadlightson" visible 1
+3F10: set_car 0@ component "gloveboxgaugeslights" visible 1
+
+//rotate the components up to 60.0 degrees towards on position
+if
+    1@ > -60.0
+then
+    1@ -= 10.0
+    3F16: rotate_car_part "tcdhandle" angle 0.0 1@ 0.0 car 0@
+end
+
+// Draw Time Circuit Display Image
+if and
+    00DC:   player $PLAYER_CHAR in_car 0@
+    $TIME_DISP == 1
+then
+    05F5: call_scm_func @DrawTexture params_count 9 1 733.0 242.0 216.0 128.0 255 255 255 255
+end
+
+//Destination time
+if
+    00DC:   player $PLAYER_CHAR in_car 0@
+then
+    0B10: 15@ = $FLASH AND 0x8
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 0 0 2@
+    end
+    0B10: 15@ = $FLASH AND 0x4
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 0 0 3@
+    end
+    0B10: 15@ = $FLASH AND 0x2
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 0 0 4@
+    end
+    0B10: 15@ = $FLASH AND 0x1
+    if
+        15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 0 0 5@
+        05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 0 0 6@
+    end
+else
+    05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 0 2@ 3@ 4@ 5@ 6@
+end
+
+// Present time
+008B: 7@ = $CMONTH // integer values and handles
+008B: 8@ = $CDAY // integer values and handles
+008B: 9@ = $CYEAR // integer values and handles
+00BF: 10@ = current_time_hours, 11@ = current_time_minutes
+05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 1 7@ 8@ 9@ 10@ 11@
+
+// Last Time Departed
+if
+    not 12@ == -1 // integer values
+then
+    0085: 7@ = 12@
+    0085: 8@ = 12@ // integer values and handles
+    0085: 9@ = 12@
+    7@ /= 100
+    9@ /= 100
+    9@ *= 100
+    0062: 8@ -= 9@
+    9@ /= 10000
+    9@ *= 100
+    0062: 7@ -= 9@
+    9@ /= 100
+    008B: 10@ = 13@ // integer values and handles
+    008B: 11@ = 13@ // integer values and handles
+    10@ /= 100
+    10@ *= 100
+    0062: 11@ -= 10@
+    10@ /= 100
+    05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 2 7@ 8@ 9@ 10@ 11@
+end
+
+// Display colons
 if
     16@ > 999 // integer values
 then
     16@ = 0 // integer values
+    if and
+        00DC:   player $PLAYER_CHAR in_car 0@
+        $TRAVEL == 0
+    then
+        3F86: attach_sound "colon_beep.wav" to_car 0@ offset 0 0.32 0.14 loop 0 size 1.0
+    end
+end
+if
+    16@ < 500 // integer values
+then
+	3F10: set_car 0@ component "dtcolon" visible 1
+	3F10: set_car 0@ component "ptcolon" visible 1
+	3F10: set_car 0@ component "ltdcolon" visible 1
 end
 
-
-// Draw Destination Time
-0@ = 200.0 // floating-point values
-1@ = 255 // integer values
-2@ = 80 // integer values
-3@ = 30 // integer values
-008B: 4@ = $MONTH // integer values and handles
-008B: 5@ = $DAY // integer values and handles
-008B: 6@ = $YEAR // integer values and handles
-008B: 7@ = $HOUR // integer values and handles
-008B: 8@ = $MINUTE // integer values and handles
-
-// Handle flash
-0B10: 15@ = $FLASH AND 0x8
-if
-    15@ == 0
-then
-    05F5: call_scm_func @TimeCircuitsMonth params_count 5 0@ 1@ 2@ 3@ 4@
-end
-0B10: 15@ = $FLASH AND 0x4
-if
-    15@ == 0
-then
-    05F5: call_scm_func @TimeCircuitsDay params_count 5 0@ 1@ 2@ 3@ 5@
-end
-0B10: 15@ = $FLASH AND 0x2
-if
-    15@ == 0
-then
-    05F5: call_scm_func @TimeCircuitsYear params_count 5 0@ 1@ 2@ 3@ 6@
-end
-0B10: 15@ = $FLASH AND 0x1
-if
-    15@ == 0
-then
-    05F5: call_scm_func @TimeCircuitsHour params_count 5 0@ 1@ 2@ 3@ 7@
-    05F5: call_scm_func @TimeCircuitsMinute params_count 5 0@ 1@ 2@ 3@ 8@
-    05F5: call_scm_func @TimeCircuitsDots params_count 6 0@ 1@ 2@ 3@ 7@ 16@
+// Keypad stuff
+for 7@ = 0 to 9 step 1
+    0B11: 8@ = 7@ OR 0x30
+    0B11: 9@ = 7@ OR 0x60
+    if or
+        0AB0: key_pressed 8@
+        0AB0: key_pressed 9@
+    then
+        create_thread @TimeCircuitsModelKeypad 0@ 7@
+    end
 end
 
-// Draw Present Time
-0@ += 43.0 // floating-point values
-1@ = 70 // integer values
-2@ = 240 // integer values
-3@ = 10 // integer values
-008B: 4@ = $CMONTH // integer values and handles
-008B: 5@ = $CDAY // integer values and handles
-008B: 6@ = $CYEAR // integer values and handles
-00BF: 7@ = current_time_hours, 8@ = current_time_minutes
-gosub @TimeCircuitsDisplay
-
-// Draw Last Time Departed
-0@ += 43.0 // floating-point values
-1@ = 240 // integer values
-2@ = 190 // integer values
-3@ = 40 // integer values
-008B: 4@ = $PTIME
-if
-   not 4@ == -1 // integer values
+// Enter Key
+if or
+    0AB0: key_pressed 0x6D
+    0AB0: key_pressed 0xBD
 then
-    008B: 5@ = $PTIME // integer values and handles
-    008B: 6@ = $PTIME
-    4@ /= 100
-    6@ /= 100
-    6@ *= 100
-    0062: 5@ -= 6@
-    6@ /= 10000
-    6@ *= 100
-    0062: 4@ -= 6@
-    6@ /= 100
-    008B: 7@ = $PTIME1 // integer values and handles
-    008B: 8@ = $PTIME1 // integer values and handles
-    7@ /= 100
-    7@ *= 100
-    0062: 8@ -= 7@
-    7@ /= 100
+    create_thread @TimeCircuitsModelKeypadConfirm 0@
+end
+jump @TimeCircuitsModelStart
+
+:TimeCircuitsModelDisplay
+05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 1@ 0 2@
+05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 1@ 0 3@
+05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 1@ 0 4@
+05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 1@ 0 5@
+05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 1@ 0 6@
+05F6: cleo_return 0
+
+:TimeCircuitsModelMonth
+if
+    2@ == 0
+then
+    3F11: set_car 0@ component "dtmonth" index 4@ visible 1
+    05F5: call_scm_func @TimeCircuitsDrawMonth params_count 7 0@ $DR $DG $DB $MONTH_POS $DPOS 4@
+else if
+    2@ == 1
+then
+    3F11: set_car 0@ component "ptmonth" index 4@ visible 1
+    05F5: call_scm_func @TimeCircuitsDrawMonth params_count 7 0@ $PR $PG $PB $MONTH_POS $PPOS 4@
 else
-    4@ = 0
-    5@ = -1
-    6@ = -1
-    7@ = -1
-    8@ = -1
+    3F11: set_car 0@ component "ltdmonth" index 4@ visible 1
+    05F5: call_scm_func @TimeCircuitsDrawMonth params_count 7 0@ $LR $LG $LB $MONTH_POS $LPOS 4@
 end
-gosub @TimeCircuitsDisplay
+end
+05F6: cleo_return 0
 
-:TimeCircuitsDamage
+:TimeCircuitsModelDay
+gosub @DivideTwo
 if
-8185:   not car $DELOREAN health >= 650
-jf @TimeCircuitsStart
-05F5: call_scm_func @DrawTexture params_count 9 4 735.0 155.0 45.0 23.0 255 255 255 255 //lambda error light
-3F10: set_car $DELOREAN component "lambdalight" visible 1
-jump @TimeCircuitsStart
+    2@ == 0
+then
+    3F11: set_car 0@ component "dtday2" index 4@ visible 1
+    3F11: set_car 0@ component "dtday1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $DR $DG $DB $DAY_POS $DPOS 4@ 5@
+else if
+    2@ == 1
+then
+    3F11: set_car 0@ component "ptday2" index 4@ visible 1
+    3F11: set_car 0@ component "ptday1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $PR $PG $PB $DAY_POS $PPOS 4@ 5@
+else
+    3F11: set_car 0@ component "ltdday2" index 4@ visible 1
+    3F11: set_car 0@ component "ltdday1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $LR $LG $LB $DAY_POS $LPOS 4@ 5@
+end
+end
+05F6: cleo_return 0
+
+:TimeCircuitsModelYear
+gosub @DivideFour
+if
+    2@ == 0
+then
+    3F11: set_car 0@ component "dtyear4" index 4@ visible 1
+    3F11: set_car 0@ component "dtyear3" index 5@ visible 1
+    3F11: set_car 0@ component "dtyear2" index 6@ visible 1
+    3F11: set_car 0@ component "dtyear1" index 7@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw4Digits params_count 10 0@ $DR $DG $DB $YEAR_POS $DPOS 4@ 5@ 6@ 7@
+else if
+    2@ == 1
+then
+    3F11: set_car 0@ component "ptyear4" index 4@ visible 1
+    3F11: set_car 0@ component "ptyear3" index 5@ visible 1
+    3F11: set_car 0@ component "ptyear2" index 6@ visible 1
+    3F11: set_car 0@ component "ptyear1" index 7@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw4Digits params_count 10 0@ $PR $PG $PB $YEAR_POS $PPOS 4@ 5@ 6@ 7@
+else
+    3F11: set_car 0@ component "ltdyear4" index 4@ visible 1
+    3F11: set_car 0@ component "ltdyear3" index 5@ visible 1
+    3F11: set_car 0@ component "ltdyear2" index 6@ visible 1
+    3F11: set_car 0@ component "ltdyear1" index 7@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw4Digits params_count 10 0@ $LR $LG $LB $YEAR_POS $LPOS 4@ 5@ 6@ 7@
+end
+end
+05F6: cleo_return 0
+
+:TimeCircuitsModelHour
+if
+    2@ == 0
+then
+    if
+        4@ < 12
+    then
+        3F10: set_car 0@ component "dtam" visible 1
+    else
+        3F10: set_car 0@ component "dtpm" visible 1
+    end
+    05F5: call_scm_func @TimeCircuitsDots params_count 7 0@ $DR $DG $DB $DPOS 4@ 16@
+else if
+    2@ == 1
+then
+    if
+        4@ < 12
+    then
+        3F10: set_car 0@ component "ptam" visible 1
+    else
+        3F10: set_car 0@ component "ptpm" visible 1
+    end
+    05F5: call_scm_func @TimeCircuitsDots params_count 7 0@ $PR $PG $PB $PPOS 4@ 16@
+else
+    if
+        4@ < 12
+    then
+        3F10: set_car 0@ component "ltdam" visible 1
+    else
+        3F10: set_car 0@ component "ltdpm" visible 1
+    end
+    05F5: call_scm_func @TimeCircuitsDots params_count 7 0@ $LR $LG $LB $LPOS 4@ 16@
+end
+end
+gosub @TimeCircuitsHourAdjust
+gosub @DivideTwo
+if
+    2@ == 0
+then
+    3F11: set_car 0@ component "dthour2" index 4@ visible 1
+    3F11: set_car 0@ component "dthour1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $DR $DG $DB $HOUR_POS $DPOS 4@ 5@
+else if
+    2@ == 1
+then
+    3F11: set_car 0@ component "pthour2" index 4@ visible 1
+    3F11: set_car 0@ component "pthour1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $PR $PG $PB $HOUR_POS $PPOS 4@ 5@
+else
+    3F11: set_car 0@ component "ltdhour2" index 4@ visible 1
+    3F11: set_car 0@ component "ltdhour1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $LR $LG $LB $HOUR_POS $LPOS 4@ 5@
+end
+end
+05F6: cleo_return 0
+
+:TimeCircuitsModelMinute
+gosub @DivideTwo
+if
+    2@ == 0
+then
+    3F11: set_car 0@ component "dtmin2" index 4@ visible 1
+    3F11: set_car 0@ component "dtmin1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $DR $DG $DB $MINUTE_POS $DPOS 4@ 5@
+else if
+    2@ == 1
+then
+    3F11: set_car 0@ component "ptmin2" index 4@ visible 1
+    3F11: set_car 0@ component "ptmin1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $PR $PG $PB $MINUTE_POS $PPOS 4@ 5@
+else
+    3F11: set_car 0@ component "ltdmin2" index 4@ visible 1
+    3F11: set_car 0@ component "ltdmin1" index 5@ visible 1
+    05F5: call_scm_func @TimeCircuitsDraw2Digits params_count 8 0@ $LR $LG $LB $MINUTE_POS $LPOS 4@ 5@
+end
+end
+05F6: cleo_return 0
 
 :DivideTwo
 if
@@ -184,42 +426,51 @@ else
 end
 return
 
+
 :TimeCircuitsTextureOffset
 // TXD Offsets
-4@ += 30
-5@ += 30
 6@ += 30
 7@ += 30
+8@ += 30
+9@ += 30
 return
 
-:TimeCircuitsDisplay
-05F5: call_scm_func @TimeCircuitsMonth params_count 5 0@ 1@ 2@ 3@ 4@
-05F5: call_scm_func @TimeCircuitsDay params_count 5 0@ 1@ 2@ 3@ 5@
-05F5: call_scm_func @TimeCircuitsYear params_count 5 0@ 1@ 2@ 3@ 6@
-05F5: call_scm_func @TimeCircuitsHour params_count 5 0@ 1@ 2@ 3@ 7@
-05F5: call_scm_func @TimeCircuitsMinute params_count 5 0@ 1@ 2@ 3@ 8@
-05F5: call_scm_func @TimeCircuitsDots params_count 6 0@ 1@ 2@ 3@ 7@ 16@
-return
-
-:TimeCircuitsMonth
-4@ += 41
-05F5: call_scm_func @DrawTexture params_count 9 4@ 650.0 0@ 41.0 18.0 1@ 2@ 3@ 255
+:TimeCircuitsDrawMonth
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    $TIME_DISP == 1
+then
+    6@ += 41
+    05F5: call_scm_func @DrawTexture params_count 9 6@ 4@ 5@ 41.0 18.0 1@ 2@ 3@ 255
+end
 05F6: cleo_return 0
 
-:TimeCircuitsDay
-gosub @DivideTwo
-gosub @TimeCircuitsTextureOffset
-05F5: call_scm_func @DrawTexture params_count 9 4@ 680.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F5: call_scm_func @DrawTexture params_count 9 5@ 692.0 0@ 12.0 18.0 1@ 2@ 3@ 255
+:TimeCircuitsDraw2Digits
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    $TIME_DISP == 1
+then
+    gosub @TimeCircuitsTextureOffset
+    05F5: call_scm_func @DrawTexture params_count 9 6@ 4@ 5@ 12.0 18.0 1@ 2@ 3@ 255
+    4@ += 12.0
+    05F5: call_scm_func @DrawTexture params_count 9 7@ 4@ 5@ 12.0 18.0 1@ 2@ 3@ 255
+end
 05F6: cleo_return 0
 
-:TimeCircuitsYear
-gosub @DivideFour
-gosub @TimeCircuitsTextureOffset
-05F5: call_scm_func @DrawTexture params_count 9 4@ 716.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F5: call_scm_func @DrawTexture params_count 9 5@ 728.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F5: call_scm_func @DrawTexture params_count 9 6@ 740.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F5: call_scm_func @DrawTexture params_count 9 7@ 752.0 0@ 12.0 18.0 1@ 2@ 3@ 255
+:TimeCircuitsDraw4Digits
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    $TIME_DISP == 1
+then
+    gosub @TimeCircuitsTextureOffset
+    05F5: call_scm_func @DrawTexture params_count 9 6@ 4@ 5@ 12.0 18.0 1@ 2@ 3@ 255
+    4@ += 12.0
+    05F5: call_scm_func @DrawTexture params_count 9 7@ 4@ 5@ 12.0 18.0 1@ 2@ 3@ 255
+    4@ += 12.0
+    05F5: call_scm_func @DrawTexture params_count 9 8@ 4@ 5@ 12.0 18.0 1@ 2@ 3@ 255
+    4@ += 12.0
+    05F5: call_scm_func @DrawTexture params_count 9 9@ 4@ 5@ 12.0 18.0 1@ 2@ 3@ 255
+end
 05F6: cleo_return 0
 
 :TimeCircuitsHourAdjust
@@ -236,51 +487,108 @@ then
 end
 return
 
-:TimeCircuitsHour
-gosub @TimeCircuitsHourAdjust
-gosub @DivideTwo
-gosub @TimeCircuitsTextureOffset
-05F5: call_scm_func @DrawTexture params_count 9 4@ 788.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F5: call_scm_func @DrawTexture params_count 9 5@ 800.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F6: cleo_return 0
-
-
-:TimeCircuitsMinute
-gosub @DivideTwo
-gosub @TimeCircuitsTextureOffset
-05F5: call_scm_func @DrawTexture params_count 9 4@ 824.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F5: call_scm_func @DrawTexture params_count 9 5@ 836.0 0@ 12.0 18.0 1@ 2@ 3@ 255
-05F6: cleo_return 0
-
 :TimeCircuitsDots
 // Red Destination dots are Amber
-if
-    1@ == 255
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
+    $TIME_DISP == 1
 then
-    2@ = 255
-end
+    if
+        1@ == 255
+    then
+        2@ = 255
+    end
 
-// AM/PM Dot
-if
-    4@ < 12
-then
-    0@ -= 6.0
-    05F5: call_scm_func @DrawTexture params_count 9 54 771.0 0@ 6.0 8.0 1@ 2@ 3@ 255
-    0@ += 6.0
-else
-    0@ += 5.0
-    05F5: call_scm_func @DrawTexture params_count 9 54 771.0 0@ 6.0 8.0 1@ 2@ 3@ 255
-    0@ -= 5.0
-end
+    // AM/PM Dot
+    if
+        5@ < 12
+    then
+        4@ -= 6.0
+        05F5: call_scm_func @DrawTexture params_count 9 54 771.0 4@ 6.0 8.0 1@ 2@ 3@ 255
+        4@ += 6.0
+    else
+        4@ += 5.0
+        05F5: call_scm_func @DrawTexture params_count 9 54 771.0 4@ 6.0 8.0 1@ 2@ 3@ 255
+        4@ -= 5.0
+    end
 
-// Flash Colon
-if
-    5@ < 500 // integer values
-then
-    0@ -= 2.0
-    05F5: call_scm_func @DrawTexture params_count 9 54 812.5 0@ 6.0 8.0 1@ 2@ 3@ 255
-    0@ += 6.0
-    05F5: call_scm_func @DrawTexture params_count 9 54 812.5 0@ 6.0 8.0 1@ 2@ 3@ 255
-    0@ -= 4.0
+    // Flash Colon
+    if
+        6@ < 500 // integer values
+    then
+        4@ -= 2.0
+        05F5: call_scm_func @DrawTexture params_count 9 54 812.5 4@ 6.0 8.0 1@ 2@ 3@ 255
+        4@ += 6.0
+        05F5: call_scm_func @DrawTexture params_count 9 54 812.5 4@ 6.0 8.0 1@ 2@ 3@ 255
+        4@ -= 4.0
+    end
 end
 05F6: cleo_return 0
+
+:TimeCircuitsModelReset
+//lights behind the tcd switch
+3F10: set_car 0@ component "tcdswitchlighton" visible 0
+3F10: set_car 0@ component "tcdswitchlightoff" visible 1
+3F10: set_car 0@ component "gloveboxgaugeslights" visible 0
+3F10: set_car 0@ component "tcdkeypadlightson" visible 0
+//months
+for 7@ = 1 to 12
+	3F11: set_car 0@ component "dtmonth" index 7@ visible 0
+	3F11: set_car 0@ component "ptmonth" index 7@ visible 0
+	3F11: set_car 0@ component "ltdmonth" index 7@ visible 0
+end
+
+//days
+for 7@ = 10 to 23
+	3F11: set_car 0@ component "dtday" index 7@ visible 0
+	3F11: set_car 0@ component "ptday" index 7@ visible 0
+	3F11: set_car 0@ component "ltdday" index 7@ visible 0
+end
+//years
+for 7@ = 10 to 49
+	3F11: set_car 0@ component "dtyear" index 7@ visible 0
+	3F11: set_car 0@ component "ptyear" index 7@ visible 0
+	3F11: set_car 0@ component "ltdyear" index 7@ visible 0
+end
+//hours
+for 7@ = 10 to 21
+	3F11: set_car 0@ component "dthour" index 7@ visible 0
+	3F11: set_car 0@ component "pthour" index 7@ visible 0
+	3F11: set_car 0@ component "ltdhour" index 7@ visible 0
+end
+//minutes
+for 7@ = 10 to 25
+	3F11: set_car 0@ component "dtmin" index 7@ visible 0
+	3F11: set_car 0@ component "ptmin" index 7@ visible 0
+	3F11: set_car 0@ component "ltdmin" index 7@ visible 0
+end
+//am indicators
+3F10: set_car 0@ component "dtam" visible 0
+3F10: set_car 0@ component "ptam" visible 0
+3F10: set_car 0@ component "ltdam" visible 0
+
+//pm indicators
+3F10: set_car 0@ component "dtpm" visible 0
+3F10: set_car 0@ component "ptpm" visible 0
+3F10: set_car 0@ component "ltdpm" visible 0
+
+//colons between hours and minutes
+3F10: set_car 0@ component "dtcolon" visible 0
+3F10: set_car 0@ component "ptcolon" visible 0
+3F10: set_car 0@ component "ltdcolon" visible 0
+return
+
+:TimeCircuitsModelKeypad
+3F15: move_car_part "tcdkeypadbutton" index 1@ pos 0.0 0.005 0.0 car 0@
+wait 50
+3F15: move_car_part "tcdkeypadbutton" index 1@ pos 0.0 0.0 0.0 car 0@
+end_thread
+
+:TimeCircuitsModelKeypadConfirm
+3F10: set_car 0@ component "tcdkeypadenterlighton" visible 1
+3F14: move_car_part "tcdkeypadbuttonenter" pos 0.0 0.002 0.0 car 0@
+wait 50
+3F14: move_car_part "tcdkeypadbuttonenter" pos 0.0 0.0 0.0 car 0@
+wait 450
+3F10: set_car 0@ component "tcdkeypadenterlighton" visible 0
+end_thread

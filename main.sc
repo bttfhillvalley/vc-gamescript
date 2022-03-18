@@ -169,7 +169,6 @@ create_thread @Speed               // hud digital speedometers
 //create_thread @Glow                //Various glows
 //create_thread @TrainGlow           // Train Coils
 create_thread @Mode                // Instant & Cutscene Time Travel Modes
-create_thread @TimeCircuits        // On screen Time Circuits
 for $SID = 1 to 10 step 1
     create_thread @StatusIndicatorDisplay $SID   // in car time circuits
 end
@@ -275,7 +274,6 @@ jump @InfLoop
 {$INCLUDE script/Taxi.txt}
 {$INCLUDE script/TimeChangingMap.txt}
 {$INCLUDE script/TimeChangingPickups.txt}
-{$INCLUDE script/TimeCircuitsModel.txt}
 {$INCLUDE script/TimeCircuits.txt}
 {$INCLUDE script/TimeEffects.txt}
 {$INCLUDE script/TimeLightning.txt}
