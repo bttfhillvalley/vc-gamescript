@@ -96,8 +96,6 @@ end
 
 // Rear deck
 0B10: 15@ = 1@ AND $REAR_BIT
-//01E5: text_1number_highpriority 'DAY' 15@ time 10000 1  // Cost: $~1~
-
 if
     15@ == 0
 then
@@ -158,6 +156,7 @@ then
     3F10: set_car 0@ component "hookandholderbttf1" visible 0
     3F10: set_car 0@ component "holderbttf1" visible 0
 else
+    3F10: set_car 0@ component "nohookbttf1" visible 0
     if
         003B: 15@ == $HOOK_SIDE_BIT
     then
@@ -382,6 +381,7 @@ jump @DisplayPlutoniumChamber
 
 :DisplayPlutoniumChamber
 3F10: set_car 0@ component "bttf1" visible 3@
+3F10: set_car 0@ component "nohookbttf1" visible 3@
 3F10: set_car 0@ component "reactorlidbttf1" visible 3@
 return
 
