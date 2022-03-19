@@ -241,7 +241,8 @@ create_thread @Lightning 0@ 1@
 
 // =====================================================================================
 :TimeLightningCheck
-if
+if and
+    00DC:   player $PLAYER_CHAR driving 0@
     $LIGHTNING == 2
 else_jump @TimeCircuitsCheck
 Car.Health(0@) = 300
