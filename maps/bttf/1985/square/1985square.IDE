@@ -3,6 +3,7 @@ objs
 5195, brokenledge1985, clocktower1985, 1, 600, 0
 5196, LODcktower1985, clocktower1985, 1, 1200, 0
 5197, vane_dam1985, clocktower1985, 1, 600, 128
+6410, statler1985, statler1985, 1, 600, 128
 end
 tobj
 5193, clock1985, clocktower1985, 1, 600, 128, 7, 19

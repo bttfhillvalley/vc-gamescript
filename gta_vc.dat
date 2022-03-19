@@ -53,7 +53,8 @@ IDE DATA\MAPS\BTTF\1955\downtown\1955downtown.IDE
 IDE DATA\MAPS\BTTF\1955\pohatchee\pohatchee.IDE
 IDE DATA\MAPS\BTTF\1955\twinpinesranch\twinpinesranch.IDE
 IDE DATA\MAPS\BTTF\1955\square\1955square.IDE
-#IDE DATA\MAPS\BTTF\1955\LyonEstates\lyon55.IDE
+IDE DATA\MAPS\BTTF\1955\square\1955generic.IDE
+IDE DATA\MAPS\BTTF\1955\LyonEstates\lyon55.IDE
 
 
 
@@ -82,7 +83,7 @@ COLFILE 0 DATA\MAPS\BTTF\1955\downtown\1955downtown.COL
 COLFILE 0 DATA\MAPS\BTTF\1955\pohatchee\pohatchee.COL
 COLFILE 0 DATA\MAPS\BTTF\1955\twinpinesranch\twinpinesranch.COL
 COLFILE 0 DATA\MAPS\BTTF\1955\square\1955square.COL
-#COLFILE 0 DATA\MAPS\BTTF\1955\LyonEstates\lyon55.COL
+COLFILE 0 DATA\MAPS\BTTF\1955\LyonEstates\lyon55.COL
 
 
 
@@ -129,7 +130,11 @@ IPL DATA\MAPS\BTTF\1955\downtown\1955downtown.IPL
 IPL DATA\MAPS\BTTF\1955\pohatchee\pohatchee.IPL
 IPL DATA\MAPS\BTTF\1955\twinpinesranch\twinpinesranch.IPL
 IPL DATA\MAPS\BTTF\1955\square\1955square.IPL
-#IPL DATA\MAPS\\BTTF\1955\LyonEstates\lyon55.IPL
+IPL DATA\MAPS\BTTF\1955\square\1955generic.IPL
+IPL DATA\MAPS\BTTF\1985\square\1985square.IPL
+IPL DATA\MAPS\BTTF\2015\square\2015square.IPL
+IPL DATA\MAPS\\BTTF\1955\LyonEstates\lyon55.IPL
+IPL DATA\MAPS\BTTF\1885\square\1885square.IPL
 
 
 IPL DATA\MAPS\paths.ipl
