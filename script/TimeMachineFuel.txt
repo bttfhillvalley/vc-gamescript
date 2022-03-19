@@ -318,7 +318,14 @@ if
 then
     end_thread
 end
-wait 2000
+while 16@ < 2000
+    wait 10
+    if
+        $TCON == 0
+    then
+        end_thread
+    end
+end
 3F84: play_sound "plut_gauge.wav" loop 0
 
 // Eventually this will be part of Ilufir's animation handler so we don't have to code it here.

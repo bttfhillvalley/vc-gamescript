@@ -54,6 +54,7 @@ DEFINE MISSION 0 AT @INITIAL
 {$OPCODE 3F84=2,play_sound_store %1d% loop %2d%}                                // Play Sound
 {$OPCODE 3F85=6,play_sound %1d% pos %2d% %3d% %4d% loop %5d% size %6d%}         // Play Sound at location
 {$OPCODE 3F86=7,attach_sound %1d% to_car %7d% pos %2d% %3d% %4d% loop %5d% size %6d%} // Attach sound to car
+{$OPCODE 3F90=1,play_keypad_sound %1d%}                                         // Play keypad tone
 {$OPCODE 3F91=2,stop_sound %1d% index %2d%}                                     // Stop sound w/ index
 {$OPCODE 3F92=2,is_sound_playing %1d% index %2d%}                               // Is sound still playing? w/ index
 {$OPCODE 3F93=2,is_sound_stopped %1d% index %2d%}                               // Is sound stopped? w/ index
@@ -275,6 +276,7 @@ jump @InfLoop
 {$INCLUDE script/TimeChangingMap.txt}
 {$INCLUDE script/TimeChangingPickups.txt}
 {$INCLUDE script/TimeCircuits.txt}
+{$INCLUDE script/TimeCircuitsKeypad.txt}
 {$INCLUDE script/TimeEffects.txt}
 {$INCLUDE script/TimeLightning.txt}
 {$INCLUDE script/TimeMachineFuel.txt}

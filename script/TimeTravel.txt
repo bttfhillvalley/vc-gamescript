@@ -59,8 +59,8 @@ $REAR_BIT     = 0x010000 // 1 bit
 0B12: $TC_FRIED_BITMASK = $TC_FRIED_BIT XOR 0xFFFFFFFF
 
 // Lots of unused bits for now just in case
-$FLASH_BIT    = 0x0800 // 1 bit
-$SPEEDO_BIT   = 0x0400 // 1 bit
+$FLASH_BIT    = 0x0800 // 1 bit (unused)
+$SPEEDO_BIT   = 0x0400 // 1 bit (unused)
 $BOILER_BIT   = 0x0200 // 1 bit
 $CLOCK_BIT    = 0x0100 // 1 bit
 
@@ -96,7 +96,7 @@ create_thread @SetVariation 0@ 1@
 gosub @TimeEffectsModelReset
 gosub @LightsOff
 gosub @GlowInit
-create_thread @TimeCircuitsModel 0@
+create_thread @TimeCircuits 0@
 create_thread @CarInterior 0@
 
 :TimeStart
@@ -169,6 +169,13 @@ if
 then
     $FLASH = 0xF
     create_thread @TimeCircuitsFlash 1@
+end
+
+if
+    $TCON == 0xF0
+then
+    $TCON = 0x10
+    create_thread @TimeCircuitsOnFlash 1@
 end
 
 // Check Fuel
@@ -610,7 +617,7 @@ Car.Health(0@) = 9@
 create_thread @SetVariation 0@ 1@
 gosub @TimeEffectsModelReset
 gosub @LightsOff
-create_thread @TimeCircuitsModel 0@
+create_thread @TimeCircuits 0@
 create_thread @CarInterior 0@
 
 :TimePastWait
@@ -649,7 +656,7 @@ end
 create_thread @SetVariation 0@ 1@ 1
 gosub @TimeEffectsModelReset
 gosub @LightsOff
-create_thread @TimeCircuitsModel 0@
+create_thread @TimeCircuits 0@
 create_thread @CarInterior 0@
 Model.Destroy(10@)
 jump @TimeReentryExplosion
@@ -697,6 +704,25 @@ then
 end
 
 // Set time
+008A: $YEAR = 12@ // integer values and handles
+008A: $MONTH = 12@ // integer values and handles
+008A: $DAY = 12@ // integer values and handles
+$YEAR /= 100
+$MONTH /= 100
+$YEAR *= 100
+0060: $DAY -= $YEAR
+$YEAR /= 10000
+$YEAR *= 100
+0060: $MONTH -= $YEAR
+$YEAR /= 100
+
+008A: $HOUR = 13@ // integer values and handles
+008A: $MINUTE = 13@ // integer values and handles
+$HOUR /= 100
+$HOUR *= 100
+0060: $MINUTE -= $HOUR
+$HOUR /= 100
+
 00C0: set_current_time $HOUR $MINUTE
 0084: $CYEAR = $YEAR // integer values and handles
 0084: $CMONTH = $MONTH // integer values and handles
@@ -1042,51 +1068,20 @@ else_jump @ColdWispsIntermittent
 jump @ColdWispsStart
 
 :ColdEnd
-if
-    10@ == 1 // integer values
-then
-    10@ = 0 // integer values
-    3F91: stop_sound "cold.wav" index 14@
-end
+3F91: stop_sound "cold.wav" index 14@
 end_thread
 
 // =========================================================================================
 :LocalDateToGlobal
-008A: $YEAR = 12@ // integer values and handles
-008A: $MONTH = 12@ // integer values and handles
-008A: $DAY = 12@ // integer values and handles
-$YEAR /= 100
-$MONTH /= 100
-$YEAR *= 100
-0060: $DAY -= $YEAR
-$YEAR /= 10000
-$YEAR *= 100
-0060: $MONTH -= $YEAR
-$YEAR /= 100
-
-008A: $HOUR = 13@ // integer values and handles
-008A: $MINUTE = 13@ // integer values and handles
-$HOUR /= 100
-$HOUR *= 100
-0060: $MINUTE -= $HOUR
-$HOUR /= 100
-
-0084: $HOURN = $HOUR // integer values and handles
-if
-    $HOUR >= 12 // integer values
-then
-    $AM = 1 // integer values
-    $HOURN -= 12 // integer values
-else
-    $AM = 0 // integer values
-end
+008A: $DTIME = 12@ // integer values and handles
+008A: $DTIME1 = 13@ // integer values and handles
 
 // Time circuits stuff
 0B10: $TCON = 1@ AND $TC_BIT
 if
     not $TCON == 0
 then
-    $TCON = 1
+    $TCON = 0x1F
 end
 0B10: $FRIED = 1@ AND $TC_FRIED_BIT
 if
@@ -1098,20 +1093,15 @@ gosub @GlobalDateToLocal
 return
 
 :GlobalDateToLocal
-008B: 12@ = $YEAR // integer values and handles
-12@ *= 100 // integer values (never used in VC or GTA 3)
-005C: 12@ += $MONTH // integer values (never used VC or GTA 3)
-12@ *= 100 // integer values (never used in VC or GTA 3)
-005C: 12@ += $DAY // integer values (never used VC or GTA 3)
-008B: 13@ = $HOUR
-13@ *= 100 // integer values (never used in VC or GTA 3)
-005C: 13@ += $MINUTE // integer values (never used VC or GTA 3)
+008B: 12@ = $DTIME
+008B: 13@ = $DTIME1
+
 
 // Time circuits stuff
 0B10: 5@ = 1@ AND $TC_BIT
 0B10: 1@ = 1@ AND $TC_BITMASK
 if
-    $TCON == 1
+    not $TCON == 0
 then
     if
         5@ == 0

@@ -1,24 +1,16 @@
 {$USE CLEO}
 // TODO: Change this to be car specific
 // 0@ - Car
-// 1@ - TCD Switch
-// 2@ - MONTH
-// 3@ - DAY
-// 4@ - YEAR
-// 5@ - HOUR
-// 6@ - MINUTE
-// 7@ - CMONTH
-// 8@ - CDAY
-// 9@ - CYEAR
-// 10@ - CHOUR
-// 11@ - CMINUTE
+// 1@ - TCD Switch position
+// 10@ - DTIME
+// 11@ - DTIME1
 // 12@ - PTIME
 // 13@ - PTIME1
 // 14@ - TCON
 // 15@ - FRIED
 
 :TimeCircuitsFlash
-0B10: 1@ = 0@ AND $FLASH_BIT
+0B10: 1@ = 0@ AND $HOOD_BIT
 if
     1@ == 0
 then
@@ -36,8 +28,26 @@ else
 end
 end_thread
 
-:TimeCircuitsModel
-thread 'TC_MOD'
+:TimeCircuitsOnFlash
+0B10: 1@ = 0@ AND $HOOD_BIT
+if
+    1@ == 0
+then
+    wait 450
+    $TCON = 0x17
+    wait 100
+    $TCON = 0x1F
+else
+    wait 450
+    $TCON = 0x18
+    wait 50
+    $TCON = 0x1C
+    wait 50
+    $TCON = 0x1F
+end
+end_thread
+
+:TimeCircuits
 1@ = 0.0 //tcd switch and needles in the dash in front of the passenger seat
 $DPOS = 200.0 // floating-point values
 $DR = 255 // integer values
@@ -60,7 +70,10 @@ $YEAR_POS = 716.0
 $HOUR_POS = 788.0
 $MINUTE_POS = 824.0
 
-:TimeCircuitsModelStart
+// Create controls for keypad.
+create_thread @TimeCircuitsKeypad 0@
+
+:TimeCircuitsStart
 wait 10
 if
     Car.Wrecked(0@)
@@ -75,11 +88,8 @@ then
     if
         17@ > 100
     then
-        008B: 2@ = $MONTH
-        008B: 3@ = $DAY
-        008B: 4@ = $YEAR
-        008B: 5@ = $HOUR
-        008B: 6@ = $MINUTE
+        008B: 10@ = $DTIME
+        008B: 11@ = $DTIME1
         008B: 12@ = $PTIME
         008B: 13@ = $PTIME1
         008B: 14@ = $TCON
@@ -90,27 +100,19 @@ else
 end
 
 //first, hide all components / put them to base configuration
-gosub @TimeCircuitsModelReset
-if or
+gosub @TimeCircuitsReset
+if
     14@ == 0
-    15@ == 1
-else_jump @TimeCircuitsModelTurnOn
+else_jump @TimeCircuitsShow
 if
     1@ < 0.0
 then
     1@ += 10.0
     3F16: rotate_car_part "tcdhandle" angle 0.0 1@ 0.0 car 0@
 end
-jump @TimeCircuitsModelStart
+jump @TimeCircuitsStart
 
-:TimeCircuitsModelTurnOn
-//change the lights behind the tcd switch to on and fall through to handling the tcd
-//this is not necessary for the off case because it's done in @TimeCircuitsModelReset
-3F10: set_car 0@ component "tcdswitchlighton" visible 1
-3F10: set_car 0@ component "tcdswitchlightoff" visible 0
-3F10: set_car 0@ component "tcdkeypadlightson" visible 1
-3F10: set_car 0@ component "gloveboxgaugeslights" visible 1
-
+:TimeCircuitsShow
 //rotate the components up to 60.0 degrees towards on position
 if
     1@ > -60.0
@@ -127,69 +129,25 @@ then
     05F5: call_scm_func @DrawTexture params_count 9 1 733.0 242.0 216.0 128.0 255 255 255 255
 end
 
-//Destination time
+// Don't show digital display if time circuits are damaged
 if
-    00DC:   player $PLAYER_CHAR in_car 0@
-then
-    0B10: 15@ = $FLASH AND 0x8
-    if
-        15@ == 0
-    then
-        05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 0 0 2@
-    end
-    0B10: 15@ = $FLASH AND 0x4
-    if
-        15@ == 0
-    then
-        05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 0 0 3@
-    end
-    0B10: 15@ = $FLASH AND 0x2
-    if
-        15@ == 0
-    then
-        05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 0 0 4@
-    end
-    0B10: 15@ = $FLASH AND 0x1
-    if
-        15@ == 0
-    then
-        05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 0 0 5@
-        05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 0 0 6@
-    end
-else
-    05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 0 2@ 3@ 4@ 5@ 6@
-end
+    15@ == 0
+else_jump @TimeCircuitsStart
+//change the lights behind the tcd switch to on and fall through to handling the tcd
+//this is not necessary for the off case because it's done in @TimeCircuitsReset
+3F10: set_car 0@ component "tcdswitchlighton" visible 1
+3F10: set_car 0@ component "tcdswitchlightoff" visible 0
+3F10: set_car 0@ component "tcdkeypadlightson" visible 1
+3F10: set_car 0@ component "gloveboxgaugeslights" visible 1
+
+// Destination time
+05F5: cleo_call @TimeCircuitsLine params_count 4 0@ 10@ 11@ 0
 
 // Present time
-008B: 7@ = $CMONTH // integer values and handles
-008B: 8@ = $CDAY // integer values and handles
-008B: 9@ = $CYEAR // integer values and handles
-00BF: 10@ = current_time_hours, 11@ = current_time_minutes
-05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 1 7@ 8@ 9@ 10@ 11@
+05F5: cleo_call @TimeCircuitsLine params_count 4 0@ $CTIME $CTIME1 1
 
 // Last Time Departed
-if
-    not 12@ == -1 // integer values
-then
-    0085: 7@ = 12@
-    0085: 8@ = 12@ // integer values and handles
-    0085: 9@ = 12@
-    7@ /= 100
-    9@ /= 100
-    9@ *= 100
-    0062: 8@ -= 9@
-    9@ /= 10000
-    9@ *= 100
-    0062: 7@ -= 9@
-    9@ /= 100
-    008B: 10@ = 13@ // integer values and handles
-    008B: 11@ = 13@ // integer values and handles
-    10@ /= 100
-    10@ *= 100
-    0062: 11@ -= 10@
-    10@ /= 100
-    05F5: cleo_call @TimeCircuitsModelDisplay params_count 7 0@ 2 7@ 8@ 9@ 10@ 11@
-end
+05F5: cleo_call @TimeCircuitsLine params_count 4 0@ 12@ 13@ 2
 
 // Display colons
 if
@@ -210,37 +168,105 @@ then
 	3F10: set_car 0@ component "ptcolon" visible 1
 	3F10: set_car 0@ component "ltdcolon" visible 1
 end
+jump @TimeCircuitsStart
 
-// Keypad stuff
-for 7@ = 0 to 9 step 1
-    0B11: 8@ = 7@ OR 0x30
-    0B11: 9@ = 7@ OR 0x60
-    if or
-        0AB0: key_pressed 8@
-        0AB0: key_pressed 9@
+:TimeCircuitsLine
+if
+    not 1@ == -1 // integer values
+then
+    0085: 4@ = 1@
+    0085: 5@ = 1@ // integer values and handles
+    0085: 6@ = 1@
+    4@ /= 100
+    6@ /= 100
+    6@ *= 100
+    0062: 5@ -= 6@
+    6@ /= 10000
+    6@ *= 100
+    0062: 4@ -= 6@
+    6@ /= 100
+    008B: 7@ = 2@ // integer values and handles
+    008B: 8@ = 2@ // integer values and handles
+    7@ /= 100
+    7@ *= 100
+    0062: 8@ -= 7@
+    7@ /= 100
+    if and
+        00DC:   player $PLAYER_CHAR in_car 0@
+        $TCON == 0x1F
+        3@ == 0
     then
-        create_thread @TimeCircuitsModelKeypad 0@ 7@
+        0B10: 15@ = $FLASH AND 0x8
+        if
+            15@ == 0
+        then
+            05F5: call_scm_func @TimeCircuitsMonth params_count 5 0@ 0 0 0 4@
+        end
+        0B10: 15@ = $FLASH AND 0x4
+        if
+            15@ == 0
+        then
+            05F5: call_scm_func @TimeCircuitsDay params_count 5 0@ 0 0 0 5@
+        end
+        0B10: 15@ = $FLASH AND 0x2
+        if
+            15@ == 0
+        then
+            05F5: call_scm_func @TimeCircuitsYear params_count 5 0@ 0 0 0 6@
+        end
+        0B10: 15@ = $FLASH AND 0x1
+        if
+            15@ == 0
+        then
+            05F5: call_scm_func @TimeCircuitsHour params_count 5 0@ 0 0 0 7@
+            05F5: call_scm_func @TimeCircuitsMinute params_count 5 0@ 0 0 0 8@
+        end
+    else
+        05F5: cleo_call @TimeCircuitsDisplay params_count 7 0@ 3@ 4@ 5@ 6@ 7@ 8@
     end
 end
-
-// Enter Key
-if or
-    0AB0: key_pressed 0x6D
-    0AB0: key_pressed 0xBD
-then
-    create_thread @TimeCircuitsModelKeypadConfirm 0@
-end
-jump @TimeCircuitsModelStart
-
-:TimeCircuitsModelDisplay
-05F5: call_scm_func @TimeCircuitsModelMonth params_count 5 0@ 0 1@ 0 2@
-05F5: call_scm_func @TimeCircuitsModelDay params_count 5 0@ 0 1@ 0 3@
-05F5: call_scm_func @TimeCircuitsModelYear params_count 5 0@ 0 1@ 0 4@
-05F5: call_scm_func @TimeCircuitsModelHour params_count 5 0@ 0 1@ 0 5@
-05F5: call_scm_func @TimeCircuitsModelMinute params_count 5 0@ 0 1@ 0 6@
 05F6: cleo_return 0
 
-:TimeCircuitsModelMonth
+:TimeCircuitsDisplay
+if
+    00DC:   player $PLAYER_CHAR in_car 0@
+then
+    0B10: 15@ = $TCON AND 0x8
+    if
+        not 15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsMonth params_count 5 0@ 0 1@ 0 2@
+    end
+    0B10: 15@ = $TCON AND 0x4
+    if
+        not 15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsDay params_count 5 0@ 0 1@ 0 3@
+    end
+    0B10: 15@ = $TCON AND 0x2
+    if
+        not 15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsYear params_count 5 0@ 0 1@ 0 4@
+    end
+    0B10: 15@ = $TCON AND 0x1
+    if
+        not 15@ == 0
+    then
+        05F5: call_scm_func @TimeCircuitsHour params_count 5 0@ 0 1@ 0 5@
+        05F5: call_scm_func @TimeCircuitsMinute params_count 5 0@ 0 1@ 0 6@
+    end
+else
+    05F5: call_scm_func @TimeCircuitsMonth params_count 5 0@ 0 1@ 0 2@
+    05F5: call_scm_func @TimeCircuitsDay params_count 5 0@ 0 1@ 0 3@
+    05F5: call_scm_func @TimeCircuitsYear params_count 5 0@ 0 1@ 0 4@
+    05F5: call_scm_func @TimeCircuitsHour params_count 5 0@ 0 1@ 0 5@
+    05F5: call_scm_func @TimeCircuitsMinute params_count 5 0@ 0 1@ 0 6@
+end
+05F6: cleo_return 0
+
+
+:TimeCircuitsMonth
 if
     2@ == 0
 then
@@ -258,7 +284,7 @@ end
 end
 05F6: cleo_return 0
 
-:TimeCircuitsModelDay
+:TimeCircuitsDay
 gosub @DivideTwo
 if
     2@ == 0
@@ -280,7 +306,7 @@ end
 end
 05F6: cleo_return 0
 
-:TimeCircuitsModelYear
+:TimeCircuitsYear
 gosub @DivideFour
 if
     2@ == 0
@@ -308,7 +334,7 @@ end
 end
 05F6: cleo_return 0
 
-:TimeCircuitsModelHour
+:TimeCircuitsHour
 if
     2@ == 0
 then
@@ -364,7 +390,7 @@ end
 end
 05F6: cleo_return 0
 
-:TimeCircuitsModelMinute
+:TimeCircuitsMinute
 gosub @DivideTwo
 if
     2@ == 0
@@ -425,7 +451,6 @@ else
     7@ = -1
 end
 return
-
 
 :TimeCircuitsTextureOffset
 // TXD Offsets
@@ -525,7 +550,7 @@ then
 end
 05F6: cleo_return 0
 
-:TimeCircuitsModelReset
+:TimeCircuitsReset
 //lights behind the tcd switch
 3F10: set_car 0@ component "tcdswitchlighton" visible 0
 3F10: set_car 0@ component "tcdswitchlightoff" visible 1
@@ -577,18 +602,3 @@ end
 3F10: set_car 0@ component "ptcolon" visible 0
 3F10: set_car 0@ component "ltdcolon" visible 0
 return
-
-:TimeCircuitsModelKeypad
-3F15: move_car_part "tcdkeypadbutton" index 1@ pos 0.0 0.005 0.0 car 0@
-wait 50
-3F15: move_car_part "tcdkeypadbutton" index 1@ pos 0.0 0.0 0.0 car 0@
-end_thread
-
-:TimeCircuitsModelKeypadConfirm
-3F10: set_car 0@ component "tcdkeypadenterlighton" visible 1
-3F14: move_car_part "tcdkeypadbuttonenter" pos 0.0 0.002 0.0 car 0@
-wait 50
-3F14: move_car_part "tcdkeypadbuttonenter" pos 0.0 0.0 0.0 car 0@
-wait 450
-3F10: set_car 0@ component "tcdkeypadenterlighton" visible 0
-end_thread
