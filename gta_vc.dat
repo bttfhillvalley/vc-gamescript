@@ -2,7 +2,7 @@
 # Load IDEs first, then the models and after that the IPLs
 #
 CDIMAGE MODELS\BTTF.IMG
-# everything is loaded on a per directory basis and in alphabetical order
+# everything is loaded on a per directory basis and in alphabetical order 
 # to improve the speed of loading
 
 #
