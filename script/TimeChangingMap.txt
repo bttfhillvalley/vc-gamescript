@@ -1,5 +1,7 @@
 :DateCheckStart
-wait 0
+while $CYEAR == -1
+    wait 10
+end
 $MALL_SIGN = 2
 3F09: remove_build "1885" amnt 0
 3F09: remove_build "1955" amnt 17
@@ -33,7 +35,7 @@ then
     create_thread @walkman
     create_thread @radsuit
     gosub @MallSignCreate
-    create_thread @canopener
+    //create_thread @canopener   // Currently crashing
     jump @WaitToLeave1985
 else
     3F08: add_build "2015" amnt 7
@@ -74,25 +76,26 @@ else_jump @WaitToLeave1985
 3F09: remove_build "1985" amnt 7
 create_thread @1985pickupcleanup
 gosub @MallSignDestroy
-end_thread_named 'canopn'
-0108: destroy_object $dogfoodbase
-0108: destroy_object $dogfoodarm
-0108: destroy_object $dogfoodclaw
-0108: destroy_object $dogfoodcan
-0108: destroy_object $dogfoodcan1
-0108: destroy_object $dogfoodcan2
-0108: destroy_object $garagetoast1
-0108: destroy_object $garagetoast2
-0108: destroy_object $timerpart1
-0108: destroy_object $timerpart3
-0108: destroy_object $timerpart2
-0108: destroy_object $garageclockswitch
-0108: destroy_object $garagelightswitch
-0108: destroy_object $dogfoodpile
-0108: destroy_object $dogemptycan
-0108: destroy_object $dogfoodfull
-0108: destroy_object $dogfoodspin
-0215: destroy_pickup $docscamera
+// Currently crashing.  Also needs to turn into a gosub.
+//end_thread_named 'canopn'
+//0108: destroy_object $dogfoodbase
+//0108: destroy_object $dogfoodarm
+//0108: destroy_object $dogfoodclaw
+//0108: destroy_object $dogfoodcan
+//0108: destroy_object $dogfoodcan1
+//0108: destroy_object $dogfoodcan2
+//0108: destroy_object $garagetoast1
+//0108: destroy_object $garagetoast2
+//0108: destroy_object $timerpart1
+//0108: destroy_object $timerpart3
+//0108: destroy_object $timerpart2
+//0108: destroy_object $garageclockswitch
+//0108: destroy_object $garagelightswitch
+//0108: destroy_object $dogfoodpile
+//0108: destroy_object $dogemptycan
+//0108: destroy_object $dogfoodfull
+//0108: destroy_object $dogfoodspin
+//0215: destroy_pickup $docscamera
 jump @DateCheck
 
 :WaitToLeave2015

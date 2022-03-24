@@ -1,0 +1,339 @@
+:SetParkedCarGenerator
+014C: set_parked_car_generator $28 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $29 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $30 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $31 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $32 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1009 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1010 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1011 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1012 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1013 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1014 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1015 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1016 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1017 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1018 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1019 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1020 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1021 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1022 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1025 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1026 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1027 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1028 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1029 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1030 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1031 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1032 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1033 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1035 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1036 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1037 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1037 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1038 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1040 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1041 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1042 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1043 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1044 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1045 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1046 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1047 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1048 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1049 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1050 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1051 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1052 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1053 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1054 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1055 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1056 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1057 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1058 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1059 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1060 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1061 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1062 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1063 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1064 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1065 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1066 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1067 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1068 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1069 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1079 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1071 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1072 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1073 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1074 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1075 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1076 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1077 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1078 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1079 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1080 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1081 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1082 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1083 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1084 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1085 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1086 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1087 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1088 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1089 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1090 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1091 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1092 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1093 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1094 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1095 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1096 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1097 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1098 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1099 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1100 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1101 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1102 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1103 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1104 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1105 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1106 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1107 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1108 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1109 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1110 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1111 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1112 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1113 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1114 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1115 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1116 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1117 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1118 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1119 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1120 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1121 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1122 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1123 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1124 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1125 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1126 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1127 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1128 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1129 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1130 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1131 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1132 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1133 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1134 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1135 cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1136 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1137 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1138 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1139 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1140 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1141 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1142 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1143 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1144 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1145 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1146 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1147 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1148 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1149 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1150 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1151 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1152 cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $1146A cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1147A cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1148A cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1149A cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1150A cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1151A cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1152A cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $1146B cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1147B cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1148B cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1149B cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1150B cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1151B cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1152B cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1153 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1154 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1155 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1156 cars_to_generate_to $ALLCAR
+014C: set_parked_car_generator $1157 cars_to_generate_to $2015CAR
+014C: set_parked_car_generator $1158 cars_to_generate_to $1985CAR
+//014C: set_parked_car_generator $DOCT cars_to_generate_to $1985CAR
+014C: set_parked_car_generator $DOCP cars_to_generate_to $1955CAR
+014C: set_parked_car_generator $LUXOR cars_to_generate_to $2015CAR
+return
+
+:CarYear
+thread 'YR_CAR'
+
+:CarYearStart
+wait 10
+if
+  $CYEAR >= 2010 // integer values
+else_jump @CarYear1985
+01EB: set_traffic_density_multiplier_to 1.0
+$1955 = 0 // integer values
+$1985 = 0 // integer values
+$2015 = 1000 // integer values
+$1955CAR = 0 // integer values
+$1985CAR = 101 // integer values
+$2015CAR = 101 // integer values
+$ALLCAR = 101 // integer values
+gosub @SetParkedCarGenerator
+gosub @SetCarZone
+
+:CarYear2015Loop
+wait 10
+if
+    $CYEAR < 2010
+else_jump @CarYear2015Loop
+jump @CarYearStart
+
+:CarYear1985
+if
+  $CYEAR >= 1980 // integer values
+else_jump @CarYear1955
+01EB: set_traffic_density_multiplier_to 1.0
+$1955 = 0 // integer values
+$1985 = 1000 // integer values
+$2015 = 0 // integer values
+$1955CAR = 0 // integer values
+$1985CAR = 101 // integer values
+$2015CAR = 0 // integer values
+$ALLCAR = 101 // integer values
+gosub @SetParkedCarGenerator
+gosub @SetCarZone
+
+:CarYear1985Loop
+wait 10
+if or
+    $CYEAR >= 2010
+    $CYEAR < 1980
+else_jump @CarYear1985Loop
+jump @CarYearStart
+
+:CarYear1955
+if
+  $CYEAR >= 1910 // integer values
+else_jump @CarYear1885
+01EB: set_traffic_density_multiplier_to 1.0
+$1955 = 1000 // integer values
+$1985 = 0 // integer values
+$2015 = 0 // integer values
+$1955CAR = 101 // integer values
+$1985CAR = 0 // integer values
+$2015CAR = 0 // integer values
+$ALLCAR = 101 // integer values
+gosub @SetParkedCarGenerator
+gosub @SetCarZone
+
+:CarYear1955Loop
+wait 10
+if or
+    $CYEAR >= 1980
+    $CYEAR < 1910
+else_jump @CarYear1955Loop
+jump @CarYearStart
+
+:CarYear1885
+01EB: set_traffic_density_multiplier_to 0.0
+$1955CAR = 0 // integer values
+$1985CAR = 0 // integer values
+$2015CAR = 0 // integer values
+$ALLCAR = 0 // integer values
+gosub @SetParkedCarGenerator
+
+:CarYear1885Loop
+wait 10
+if
+    $CYEAR >= 1910
+else_jump @CarYear1885Loop
+jump @CarYearStart
+
+:SetCarZone
+04EC: set_zone_car_class_info 'STREET4' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET4' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'RICH2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'RICH2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CLUB2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CLUB2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'OCEAND1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'OCEAND1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'OCEAND2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'OCEAND2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BEACH1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BEACH1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BEACH2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BEACH2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BEACH3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BEACH3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CONSTRU' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CONSTRU' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CLUB1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CLUB1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'RICH1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'RICH1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'TOUR1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'TOUR1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'TOUR2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'TOUR2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'AIRPORT' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'AIRPORT' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'TERMINL' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'TERMINL' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'DOCKS' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'DOCKS' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET6' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET6' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET5' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'STREET5' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP4' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP4' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP5' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'SHOP5' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BUSINES' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BUSINES' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BIKAREA' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BIKAREA' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GANG2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GANG2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GHETTO1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GHETTO1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GHETTO2' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GHETTO2' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'RICH3' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'RICH3' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GANG1' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'GANG1' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'ICCREAM' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'ICCREAM' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BOATYRD' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'BOATYRD' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'KAUFCAB' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'KAUFCAB' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'PRINTWK' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'PRINTWK' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CARYRD' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'CARYRD' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'PORNSTU' 1 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+04EC: set_zone_car_class_info 'PORNSTU' 0 $1955 0 $1985 $2015 0 0 0 0 0 0 0
+return
