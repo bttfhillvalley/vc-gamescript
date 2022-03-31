@@ -16,11 +16,10 @@ fade 0 0
 set_wb_check_to 0
 00C0: set_current_time 10 0
 0572: set_taxi_boost_jump 1
-04E4: unknown_refresh_game_renderer_at -255.2254 -492.3188
-Camera.SetAtPos(-255.2254, -492.3188, 11.1985)
-$PLAYER_CHAR = Player.Create(#NULL, -255.2254, -492.3188, 11.1985) // Twin Pines Mall
-//$PLAYER_CHAR = Player.Create(#NULL, -771.3590, 85.7275, 87.6737) // Twin Pines Mall
-0171: set_player $PLAYER_CHAR z_angle_to 90.0
+04E4: unknown_refresh_game_renderer_at -542.5803 268.1569
+Camera.SetAtPos(-542.5803, 268.1569, 12.4336)
+$PLAYER_CHAR = Player.Create(#NULL, -542.5803, 268.1569, 12.4336) // Twin Pines Mall
+0171: set_player $PLAYER_CHAR z_angle_to 180.0
 $PLAYER_ACTOR = Actor.EmulateFromPlayer($PLAYER_CHAR)
 03AD: set_rubbish 0
 $CYEAR = -1
@@ -32,7 +31,7 @@ $1985CAR = 101 // integer values
 $2015CAR = 0 // integer values
 $ALLCAR = 101 // integer values
 $MALL_SIGN = 2
-032B: $BTTFREMOTEDEBUG = create_weapon_pickup #SCREWDRIVER 15 ammo 1 at -255.2254 -492.3188 11.1985 //remove me before release :)
+032B: $BTTFREMOTEDEBUG = create_weapon_pickup #SCREWDRIVER 15 ammo 1 at -542.5803 268.1569 12.4336 //remove me before release :)
 
 start_mission 0  // Initial
 
