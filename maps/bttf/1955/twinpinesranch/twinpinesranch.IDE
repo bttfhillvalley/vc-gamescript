@@ -17,7 +17,7 @@ objs
 5323, 1955TPRanch, 1955TwinPines, 1, 300, 1
 5449, LOD5TPRanch, 1955TwinPines, 1, 1200, 1
 5324, 1955TPScare, 1955TwinPines, 1, 300, 1
-6405, TPground, 1955TwinPines, 1, 300, 1
+5325, TPground, 1955TwinPines, 1, 300, 1
 end
 tobj
 end
