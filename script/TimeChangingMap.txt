@@ -3,24 +3,30 @@ while $CYEAR == -1
     wait 10
 end
 $MALL_SIGN = 2
-3F09: remove_build "1885" amnt 0
-3F09: remove_build "1955" amnt 17
-3F09: remove_build "1985" amnt 7
-3F09: remove_build "2015" amnt 7
+3F09: remove_build "1885"
+3F09: remove_build "1955"
+3F09: remove_build "1985"
+3F09: remove_build "2015"
+3F38: remove_objects "1885"
+3F38: remove_objects "1955"
+3F38: remove_objects "1985"
+3F38: remove_objects "2015"
 gosub @MallSignDestroy
 
 :DateCheck
 if
     $CYEAR < 1910
 then
-    3F08: add_build "1885" amnt 4
+    3F08: add_build "1885"
+    3F37: add_objects "1885"
     create_thread @whiskey
     01EB: set_traffic_density_multiplier_to 0.0
     jump @WaitToLeave1885
 else if
     $CYEAR < 1980
 then
-    3F08: add_build "1955" amnt 4
+    3F08: add_build "1955"
+    3F37: add_objects "1955"
     create_thread @1955Pepsi
     gosub @TwinpinesTreesCreate
     create_thread @TwinPinesRipple
@@ -29,7 +35,8 @@ then
 else if
     $CYEAR < 2010
 then
-    3F08: add_build "1985" amnt 7
+    3F08: add_build "1985"
+    3F37: add_objects "1985"
     01EB: set_traffic_density_multiplier_to 0.7
     create_thread @1985Pepsi
     create_thread @walkman
@@ -38,7 +45,8 @@ then
     //create_thread @canopener   // Currently crashing
     jump @WaitToLeave1985
 else
-    3F08: add_build "2015" amnt 7
+    3F08: add_build "2015"
+    3F37: add_objects "2015"
     01EB: set_traffic_density_multiplier_to 0.9
     create_thread @2015Pepsi
     gosub @MallSignCreate
@@ -52,7 +60,8 @@ wait 0
 if
     $CYEAR >= 1910
 else_jump @WaitToLeave1885
-3F09: remove_build "1885" amnt 4
+3F09: remove_build "1885"
+3F38: remove_objects "1885"
 create_thread @1885pickupcleanup
 jump @DateCheck
 
@@ -62,7 +71,8 @@ if or
     $CYEAR < 1910
     $CYEAR >= 1980 // We traveled to the present/future
 else_jump @WaitToLeave1955
-3F09: remove_build "1955" amnt 4
+3F09: remove_build "1955"
+3F38: remove_objects "1955"
 create_thread @1955pickupcleanup
 gosub @TwinPinesTreesDestroy
 jump @DateCheck
@@ -73,7 +83,8 @@ if or
   $CYEAR < 1980 // We traveled back to the past
   $CYEAR >= 2010 // We traveled to the future
 else_jump @WaitToLeave1985
-3F09: remove_build "1985" amnt 7
+3F09: remove_build "1985"
+3F38: remove_objects "1985"
 create_thread @1985pickupcleanup
 gosub @MallSignDestroy
 // Currently crashing.  Also needs to turn into a gosub.
@@ -103,7 +114,8 @@ wait 0
 if
   $CYEAR < 2010 // We traveled to the past/present
 else_jump @WaitToLeave2015
-3F09: remove_build "2015" amnt 7
+3F09: remove_build "2015"
+3F38: remove_objects "2015"
 create_thread @2015pickupcleanup
 gosub @MallSignDestroy
 jump @DateCheck
