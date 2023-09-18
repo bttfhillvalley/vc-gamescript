@@ -286,9 +286,9 @@ cars
 234,	bloodra,	bloodra,	car,	BLOODRA,	BLOODRA,	null,	ignore,	10,	7,	4fff,	256,	0.700000
 235,	bloodrb,	bloodrb,	car,	BLOODRB,	BLOODRB,	null,	ignore,	10,	7,	4fff,	253,	0.700000
 236,	vicechee,	vicechee,	car,	CHEETAH,	CHEETAH,	null,	ignore,	10,	7,	0,	250,	0.700000
-237,	delorean,	delorean,	car,	KURUMA,		null,	null,	ignore,	10,	6,	2ff0,	249,	0.790000
-238,	rogers,		rogers,		car,	KURUMA,		null,	null,	richfamily,	10,	7,	2ff0,	249,	0.790000
-239,    timetrain,  	timetrain   	car,    AIRTRAIN,   	null, 	null,   ignore, 	10, 	7,  	0,   	249,    1.2
+237,	delorean,	delorean,	car,	KURUMA,		null,		null,	normal,	10,	7,	2ff0,	249,	0.790000
+238,	rogers,		rogers,		car,	KURUMA,		null,		null,	ignore,	10,	7,	2ff0,	249,	0.790000
+239,    timetrain,  	timetrain   	car,    AIRTRAIN,   	null, 		null,   ignore, 10, 	7,  	0,   	249,    1.2
 end
 
 # leave ID 240 - 249 to use in temp car components
