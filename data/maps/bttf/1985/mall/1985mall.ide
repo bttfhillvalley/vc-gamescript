@@ -1,0 +1,63 @@
+objs
+# 6782 - 7781 Reserved for 1985
+6795, tyg_umbre1, tyg_build1, 1, 200, 1
+6796, McFlyHouse, McFlyHouse, 1, 300, 1
+6797, McFly1985v1, McFly1985v1, 1, 300, 1
+6798, mallshrubs, mall_generic, 1, 300, 1
+6799, mall_st1, mall_st, 1, 300, 1
+6800, mall_st2, mall_st, 1, 300, 1
+6801, mall_st3, mall_st, 1, 300, 1
+6802, mall_st4, mall_st, 1, 300, 1
+6803, mall_st6, mall_st, 1, 300, 1
+6804, mall_st8, mall_st, 1, 300, 1
+6805, mall_st9, mall_st, 1, 300, 1
+6806, mall_st10, mall_st, 1, 300, 1
+6807, mall_st11, mall_st, 1, 300, 1
+6808, mall_st12, mall_st, 1, 300, 1
+6809, mall_st13, mall_st, 1, 300, 1
+6810, mall_st14, mall_st, 1, 300, 1
+6811, mall_st17, mall_st, 1, 300, 1
+6812, mall_st18, mall_st, 1, 300, 1
+6813, mall_st19, mall_st, 1, 300, 1
+6814, mall_building, mall_building, 1, 300, 0
+6815, mall_roof, mall_roof, 1, 300, 0
+6816, mall_sign, mall_sign, 1, 300, 0
+6817, mall_build3, mall_build3, 1, 300, 0
+6818, mall_tygfridays2, mall_tyg2, 1, 300, 0
+6819, park_stripes1, mall_building, 1, 300, 0
+6820, mall_foxset, mall_foxset, 1, 300, 0
+6821, tyg_building1, tyg_build1, 1, 300, 0
+6822, mall_grass, mall_generic, 1, 300, 0
+6823, mall_lamp, mall_building, 1, 300, 0
+6824, mall_palm, mall_generic, 1, 300, 0
+6825, mall_trashbin, mall_building, 1, 300, 0
+6826, mall_tree, mall_generic, 1, 300, 0
+6827, mall_tree_dead, mall_generic, 1, 300, 0
+6828, mall_tree2, mall_generic, 1, 300, 0
+6829, park_brushtree, mall_generic, 1, 300, 0
+6830, park_tree, mall_generic, 1, 300, 0
+6831, tyg_lamp, mall_st, 1, 300, 0
+6832, park_stripes2, mall_building, 1, 300, 0
+
+end
+tobj
+
+6833, mall_building_d, mall_building, 1, 300, 4, 6, 19
+6834, mall_building_n, mall_building, 1, 300, 4, 19, 6
+6835, mall_build3_d, mall_build3, 1, 300, 4, 6, 19
+6836, mall_build3_n, mall_build3, 1, 300, 4, 19, 6
+6837, mall_foxset_d, mall_foxset, 1, 300, 4, 6, 19
+6838, mall_foxset_n, mall_foxset, 1, 300, 4, 19, 6
+6839, mall_tygfridays2_d, mall_tyg2, 1, 300, 4, 6, 19
+6840, mall_tygfridays2_n, mall_tyg2, 1, 300, 4, 19, 6
+6841, tyg_building1_d, tyg_build1, 1, 300, 4, 6, 19
+6842, tyg_building1_n, tyg_build1, 1, 300, 4, 19, 6
+6843, tyg_lamp2_d, tyg_build1, 1, 300, 4, 6, 19
+6844, tyg_lamp2_n, tyg_build1, 1, 300, 4, 19, 6
+end
+2dfx
+6823, 1.73, 0, 19.3, 255, 207, 43, 200, 0, "coronastar", "shad_exp", 400, 8, 2, 0, 80, 1, 0, 0, 0
+6823, -1.73, 0, 19.3, 255, 207, 43, 200, 0, "coronastar", "shad_exp", 400, 8, 2, 0, 80, 1, 0, 0, 0
+6831, 0, 0, 0, 255, 226, 111, 200, 0, "coronastar", "shad_exp", 300, 8, 1, 0, 40, 1, 0, 0, 0
+6844, 0, 0, 0, 255, 255, 255, 200, 0, "coronastar", "shad_exp", 200, 8, 1, 0, 40, 1, 0, 0, 0
+end

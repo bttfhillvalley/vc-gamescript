@@ -1,0 +1,56 @@
+objs
+6858, backdoor, GMCValue, 1, 300, 129
+6859, ramps, GMCValue, 1, 300, 129
+6944, whiskey, drinks, 1, 300, 129
+6945, 55pepsi, drinks, 1, 300, 129
+6946, 85pepsi, drinks, 1, 300, 129
+6947, 2015pepsi, drinks, 1, 300, 129
+6949, swirl, elite1955, 1, 300, 129
+6950, dogfoodbase, GarageVC, 1, 300, 129
+6951, dogfoodarm, GarageVC, 1, 300, 129
+6952, dogfoodclaw, GarageVC, 1, 300, 129
+6953, dogfoodcan, GarageVC, 1, 300, 129
+6954, dogfoodcanspin, GarageVC, 1, 300, 129
+6955, dogfoodfull, GarageVC, 1, 300, 129
+6956, dogemptycan, GarageVC, 1, 300, 129
+6957, garagetoast, GarageVC, 1, 300, 129
+6958, garageclockswitch, GarageVC, 1, 300, 129
+6959, garagelightswitch, GarageVC, 1, 300, 129
+6960, dogfoodpile, GarageVC, 1, 300, 129
+6961, timerpart1, GarageVC, 1, 300, 129
+6962, timerpart2, GarageVC, 1, 300, 129
+6963, timerpart3, GarageVC, 1, 300, 129
+6964, griffbat1, griffbat, 1, 300, 129
+6965, griffbat2, griffbat, 1, 300, 129
+6966, griffbat3, griffbat, 1, 300, 129
+6967, griffbat4, griffbat, 1, 300, 129
+6968, griffbat5, griffbat, 1, 300, 129
+6969, griffbat6, griffbat, 1, 300, 129
+6970, griffbat7, griffbat, 1, 300, 129
+6971, griffbat8, griffbat, 1, 300, 129
+6972, griffbat9, griffbat, 1, 300, 129
+6973, griffbat10, griffbat, 1, 300, 129
+6974, Docdoor1, GarageVC, 1, 300, 0
+6975, 55docstv, 55docstv, 1, 300, 1
+6976, 1955TPMail, 1955TwinPines, 1, 300, 1
+6977, 1955TPBarnDr, 1955TwinPines, 1, 300, 1
+6978, 1955TPBarnDrsml, 1955TwinPines, 1, 300, 1
+6979, 1955TPBarnDr1, 1955TwinPines, 1, 300, 1
+6980, 1955TPBarnDr2, 1955TwinPines, 1, 300, 1
+6981, 1955TPBarnDr3, 1955TwinPines, 1, 300, 1
+6982, 1955TPBarnDr4, 1955TwinPines, 1, 300, 1
+6983, 1955TPBarnDr5, 1955TwinPines, 1, 300, 1
+6984, 1955TPBarnDr6, 1955TwinPines, 1, 300, 1
+6985, 1955TPBarnDr7, 1955TwinPines, 1, 300, 1
+6986, 1955TPBarnDr8, 1955TwinPines, 1, 300, 1
+6987, 1955TPBarnDr9, 1955TwinPines, 1, 300, 1
+6988, 1955TPBarnDr10, 1955TwinPines, 1, 300, 1
+6989, 1955TPBarnDr11, 1955TwinPines, 1, 300, 1
+6990, 1955TPPine, 1955TwinPines, 1, 300, 1
+6991, 1955TPScare, 1955TwinPines, 1, 300, 1
+6992, McFlyDoor, McFlyHouse, 1, 300, 1
+end
+tobj
+end
+2dfx
+end

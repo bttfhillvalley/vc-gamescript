@@ -1,0 +1,9 @@
+objs
+end
+tobj
+# 6782 - 7781 Reserved for 1985
+6849, mall_sign_d, mall_generic, 1, 300, 4, 6, 19
+6850, mall_sign_n, mall_generic, 1, 300, 4, 19, 6
+end
+2dfx
+end

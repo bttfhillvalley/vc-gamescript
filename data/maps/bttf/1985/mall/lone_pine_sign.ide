@@ -1,0 +1,9 @@
+objs
+end
+tobj
+# 6782 - 7781 Reserved for 1985
+6847, lonepine_d, lonepine, 1, 300, 4, 6, 19
+6848, lonepine_n, lonepine, 1, 300, 4, 19, 6
+end
+2dfx
+end

@@ -1,0 +1,15 @@
+objs
+# 6782 - 7781 Reserved for 1985
+6782, DMCDlrship, DMCDlrship, 1, 300, 1
+6783, dmcdgarage, DMCDlrship, 1, 300, 1
+6784, dmcdplanter, DMCDlrship, 1, 300, 1
+6785, dmcstsign, dmcstsign, 1, 300, 1
+6786, DMC_road, mall_st, 1, 300, 1
+end
+tobj
+6787, dmcstsign_d, dmcstsign, 1, 300, 4, 6, 19
+6788, dmcstsign_n, dmcstsign, 1, 300, 4, 19, 6
+6789, dmcdlrshipnight, DMCDlrship, 1, 300, 4, 19, 6
+end
+2dfx
+end
