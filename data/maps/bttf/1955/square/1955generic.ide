@@ -18,15 +18,15 @@ objs
 5806, stationers1955, stationers1955, 1, 600, 0
 5807, elite1955, elite1955, 1, 600, 0
 5808, ruthfs1955, ruthfs1955, 1, 600, 0
-5809, clockminhand, clocktower1955, 1, 600, 0
-5810, clockhourhand, clocktower1955, 1, 600, 0
+5809, clockminhand, clocktower, 1, 600, 0
+5810, clockhourhand, clocktower, 1, 600, 0
 5811, LODrtyard1955, LODrtyard1955, 1, 1200, 0
 5812, LODk1955, LODk1955, 1, 1200, 0
 5813, LODlty1955, LODlty1955, 1, 1200, 0
 5814, LODhfs1955, LODhfs1955, 1, 1200, 0
-5815, brokenledge1955, clocktower1955, 1, 600, 0
-5816, vane_ok1955, clocktower1955, 1, 600, 128
-5817, vane_dam1955, clocktower1955, 1, 600, 128
+5815, brokenledge1955, clocktower, 1, 600, 0
+5816, vane_ok1955, clocktower, 1, 600, 128
+5817, vane_dam1955, clocktower, 1, 600, 128
 5818, diner1955, diner1955, 1, 600, 12
 5819, dinerdrL1955, diner1955, 1, 600, 12
 5820, dinerdrR1955, diner1955, 1, 600, 12
@@ -91,10 +91,10 @@ tobj
 5875, LODter_nt1955, LODter1955, 1, 0, 0, 19, 7
 5876, LODternautos1955, LODternautos1955, 1, 1200, 0, 7, 19
 5877, LODternautos_nt1955, LODternautos1955, 1, 1200, 0, 19, 7
-5878, clock1955, clocktower1955, 1, 600, 128, 7, 19
-5879, clock_nt1955, clocktower1955, 1, 600, 128, 19, 7
-5880, clockdam, clocktower1955, 1, 600, 128, 7, 19
-5881, clockdam_nt, clocktower1955, 1, 600, 128, 19, 7
+5878, clock1955, clocktower, 1, 600, 128, 7, 19
+5879, clock_nt1955, clocktower, 1, 600, 128, 19, 7
+5880, clockdam, clocktower, 1, 600, 128, 7, 19
+5881, clockdam_nt, clocktower, 1, 600, 128, 19, 7
 5882, texaco1955, texaco1955, 1, 600, 20, 7, 19
 5883, grgdoor_l_1955, texaco1955, 1, 600, 0, 7, 19
 5884, grgdoor_r_1955, texaco1955, 1, 600, 0, 7, 19

@@ -3,7 +3,7 @@ objs
 5901, statler1955, statler, 1, 600, 0
 5902, LODtler1955, LODtler1955, 1, 1200, 0
 5903, LODcktower1955, LODcktower1955, 1, 1200, 0
-5904, clocktower1955, clocktower1955, 1, 600, 0
+5904, clocktower1955, clocktower, 1, 600, 0
 end
 tobj
 end
