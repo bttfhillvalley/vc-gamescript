@@ -1,9 +1,0 @@
-col
-# Numbering continues from carcols.dat (95)
-# 0,0,0		# 95 custom		color
-end
-car
-delorean, 79,71
-rogers, 0,0
-timetrain, 0,0
-end

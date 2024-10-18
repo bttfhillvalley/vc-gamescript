@@ -1,0 +1,13 @@
+objs
+6994, clocktower2015, clocktower, 1, 300, 0
+6995, LODcktower2015, clocktower, 1, 600, 0
+6996, vane_dam2015, clocktower, 1, 300, 128
+6997, bin2015, clocktower, 1, 200, 128
+6993, statler2015, statler, 1, 300, 128
+6998, CTclock, clocktower, 1, 300, 128
+end
+tobj
+6999, clock_nt2015, clocktower, 1, 300, 128, 19, 7
+end
+2dfx
+end

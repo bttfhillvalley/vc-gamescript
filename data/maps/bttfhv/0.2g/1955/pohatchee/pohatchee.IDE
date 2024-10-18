@@ -1,0 +1,12 @@
+objs
+# 5781 - 6781 Reserved for 1955
+5785, driveinsc1955, driveinsc1955, 1, 300, 1
+5786, snackbar, snackbar, 1, 300, 1
+5787, studeb1955, snackbar, 1, 300, 1
+5788, drivinspeak, snackbar, 1, 300, 1
+5789, pepsi_1955, snackbar, 1, 300, 1
+5790, pohatchee, snackbar, 1, 300, 1
+tobj
+end
+2dfx
+end

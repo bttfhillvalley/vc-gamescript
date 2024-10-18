@@ -1,7 +1,0 @@
-objs
-4900, clocktower1885, clocktower, 1, 300, 0
-4901, LODcktower1885, clocktower, 1, 600, 0
-# 4900 - 5780 Reserved for 1885
-end
-tobj
-end

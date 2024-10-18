@@ -1,0 +1,18 @@
+objs
+# 6782 - 7781 Reserved for 1985
+6851, clocktower1985, clocktower, 1, 300, 0
+6852, brokenledge1985, clocktower, 1, 300, 0
+6853, LODcktower1985, clocktower, 1, 600, 0
+6854, vane_dam1985, clocktower, 1, 300, 128
+6855, statler1985, statler, 1, 300, 128
+end
+tobj
+6856, clock1985, clocktower, 1, 300, 128, 7, 19
+6857, clock_nt1985, clocktower, 1, 300, 128, 19, 7
+6858, statler1985_d, statler, 1, 300, 4, 6, 19
+6859, statler1985_n, statler, 1, 300, 128, 19, 7
+end
+2dfx
+6851, 0.799, -5.451, 3.326, 255, 255, 255, 200, 0, "coronastar", "shad_exp", 100, 8, 2, 0, 40, 1, 0, 0, 0
+6851, 0.799, 5.451, 3.326, 255, 255, 255, 200, 0, "coronastar", "shad_exp", 100, 8, 2, 0, 40, 1, 0, 0, 0
+end
